@@ -5,17 +5,22 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import es.uma.khaos.docking_service.properties.Constants;
 import es.uma.khaos.docking_service.service.DatabaseService;
 
 public class WorkerThread implements Runnable {
 	
 	private final String COMMAND_TEMPLATE = "%s%s -p %s -l %s";
-	private final String AUTODOCK_LOCATION = "/opt/autodock/";
-	private final String BASE_FOLDER = "/home/tomcat7/";
-	private final String AUTODOCK_EXECUTABLE = "autodock4";
+	private final String AUTODOCK_LOCATION = Constants.DIR_AUTODOCK;
+	private final String BASE_FOLDER = Constants.DIR_BASE;
+	private final String AUTODOCK_EXECUTABLE = Constants.FILE_AUTODOCK;
+	
+	private final String TEST_DIR_INSTANCE = Constants.TEST_DIR_INSTANCE;
+	private final String TEST_FILE_DPF = Constants.TEST_FILE_DPF;
 	
 	private String name;
 	private int id;
+	
 	
 	public WorkerThread(String name, int id) {
 		this.name = name;
@@ -53,14 +58,14 @@ public class WorkerThread implements Runnable {
 			
 			// COPIAMOS FICHEROS DE ENTRADA
 			command = String.format(
-					"cp -r /home/tomcat7/1hsg/. %s", workDir);
+					"cp -r %s. %s", TEST_DIR_INSTANCE, workDir);
 			executeCommand(command);
 			
 			// EJECUTAMOS AUTODOCK
 			command= String.format(COMMAND_TEMPLATE,
 					AUTODOCK_LOCATION,
 					AUTODOCK_EXECUTABLE,
-					"1hsg.dpf",
+					TEST_FILE_DPF,
 					outputFile);
 			executeCommand(command, new File(workDir));
 			

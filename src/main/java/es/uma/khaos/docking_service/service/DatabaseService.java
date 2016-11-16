@@ -6,17 +6,21 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Properties;
 
 import es.uma.khaos.docking_service.exception.DatabaseException;
 import es.uma.khaos.docking_service.model.Task;
+import es.uma.khaos.docking_service.properties.Constants;
 
 public final class DatabaseService {
 	
-	private static final String PROPERTIES_FILE = "docking_service.properties";
-	
 	private static final String RUNNING_STATE = "running";
-	private static final String FINISHED_STATE = "finished"; 
+	private static final String FINISHED_STATE = "finished";
+	
+	private static final String ip = Constants.MYSQL_IP;
+	private static final String port = Constants.MYSQL_PORT;
+	private static final String schema = Constants.MYSQL_SCHEMA;
+	private static final String user = Constants.MYSQL_USER;
+	private static final String pass = Constants.MYSQL_PASS;
 	
 	private static DatabaseService instance;
 	
@@ -34,15 +38,9 @@ public final class DatabaseService {
 		Connection conn = null;
 		
 		try {
-			Properties props = new Properties();
-			props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream(PROPERTIES_FILE));
-			String dbUrl = props.getProperty("url");
-			String dbUser = props.getProperty("user");
-			String dbPassword = props.getProperty("password");
-			
+			String dbUrl = "jdbc:mysql://" + ip + ":" + port + "/" + schema;
 			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-			
+			conn = DriverManager.getConnection(dbUrl, user, pass);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new DatabaseException();
