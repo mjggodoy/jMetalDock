@@ -3,7 +3,7 @@ package es.uma.khaos.docking_service.properties;
 public class Properties {
 	
 	// ESHOP database
-	public static final String MYSQL_IP = "mysql.url";
+	public static final String MYSQL_IP = "mysql.ip";
 	public static final String MYSQL_PORT = "mysql.port";
 	public static final String MYSQL_SCHEMA = "mysql.schema";
 	public static final String MYSQL_USER = "mysql.user";
