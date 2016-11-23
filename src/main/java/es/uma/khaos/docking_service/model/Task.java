@@ -1,7 +1,7 @@
 package es.uma.khaos.docking_service.model;
 
 public class Task {
-	
+
 	private int id;
 	private String hash;
 
@@ -18,5 +18,5 @@ public class Task {
 	public String getHash() {
 		return hash;
 	}
-	
+
 }
