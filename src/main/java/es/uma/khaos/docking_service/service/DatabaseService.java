@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import es.uma.khaos.docking_service.exception.DatabaseException;
+import es.uma.khaos.docking_service.model.ExecutionMultiObjective;
 import es.uma.khaos.docking_service.model.ExecutionSingleObjective;
 import es.uma.khaos.docking_service.model.MultiObjectiveResults;
 import es.uma.khaos.docking_service.model.Parameter;
@@ -341,6 +342,48 @@ public final class DatabaseService {
 		return eso;
 	}
 	
+	
+	
+	public ExecutionMultiObjective getExecutioMultiObjective(int tasks_id) throws Exception{
+	
+		ExecutionMultiObjective emo = null;
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			conn = openConnection();
+			stmt = conn.prepareStatement("select * from execution_multi_objective where tasks_id=?");
+			stmt.setInt(1, tasks_id);
+			rs = stmt.executeQuery();
+			
+			if(rs.next()){
+			
+			int execution_id = rs.getInt("execution_id");
+			int run = rs.getInt("run");
+			int multi_objective_results_result_id = rs.getInt("multi_objective_results_result_id");
+			int multi_objective_results_parameters_parameters_id = rs.getInt("multi_objective_results_parameters_parameter_id");
+			int multi_objective_results_parameters_tasks_id = rs.getInt("multi_objective_results_parameters_tasks_id");
+			tasks_id = rs.getInt("tasks_id");
+			emo = new ExecutionMultiObjective(execution_id, run, multi_objective_results_result_id,
+					multi_objective_results_parameters_parameters_id, multi_objective_results_parameters_tasks_id, tasks_id);
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (rs != null)
+				rs.close();
+			if (stmt != null)
+				stmt.close();
+			if (conn != null)
+				conn.close();
+		}
+		return emo;
+	
+	}
 
 	public void startTask(int id) throws Exception {
 		this.updateTaskState(id, RUNNING_STATE);
@@ -377,13 +420,22 @@ public final class DatabaseService {
 				" parameters_parameter_id: " + mor.getParameters_parameters_id()+
 				" parameters_tasks_id: " + mor.getParameters_tasks_id());*/
 		
-		ExecutionSingleObjective eso = ds.getExecutionSingleObjective(id);
+		/*ExecutionSingleObjective eso = ds.getExecutionSingleObjective(id);
 		System.out.println("ExecutionSingleObjective: " + eso.getExecution_id() 
 				+ " run: " + eso.getRun() + 
 				" single_objective_results_result_id " + eso.getSingle_objective_results_result_id() + 
 				" single_objective_results_parameters_parameters_id: " + eso.getSingle_objective_results_parameters_parameters_id() + 
 				" single_objective_results_parameters_tasks_id: " + eso.getSingle_objective_results_parameters_tasks_id() +
-				" task_id " + eso.getTasks_id());
+				" task_id " + eso.getTasks_id());*/
+		
+		
+		/*ExecutionMultiObjective emo = ds.getExecutioMultiObjective(id);
+		System.out.println("ExecutionSingleObjective: " + emo.getExecution_id() 
+				+ " run: " + emo.getRun() + 
+				" multi_objective_results_result_id " + emo.getMulti_objective_results_result_id() + 
+				" multi_objective_results_parameters_parameters_id: " + emo.getMulti_objective_results_parameters_parameter_id() + 
+				" multi_objective_results_parameters_tasks_id: " + emo.getMulti_objective_results_parameters_tasks_id() +
+				" task_id " + emo.getTasks_id());*/
 		
 		
 	}
