@@ -5,13 +5,13 @@ public class MultiObjectiveResults {
 	private int result_id;
 	private String objective1;
 	private String objective2;
-	private int front_id;
+	private String front_id;
 	private int parameters_parameters_id;
 	private int parameters_tasks_id;
 	
 	
 	public MultiObjectiveResults(int result_id, String objective1,
-			String objective2, int front_id, int parameters_parameters_id,
+			String objective2, String front_id, int parameters_parameters_id,
 			int parameters_tasks_id) {
 		super();
 		this.result_id = result_id;
@@ -38,7 +38,7 @@ public class MultiObjectiveResults {
 	}
 
 
-	public int getFront_id() {
+	public String getFront_id() {
 		return front_id;
 	}
 
