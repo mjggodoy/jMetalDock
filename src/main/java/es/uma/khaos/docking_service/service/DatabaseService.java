@@ -6,6 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Properties;
+
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.Session;
 
 import es.uma.khaos.docking_service.exception.DatabaseException;
 import es.uma.khaos.docking_service.model.Task;
@@ -22,15 +27,45 @@ public final class DatabaseService {
 	private static final String user = Constants.MYSQL_USER;
 	private static final String pass = Constants.MYSQL_PASS;
 	
-	private static DatabaseService instance;
+	private static final String SSH_HOST = Constants.SSH_HOST;
+	private static final String SSH_PORT = Constants.SSH_PORT;
+	private static final String SSH_USER = Constants.SSH_USER;
+	private static final String SSH_PASS = Constants.SSH_PASS;
 	
-	public DatabaseService() {}
+	private static DatabaseService instance;
+	private Session jschSession = null;
+	
+	public DatabaseService() {
+		if (!SSH_HOST.isEmpty()) {
+			Properties config = new Properties();
+	        JSch jsch = new JSch();
+	        int sshPortNumber = Integer.valueOf(SSH_PORT);
+			try {
+				jschSession = jsch.getSession(SSH_USER, SSH_HOST, sshPortNumber);
+				jschSession.setPassword(SSH_PASS);
+		        config.put("StrictHostKeyChecking", "no");
+		        //config.put("ConnectionAttempts", "3");
+		        jschSession.setConfig(config);
+		        jschSession.connect();
+		        System.out.println("SSH connected.");
+			} catch (JSchException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 	
 	public static synchronized DatabaseService getInstance()  {
 		if(instance == null) {
 			instance = new DatabaseService();
 		}
 		return instance;
+	}
+	
+	public void shutdown() {
+		if (jschSession != null) {
+			jschSession.disconnect();
+			System.out.println("SSH disconected.");
+		}
 	}
 	
 	private Connection openConnection() throws Exception {
@@ -120,6 +155,11 @@ public final class DatabaseService {
 	
 	public void finishTask(int id) throws Exception {
 		this.updateTaskState(id, FINISHED_STATE);
+	}
+	
+	public static void main(String[] args) throws Exception {
+		DatabaseService.getInstance().insertTask("SSH");
+		DatabaseService.getInstance().shutdown();
 	}
 
 }

@@ -11,6 +11,12 @@ public class Constants {
 	public static final String MYSQL_USER = Configurations.getProperty(Properties.MYSQL_USER);
 	public static final String MYSQL_PASS = Configurations.getProperty(Properties.MYSQL_PASS);
 	
+	// SSH Connection
+	public static final String SSH_HOST = Configurations.getProperty(Properties.SSH_HOST);
+	public static final String SSH_PORT = Configurations.getProperty(Properties.SSH_PORT);
+	public static final String SSH_USER = Configurations.getProperty(Properties.SSH_USER);
+	public static final String SSH_PASS = Configurations.getProperty(Properties.SSH_PASS);
+	
 	// Directories
 	public static final String DIR_AUTODOCK = Configurations.getProperty(Properties.DIR_AUTODOCK);
 	public static final String DIR_BASE = Configurations.getProperty(Properties.DIR_BASE);
