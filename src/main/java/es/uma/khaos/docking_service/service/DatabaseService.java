@@ -342,8 +342,6 @@ public final class DatabaseService {
 		return eso;
 	}
 	
-	
-	
 	public ExecutionMultiObjective getExecutioMultiObjective(int tasks_id) throws Exception{
 	
 		ExecutionMultiObjective emo = null;
@@ -384,6 +382,56 @@ public final class DatabaseService {
 		return emo;
 	
 	}
+	
+	
+	public Parameter insert(int parameter_id, String algorithm, int evaluations, int runs, int objectives, int tasks_id ) throws Exception {
+
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		Parameter parameter = null;
+
+		try {
+			conn = openConnection();
+			stmt = conn.prepareStatement("insert into parameters values (parameter_id, algorithm, evaluations, runs, objectives, tasks_id)",
+					Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, tasks_id);
+			stmt.execute();
+
+			rs = stmt.getGeneratedKeys();
+			if (rs.next()) {
+				
+				parameter_id = rs.getInt("id");
+				algorithm = rs.getString("algorithm");
+				evaluations = rs.getInt("evaluations");
+				runs = rs.getInt("runs");
+				objectives = rs.getInt("objectives");
+				tasks_id = rs.getInt("tasks_id");
+				parameter = new Parameter(parameter_id, algorithm, evaluations,
+						runs, objectives, tasks_id);
+	
+			}
+			rs.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DatabaseException();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (rs != null)
+				rs.close();
+			if (stmt != null)
+				stmt.close();
+			if (conn != null)
+				conn.close();
+		}
+		return parameter;
+	}
+
+	
+	
 
 	public void startTask(int id) throws Exception {
 		this.updateTaskState(id, RUNNING_STATE);
@@ -396,7 +444,23 @@ public final class DatabaseService {
 	public static void main(String[] args) throws Exception {
 
 		int id = 35;
+		String algorithm = "GA";
+		int evaluations = 150000;
+		int runs = 30;
+		int objectives = 2;
+		int tasks_id = 35;
 		DatabaseService ds = new DatabaseService();
+		String hash= "XUXA";
+		
+		//Inserters:
+		
+		System.out.println("Start insert");
+		//Task task = ds.insertTask(hash);
+		Parameter parameter = ds.insert(id, algorithm, evaluations, runs, objectives, tasks_id);
+		System.out.println("End insert");
+		
+		
+		//Getters:
 		/*Task task = ds.getTask(id);
 		System.out.println("id: " + task.getId() + " Hash " + task.getHash());
 		Parameter parameter = ds.getParameter(id);
