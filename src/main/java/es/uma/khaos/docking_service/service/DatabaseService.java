@@ -209,6 +209,43 @@ public final class DatabaseService {
 		return parameter;
 
 	}
+	
+	public Parameter insert(int parameter_id, String algorithm, int evaluations, int runs, int objectives, int tasks_id ) throws Exception {
+
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		Parameter parameter = null;
+
+		try {
+			conn = openConnection();
+			stmt = conn.prepareStatement("insert into parameters values (?, ?, ?, ?, ?, ?)",
+					Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, parameter_id);
+			stmt.setString(2, algorithm);
+			stmt.setInt(3, evaluations);
+			stmt.setInt(4, runs);
+			stmt.setInt(5, objectives);
+			stmt.setInt(6, tasks_id);
+			stmt.execute();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DatabaseException();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (rs != null)
+				rs.close();
+			if (stmt != null)
+				stmt.close();
+			if (conn != null)
+				conn.close();
+		}
+		return parameter;
+	}
+	
 
 	public SingleObjectiveResults getSingleObjectiveResults(
 			int parameters_tasks_id) throws Exception {
@@ -384,51 +421,7 @@ public final class DatabaseService {
 	}
 	
 	
-	public Parameter insert(int parameter_id, String algorithm, int evaluations, int runs, int objectives, int tasks_id ) throws Exception {
 
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		Parameter parameter = null;
-
-		try {
-			conn = openConnection();
-			stmt = conn.prepareStatement("insert into parameters values (parameter_id, algorithm, evaluations, runs, objectives, tasks_id)",
-					Statement.RETURN_GENERATED_KEYS);
-			stmt.setInt(1, tasks_id);
-			stmt.execute();
-
-			rs = stmt.getGeneratedKeys();
-			if (rs.next()) {
-				
-				parameter_id = rs.getInt("id");
-				algorithm = rs.getString("algorithm");
-				evaluations = rs.getInt("evaluations");
-				runs = rs.getInt("runs");
-				objectives = rs.getInt("objectives");
-				tasks_id = rs.getInt("tasks_id");
-				parameter = new Parameter(parameter_id, algorithm, evaluations,
-						runs, objectives, tasks_id);
-	
-			}
-			rs.close();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DatabaseException();
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		} finally {
-			if (rs != null)
-				rs.close();
-			if (stmt != null)
-				stmt.close();
-			if (conn != null)
-				conn.close();
-		}
-		return parameter;
-	}
 
 	
 	
@@ -443,12 +436,12 @@ public final class DatabaseService {
 
 	public static void main(String[] args) throws Exception {
 
-		int id = 35;
+		int id = 4;
 		String algorithm = "GA";
 		int evaluations = 150000;
 		int runs = 30;
 		int objectives = 2;
-		int tasks_id = 35;
+		int tasks_id = 38;
 		DatabaseService ds = new DatabaseService();
 		String hash= "XUXA";
 		
