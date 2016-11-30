@@ -214,7 +214,6 @@ public final class DatabaseService {
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
-		ResultSet rs = null;
 		Parameter parameter = null;
 
 		try {
@@ -236,8 +235,6 @@ public final class DatabaseService {
 			e.printStackTrace();
 			throw e;
 		} finally {
-			if (rs != null)
-				rs.close();
 			if (stmt != null)
 				stmt.close();
 			if (conn != null)
@@ -291,6 +288,44 @@ public final class DatabaseService {
 
 		return sor;
 	}
+	
+	
+	public SingleObjectiveResults insertSingleObjectiveResults(int result_id, String energy, 
+			String objective, int run, int parameters_parameter_id, int parameters_tasks_id ) throws Exception{
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;		
+		SingleObjectiveResults sor = null;
+		
+		try {
+			conn = openConnection();
+			stmt = conn.prepareStatement("insert into single_objective_results values (?, ?, ?, ?, ?, ?)",
+					Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, result_id);
+			stmt.setString(2, energy);
+			stmt.setString(3, objective);
+			stmt.setInt(4, run);
+			stmt.setInt(5, parameters_parameter_id);
+			stmt.setInt(6, parameters_tasks_id);
+			stmt.execute();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DatabaseException();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (stmt != null)
+				stmt.close();
+			if (conn != null)
+				conn.close();
+		}
+		
+		return sor;
+	
+	}
+	
 
 	public MultiObjectiveResults getMultiObjectiveResults(int parameters_tasks_id) throws Exception {
 
@@ -333,6 +368,41 @@ public final class DatabaseService {
 				conn.close();
 		}
 
+		return mor;
+	}
+	
+	
+	public MultiObjectiveResults insertMultiObjectiveResults(int result_id, String objective1, String objective2, String frontId, int parameters_parameter_id, int parameters_tasks_id) throws Exception{
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;		
+		MultiObjectiveResults mor = null;
+		
+		try {
+			conn = openConnection();
+			stmt = conn.prepareStatement("insert into multi_objective_results values (?, ?, ?, ?, ?, ?)",
+					Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, result_id);
+			stmt.setString(2, objective1);
+			stmt.setString(3, objective2);
+			stmt.setString(4, frontId);
+			stmt.setInt(5, parameters_parameter_id);
+			stmt.setInt(6, parameters_tasks_id);
+			stmt.execute();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DatabaseException();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (stmt != null)
+				stmt.close();
+			if (conn != null)
+				conn.close();
+		}
+		
 		return mor;
 	}
 	
@@ -421,11 +491,6 @@ public final class DatabaseService {
 	}
 	
 	
-
-
-	
-	
-
 	public void startTask(int id) throws Exception {
 		this.updateTaskState(id, RUNNING_STATE);
 	}
@@ -436,20 +501,34 @@ public final class DatabaseService {
 
 	public static void main(String[] args) throws Exception {
 
-		int id = 4;
+		/*int id = 4;
 		String algorithm = "GA";
 		int evaluations = 150000;
 		int runs = 30;
 		int objectives = 2;
-		int tasks_id = 38;
+		int tasks_id = 38;*/
+		int result_id = 1;
+		String energy = "13,4 kcal/mol";
+		//String objective  = "RMSD";
+		String objective1 = "RMSD";
+		String objective2 = "intermolecular";
+		String frontId = "4";
+		int run = 100000;
+		int parameters_parameter_id = 4;
+		int parameters_tasks_id = 38;
+
 		DatabaseService ds = new DatabaseService();
 		String hash= "XUXA";
 		
 		//Inserters:
 		
 		System.out.println("Start insert");
-		//Task task = ds.insertTask(hash);
-		Parameter parameter = ds.insert(id, algorithm, evaluations, runs, objectives, tasks_id);
+		Task task = ds.insertTask(hash);
+		//Parameter parameter = ds.insert(id, algorithm, evaluations, runs, objectives, tasks_id);
+		//SingleObjectiveResults sor = ds.insertSingleObjectiveResults(result_id, energy, objective, run, parameters_parameter_id, parameters_tasks_id);
+		
+		MultiObjectiveResults mor = ds.insertMultiObjectiveResults(result_id, objective1, objective2, frontId, parameters_parameter_id, parameters_tasks_id);
+		
 		System.out.println("End insert");
 		
 		
