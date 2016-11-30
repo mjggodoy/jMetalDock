@@ -8,11 +8,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import es.uma.khaos.docking_service.exception.DatabaseException;
-import es.uma.khaos.docking_service.model.ExecutionMultiObjective;
-import es.uma.khaos.docking_service.model.ExecutionSingleObjective;
-import es.uma.khaos.docking_service.model.MultiObjectiveResults;
+import es.uma.khaos.docking_service.model.Execution;
 import es.uma.khaos.docking_service.model.Parameter;
-import es.uma.khaos.docking_service.model.SingleObjectiveResults;
+import es.uma.khaos.docking_service.model.Result;
 import es.uma.khaos.docking_service.model.Task;
 import es.uma.khaos.docking_service.properties.Constants;
 
@@ -167,7 +165,7 @@ public final class DatabaseService {
 
 	}
 
-	public Parameter getParameter(int tasks_id) throws Exception {
+	public Parameter getParameter(int id) throws Exception {
 
 		Parameter parameter = null;
 		Connection conn = null;
@@ -178,21 +176,21 @@ public final class DatabaseService {
 
 			conn = openConnection();
 			stmt = conn
-					.prepareStatement("select * from parameters where tasks_id=?");
-			stmt.setInt(1, tasks_id);
+					.prepareStatement("select * from parameter where id=?");
+			stmt.setInt(1, id);
 
 			rs = stmt.executeQuery();
 
 			if (rs.next()) {
 
-				int parameter_id = rs.getInt("id");
+				id = rs.getInt("id");
 				String algorithm = rs.getString("algorithm");
-				int evaluations = rs.getInt("evaluations");
-				int runs = rs.getInt("runs");
-				int objectives = rs.getInt("objectives");
-				tasks_id = rs.getInt("tasks_id");
-				parameter = new Parameter(parameter_id, algorithm, evaluations,
-						runs, objectives, tasks_id);
+				int evaluations = rs.getInt("evaluation");
+				int runs = rs.getInt("run");
+				int objective = rs.getInt("objective");
+				int task_id = rs.getInt("task_id");
+				parameter = new Parameter(id, algorithm, evaluations, runs, objective, task_id);
+				
 			}
 
 		} catch (Exception e) {
@@ -210,7 +208,96 @@ public final class DatabaseService {
 
 	}
 	
-	public Parameter insert(int parameter_id, String algorithm, int evaluations, int runs, int objectives, int tasks_id ) throws Exception {
+	
+	public Execution getExecution(int id) throws Exception{
+		
+
+		Execution execution = null;
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			
+			conn = openConnection();
+			stmt = conn
+					.prepareStatement("select * from execution where id=?");
+			stmt.setInt(1, id);
+
+			rs = stmt.executeQuery();
+
+			if (rs.next()) {
+
+				id = rs.getInt("id");
+				int task_id = rs.getInt("task_id");
+				execution = new Execution(id, task_id);
+	
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (rs != null)
+				rs.close();
+			if (stmt != null)
+				stmt.close();
+			if (conn != null)
+				conn.close();
+		}
+	
+		return execution;
+		
+		
+	}
+	
+	
+	public Result getResult(int id) throws Exception{
+		
+		Result result = null;
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			conn = openConnection();
+			stmt = conn
+					.prepareStatement("select * from result where id=?");
+			stmt.setInt(1, id);
+
+			rs = stmt.executeQuery();
+
+			if (rs.next()) {
+
+				id = rs.getInt("id");
+				String finalBindingEnergy = rs.getString("finalBindingEnergy");
+				int objective1 = rs.getInt("objective1");
+				int objective2 = rs.getInt("objective2");
+				int executionTaskId = rs.getInt("execution_task_id");
+				result = new Result(id,finalBindingEnergy, objective1, objective2, executionTaskId);
+
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (rs != null)
+				rs.close();
+			if (stmt != null)
+				stmt.close();
+			if (conn != null)
+				conn.close();
+		}
+	
+		return result;
+		
+	}
+	
+	
+	
+	/*public Parameter insert(int parameter_id, String algorithm, int evaluations, int runs, int objectives, int tasks_id ) throws Exception {
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -242,253 +329,9 @@ public final class DatabaseService {
 		}
 		return parameter;
 	}
+	*/
+
 	
-
-	public SingleObjectiveResults getSingleObjectiveResults(
-			int parameters_tasks_id) throws Exception {
-
-		SingleObjectiveResults sor = null;
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-
-		try {
-
-			conn = openConnection();
-			stmt = conn
-					.prepareStatement("select * from single_objective_results where parameters_tasks_id=?");
-			stmt.setInt(1, parameters_tasks_id);
-
-			rs = stmt.executeQuery();
-
-			if (rs.next()) {
-
-				int result_id = rs.getInt("id");
-				String finalbindingenergy = rs.getString("finalbindingenergy");
-				String objective = rs.getString("objective");
-				int runs = rs.getInt("run");
-				int parameters_parameter_id = rs.getInt("parameters_id");
-				parameters_tasks_id = rs.getInt("parameters_tasks_id");
-				sor = new SingleObjectiveResults(result_id, finalbindingenergy,
-						objective, runs, parameters_parameter_id,
-						parameters_tasks_id);
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		} finally {
-			if (rs != null)
-				rs.close();
-			if (stmt != null)
-				stmt.close();
-			if (conn != null)
-				conn.close();
-		}
-
-		return sor;
-	}
-	
-	
-	public SingleObjectiveResults insertSingleObjectiveResults(int result_id, String energy, 
-			String objective, int run, int parameters_parameter_id, int parameters_tasks_id ) throws Exception{
-		
-		Connection conn = null;
-		PreparedStatement stmt = null;		
-		SingleObjectiveResults sor = null;
-		
-		try {
-			conn = openConnection();
-			stmt = conn.prepareStatement("insert into single_objective_results values (?, ?, ?, ?, ?, ?)",
-					Statement.RETURN_GENERATED_KEYS);
-			stmt.setInt(1, result_id);
-			stmt.setString(2, energy);
-			stmt.setString(3, objective);
-			stmt.setInt(4, run);
-			stmt.setInt(5, parameters_parameter_id);
-			stmt.setInt(6, parameters_tasks_id);
-			stmt.execute();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DatabaseException();
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		} finally {
-			if (stmt != null)
-				stmt.close();
-			if (conn != null)
-				conn.close();
-		}
-		
-		return sor;
-	
-	}
-	
-
-	public MultiObjectiveResults getMultiObjectiveResults(int parameters_tasks_id) throws Exception {
-
-		MultiObjectiveResults mor = null;
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-
-		try {
-
-			conn = openConnection();
-			stmt = conn
-					.prepareStatement("select * from multi_objective_results where parameters_tasks_id=?");
-			stmt.setInt(1, parameters_tasks_id);
-			rs = stmt.executeQuery();
-
-			if (rs.next()) {
-
-				int result_id = rs.getInt("result_id");
-				String objective1 = rs.getString("objective1");
-				String objective2 = rs.getString("objective2");
-				String front_id = rs.getString("front_id");
-				int parameters_parameter_id = rs
-						.getInt("parameters_parameter_id");
-				int parameters_task_id = rs.getInt("parameters_tasks_id");
-				mor = new MultiObjectiveResults(result_id, objective1,
-						objective2, front_id, parameters_parameter_id,
-						parameters_task_id);
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		} finally {
-			if (rs != null)
-				rs.close();
-			if (stmt != null)
-				stmt.close();
-			if (conn != null)
-				conn.close();
-		}
-
-		return mor;
-	}
-	
-	
-	public MultiObjectiveResults insertMultiObjectiveResults(int result_id, String objective1, String objective2, String frontId, int parameters_parameter_id, int parameters_tasks_id) throws Exception{
-		
-		Connection conn = null;
-		PreparedStatement stmt = null;		
-		MultiObjectiveResults mor = null;
-		
-		try {
-			conn = openConnection();
-			stmt = conn.prepareStatement("insert into multi_objective_results values (?, ?, ?, ?, ?, ?)",
-					Statement.RETURN_GENERATED_KEYS);
-			stmt.setInt(1, result_id);
-			stmt.setString(2, objective1);
-			stmt.setString(3, objective2);
-			stmt.setString(4, frontId);
-			stmt.setInt(5, parameters_parameter_id);
-			stmt.setInt(6, parameters_tasks_id);
-			stmt.execute();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DatabaseException();
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		} finally {
-			if (stmt != null)
-				stmt.close();
-			if (conn != null)
-				conn.close();
-		}
-		
-		return mor;
-	}
-	
-	
-	public ExecutionSingleObjective getExecutionSingleObjective(int tasks_id) throws Exception{
-		
-		ExecutionSingleObjective eso = null;
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-
-		try {
-			
-			conn = openConnection();
-			stmt = conn.prepareStatement("select * from execution_single_objective where tasks_id=?");
-			stmt.setInt(1, tasks_id);
-			rs = stmt.executeQuery();
-			
-			if(rs.next()){
-				
-				int execution_id = rs.getInt("execution_id");
-				int run = rs.getInt("run");
-				int single_objective_results_result_id = rs.getInt("single_objective_results_result_id");
-				int single_objective_results_parameters_parameters_id = rs.getInt("single_objective_results_parameters_parameter_id");
-				int single_objective_results_parameters_tasks_id = rs.getInt("single_objective_results_parameters_tasks_id");
-				tasks_id = rs.getInt("tasks_id");
-				
-				eso = new ExecutionSingleObjective(execution_id, run, single_objective_results_result_id,
-						single_objective_results_parameters_parameters_id, single_objective_results_parameters_tasks_id,tasks_id);
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		} finally {
-			if (rs != null)
-				rs.close();
-			if (stmt != null)
-				stmt.close();
-			if (conn != null)
-				conn.close();
-		}
-		
-		return eso;
-	}
-	
-	public ExecutionMultiObjective getExecutioMultiObjective(int tasks_id) throws Exception{
-	
-		ExecutionMultiObjective emo = null;
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		
-		try {
-			
-			conn = openConnection();
-			stmt = conn.prepareStatement("select * from execution_multi_objective where tasks_id=?");
-			stmt.setInt(1, tasks_id);
-			rs = stmt.executeQuery();
-			
-			if(rs.next()){
-			
-			int execution_id = rs.getInt("execution_id");
-			int run = rs.getInt("run");
-			int multi_objective_results_result_id = rs.getInt("multi_objective_results_result_id");
-			int multi_objective_results_parameters_parameters_id = rs.getInt("multi_objective_results_parameters_parameter_id");
-			int multi_objective_results_parameters_tasks_id = rs.getInt("multi_objective_results_parameters_tasks_id");
-			tasks_id = rs.getInt("tasks_id");
-			emo = new ExecutionMultiObjective(execution_id, run, multi_objective_results_result_id,
-					multi_objective_results_parameters_parameters_id, multi_objective_results_parameters_tasks_id, tasks_id);
-			}
-			
-		}catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		} finally {
-			if (rs != null)
-				rs.close();
-			if (stmt != null)
-				stmt.close();
-			if (conn != null)
-				conn.close();
-		}
-		return emo;
-	
-	}
 	
 	
 	public void startTask(int id) throws Exception {
@@ -507,15 +350,20 @@ public final class DatabaseService {
 		int runs = 30;
 		int objectives = 2;
 		int tasks_id = 38;*/
-		int result_id = 1;
-		String energy = "13,4 kcal/mol";
+		//int result_id = 2;
+		//String energy = "13,4 kcal/mol";
 		//String objective  = "RMSD";
-		String objective1 = "RMSD";
-		String objective2 = "intermolecular";
-		String frontId = "4";
-		int run = 100000;
-		int parameters_parameter_id = 4;
-		int parameters_tasks_id = 38;
+		//String objective1 = "RMSD";
+		//String objective2 = "intermolecular";
+		//String frontId = "4";
+		//int parameters_parameter_id = 3;
+		//int parameters_tasks_id = 37;
+		int execution_id=1;
+		int run = 31;
+		int single_objective_results_result_id=1;
+		int single_objective_results_parameters_parameter_id = 1;
+		int single_objective_results_parameters_tasks_id = 35;
+		int task_id=31;
 
 		DatabaseService ds = new DatabaseService();
 		String hash= "XUXA";
@@ -526,8 +374,10 @@ public final class DatabaseService {
 		Task task = ds.insertTask(hash);
 		//Parameter parameter = ds.insert(id, algorithm, evaluations, runs, objectives, tasks_id);
 		//SingleObjectiveResults sor = ds.insertSingleObjectiveResults(result_id, energy, objective, run, parameters_parameter_id, parameters_tasks_id);
+		//MultiObjectiveResults mor = ds.insertMultiObjectiveResults(result_id, objective1, objective2, frontId, parameters_parameter_id, parameters_tasks_id);
 		
-		MultiObjectiveResults mor = ds.insertMultiObjectiveResults(result_id, objective1, objective2, frontId, parameters_parameter_id, parameters_tasks_id);
+		ExecutionSingleObjective eso = ds.insertExecutionSingleObjective(execution_id, run, single_objective_results_result_id, 
+				single_objective_results_parameters_parameter_id, single_objective_results_parameters_tasks_id, task_id);
 		
 		System.out.println("End insert");
 		

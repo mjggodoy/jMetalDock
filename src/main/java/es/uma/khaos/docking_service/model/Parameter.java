@@ -2,46 +2,53 @@ package es.uma.khaos.docking_service.model;
 
 public class Parameter {
 
-	private int parameter_id;
+	private int id;
 	private String algorithm;
-	private int evaluations;
-	private int runs;
-	private int objectives;
-	private int tasks_id;
-
-	public Parameter(int parameter_id, String algorithm, int evaluations,
-			int runs, int objectives, int tasks_id) {
+	private int evaluation;
+	private int run;
+	private int objective;
+	private int task_id;
+	
+	
+	public Parameter(int id, String algorithm, int evaluations, int runs,
+			int objectives, int task_id) {
 		super();
-		this.parameter_id = parameter_id;
+		this.id = id;
 		this.algorithm = algorithm;
-		this.evaluations = evaluations;
-		this.runs = runs;
-		this.objectives = objectives;
-		this.tasks_id = tasks_id;
+		this.evaluation = evaluations;
+		this.run = runs;
+		this.objective = objectives;
+		this.task_id = task_id;
 	}
 
-	public int getParameter_id() {
-		return parameter_id;
+
+	public int getId() {
+		return id;
 	}
+
 
 	public String getAlgorithm() {
 		return algorithm;
 	}
 
-	public int getEvaluations() {
-		return evaluations;
+
+	public int getEvaluation() {
+		return evaluation;
 	}
 
-	public int getRuns() {
-		return runs;
+
+	public int getRun() {
+		return run;
 	}
 
-	public int getObjectives() {
-		return objectives;
+
+	public int getObjective() {
+		return objective;
 	}
 
-	public int getTasks_id() {
-		return tasks_id;
-	}
 
+	public int getTask_id() {
+		return task_id;
+	}
+	
 }
