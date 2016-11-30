@@ -135,7 +135,7 @@ public final class DatabaseService {
 		try {
 
 			conn = openConnection();
-			stmt = conn.prepareStatement("select * from tasks where id=?");
+			stmt = conn.prepareStatement("select * from task where id=?");
 			stmt.setInt(1, id);
 
 			rs = stmt.executeQuery();
@@ -344,84 +344,17 @@ public final class DatabaseService {
 
 	public static void main(String[] args) throws Exception {
 
-		/*int id = 4;
-		String algorithm = "GA";
-		int evaluations = 150000;
-		int runs = 30;
-		int objectives = 2;
-		int tasks_id = 38;*/
-		//int result_id = 2;
-		//String energy = "13,4 kcal/mol";
-		//String objective  = "RMSD";
-		//String objective1 = "RMSD";
-		//String objective2 = "intermolecular";
-		//String frontId = "4";
-		//int parameters_parameter_id = 3;
-		//int parameters_tasks_id = 37;
-		int execution_id=1;
-		int run = 31;
-		int single_objective_results_result_id=1;
-		int single_objective_results_parameters_parameter_id = 1;
-		int single_objective_results_parameters_tasks_id = 35;
-		int task_id=31;
+		
 
 		DatabaseService ds = new DatabaseService();
 		String hash= "XUXA";
-		
-		//Inserters:
-		
-		System.out.println("Start insert");
-		Task task = ds.insertTask(hash);
-		//Parameter parameter = ds.insert(id, algorithm, evaluations, runs, objectives, tasks_id);
-		//SingleObjectiveResults sor = ds.insertSingleObjectiveResults(result_id, energy, objective, run, parameters_parameter_id, parameters_tasks_id);
-		//MultiObjectiveResults mor = ds.insertMultiObjectiveResults(result_id, objective1, objective2, frontId, parameters_parameter_id, parameters_tasks_id);
-		
-		ExecutionSingleObjective eso = ds.insertExecutionSingleObjective(execution_id, run, single_objective_results_result_id, 
-				single_objective_results_parameters_parameter_id, single_objective_results_parameters_tasks_id, task_id);
-		
-		System.out.println("End insert");
-		
+		int id = 35;
+	
 		
 		//Getters:
-		/*Task task = ds.getTask(id);
+		Task task = ds.getTask(id);
 		System.out.println("id: " + task.getId() + " Hash " + task.getHash());
-		Parameter parameter = ds.getParameter(id);
-		System.out.println("task_id: " + parameter.getTasks_id()
-				+ " algorithm: " + parameter.getAlgorithm() + " evaluations: "
-				+ parameter.getEvaluations() + " objectives: "
-				+ parameter.getObjectives() + " runs: " + parameter.getRuns());
-
-		SingleObjectiveResults sor = ds.getSingleObjectiveResults(id);
-		System.out.println("id: " + sor.getResult_id()
-				+ " finalbindingenergy: " + sor.getFinalBindingEnergy()
-				+ " objective: " + sor.getObjective() + " run " + sor.getRun()
-				+ " parameters_id: " + sor.getParameters_parameter_id()
-				+ " parameters_tasks_id: " + sor.getParameter_tasks_id());*/
 		
-		/*MultiObjectiveResults mor = ds.getMultiObjectiveResults(id);
-		System.out.println("MultiObjectiveResults: " + "Results_id: "  + mor.getResult_id() + 
-				" objective1: " + mor.getObjective1() + 
-				" objective2: " + mor.getObjective2() + 
-				" front_id: " + mor.getFront_id() +
-				" parameters_parameter_id: " + mor.getParameters_parameters_id()+
-				" parameters_tasks_id: " + mor.getParameters_tasks_id());*/
-		
-		/*ExecutionSingleObjective eso = ds.getExecutionSingleObjective(id);
-		System.out.println("ExecutionSingleObjective: " + eso.getExecution_id() 
-				+ " run: " + eso.getRun() + 
-				" single_objective_results_result_id " + eso.getSingle_objective_results_result_id() + 
-				" single_objective_results_parameters_parameters_id: " + eso.getSingle_objective_results_parameters_parameters_id() + 
-				" single_objective_results_parameters_tasks_id: " + eso.getSingle_objective_results_parameters_tasks_id() +
-				" task_id " + eso.getTasks_id());*/
-		
-		
-		/*ExecutionMultiObjective emo = ds.getExecutioMultiObjective(id);
-		System.out.println("ExecutionSingleObjective: " + emo.getExecution_id() 
-				+ " run: " + emo.getRun() + 
-				" multi_objective_results_result_id " + emo.getMulti_objective_results_result_id() + 
-				" multi_objective_results_parameters_parameters_id: " + emo.getMulti_objective_results_parameters_parameter_id() + 
-				" multi_objective_results_parameters_tasks_id: " + emo.getMulti_objective_results_parameters_tasks_id() +
-				" task_id " + emo.getTasks_id());*/
 		
 		
 	}
