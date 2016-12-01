@@ -272,8 +272,8 @@ public final class DatabaseService {
 
 				id = rs.getInt("id");
 				String finalBindingEnergy = rs.getString("finalBindingEnergy");
-				int objective1 = rs.getInt("objective1");
-				int objective2 = rs.getInt("objective2");
+				String objective1 = rs.getString("objective1");
+				String objective2 = rs.getString("objective2");
 				int executionTaskId = rs.getInt("execution_task_id");
 				result = new Result(id,finalBindingEnergy, objective1, objective2, executionTaskId);
 
@@ -297,7 +297,7 @@ public final class DatabaseService {
 	
 	
 	
-	/*public Parameter insert(int parameter_id, String algorithm, int evaluations, int runs, int objectives, int tasks_id ) throws Exception {
+	public Parameter insertParameter(int parameter_id, String algorithm, int evaluation, int run, int objective, int tasks_id ) throws Exception {
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -305,13 +305,13 @@ public final class DatabaseService {
 
 		try {
 			conn = openConnection();
-			stmt = conn.prepareStatement("insert into parameters values (?, ?, ?, ?, ?, ?)",
+			stmt = conn.prepareStatement("insert into parameter values (?, ?, ?, ?, ?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, parameter_id);
 			stmt.setString(2, algorithm);
-			stmt.setInt(3, evaluations);
-			stmt.setInt(4, runs);
-			stmt.setInt(5, objectives);
+			stmt.setInt(3, evaluation);
+			stmt.setInt(4, run);
+			stmt.setInt(5, objective);
 			stmt.setInt(6, tasks_id);
 			stmt.execute();
 
@@ -329,8 +329,68 @@ public final class DatabaseService {
 		}
 		return parameter;
 	}
-	*/
+	
+	public Execution insertExecution(int id, int task_id ) throws Exception {
 
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		Execution execution = null;
+
+		try {
+			conn = openConnection();
+			stmt = conn.prepareStatement("insert into execution values (?, ?)",
+					Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, id);
+			stmt.setInt(2, task_id);
+			stmt.execute();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DatabaseException();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (stmt != null)
+				stmt.close();
+			if (conn != null)
+				conn.close();
+		}
+		return execution;
+	}
+	
+
+	public Result insertResult(int id, String finalbinidngenergy, String objective1, String objective2, int execution_task_id ) throws Exception {
+
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		Result result = null;
+
+		try {
+			conn = openConnection();
+			stmt = conn.prepareStatement("insert into result values (?, ?, ?, ?, ?)",
+					Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, id);
+			stmt.setString(2, finalbinidngenergy);
+			stmt.setString(3, objective1);
+			stmt.setString(4, objective2);
+			stmt.setInt(5, execution_task_id);
+			stmt.execute();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DatabaseException();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (stmt != null)
+				stmt.close();
+			if (conn != null)
+				conn.close();
+		}
+		return result;
+	}
 	
 	
 	
@@ -342,21 +402,83 @@ public final class DatabaseService {
 		this.updateTaskState(id, FINISHED_STATE);
 	}
 
-	public static void main(String[] args) throws Exception {
+	/*public static void main(String[] args) throws Exception {
 
 		
 
-		DatabaseService ds = new DatabaseService();
 		String hash= "XUXA";
-		int id = 35;
-	
+		int id = 3;
+		 
 		
-		//Getters:
+		//Getters task:
 		Task task = ds.getTask(id);
 		System.out.println("id: " + task.getId() + " Hash " + task.getHash());
 		
 		
+		//Getters parameter:
 		
-	}
+		int id_parameter =  1;
+		String algorithm = "GA";
+		int evaluation = 15000000;
+		int run = 31;
+		int objective =1;
+		int task_id = 1;
+		
+		Parameter parameter = new Parameter(id_parameter, algorithm, evaluation, run, objective, task_id);
+		System.out.println("id: " + parameter.getId() + " algorithm: " + parameter.getAlgorithm()
+				+ " evaluation: " + parameter.getEvaluation() + " run: " + parameter.getRun() 
+				+ " objective " + parameter.getObjective() + " task_id: " + parameter.getTask_id());
+		
+		//Getter Execution
+		
+		int id_execution = 1;
+		int id_task = 1;
+		
+		Execution execution = new Execution(id_execution,id_task);
+		System.out.println("id: " + execution.getId() + " id_task: " + execution.getTask_id());
+		
+		//Getter Result 
+		
+		int result_id = 1;
+		String finalBingingEnergy = "-34 kcal/mol";
+		int objective1 = 1;
+		int objective2 = 2;
+		int execution_task_id = 3;
+		
+		Result result = new Result(result_id, finalBingingEnergy, objective1, objective2,execution_task_id);
+		System.out.println("result_id: " + result.getId() + " final binging energy: " + result.getFinalBindingEnergy()
+				+ " objective1: " + result.getObjective1() + " objective2: " + result.getObjective2() 
+				+ " execution_task_id: " + result.getExecutionTaskId());
+		
+		//Insert Parameter	
+		int id_parameter =  2;
+		String algorithm = "GA";
+		int evaluation = 15000000;
+		int run = 31;
+		int objective =1;
+		int task_id = 1;
+		
+		DatabaseService ds = new DatabaseService();
+		Parameter parameter = ds.insert(id_parameter, algorithm, evaluation, run, objective, task_id);
+		
+		//Insert Execution
+		int id_execution = 1;
+		int id_task = 1;
+		DatabaseService ds = new DatabaseService();
+		Execution execution = ds.insertExecution(id_execution, id_task);
+		 
+		
+		//Insert Result
+		
+		int result_id = 1;
+		String finalBingingEnergy = "-34 kcal/mol";
+		String objective1 = "intramolecular";
+		String objective2 = "intermolecular";
+		int execution_task_id = 1;
+		DatabaseService ds = new DatabaseService();
+
+		Result result = ds.insertResult(result_id,finalBingingEnergy, objective1, objective2, execution_task_id);
+		
+	}*/
 
 }
