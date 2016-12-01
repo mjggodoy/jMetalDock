@@ -8,7 +8,7 @@
   	<servlet-name>Task</servlet-name>
   	<display-name>Task</display-name>
   	<description></description>
-  	<servlet-class>es.uma.khaos.docking_service.servlet.Task</servlet-class>
+  	<servlet-class>es.uma.khaos.docking_service.servlet.TaskServlet</servlet-class>
   </servlet>
   <servlet-mapping>
   	<servlet-name>Task</servlet-name>
