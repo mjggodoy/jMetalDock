@@ -377,24 +377,12 @@ public final class DatabaseService {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		DatabaseService.getInstance().insertTask("SSH");
-		DatabaseService.getInstance().shutdown();
-	}
-
-	public static void main(String[] args) throws Exception {
-
-		
 
 		DatabaseService ds = new DatabaseService();
-		String hash= "XUXA";
 		int id = 35;
-	
-		
 		//Getters:
 		Task task = ds.getTask(id);
 		System.out.println("id: " + task.getId() + " Hash " + task.getHash());
-		
-		
 		
 	}
 
