@@ -13,8 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
+import es.uma.khaos.docking_service.exception.DatabaseException;
 import es.uma.khaos.docking_service.model.Task;
-import es.uma.khaos.docking_service.model.response.LaunchTaskResponse;
+import es.uma.khaos.docking_service.model.response.TaskResponse;
 import es.uma.khaos.docking_service.properties.Constants;
 import es.uma.khaos.docking_service.service.DatabaseService;
 import es.uma.khaos.docking_service.service.ThreadPoolService;
@@ -37,8 +38,63 @@ public class TaskServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		
+		int taskId = 0;
+		TaskResponse objResp;
+		
+		String id = request.getParameter("id");
+		String token = request.getParameter("token");
+		
+		System.out.println(id);
+		System.out.println(token);
+		
+		try {
+			if (id==null) {
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				objResp = new TaskResponse(
+						Constants.RESPONSE_TASK_MSG_NOT_ID,
+						taskId, token);
+			} else if (token==null) {
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				objResp = new TaskResponse(
+						Constants.RESPONSE_TASK_MSG_NOT_TOKEN,
+						taskId, token);
+			} else {
+				taskId = Integer.parseInt(id);
+				Task task = DatabaseService.getInstance().getTask(taskId);
+				if (task==null || !token.equals(task.getHash())) {
+					response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+					objResp = new TaskResponse(
+							Constants.RESPONSE_TASK_MSG_UNALLOWED,
+							taskId, token);
+				} else {
+					response.setStatus(HttpServletResponse.SC_OK);
+					objResp = new TaskResponse(
+							Constants.RESPONSE_TASK_RETURNED_OK,
+							taskId, token, task.getState());
+				}
+			}
+			
+		} catch (NumberFormatException e) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			objResp = new TaskResponse(
+					Constants.RESPONSE_TASK_MSG_ID_NOT_NUMBER,
+					0, token);
+		} catch (DatabaseException e) {
+			e.printStackTrace();
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			objResp = new TaskResponse(
+					Constants.RESPONSE_ERROR_DATABASE,
+					0, token);
+		}
+		
+		response.setContentType("application/json");
+		
+		Gson gson = new Gson();
+		PrintWriter out = response.getWriter();
+		out.print(gson.toJson(objResp));
+		out.flush();
+		
 	}
 
 	/**
@@ -55,15 +111,14 @@ public class TaskServlet extends HttpServlet {
 			ThreadPoolService.getInstance().execute(worker);
 			
 			Gson gson = new Gson();
-			LaunchTaskResponse objResp
-				= new LaunchTaskResponse(
-						Constants.RESPONSE_NEWTASK_STATE_OK,
+			TaskResponse objResp
+				= new TaskResponse(
 						Constants.RESPONSE_NEWTASK_MSG_OK,
 						task.getId(), token);
 			String json = gson.toJson(objResp);
 			
 			response.setContentType("application/json");
-			response.setStatus(200);
+			response.setStatus(HttpServletResponse.SC_CREATED);
 			PrintWriter out = response.getWriter();
 			out.print(json);
 			out.flush();
@@ -71,13 +126,11 @@ public class TaskServlet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.setContentType("application/json");
-			response.setStatus(500);
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			Gson gson = new Gson();
-			LaunchTaskResponse objResp
-				= new LaunchTaskResponse(
-						Constants.RESPONSE_NEWTASK_STATE_ERROR,
-						Constants.RESPONSE_NEWTASK_MSG_ERROR,
-						0, "");
+			TaskResponse objResp
+				= new TaskResponse(
+						Constants.RESPONSE_ERROR_DATABASE);
 			String json = gson.toJson(objResp);
 			PrintWriter out = response.getWriter();
 			out.print(json);

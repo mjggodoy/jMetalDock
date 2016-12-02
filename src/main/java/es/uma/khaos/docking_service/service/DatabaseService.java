@@ -157,7 +157,8 @@ public final class DatabaseService {
 		}
 	}
 
-	public Task getTask(int id) throws Exception {
+	//TODO: Tratar las excepciones en todos los métodos como aquí
+	public Task getTask(int id) throws DatabaseException {
 
 		Task task = null;
 		Connection conn = null;
@@ -181,18 +182,17 @@ public final class DatabaseService {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DatabaseException();
+			throw new DatabaseException(e);
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
+			throw new DatabaseException(e);
 		} finally {
-			if (rs != null)
-				rs.close();
-			if (stmt != null)
-				stmt.close();
-			if (conn != null)
-				conn.close();
+			try {
+				if (rs != null) rs.close();
+				if (stmt != null) stmt.close();
+				if (conn != null) conn.close();
+			} catch (SQLException e) {
+				throw new DatabaseException(e);
+			}
 		}
 
 		return task;
