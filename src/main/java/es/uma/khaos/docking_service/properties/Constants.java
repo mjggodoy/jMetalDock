@@ -27,5 +27,11 @@ public class Constants {
 	// Test
 	public static final String TEST_DIR_INSTANCE = Configurations.getProperty(Properties.TEST_DIR_INSTANCE);
 	public static final String TEST_FILE_DPF = Configurations.getProperty(Properties.TEST_FILE_DPF);
+	
+	// Messages
+	public static final String RESPONSE_NEWTASK_STATE_OK = "OK";
+	public static final String RESPONSE_NEWTASK_STATE_ERROR = "ERROR";
+	public static final String RESPONSE_NEWTASK_MSG_OK = "Task successfully enqueued";
+	public static final String RESPONSE_NEWTASK_MSG_ERROR = "Error when trying to enqueue task";
 
 }

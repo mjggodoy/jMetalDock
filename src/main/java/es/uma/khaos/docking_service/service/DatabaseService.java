@@ -104,8 +104,8 @@ public final class DatabaseService {
 
 		try {
 			conn = openConnection();
-			stmt = conn.prepareStatement("insert into tasks (hash) values (?)",
-					Statement.RETURN_GENERATED_KEYS);
+			stmt = conn.prepareStatement(
+					"insert into task (hash) values (?)", Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, hash);
 			stmt.execute();
 
@@ -139,7 +139,7 @@ public final class DatabaseService {
 
 		try {
 			conn = openConnection();
-			stmt = conn.prepareStatement("update tasks set state=? where id=?");
+			stmt = conn.prepareStatement("update task set state=? where id=?");
 			stmt.setString(1, state);
 			stmt.setInt(2, id);
 			stmt.execute();
