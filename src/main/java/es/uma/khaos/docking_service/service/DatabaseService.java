@@ -306,8 +306,8 @@ public final class DatabaseService {
 
 				id = rs.getInt("id");
 				String finalBindingEnergy = rs.getString("finalBindingEnergy");
-				int objective1 = rs.getInt("objective1");
-				int objective2 = rs.getInt("objective2");
+				String objective1 = rs.getString("objective1");
+				String objective2 = rs.getString("objective2");
 				int executionTaskId = rs.getInt("execution_task_id");
 				result = new Result(id,finalBindingEnergy, objective1, objective2, executionTaskId);
 
@@ -331,7 +331,7 @@ public final class DatabaseService {
 	
 	
 	
-	/*public Parameter insert(int parameter_id, String algorithm, int evaluations, int runs, int objectives, int tasks_id ) throws Exception {
+	public Parameter insertParameter(int parameter_id, String algorithm, int evaluation, int run, int objective, int tasks_id ) throws Exception {
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -339,13 +339,13 @@ public final class DatabaseService {
 
 		try {
 			conn = openConnection();
-			stmt = conn.prepareStatement("insert into parameters values (?, ?, ?, ?, ?, ?)",
+			stmt = conn.prepareStatement("insert into parameter values (?, ?, ?, ?, ?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, parameter_id);
 			stmt.setString(2, algorithm);
-			stmt.setInt(3, evaluations);
-			stmt.setInt(4, runs);
-			stmt.setInt(5, objectives);
+			stmt.setInt(3, evaluation);
+			stmt.setInt(4, run);
+			stmt.setInt(5, objective);
 			stmt.setInt(6, tasks_id);
 			stmt.execute();
 
@@ -363,8 +363,68 @@ public final class DatabaseService {
 		}
 		return parameter;
 	}
-	*/
+	
+	public Execution insertExecution(int id, int task_id ) throws Exception {
 
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		Execution execution = null;
+
+		try {
+			conn = openConnection();
+			stmt = conn.prepareStatement("insert into execution values (?, ?)",
+					Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, id);
+			stmt.setInt(2, task_id);
+			stmt.execute();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DatabaseException();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (stmt != null)
+				stmt.close();
+			if (conn != null)
+				conn.close();
+		}
+		return execution;
+	}
+	
+
+	public Result insertResult(int id, String finalbinidngenergy, String objective1, String objective2, int execution_task_id ) throws Exception {
+
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		Result result = null;
+
+		try {
+			conn = openConnection();
+			stmt = conn.prepareStatement("insert into result values (?, ?, ?, ?, ?)",
+					Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, id);
+			stmt.setString(2, finalbinidngenergy);
+			stmt.setString(3, objective1);
+			stmt.setString(4, objective2);
+			stmt.setInt(5, execution_task_id);
+			stmt.execute();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DatabaseException();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (stmt != null)
+				stmt.close();
+			if (conn != null)
+				conn.close();
+		}
+		return result;
+	}
 	
 	
 	
@@ -385,5 +445,9 @@ public final class DatabaseService {
 		System.out.println("id: " + task.getId() + " Hash " + task.getHash());
 		
 	}
+
+		Result result = ds.insertResult(result_id,finalBingingEnergy, objective1, objective2, execution_task_id);
+		
+	}*/
 
 }
