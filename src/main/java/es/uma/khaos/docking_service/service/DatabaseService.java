@@ -436,18 +436,4 @@ public final class DatabaseService {
 		this.updateTaskState(id, FINISHED_STATE);
 	}
 	
-	public static void main(String[] args) throws Exception {
-
-		DatabaseService ds = new DatabaseService();
-		int id = 35;
-		//Getters:
-		Task task = ds.getTask(id);
-		System.out.println("id: " + task.getId() + " Hash " + task.getHash());
-		
-	}
-
-		Result result = ds.insertResult(result_id,finalBingingEnergy, objective1, objective2, execution_task_id);
-		
-	}*/
-
 }
