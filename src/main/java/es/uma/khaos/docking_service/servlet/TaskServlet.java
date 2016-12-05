@@ -140,25 +140,4 @@ public class TaskServlet extends HttpServlet {
 		}
 	}
 	
-	protected void doGetRunTask(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		ArrayList<TaskRunResponse> taskRunResponse = null;
-		
-		String id = request.getParameter("id");
-		String task_id = request.getParameter("execution_task_id");
-		
-		System.out.println("id" + id);
-		System.out.println("task_id" + task_id);
-		
-		response.setContentType("application/json");
-		
-		Gson gson = new Gson();
-		PrintWriter out = response.getWriter();
-		out.print(gson.toJson(taskRunResponse));
-		out.flush();
-		
-		
-		
-	}
-
 }
