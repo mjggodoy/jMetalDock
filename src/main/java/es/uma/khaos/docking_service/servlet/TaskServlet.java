@@ -42,7 +42,7 @@ public class TaskServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		int taskId = 0;
-		TaskResponse objResp;
+		TaskResponse objResp = null;
 		
 		String id = request.getParameter("id");
 		String token = request.getParameter("token");
@@ -50,59 +50,45 @@ public class TaskServlet extends HttpServlet {
 		System.out.println(id);
 		System.out.println(token);
 		
+		response.setContentType("application/json");
+		
 		try {
 			if (id==null) {
-				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-				objResp = new TaskResponse(
-						Constants.RESPONSE_TASK_MSG_NOT_ID,
-						taskId, token);
-			} else if (token==null) {
-				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-				objResp = new TaskResponse(
-						Constants.RESPONSE_TASK_MSG_NOT_TOKEN,
-						taskId, token);
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST, Constants.RESPONSE_TASK_MSG_NOT_ID);
 			} else {
 				taskId = Integer.parseInt(id);
 				Task task = DatabaseService.getInstance().getTask(taskId);
-				if (task==null || !token.equals(task.getHash())) {
-					response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-					objResp = new TaskResponse(
-							Constants.RESPONSE_TASK_MSG_UNALLOWED,
-							taskId, token);
+				if (task==null || !task.getHash().equals(token)) {
+					response.sendError(HttpServletResponse.SC_FORBIDDEN, Constants.RESPONSE_TASK_MSG_UNALLOWED);
 				} else {
 					response.setStatus(HttpServletResponse.SC_OK);
-					objResp = new TaskResponse(
-							Constants.RESPONSE_TASK_RETURNED_OK,
-							taskId, token, task.getState());
+					System.out.println(task.getState());
+					objResp = new TaskResponse(taskId, token, task.getState());
 				}
 			}
 			
 		} catch (NumberFormatException e) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-			objResp = new TaskResponse(
-					Constants.RESPONSE_TASK_MSG_ID_NOT_NUMBER,
-					0, token);
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST, Constants.RESPONSE_TASK_MSG_ID_NOT_NUMBER);
 		} catch (DatabaseException e) {
 			e.printStackTrace();
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			objResp = new TaskResponse(
-					Constants.RESPONSE_ERROR_DATABASE,
-					0, token);
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, Constants.RESPONSE_ERROR_DATABASE);
 		}
 		
-		response.setContentType("application/json");
-		
-		Gson gson = new Gson();
-		PrintWriter out = response.getWriter();
-		out.print(gson.toJson(objResp));
-		out.flush();
-		
+		if (objResp!=null) {
+			Gson gson = new Gson();
+			PrintWriter out = response.getWriter();
+			out.print(gson.toJson(objResp));
+			System.out.println(gson.toJson(objResp));
+			out.flush();
+		}
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		response.setContentType("application/json");
 		
 		try {
 			Random sr = SecureRandom.getInstance("SHA1PRNG");
@@ -115,11 +101,9 @@ public class TaskServlet extends HttpServlet {
 			Gson gson = new Gson();
 			TaskResponse objResp
 				= new TaskResponse(
-						Constants.RESPONSE_NEWTASK_MSG_OK,
-						task.getId(), token);
+						task.getId(), token, task.getState());
 			String json = gson.toJson(objResp);
 			
-			response.setContentType("application/json");
 			response.setStatus(HttpServletResponse.SC_CREATED);
 			PrintWriter out = response.getWriter();
 			out.print(json);
@@ -127,16 +111,7 @@ public class TaskServlet extends HttpServlet {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			response.setContentType("application/json");
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			Gson gson = new Gson();
-			TaskResponse objResp
-				= new TaskResponse(
-						Constants.RESPONSE_ERROR_DATABASE);
-			String json = gson.toJson(objResp);
-			PrintWriter out = response.getWriter();
-			out.print(json);
-			out.flush();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, Constants.RESPONSE_ERROR_DATABASE);
 		}
 	}
 	

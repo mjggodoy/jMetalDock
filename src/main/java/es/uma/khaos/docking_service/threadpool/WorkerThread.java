@@ -32,7 +32,7 @@ public class WorkerThread implements Runnable {
 		try {
 			System.out.println(Thread.currentThread().getName()+" Start. ID = "+id);
 			DatabaseService.getInstance().startTask(id);
-			//processCommand();
+			processCommand();
 			DatabaseService.getInstance().finishTask(id);
 			System.out.println(Thread.currentThread().getName()+" End.");
 		} catch (Exception e) {
