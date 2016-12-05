@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.security.SecureRandom;
-import java.util.ArrayList;
 import java.util.Random;
 
 import javax.servlet.ServletException;
@@ -17,7 +16,6 @@ import com.google.gson.Gson;
 import es.uma.khaos.docking_service.exception.DatabaseException;
 import es.uma.khaos.docking_service.model.Task;
 import es.uma.khaos.docking_service.model.response.TaskResponse;
-import es.uma.khaos.docking_service.model.response.TaskRunResponse;
 import es.uma.khaos.docking_service.properties.Constants;
 import es.uma.khaos.docking_service.service.DatabaseService;
 import es.uma.khaos.docking_service.service.ThreadPoolService;
