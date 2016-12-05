@@ -1,6 +1,7 @@
 package es.uma.khaos.docking_service.servlet;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import es.uma.khaos.docking_service.threadpool.WorkerThread;
 import es.uma.khaos.docking_service.model.Task;
+import es.uma.khaos.docking_service.model.response.TaskResponse;
 import es.uma.khaos.docking_service.service.DatabaseService;
 import es.uma.khaos.docking_service.service.ThreadPoolService;
 
@@ -45,6 +47,27 @@ public class TestServlet extends HttpServlet {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+	}
+	
+	protected void doGetRunTask(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		int id = 1;
+		/*String id = request.getParameter("id");
+		String task_id = request.getParameter("task_id");*/
+		
+		System.out.println("id" + id);
+		
+		try {
+			Task task = DatabaseService.getInstance().getTask(id);
+			Runnable worker = new WorkerThread("DOCKING", task.getId());
+			ThreadPoolService.getInstance().execute(worker);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
 		
 	}
 

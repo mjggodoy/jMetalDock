@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import com.jcraft.jsch.JSch;
@@ -194,6 +195,18 @@ public final class DatabaseService {
 		return task;
 
 	}
+	
+	public void startTask(int id) throws Exception {
+		this.updateTaskState(id, RUNNING_STATE);
+	}
+
+	public void finishTask(int id) throws Exception {
+		this.updateTaskState(id, FINISHED_STATE);
+	}
+	
+	/*
+	 * PARAMETER
+	 */
 
 	public Parameter getParameter(int id) throws Exception {
 
@@ -215,9 +228,9 @@ public final class DatabaseService {
 
 				id = rs.getInt("id");
 				String algorithm = rs.getString("algorithm");
-				int evaluations = rs.getInt("evaluation");
-				int runs = rs.getInt("run");
-				int objective = rs.getInt("objective");
+				int evaluations = rs.getInt("evaluations");
+				int runs = rs.getInt("runs");
+				int objective = rs.getInt("objective_opt");
 				int task_id = rs.getInt("task_id");
 				parameter = new Parameter(id, algorithm, evaluations, runs, objective, task_id);
 				
@@ -238,9 +251,42 @@ public final class DatabaseService {
 
 	}
 	
+	public Parameter insertParameter(String algorithm, int evaluations, int runs, int objectiveOpt, int taskId ) throws Exception {
+
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		Parameter parameter = null;
+		
+		String statement = "insert into parameter (algorithm, evaluations, runs, objective_opt, task_id)"
+				+ " values (?, ?, ?, ?, ?)";
+
+		try {
+			conn = openConnection();
+			stmt = conn.prepareStatement(statement, Statement.RETURN_GENERATED_KEYS);
+			stmt.setString(1, algorithm);
+			stmt.setInt(2, evaluations);
+			stmt.setInt(3, runs);
+			stmt.setInt(4, objectiveOpt);
+			stmt.setInt(5, taskId);
+			stmt.execute();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DatabaseException();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (stmt != null)
+				stmt.close();
+			if (conn != null)
+				conn.close();
+		}
+		return parameter;
+	}
+	
 	
 	public Execution getExecution(int id) throws Exception{
-		
 
 		Execution execution = null;
 		Connection conn = null;
@@ -288,6 +334,8 @@ public final class DatabaseService {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
+		ArrayList<String> objectives = new ArrayList<String>();
+
 		
 		try {
 			
@@ -304,8 +352,10 @@ public final class DatabaseService {
 				String finalBindingEnergy = rs.getString("finalBindingEnergy");
 				String objective1 = rs.getString("objective1");
 				String objective2 = rs.getString("objective2");
+				objectives.add(objective1);
+				objectives.add(objective2);
 				int executionTaskId = rs.getInt("execution_task_id");
-				result = new Result(id,finalBindingEnergy, objective1, objective2, executionTaskId);
+				result = new Result(id,finalBindingEnergy, objectives, executionTaskId);
 
 			}
 
@@ -323,41 +373,6 @@ public final class DatabaseService {
 	
 		return result;
 		
-	}
-	
-	
-	
-	public Parameter insertParameter(int parameter_id, String algorithm, int evaluation, int run, int objective, int tasks_id ) throws Exception {
-
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		Parameter parameter = null;
-
-		try {
-			conn = openConnection();
-			stmt = conn.prepareStatement("insert into parameter values (?, ?, ?, ?, ?, ?)",
-					Statement.RETURN_GENERATED_KEYS);
-			stmt.setInt(1, parameter_id);
-			stmt.setString(2, algorithm);
-			stmt.setInt(3, evaluation);
-			stmt.setInt(4, run);
-			stmt.setInt(5, objective);
-			stmt.setInt(6, tasks_id);
-			stmt.execute();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DatabaseException();
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		} finally {
-			if (stmt != null)
-				stmt.close();
-			if (conn != null)
-				conn.close();
-		}
-		return parameter;
 	}
 	
 	public Execution insertExecution(int id, int task_id ) throws Exception {
@@ -420,16 +435,6 @@ public final class DatabaseService {
 				conn.close();
 		}
 		return result;
-	}
-	
-	
-	
-	public void startTask(int id) throws Exception {
-		this.updateTaskState(id, RUNNING_STATE);
-	}
-
-	public void finishTask(int id) throws Exception {
-		this.updateTaskState(id, FINISHED_STATE);
 	}
 	
 }
