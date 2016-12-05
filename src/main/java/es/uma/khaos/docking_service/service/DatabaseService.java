@@ -111,7 +111,7 @@ public final class DatabaseService {
 
 			rs = stmt.getGeneratedKeys();
 			if (rs.next()) {
-				task = new Task(rs.getInt(1), hash);
+				task = new Task(rs.getInt(1), hash, "sent");
 			}
 			rs.close();
 
@@ -157,14 +157,13 @@ public final class DatabaseService {
 		}
 	}
 
-	public Task getTask(int id) throws Exception {
+	//TODO: Tratar las excepciones en todos los métodos como aquí
+	public Task getTask(int id) throws DatabaseException {
 
 		Task task = null;
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		int task_id = 0;
-		String hash = null;
 
 		try {
 
@@ -175,24 +174,21 @@ public final class DatabaseService {
 			rs = stmt.executeQuery();
 
 			if (rs.next()) {
-				task_id = rs.getInt("id");
-				hash = rs.getString("hash");
-				task = new Task(task_id, hash);
+				task = new Task(rs.getInt("id"), rs.getString("hash"), rs.getString("state"));
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DatabaseException();
+			throw new DatabaseException(e);
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
+			throw new DatabaseException(e);
 		} finally {
-			if (rs != null)
-				rs.close();
-			if (stmt != null)
-				stmt.close();
-			if (conn != null)
-				conn.close();
+			try {
+				if (rs != null) rs.close();
+				if (stmt != null) stmt.close();
+				if (conn != null) conn.close();
+			} catch (SQLException e) {
+				throw new DatabaseException(e);
+			}
 		}
 
 		return task;
