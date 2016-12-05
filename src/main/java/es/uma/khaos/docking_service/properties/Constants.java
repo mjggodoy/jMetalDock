@@ -29,18 +29,18 @@ public class Constants {
 	public static final String TEST_FILE_DPF = Configurations.getProperty(Properties.TEST_FILE_DPF);
 	
 	// Messages
-	public static final String RESPONSE_NEWTASK_STATE_OK = "OK";
-	public static final String RESPONSE_NEWTASK_STATE_ERROR = "ERROR";
-	public static final String RESPONSE_NEWTASK_MSG_OK = "Task successfully enqueued";
-	public static final String RESPONSE_NEWTASK_MSG_ERROR = "Error when trying to enqueue task";
-	
 	public static final String RESPONSE_TASK_MSG_NOT_ID = "Task id is a mandatory parameter";
-	public static final String RESPONSE_TASK_MSG_ID_NOT_NUMBER = "Task id is a mandatory parameter";
+	public static final String RESPONSE_TASK_MSG_ID_NOT_NUMBER = "Task id should be a valid number";
 	public static final String RESPONSE_TASK_MSG_NOT_TOKEN = "Token is a mandatory parameter";
 	public static final String RESPONSE_TASK_MSG_UNALLOWED = "You are not allowed to see this task";
-	public static final String RESPONSE_TASK_RETURNED_OK = "Task information returned successfully.";
 	
 	public static final String RESPONSE_ERROR_DATABASE = "There was an error with the database. Contact with the administrators.";
+	public static final String RESPONSE_NOT_A_NUMBER_ERROR = "%s should be a valid number";
+	public static final String RESPONSE_MANDATORY_PARAMETER_ERROR = "%s is a mandatory parameter";
+	
+	// Input parameters
+	public static final String SINGLE_OBJECTIVE_ALGORITHMS[] = {"gGA", "ssGA", "DE", "PSO"};
+	public static final String MULTI_OBJECTIVE_ALGORITHMS[] = {"NSGAII", "ssNSGAII", "GDE3", "SMPSO", "MOEAD"};
 	
 
 }

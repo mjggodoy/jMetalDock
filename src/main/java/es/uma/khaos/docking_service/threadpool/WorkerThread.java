@@ -21,10 +21,19 @@ public class WorkerThread implements Runnable {
 	private String name;
 	private int id;
 	
+	private String algorithm;
+	private int runs;
+	private int evals;
+	private int objectiveOpt;
 	
-	public WorkerThread(String name, int id) {
+	
+	public WorkerThread(String name, int id, String algorithm, int runs, int evals, int objectiveOpt) {
 		this.name = name;
 		this.id = id;
+		this.algorithm = algorithm;
+		this.runs = runs;
+		this.evals = evals;
+		this.objectiveOpt = objectiveOpt;
 	}
 	
 	public void run() {
@@ -32,7 +41,7 @@ public class WorkerThread implements Runnable {
 		try {
 			System.out.println(Thread.currentThread().getName()+" Start. ID = "+id);
 			DatabaseService.getInstance().startTask(id);
-			processCommand();
+			//processCommand();
 			DatabaseService.getInstance().finishTask(id);
 			System.out.println(Thread.currentThread().getName()+" End.");
 		} catch (Exception e) {
@@ -60,6 +69,9 @@ public class WorkerThread implements Runnable {
 			command = String.format(
 					"cp -r %s. %s", TEST_DIR_INSTANCE, workDir);
 			executeCommand(command);
+			
+			// PREPARAMOS DPF CON LOS PARÁMETROS
+			formatDPF();
 			
 			// EJECUTAMOS AUTODOCK
 			command= String.format(COMMAND_TEMPLATE,
@@ -116,6 +128,13 @@ public class WorkerThread implements Runnable {
             System.out.println(s);
         }
 		
+	}
+	
+	private void formatDPF() {
+		System.out.println(algorithm);
+		System.out.println(runs);
+		System.out.println(evals);
+		System.out.println(objectiveOpt);
 	}
 	
 	@Override
