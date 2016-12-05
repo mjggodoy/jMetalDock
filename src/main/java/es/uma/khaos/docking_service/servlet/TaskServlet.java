@@ -137,5 +137,27 @@ public class TaskServlet extends HttpServlet {
 			out.flush();
 		}
 	}
+	
+	protected void doGetRunTask(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		int taskId = 0;
+		TaskRunResponse objResp;
+		
+		String id = request.getParameter("id");
+		String task_id = request.getParameter("task_id");
+		
+		System.out.println("id" + id);
+		System.out.println("task_id" + task_id);
+		
+		response.setContentType("application/json");
+		
+		Gson gson = new Gson();
+		PrintWriter out = response.getWriter();
+		out.print(gson.toJson(objResp));
+		out.flush();
+		
+		
+		
+	}
 
 }
