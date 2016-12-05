@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.servlet.ServletException;
@@ -16,6 +17,7 @@ import com.google.gson.Gson;
 import es.uma.khaos.docking_service.exception.DatabaseException;
 import es.uma.khaos.docking_service.model.Task;
 import es.uma.khaos.docking_service.model.response.TaskResponse;
+import es.uma.khaos.docking_service.model.response.TaskRunResponse;
 import es.uma.khaos.docking_service.properties.Constants;
 import es.uma.khaos.docking_service.service.DatabaseService;
 import es.uma.khaos.docking_service.service.ThreadPoolService;
@@ -140,11 +142,10 @@ public class TaskServlet extends HttpServlet {
 	
 	protected void doGetRunTask(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		int taskId = 0;
-		TaskRunResponse objResp;
+		ArrayList<TaskRunResponse> taskRunResponse = null;
 		
 		String id = request.getParameter("id");
-		String task_id = request.getParameter("task_id");
+		String task_id = request.getParameter("execution_task_id");
 		
 		System.out.println("id" + id);
 		System.out.println("task_id" + task_id);
@@ -153,7 +154,7 @@ public class TaskServlet extends HttpServlet {
 		
 		Gson gson = new Gson();
 		PrintWriter out = response.getWriter();
-		out.print(gson.toJson(objResp));
+		out.print(gson.toJson(taskRunResponse));
 		out.flush();
 		
 		
