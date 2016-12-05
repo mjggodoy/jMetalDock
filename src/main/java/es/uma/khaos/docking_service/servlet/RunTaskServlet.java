@@ -11,7 +11,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
+import es.uma.khaos.docking_service.exception.DatabaseException;
+import es.uma.khaos.docking_service.model.Execution;
+import es.uma.khaos.docking_service.model.Result;
+import es.uma.khaos.docking_service.model.Task;
+import es.uma.khaos.docking_service.model.response.TaskResponse;
 import es.uma.khaos.docking_service.model.response.TaskRunResponse;
+import es.uma.khaos.docking_service.properties.Constants;
+import es.uma.khaos.docking_service.service.DatabaseService;
 
 /**
  * Servlet implementation class RunTaskServlet
@@ -31,15 +38,21 @@ public class RunTaskServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-    	 
-    	ArrayList<TaskRunResponse> taskRunResponse = new ArrayList<TaskRunResponse>() ;
-		
+			 
+    	
+		int idExecution;
+    	TaskRunResponse taskRunResponse = null;   
 		String id = request.getParameter("id");
-		String execution_task_id = request.getParameter("execution_task_id");
+		Result result = null;
 		
-		System.out.println("id: " + id);
-		System.out.println("execution_task_id: " + execution_task_id);
+		try {
+			idExecution = Integer.parseInt(id);
+			result = DatabaseService.getInstance().getResult(idExecution);
+			taskRunResponse = new TaskRunResponse(idExecution, result.getFinalBindingEnergy(),result.getObjectives(), result.getExecutionTaskId());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
 		
 		response.setContentType("application/json");
 		
@@ -48,6 +61,9 @@ public class RunTaskServlet extends HttpServlet {
 		out.print(gson.toJson(taskRunResponse));
 		out.flush();
 			
-	}
+    
+    }
+    
+		
 
 }

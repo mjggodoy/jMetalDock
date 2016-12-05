@@ -6,17 +6,17 @@ public class TaskRunResponse {
 	
 	public int id;
 	public String finalBindingEnergy;
-	public ArrayList<Integer> objectives;
+	public ArrayList<String> objectives;
 	public int execution_task_id;
 	
 	
 	public TaskRunResponse(int id, String finalBindingEnergy,
-			ArrayList<Integer> objectives, int execution_task_id) {
+			ArrayList<String> objectives, int execution_task_id) {
 		super();
-		this.id = 1;
-		this.finalBindingEnergy = "-34,6 kcal/mol";
-		this.objectives.add(1);
-		this.execution_task_id = 1;
+		this.id = id;
+		this.finalBindingEnergy = finalBindingEnergy;
+		this.objectives = objectives;
+		this.execution_task_id = execution_task_id;
 	}
 
 
@@ -31,7 +31,7 @@ public class TaskRunResponse {
 	}
 
 	
-	public ArrayList<Integer> getObjectives() {
+	public ArrayList<String> getObjectives() {
 		return objectives;
 	}
 

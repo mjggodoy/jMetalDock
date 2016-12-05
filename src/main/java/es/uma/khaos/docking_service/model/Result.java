@@ -1,22 +1,25 @@
 package es.uma.khaos.docking_service.model;
 
+import java.util.ArrayList;
+
 public class Result {
 	
 	
 	public int id;
 	public String finalBindingEnergy;
-	public String objective1;
-	public String objective2;
+	public ArrayList<String> objectives;
 	public int executionTaskId;
 	
 	
-	public Result(int id, String finalBindingEnergy, String objective1,
-			String objective2, int executionTaskId) {
+
+
+
+	public Result(int id, String finalBindingEnergy,
+			ArrayList<String> objectives, int executionTaskId) {
 		super();
 		this.id = id;
 		this.finalBindingEnergy = finalBindingEnergy;
-		this.objective1 = objective1;
-		this.objective2 = objective2;
+		this.objectives = objectives;
 		this.executionTaskId = executionTaskId;
 	}
 
@@ -31,13 +34,9 @@ public class Result {
 	}
 
 
-	public String getObjective1() {
-		return objective1;
-	}
 
-
-	public String getObjective2() {
-		return objective2;
+	public ArrayList<String> getObjectives() {
+		return objectives;
 	}
 
 

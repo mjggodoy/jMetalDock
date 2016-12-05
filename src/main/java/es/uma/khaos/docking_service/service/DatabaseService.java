@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import com.jcraft.jsch.JSch;
@@ -288,6 +289,8 @@ public final class DatabaseService {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
+		ArrayList<String> objectives = new ArrayList<String>();
+
 		
 		try {
 			
@@ -304,8 +307,10 @@ public final class DatabaseService {
 				String finalBindingEnergy = rs.getString("finalBindingEnergy");
 				String objective1 = rs.getString("objective1");
 				String objective2 = rs.getString("objective2");
+				objectives.add(objective1);
+				objectives.add(objective2);
 				int executionTaskId = rs.getInt("execution_task_id");
-				result = new Result(id,finalBindingEnergy, objective1, objective2, executionTaskId);
+				result = new Result(id,finalBindingEnergy, objectives, executionTaskId);
 
 			}
 
