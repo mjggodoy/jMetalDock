@@ -47,14 +47,13 @@ public class TaskServlet extends HttpServlet {
 		String id = request.getParameter("id");
 		String token = request.getParameter("token");
 		
-		System.out.println(id);
-		System.out.println(token);
-		
 		response.setContentType("application/json");
 		
 		try {
 			if (id==null) {
-				response.sendError(HttpServletResponse.SC_BAD_REQUEST, Constants.RESPONSE_TASK_MSG_NOT_ID);
+				response.sendError(
+						HttpServletResponse.SC_BAD_REQUEST,
+						String.format(Constants.RESPONSE_MANDATORY_PARAMETER_ERROR, "id"));
 			} else {
 				taskId = Integer.parseInt(id);
 				Task task = DatabaseService.getInstance().getTask(taskId);
@@ -62,13 +61,14 @@ public class TaskServlet extends HttpServlet {
 					response.sendError(HttpServletResponse.SC_FORBIDDEN, Constants.RESPONSE_TASK_MSG_UNALLOWED);
 				} else {
 					response.setStatus(HttpServletResponse.SC_OK);
-					System.out.println(task.getState());
 					objResp = new TaskResponse(taskId, token, task.getState());
 				}
 			}
 			
 		} catch (NumberFormatException e) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST, Constants.RESPONSE_TASK_MSG_ID_NOT_NUMBER);
+			response.sendError(
+					HttpServletResponse.SC_BAD_REQUEST,
+					String.format(Constants.RESPONSE_NOT_A_NUMBER_ERROR, "id"));
 		} catch (DatabaseException e) {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, Constants.RESPONSE_ERROR_DATABASE);
@@ -78,7 +78,6 @@ public class TaskServlet extends HttpServlet {
 			Gson gson = new Gson();
 			PrintWriter out = response.getWriter();
 			out.print(gson.toJson(objResp));
-			System.out.println(gson.toJson(objResp));
 			out.flush();
 		}
 	}
@@ -88,6 +87,16 @@ public class TaskServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		//TODO: Check correctness of parameters
+		
+		String runsParam  = request.getParameter("runs");
+		String algorithm  = request.getParameter("algorithm");
+		String evalsParam = request.getParameter("evaluations");
+		
+		int objectiveOpt = 0;
+		int runs = Integer.parseInt(runsParam);
+		int evals = Integer.parseInt(evalsParam);
+		
 		response.setContentType("application/json");
 		
 		try {
@@ -95,7 +104,8 @@ public class TaskServlet extends HttpServlet {
 			String token = new BigInteger(130, sr).toString(32);
 			
 			Task task = DatabaseService.getInstance().insertTask(token);
-			Runnable worker = new WorkerThread("DOCKING", task.getId());
+			DatabaseService.getInstance().insertParameter(algorithm, evals, runs, objectiveOpt, task.getId());
+			Runnable worker = new WorkerThread("DOCKING", task.getId(), algorithm, runs, evals, objectiveOpt);
 			ThreadPoolService.getInstance().execute(worker);
 			
 			Gson gson = new Gson();

@@ -195,6 +195,18 @@ public final class DatabaseService {
 		return task;
 
 	}
+	
+	public void startTask(int id) throws Exception {
+		this.updateTaskState(id, RUNNING_STATE);
+	}
+
+	public void finishTask(int id) throws Exception {
+		this.updateTaskState(id, FINISHED_STATE);
+	}
+	
+	/*
+	 * PARAMETER
+	 */
 
 	public Parameter getParameter(int id) throws Exception {
 
@@ -216,9 +228,9 @@ public final class DatabaseService {
 
 				id = rs.getInt("id");
 				String algorithm = rs.getString("algorithm");
-				int evaluations = rs.getInt("evaluation");
-				int runs = rs.getInt("run");
-				int objective = rs.getInt("objective");
+				int evaluations = rs.getInt("evaluations");
+				int runs = rs.getInt("runs");
+				int objective = rs.getInt("objective_opt");
 				int task_id = rs.getInt("task_id");
 				parameter = new Parameter(id, algorithm, evaluations, runs, objective, task_id);
 				
@@ -239,9 +251,42 @@ public final class DatabaseService {
 
 	}
 	
+	public Parameter insertParameter(String algorithm, int evaluations, int runs, int objectiveOpt, int taskId ) throws Exception {
+
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		Parameter parameter = null;
+		
+		String statement = "insert into parameter (algorithm, evaluations, runs, objective_opt, task_id)"
+				+ " values (?, ?, ?, ?, ?)";
+
+		try {
+			conn = openConnection();
+			stmt = conn.prepareStatement(statement, Statement.RETURN_GENERATED_KEYS);
+			stmt.setString(1, algorithm);
+			stmt.setInt(2, evaluations);
+			stmt.setInt(3, runs);
+			stmt.setInt(4, objectiveOpt);
+			stmt.setInt(5, taskId);
+			stmt.execute();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DatabaseException();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (stmt != null)
+				stmt.close();
+			if (conn != null)
+				conn.close();
+		}
+		return parameter;
+	}
+	
 	
 	public Execution getExecution(int id) throws Exception{
-		
 
 		Execution execution = null;
 		Connection conn = null;
@@ -330,41 +375,6 @@ public final class DatabaseService {
 		
 	}
 	
-	
-	
-	public Parameter insertParameter(int parameter_id, String algorithm, int evaluation, int run, int objective, int tasks_id ) throws Exception {
-
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		Parameter parameter = null;
-
-		try {
-			conn = openConnection();
-			stmt = conn.prepareStatement("insert into parameter values (?, ?, ?, ?, ?, ?)",
-					Statement.RETURN_GENERATED_KEYS);
-			stmt.setInt(1, parameter_id);
-			stmt.setString(2, algorithm);
-			stmt.setInt(3, evaluation);
-			stmt.setInt(4, run);
-			stmt.setInt(5, objective);
-			stmt.setInt(6, tasks_id);
-			stmt.execute();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DatabaseException();
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		} finally {
-			if (stmt != null)
-				stmt.close();
-			if (conn != null)
-				conn.close();
-		}
-		return parameter;
-	}
-	
 	public Execution insertExecution(int id, int task_id ) throws Exception {
 
 		Connection conn = null;
@@ -425,16 +435,6 @@ public final class DatabaseService {
 				conn.close();
 		}
 		return result;
-	}
-	
-	
-	
-	public void startTask(int id) throws Exception {
-		this.updateTaskState(id, RUNNING_STATE);
-	}
-
-	public void finishTask(int id) throws Exception {
-		this.updateTaskState(id, FINISHED_STATE);
 	}
 	
 }
