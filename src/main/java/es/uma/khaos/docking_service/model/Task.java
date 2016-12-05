@@ -6,16 +6,11 @@ public class Task {
 	private String hash;
 	private String state;
 
-	public Task(int id, String hash) {
-		super();
-		this.id = id;
-		this.hash = hash;
-	}
-	
 	public Task(int id, String hash, String state) {
 		super();
 		this.id = id;
 		this.hash = hash;
+		this.state = state;
 	}
 
 	public int getId() {
