@@ -90,6 +90,7 @@ public class TaskServlet extends HttpServlet {
 		String runsParam  = request.getParameter("runs");
 		String algorithm  = request.getParameter("algorithm");
 		String evalsParam = request.getParameter("evaluations");
+		String populationSize = request.getParameter("population_size");
 		
 		int objectiveOpt = 0;
 		int runs = Integer.parseInt(runsParam);
@@ -102,7 +103,7 @@ public class TaskServlet extends HttpServlet {
 			String token = new BigInteger(130, sr).toString(32);
 			
 			Task task = DatabaseService.getInstance().insertTask(token);
-			DatabaseService.getInstance().insertParameter(algorithm, evals, runs, objectiveOpt, task.getId());
+			DatabaseService.getInstance().insertParameter(algorithm, evals, populationSize, runs, objectiveOpt, task.getId());
 			Runnable worker = new WorkerThread("DOCKING", task.getId(), algorithm, runs, evals, objectiveOpt);
 			ThreadPoolService.getInstance().execute(worker);
 			

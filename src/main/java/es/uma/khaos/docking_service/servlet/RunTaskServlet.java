@@ -47,12 +47,15 @@ public class RunTaskServlet extends HttpServlet {
 		
 		response.setContentType("application/json");
 		
-		Gson gson = new Gson();
-		PrintWriter out = response.getWriter();
-		out.print(gson.toJson(taskRunResponse));
-		out.flush();
+		
+		if(taskRunResponse!=null){
 			
-    
+			Gson gson = new Gson();
+			PrintWriter out = response.getWriter();
+			out.print(gson.toJson(taskRunResponse));
+			out.flush();
+			
+		}
     }
     
 		

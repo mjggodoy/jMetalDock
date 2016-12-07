@@ -229,10 +229,11 @@ public final class DatabaseService {
 				id = rs.getInt("id");
 				String algorithm = rs.getString("algorithm");
 				int evaluations = rs.getInt("evaluations");
+				String populationSize = rs.getString("population_size");
 				int runs = rs.getInt("runs");
 				int objective = rs.getInt("objective_opt");
 				int task_id = rs.getInt("task_id");
-				parameter = new Parameter(id, algorithm, evaluations, runs, objective, task_id);
+				parameter = new Parameter(id, algorithm, evaluations, populationSize, runs, objective, task_id);
 				
 			}
 
@@ -251,23 +252,24 @@ public final class DatabaseService {
 
 	}
 	
-	public Parameter insertParameter(String algorithm, int evaluations, int runs, int objectiveOpt, int taskId ) throws Exception {
+	public Parameter insertParameter(String algorithm, int evaluations, String population_size, int runs, int objectiveOpt, int taskId ) throws Exception {
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		Parameter parameter = null;
 		
-		String statement = "insert into parameter (algorithm, evaluations, runs, objective_opt, task_id)"
-				+ " values (?, ?, ?, ?, ?)";
+		String statement = "insert into parameter (algorithm, evaluations, population_size, runs, objective_opt, task_id)"
+				+ " values (?, ?, ?, ?, ?, ?, ?)";
 
 		try {
 			conn = openConnection();
 			stmt = conn.prepareStatement(statement, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, algorithm);
 			stmt.setInt(2, evaluations);
-			stmt.setInt(3, runs);
-			stmt.setInt(4, objectiveOpt);
-			stmt.setInt(5, taskId);
+			stmt.setString(3, population_size);
+			stmt.setInt(4, runs);
+			stmt.setInt(6, objectiveOpt);
+			stmt.setInt(7, taskId);
 			stmt.execute();
 
 		} catch (SQLException e) {
