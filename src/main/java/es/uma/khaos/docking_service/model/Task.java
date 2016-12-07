@@ -7,7 +7,7 @@ public class Task {
 	private int id;
 	private String hash;
 	private String state;
-	private ArrayList<Parameter> parameter;
+	private Parameter parameter;
 
 
 	public Task(int id, String hash, String state) {
@@ -19,7 +19,7 @@ public class Task {
 	
 	
 	public Task(int id, String hash, String state,
-			ArrayList<Parameter> parameter) {
+			Parameter parameter) {
 		super();
 		this.id = id;
 		this.hash = hash;
@@ -41,7 +41,7 @@ public class Task {
 	}
 
 
-	public ArrayList<Parameter> getParameter() {
+	public Parameter getParameter() {
 		return parameter;
 	}
 	

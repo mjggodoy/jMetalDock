@@ -2,6 +2,7 @@ package es.uma.khaos.docking_service.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
+import es.uma.khaos.docking_service.model.Parameter;
 import es.uma.khaos.docking_service.model.Task;
 import es.uma.khaos.docking_service.model.response.TaskParameterResponse;
 import es.uma.khaos.docking_service.model.response.TaskResponse;
@@ -43,7 +45,7 @@ public class TaskParameterServlet extends HttpServlet {
 		
 		try {
 			taskId = Integer.parseInt(id);
-			Task task = DatabaseService.getInstance().getTask(taskId);
+			Task task = DatabaseService.getInstance().getTaskParameter(taskId);
 			objResp = new TaskParameterResponse(taskId, task.getHash(), task.getState(), task.getParameter());
 			
 		} catch (Exception e) {

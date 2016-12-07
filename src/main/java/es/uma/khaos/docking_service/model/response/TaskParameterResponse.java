@@ -1,6 +1,5 @@
 package es.uma.khaos.docking_service.model.response;
 
-import java.util.ArrayList;
 
 import es.uma.khaos.docking_service.model.Parameter;
 
@@ -9,11 +8,11 @@ public class TaskParameterResponse {
 	private int id;
 	private String token;
 	private String state;
-	private ArrayList<Parameter> parameter;
+	private Parameter parameter;
 	
 
 	public TaskParameterResponse(int id, String token, String state,
-			ArrayList<Parameter> parameter) {
+			Parameter parameter) {
 		super();
 		this.id = id;
 		this.token = token;
@@ -37,7 +36,7 @@ public class TaskParameterResponse {
 	}
 
 
-	public ArrayList<Parameter> getParameter() {
+	public Parameter getParameter() {
 		return parameter;
 	}
 	

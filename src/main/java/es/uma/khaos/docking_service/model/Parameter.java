@@ -5,13 +5,13 @@ public class Parameter {
 	private int id;
 	private String algorithm;
 	private int evaluation;
-	private String populationSize;
+	private int populationSize;
 	private int run;
 	private int objective;
 	private int task_id;
 	
 	
-	public Parameter(int id, String algorithm, int evaluations, String populationSize, int runs,
+	public Parameter(int id, String algorithm, int evaluations, int populationSize, int runs,
 			int objectives, int task_id) {
 		super();
 		this.id = id;
@@ -39,7 +39,7 @@ public class Parameter {
 	}
 	
 
-	public String getPopulationSize() {
+	public int getPopulationSize() {
 		return populationSize;
 	}
 
