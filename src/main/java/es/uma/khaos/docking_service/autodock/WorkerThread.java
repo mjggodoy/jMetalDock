@@ -15,7 +15,6 @@ public class WorkerThread implements Runnable {
 	
 	private final String COMMAND_TEMPLATE = "%s%s -p %s -l %s";
 	private final String AUTODOCK_LOCATION = Constants.DIR_AUTODOCK;
-	private final String BASE_FOLDER = Constants.DIR_BASE;
 	private final String AUTODOCK_EXECUTABLE = Constants.FILE_AUTODOCK;
 	
 	private final String TEST_DIR_INSTANCE = Constants.TEST_DIR_INSTANCE;
@@ -31,6 +30,8 @@ public class WorkerThread implements Runnable {
 	//TODO: Tratar este parámetro
 	private int objectiveOpt;
 	
+	private final String baseFolder;
+	
 	
 	public WorkerThread(String name, int id, String algorithm, int runs, int evals, int objectiveOpt) {
 		this.name = name;
@@ -39,6 +40,7 @@ public class WorkerThread implements Runnable {
 		this.runs = runs;
 		this.evals = evals;
 		this.objectiveOpt = objectiveOpt;
+		this.baseFolder = Constants.DIR_BASE.equals("") ? System.getProperty("java.io.tmpdir") : Constants.DIR_BASE;
 	}
 	
 	public void run() {
@@ -63,10 +65,12 @@ public class WorkerThread implements Runnable {
 	private void processCommand() throws DpfWriteException, DpfNotFoundException, CommandExecutionException {
 		
 		String command;
-			
-		String workDir = String.format("%sexec-%d", BASE_FOLDER, id);
+		
+		String workDir = String.format("%sexec-%d", baseFolder, id);
 		String inputFile = String.format("exec-%d.dpf", id);
 		String outputFile = String.format("exec-%d.dlg", id);
+		
+		System.out.println(workDir);
 		
 		// CREAMOS CARPETA
 		command = String.format(
