@@ -24,6 +24,7 @@ public final class DatabaseService {
 
 	private static final String RUNNING_STATE = "running";
 	private static final String FINISHED_STATE = "finished";
+	private static final String ERROR_STATE = "error";
 
 	private static final String ip = Constants.MYSQL_IP;
 	private static final String port = Constants.MYSQL_PORT;
@@ -202,6 +203,10 @@ public final class DatabaseService {
 
 	public void finishTask(int id) throws Exception {
 		this.updateTaskState(id, FINISHED_STATE);
+	}
+	
+	public void finishTaskWithError(int id) throws Exception {
+		this.updateTaskState(id, ERROR_STATE);
 	}
 	
 	/*

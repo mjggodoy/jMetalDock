@@ -19,7 +19,7 @@ import es.uma.khaos.docking_service.model.response.TaskResponse;
 import es.uma.khaos.docking_service.properties.Constants;
 import es.uma.khaos.docking_service.service.DatabaseService;
 import es.uma.khaos.docking_service.service.ThreadPoolService;
-import es.uma.khaos.docking_service.threadpool.WorkerThread;
+import es.uma.khaos.docking_service.autodock.WorkerThread;
 
 /**
  * Servlet implementation class Task
