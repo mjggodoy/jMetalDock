@@ -90,10 +90,12 @@ public class TaskServlet extends HttpServlet {
 		String runsParam  = request.getParameter("runs");
 		String algorithm  = request.getParameter("algorithm");
 		String evalsParam = request.getParameter("evaluations");
+		String popSizeParam = request.getParameter("population_size");
 		
 		int objectiveOpt = 0;
 		int runs = Integer.parseInt(runsParam);
 		int evals = Integer.parseInt(evalsParam);
+		int popSize = Integer.parseInt(popSizeParam);
 		
 		response.setContentType("application/json");
 		
@@ -102,9 +104,7 @@ public class TaskServlet extends HttpServlet {
 			String token = new BigInteger(130, sr).toString(32);
 			
 			Task task = DatabaseService.getInstance().insertTask(token);
-			DatabaseService.getInstance().insertParameter(algorithm, evals, runs, objectiveOpt, task.getId());
-			Runnable worker = new WorkerThread("DOCKING", task.getId(), algorithm, runs, evals, objectiveOpt);
-			ThreadPoolService.getInstance().execute(worker);
+			DatabaseService.getInstance().insertParameter(algorithm, evals, popSize, runs, objectiveOpt, task.getId());
 			
 			Gson gson = new Gson();
 			TaskResponse objResp
@@ -116,6 +116,9 @@ public class TaskServlet extends HttpServlet {
 			PrintWriter out = response.getWriter();
 			out.print(json);
 			out.flush();
+			
+			Runnable worker = new WorkerThread("DOCKING", task.getId(), algorithm, runs, evals, objectiveOpt);
+			ThreadPoolService.getInstance().execute(worker);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

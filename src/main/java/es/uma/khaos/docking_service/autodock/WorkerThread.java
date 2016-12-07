@@ -46,7 +46,7 @@ public class WorkerThread implements Runnable {
 		try {
 			System.out.println(Thread.currentThread().getName()+" Start. ID = "+id);
 			DatabaseService.getInstance().startTask(id);
-			//processCommand();
+			processCommand();
 			DatabaseService.getInstance().finishTask(id);
 			System.out.println(Thread.currentThread().getName()+" End.");
 		} catch (Exception e) {
@@ -87,7 +87,7 @@ public class WorkerThread implements Runnable {
 				AUTODOCK_EXECUTABLE,
 				TEST_FILE_DPF,
 				outputFile);
-		executeCommand(command, new File(workDir));
+		if (!"".equals(Constants.DIR_AUTODOCK)) executeCommand(command, new File(workDir));
 		
 		// PROCESAMOS RESULTADOS
 		
@@ -140,6 +140,7 @@ public class WorkerThread implements Runnable {
 	}
 	
 	private void formatDPF(File inputFile, File outputFile) throws DpfWriteException, DpfNotFoundException {
+		System.out.println(outputFile.getAbsolutePath());
 		DPFGenerator dpfGen = new DPFGenerator(inputFile, outputFile, algorithm);
 		dpfGen.setNumEvals(evals);
 		dpfGen.setNumRuns(runs);
