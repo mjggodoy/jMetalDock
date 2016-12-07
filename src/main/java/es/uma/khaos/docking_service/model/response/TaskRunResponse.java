@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 public class TaskRunResponse {
 	
-	public int id;
-	public String finalBindingEnergy;
-	public ArrayList<String> objectives;
-	public int execution_task_id;
+	private int id;
+	private String finalBindingEnergy;
+	private ArrayList<String> objectives;
+	private int execution_task_id;
 	
 	
 	public TaskRunResponse(int id, String finalBindingEnergy,

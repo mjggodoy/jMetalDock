@@ -2,22 +2,13 @@ package es.uma.khaos.docking_service.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.google.gson.Gson;
-
-import es.uma.khaos.docking_service.exception.DatabaseException;
-import es.uma.khaos.docking_service.model.Execution;
 import es.uma.khaos.docking_service.model.Result;
-import es.uma.khaos.docking_service.model.Task;
-import es.uma.khaos.docking_service.model.response.TaskResponse;
 import es.uma.khaos.docking_service.model.response.TaskRunResponse;
-import es.uma.khaos.docking_service.properties.Constants;
 import es.uma.khaos.docking_service.service.DatabaseService;
 
 /**
@@ -56,12 +47,15 @@ public class RunTaskServlet extends HttpServlet {
 		
 		response.setContentType("application/json");
 		
-		Gson gson = new Gson();
-		PrintWriter out = response.getWriter();
-		out.print(gson.toJson(taskRunResponse));
-		out.flush();
+		
+		if(taskRunResponse!=null){
 			
-    
+			Gson gson = new Gson();
+			PrintWriter out = response.getWriter();
+			out.print(gson.toJson(taskRunResponse));
+			out.flush();
+			
+		}
     }
     
 		

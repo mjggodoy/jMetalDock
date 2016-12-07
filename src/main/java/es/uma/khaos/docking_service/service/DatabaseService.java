@@ -159,7 +159,7 @@ public final class DatabaseService {
 		}
 	}
 
-	//TODO: Tratar las excepciones en todos los métodos como aquí
+	//TODO: Tratar las excepciones en todos los mï¿½todos como aquï¿½
 	public Task getTask(int id) throws DatabaseException {
 
 		Task task = null;
@@ -197,12 +197,47 @@ public final class DatabaseService {
 
 	}
 	
-	public void startTask(int id) throws Exception {
-		this.updateTaskState(id, RUNNING_STATE);
-	}
+	
+	
+	public Task getTaskParameter(int id) throws DatabaseException {
 
-	public void finishTask(int id) throws Exception {
-		this.updateTaskState(id, FINISHED_STATE);
+		Task task = null;
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		int count=0;
+
+
+		try {
+
+			conn = openConnection();
+			stmt = conn.prepareStatement("select * from task a, parameters_set b where b.task_id =? and a.id = b.task_id;");
+			stmt.setInt(1, id);
+
+			rs = stmt.executeQuery();
+
+			if (rs.next()) {
+				
+				Parameter p = new Parameter(rs.getInt("id"), rs.getString("algorithm"), rs.getInt("evaluations"), rs.getInt("population_size"), rs.getInt("runs"), rs.getInt("objective"), rs.getInt("task_id"));
+				task = new Task(rs.getInt("id"), rs.getString("hash"), rs.getString("state"), p);
+			}
+
+		} catch (SQLException e) {
+			throw new DatabaseException(e);
+		} catch (Exception e) {
+			throw new DatabaseException(e);
+		} finally {
+			try {
+				if (rs != null) rs.close();
+				if (stmt != null) stmt.close();
+				if (conn != null) conn.close();
+			} catch (SQLException e) {
+				throw new DatabaseException(e);
+			}
+		}
+
+		return task;
+
 	}
 	
 	public void finishTaskWithError(int id) throws Exception {
@@ -224,7 +259,7 @@ public final class DatabaseService {
 
 			conn = openConnection();
 			stmt = conn
-					.prepareStatement("select * from parameter where id=?");
+					.prepareStatement("select * from parameters_set where id=?");
 			stmt.setInt(1, id);
 
 			rs = stmt.executeQuery();
@@ -234,7 +269,7 @@ public final class DatabaseService {
 				id = rs.getInt("id");
 				String algorithm = rs.getString("algorithm");
 				int evaluations = rs.getInt("evaluations");
-				int populationSize = rs.getInt("population_size"); 
+				int populationSize = rs.getInt("population_size");
 				int runs = rs.getInt("runs");
 				int objective = rs.getInt("objective_opt");
 				int task_id = rs.getInt("task_id");
@@ -292,6 +327,10 @@ public final class DatabaseService {
 		return parameter;
 	}
 	
+	/*
+	 * EXECUTION
+	*/
+	
 	
 	public Execution getExecution(int id) throws Exception{
 
@@ -333,6 +372,40 @@ public final class DatabaseService {
 		
 		
 	}
+	
+	public Execution insertExecution(int id, int task_id ) throws Exception {
+
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		Execution execution = null;
+
+		try {
+			conn = openConnection();
+			stmt = conn.prepareStatement("insert into execution values (?, ?)",
+					Statement.RETURN_GENERATED_KEYS);
+			stmt.setInt(1, id);
+			stmt.setInt(2, task_id);
+			stmt.execute();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DatabaseException();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (stmt != null)
+				stmt.close();
+			if (conn != null)
+				conn.close();
+		}
+		return execution;
+	}
+	
+	
+	/*
+	 * RESULT
+	*/
 	
 	
 	public Result getResult(int id) throws Exception{
@@ -382,34 +455,6 @@ public final class DatabaseService {
 		
 	}
 	
-	public Execution insertExecution(int id, int task_id ) throws Exception {
-
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		Execution execution = null;
-
-		try {
-			conn = openConnection();
-			stmt = conn.prepareStatement("insert into execution values (?, ?)",
-					Statement.RETURN_GENERATED_KEYS);
-			stmt.setInt(1, id);
-			stmt.setInt(2, task_id);
-			stmt.execute();
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DatabaseException();
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		} finally {
-			if (stmt != null)
-				stmt.close();
-			if (conn != null)
-				conn.close();
-		}
-		return execution;
-	}
 	
 
 	public Result insertResult(int id, String finalbinidngenergy, String objective1, String objective2, int execution_task_id ) throws Exception {
@@ -443,5 +488,15 @@ public final class DatabaseService {
 		}
 		return result;
 	}
+	
+	
+	public void startTask(int id) throws Exception {
+		this.updateTaskState(id, RUNNING_STATE);
+	}
+
+	public void finishTask(int id) throws Exception {
+		this.updateTaskState(id, FINISHED_STATE);
+	}
+	
 	
 }

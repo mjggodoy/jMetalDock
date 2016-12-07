@@ -38,10 +38,10 @@ public class Parameter {
 		return evaluation;
 	}
 	
-	
+
 	public int getPopulationSize() {
 		return populationSize;
-	} 
+	}
 
 
 	public int getRun() {
