@@ -27,11 +27,11 @@ public class WorkerThread implements Runnable {
 	private String algorithm;
 	private int runs;
 	private int evals;
-	//TODO: Añadir population size como parámetro
+	private int populationSize;
 	//TODO: Tratar este parámetro
 	private int objectiveOpt;
 	
-	public WorkerThread(String name, int id, String algorithm, int runs, int evals, int objectiveOpt) {
+	public WorkerThread(String name, int id, String algorithm, int runs, int populationSize, int evals, int objectiveOpt) {
 		this.name = name;
 		this.id = id;
 		this.algorithm = algorithm;
@@ -80,13 +80,13 @@ public class WorkerThread implements Runnable {
 		executeCommand(command);
 		
 		// PREPARAMOS DPF CON LOS PARÁMETROS
-		formatDPF(new File(workDir+TEST_FILE_DPF), new File(workDir+inputFile));
+		formatDPF(new File(workDir+"/"+TEST_FILE_DPF), new File(workDir+"/"+inputFile));
 		
 		// EJECUTAMOS AUTODOCK
 		command= String.format(COMMAND_TEMPLATE,
 				AUTODOCK_LOCATION,
 				AUTODOCK_EXECUTABLE,
-				TEST_FILE_DPF,
+				inputFile,
 				outputFile);
 		if (!"".equals(Constants.DIR_AUTODOCK)) executeCommand(command, new File(workDir));
 		
@@ -145,6 +145,7 @@ public class WorkerThread implements Runnable {
 		DPFGenerator dpfGen = new DPFGenerator(inputFile, outputFile, algorithm);
 		dpfGen.setNumEvals(evals);
 		dpfGen.setNumRuns(runs);
+		dpfGen.setPopulationSize(populationSize);
 		System.out.println(objectiveOpt);
 		dpfGen.generate();
 	}

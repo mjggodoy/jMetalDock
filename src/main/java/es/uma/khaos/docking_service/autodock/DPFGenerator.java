@@ -28,6 +28,8 @@ public class DPFGenerator {
 	private final String JMETAL_RUNS_DPF_KEY = "jmetal_run";
 	
 	public DPFGenerator(File originalFile, File outputFile, String algorithm) {
+		this.originalFile = originalFile;
+		this.outputFile = outputFile;
 		this.algorithm = algorithm;
 	}
 

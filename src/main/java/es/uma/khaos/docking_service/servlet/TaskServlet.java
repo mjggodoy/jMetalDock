@@ -117,7 +117,7 @@ public class TaskServlet extends HttpServlet {
 			out.print(json);
 			out.flush();
 			
-			Runnable worker = new WorkerThread("DOCKING", task.getId(), algorithm, runs, evals, objectiveOpt);
+			Runnable worker = new WorkerThread("DOCKING", task.getId(), algorithm, runs, popSize, evals, objectiveOpt);
 			ThreadPoolService.getInstance().execute(worker);
 			
 		} catch (Exception e) {
