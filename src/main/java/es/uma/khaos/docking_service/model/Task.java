@@ -6,7 +6,7 @@ public class Task {
 	private String hash;
 	private String state;
 	//TODO: Hacer que los dos IDs no aparezcan en el JSON
-	private Parameter parameters;
+	private ParameterSet parameters;
 
 	public Task(int id, String hash, String state) {
 		super();
@@ -16,7 +16,7 @@ public class Task {
 	}
 	
 	public Task(int id, String hash, String state,
-			Parameter parameters) {
+			ParameterSet parameters) {
 		super();
 		this.id = id;
 		this.hash = hash;
@@ -36,11 +36,11 @@ public class Task {
 		return state;
 	}
 
-	public Parameter getParameters() {
+	public ParameterSet getParameters() {
 		return parameters;
 	}
 	
-	public void setParameters(Parameter parameters) {
+	public void setParameters(ParameterSet parameters) {
 		this.parameters = parameters;
 	}
 

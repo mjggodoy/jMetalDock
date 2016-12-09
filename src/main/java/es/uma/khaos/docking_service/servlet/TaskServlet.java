@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import es.uma.khaos.docking_service.exception.DatabaseException;
-import es.uma.khaos.docking_service.model.Parameter;
+import es.uma.khaos.docking_service.model.ParameterSet;
 import es.uma.khaos.docking_service.model.Task;
 import es.uma.khaos.docking_service.properties.Constants;
 import es.uma.khaos.docking_service.service.DatabaseService;
@@ -112,7 +112,7 @@ public class TaskServlet extends HttpServlet {
 				String token = new BigInteger(130, sr).toString(32);
 			
 				Task task = DatabaseService.getInstance().insertTask(token);
-				Parameter parameters = DatabaseService.getInstance().insertParameter(algorithm, evals, popSize, runs, objectiveOpt, task.getId());
+				ParameterSet parameters = DatabaseService.getInstance().insertParameter(algorithm, evals, popSize, runs, objectiveOpt, task.getId());
 			
 				Gson gson = new Gson();
 				task.setParameters(parameters);
