@@ -6,10 +6,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 
-import es.uma.khaos.docking_service.exception.PuaException;
+import es.uma.khaos.docking_service.exception.DlgParseException;
 import es.uma.khaos.docking_service.model.dlg.AutoDockSolution;
 import es.uma.khaos.docking_service.model.dlg.Conformation;
-import es.uma.khaos.docking_service.model.dlg.DLGResult;
+import es.uma.khaos.docking_service.model.dlg.result.DLGResult;
 import es.uma.khaos.docking_service.model.dlg.util.Scientific;
 
 
@@ -48,15 +48,15 @@ public abstract class DLGParser<T> {
 	 * DLGResult
 	 */
 	public DLGResult<T> readFile(String dlgFilePath) throws IOException,
-			PuaException {
+			DlgParseException {
 		return parseDLGFile(dlgFilePath);
 	}
 
 	protected abstract DLGResult<T> parseDLGFile(String dlgFilePath)
-			throws IOException, PuaException;
+			throws IOException, DlgParseException;
 
 	protected AutoDockSolution getSolution(BufferedReader br)
-			throws IOException, PuaException {
+			throws IOException, DlgParseException {
 		
 		String line = null;
 		Double totalEnergy = null;
@@ -83,10 +83,10 @@ public abstract class DLGParser<T> {
 		if ((solution.getTotalEnergy()==null)
 				|| (solution.getEnergy1()==null)
 				|| (solution.getEnergy2()==null)) {
-			throw new PuaException("AutoDockSolution energy values not found!");
+			throw new DlgParseException("AutoDockSolution energy values not found!");
 		}
 		if ((solution.getConformation()==null) || (solution.getConformation().getAtoms().size()==0)) {
-			throw new PuaException("AutoDockSolution does not have conformation!");
+			throw new DlgParseException("AutoDockSolution does not have conformation!");
 		}
 		return solution;
 	}
@@ -97,7 +97,7 @@ public abstract class DLGParser<T> {
 		return Double.valueOf(line);
 	}
 	
-	private Scientific getInhibitionConstant(String line, String prefix) throws PuaException {
+	private Scientific getInhibitionConstant(String line, String prefix) throws DlgParseException {
 		line = line.replace(prefix, "");
 		double ki;
 		int exp;
@@ -126,7 +126,7 @@ public abstract class DLGParser<T> {
 			ki = Double.valueOf(line);
 			exp = -24;
 		} else {
-			throw new PuaException("Unexpected DLG format: "
+			throw new DlgParseException("Unexpected DLG format: "
 					+ "Inhibition constant unrecognized\n"
 					+ "\t" + line);
 		}
@@ -134,7 +134,7 @@ public abstract class DLGParser<T> {
 	}
 
 	protected Conformation getConformation(BufferedReader br)
-			throws NumberFormatException, IOException, PuaException {
+			throws NumberFormatException, IOException, DlgParseException {
 		return new Conformation(br, Arrays.asList(prefixStartAtom),
 				prefixEndConformation);
 	}
@@ -146,7 +146,7 @@ public abstract class DLGParser<T> {
 	 * @return true (todos los valores son el mismo), false (caso contrario)
 	 */
 	public boolean checkSameValue3(String dlgFilePath, double value)
-			throws PuaException {
+			throws DlgParseException {
 
 		System.out.println("Checking value 3 (" + value + ") of " + dlgFilePath);
 
@@ -182,11 +182,11 @@ public abstract class DLGParser<T> {
 			}
 			br.close();
 		} catch (FileNotFoundException e) {
-			throw new PuaException("Fichero DLG (" + dlgFilePath
+			throw new DlgParseException("Fichero DLG (" + dlgFilePath
 					+ ") no encontrado.");
 		} catch (IOException e) {
 			e.printStackTrace();
-			throw new PuaException();
+			throw new DlgParseException();
 		}
 
 		if (res)

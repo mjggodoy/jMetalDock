@@ -1,6 +1,6 @@
 package es.uma.khaos.docking_service.model.dlg;
 
-import es.uma.khaos.docking_service.exception.PuaException;
+import es.uma.khaos.docking_service.exception.DlgParseException;
 import es.uma.khaos.docking_service.model.dlg.util.Scientific;
 
 
@@ -117,8 +117,8 @@ public class AutoDockSolution {
 		this.conformation = conformation;
 	}
 	
-	public void calculateRMSD(Reference reference) throws PuaException {
-		if (this.rmsd!=null) throw new PuaException("RMSD ya calculado.");
+	public void calculateRMSD(Reference reference) throws DlgParseException {
+		if (this.rmsd!=null) throw new DlgParseException("RMSD ya calculado.");
 		this.rmsd = this.conformation.calculateRmsd(reference);
 	}
 

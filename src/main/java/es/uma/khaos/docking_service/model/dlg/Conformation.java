@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
-import es.uma.khaos.docking_service.exception.PuaException;
+import es.uma.khaos.docking_service.exception.DlgParseException;
 
 public class Conformation {
 
@@ -20,12 +20,12 @@ public class Conformation {
 		this.atoms = atoms;
 	}
 
-	public Conformation(File file) throws PuaException {
+	public Conformation(File file) throws DlgParseException {
 		this.atoms = readAtomsFromFile(file);
 	}
 
 	public Conformation(BufferedReader br, List<String> startPrefixes, String endPrefix)
-			throws PuaException {
+			throws DlgParseException {
 		this.atoms = readAtomsFromReader(br, startPrefixes, endPrefix);
 	}
 
@@ -37,7 +37,7 @@ public class Conformation {
 		this.atoms = atoms;
 	}
 
-	protected List<Atom> readAtomsFromFile(File file) throws PuaException {
+	protected List<Atom> readAtomsFromFile(File file) throws DlgParseException {
 		List<Atom> atoms = new ArrayList<Atom>();
 		BufferedReader br;
 		try {
@@ -54,17 +54,17 @@ public class Conformation {
 			br.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			throw new PuaException("Fichero no encontrado: "+file.getAbsolutePath());
+			throw new DlgParseException("Fichero no encontrado: "+file.getAbsolutePath());
 		} catch (IOException e) {
 			e.printStackTrace();
-			throw new PuaException("Fallo al leer el fichero: "+file.getAbsolutePath());
+			throw new DlgParseException("Fallo al leer el fichero: "+file.getAbsolutePath());
 		}
 		
 		return atoms;
 	}
 
 	protected List<Atom> readAtomsFromReader(BufferedReader br,
-			List<String> startPrefixes, String endPrefix) throws PuaException {
+			List<String> startPrefixes, String endPrefix) throws DlgParseException {
 		List<Atom> atoms = new ArrayList<Atom>();
 		String line = "", line2 = "";
 		int atomsCount = 0;
@@ -81,7 +81,7 @@ public class Conformation {
 						int index = Integer.parseInt(line2.substring(8, 11).trim());
 						if (atomsCount != index) {
 							br.close();
-							throw new PuaException(
+							throw new DlgParseException(
 									"Formato de fichero no reconocido\n" + "Line: "
 											+ line + "\n" + "Expected "
 											+ atomsCount + " but found " + index);
@@ -100,17 +100,17 @@ public class Conformation {
 				}
 			}
 		} catch (NumberFormatException e) {
-			throw new PuaException("Error en línea leyendo atomo\n"
+			throw new DlgParseException("Error en línea leyendo atomo\n"
 					+ line);
 		} catch (NoSuchElementException e) {
-			throw new PuaException("Error en línea leyendo atomo\n"
+			throw new DlgParseException("Error en línea leyendo atomo\n"
 					+ line);
 		} catch (IOException e) {
 			e.printStackTrace();
-			throw new PuaException("Fallo al leer Conformation de fichero.");
+			throw new DlgParseException("Fallo al leer Conformation de fichero.");
 		}
 		if (atoms.size() != atomsCount) {
-			throw new PuaException("Formato de fichero no reconocido");
+			throw new DlgParseException("Formato de fichero no reconocido");
 		}
 		return atoms;
 	}
@@ -123,15 +123,15 @@ public class Conformation {
 		return res;
 	}
 
-	public double calculateRmsd(Reference reference) throws PuaException {
+	public double calculateRmsd(Reference reference) throws DlgParseException {
 		return this.calculateRmsd(reference, true);
 	}
 
 	public double calculateRmsd(Reference reference, boolean symmetryFlag)
-			throws PuaException {
+			throws DlgParseException {
 		double sqrSum = 0.0;
 		if (this.atoms.size() != reference.getAtoms().size()) {
-			throw new PuaException(
+			throw new DlgParseException(
 					"Conformaciones con diferente número de átomos. Reference (" +
 					reference.getAtoms().size() + ") =/= Conformation (" +
 					this.atoms.size() + ")");

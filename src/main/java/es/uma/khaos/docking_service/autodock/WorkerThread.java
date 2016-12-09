@@ -5,9 +5,15 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import es.uma.khaos.docking_service.autodock.dlg.DLGMonoParser;
+import es.uma.khaos.docking_service.autodock.dlg.DLGParser;
 import es.uma.khaos.docking_service.exception.CommandExecutionException;
+import es.uma.khaos.docking_service.exception.DlgNotFoundException;
+import es.uma.khaos.docking_service.exception.DlgParseException;
 import es.uma.khaos.docking_service.exception.DpfNotFoundException;
 import es.uma.khaos.docking_service.exception.DpfWriteException;
+import es.uma.khaos.docking_service.model.dlg.AutoDockSolution;
+import es.uma.khaos.docking_service.model.dlg.result.DLGResult;
 import es.uma.khaos.docking_service.properties.Constants;
 import es.uma.khaos.docking_service.service.DatabaseService;
 
@@ -92,6 +98,7 @@ public class WorkerThread implements Runnable {
 		if (!"".equals(Constants.DIR_AUTODOCK)) executeCommand(command, new File(workDir));
 		
 		// PROCESAMOS RESULTADOS
+		readDLG(workDir+"/"+outputFile);
 		
 		// BORRAMOS CARPETA?
 		
@@ -149,6 +156,22 @@ public class WorkerThread implements Runnable {
 		dpfGen.setPopulationSize(populationSize);
 		System.out.println(objectiveOpt);
 		dpfGen.generate();
+	}
+	
+	private void readDLG(String dlgFile) throws DlgParseException, DlgNotFoundException {
+		DLGParser parser;
+		if (objectiveOpt==0) {
+			parser = new DLGMonoParser();
+			try {
+				DLGResult<AutoDockSolution> dlgResult = parser.readFile(dlgFile);
+				for (AutoDockSolution sol : dlgResult) {
+					DatabaseService.getInstance();
+				}
+			} catch (IOException e) {
+				throw new DlgNotFoundException(e);
+			}
+			
+		}
 	}
 	
 	@Override
