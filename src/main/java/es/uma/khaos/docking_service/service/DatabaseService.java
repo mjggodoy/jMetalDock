@@ -40,7 +40,7 @@ public final class DatabaseService {
 	private static DatabaseService instance;
 	private Session jschSession = null;
 	
-	public DatabaseService() {
+	private DatabaseService() {
 		if (!SSH_HOST.isEmpty()) {
 			Properties config = new Properties();
 	        JSch jsch = new JSch();
@@ -429,7 +429,7 @@ public final class DatabaseService {
 			if (rs.next()) {
 
 				id = rs.getInt("id");
-				String finalBindingEnergy = rs.getString("finalBindingEnergy");
+				int finalBindingEnergy = rs.getInt("finalBindingEnergy");
 				String objective1 = rs.getString("objective1");
 				String objective2 = rs.getString("objective2");
 				objectives.add(objective1);
