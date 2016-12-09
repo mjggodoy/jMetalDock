@@ -5,12 +5,12 @@ import java.util.ArrayList;
 public class TaskRunResponse {
 	
 	private int id;
-	private String finalBindingEnergy;
+	private int finalBindingEnergy;
 	private ArrayList<String> objectives;
 	private int execution_task_id;
 	
 	
-	public TaskRunResponse(int id, String finalBindingEnergy,
+	public TaskRunResponse(int id, int finalBindingEnergy,
 			ArrayList<String> objectives, int execution_task_id) {
 		super();
 		this.id = id;
@@ -26,7 +26,7 @@ public class TaskRunResponse {
 	}
 
 
-	public String getFinalBindingEnergy() {
+	public int getFinalBindingEnergy() {
 		return finalBindingEnergy;
 	}
 

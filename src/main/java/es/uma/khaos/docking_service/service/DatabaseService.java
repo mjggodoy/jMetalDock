@@ -15,7 +15,7 @@ import com.jcraft.jsch.Session;
 
 import es.uma.khaos.docking_service.exception.DatabaseException;
 import es.uma.khaos.docking_service.model.Execution;
-import es.uma.khaos.docking_service.model.Parameter;
+import es.uma.khaos.docking_service.model.ParameterSet;
 import es.uma.khaos.docking_service.model.Result;
 import es.uma.khaos.docking_service.model.Task;
 import es.uma.khaos.docking_service.properties.Constants;
@@ -40,7 +40,7 @@ public final class DatabaseService {
 	private static DatabaseService instance;
 	private Session jschSession = null;
 	
-	public DatabaseService() {
+	private DatabaseService() {
 		if (!SSH_HOST.isEmpty()) {
 			Properties config = new Properties();
 	        JSch jsch = new JSch();
@@ -115,7 +115,6 @@ public final class DatabaseService {
 			if (rs.next()) {
 				task = new Task(rs.getInt(1), hash, "sent");
 			}
-			rs.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -197,16 +196,12 @@ public final class DatabaseService {
 
 	}
 	
-	
-	
 	public Task getTaskParameter(int id) throws DatabaseException {
 
 		Task task = null;
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		int count=0;
-
 
 		try {
 
@@ -218,7 +213,7 @@ public final class DatabaseService {
 
 			if (rs.next()) {
 				
-				Parameter p = new Parameter(rs.getInt("id"), rs.getString("algorithm"), rs.getInt("evaluations"), rs.getInt("population_size"), rs.getInt("runs"), rs.getInt("objective"), rs.getInt("task_id"));
+				ParameterSet p = new ParameterSet(rs.getInt("id"), rs.getString("algorithm"), rs.getInt("evaluations"), rs.getInt("population_size"), rs.getInt("runs"), rs.getInt("objective"), rs.getInt("task_id"));
 				task = new Task(rs.getInt("id"), rs.getString("hash"), rs.getString("state"), p);
 			}
 
@@ -248,9 +243,9 @@ public final class DatabaseService {
 	 * PARAMETER
 	 */
 
-	public Parameter getParameter(int id) throws Exception {
+	public ParameterSet getParameter(int id) throws Exception {
 
-		Parameter parameter = null;
+		ParameterSet parameter = null;
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -273,7 +268,7 @@ public final class DatabaseService {
 				int runs = rs.getInt("runs");
 				int objective = rs.getInt("objective_opt");
 				int task_id = rs.getInt("task_id");
-				parameter = new Parameter(id, algorithm, evaluations, populationSize, runs, objective, task_id);
+				parameter = new ParameterSet(id, algorithm, evaluations, populationSize, runs, objective, task_id);
 				
 			}
 
@@ -292,11 +287,12 @@ public final class DatabaseService {
 
 	}
 	
-	public Parameter insertParameter(String algorithm, int evaluations, int populationSize, int runs, int objectiveOpt, int taskId ) throws Exception { 
+	public ParameterSet insertParameter(String algorithm, int evaluations, int populationSize, int runs, int objectiveOpt, int taskId ) throws Exception { 
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
-		Parameter parameter = null;
+		ParameterSet parameter = null;
+		ResultSet rs = null;
 		
 		String statement = "insert into parameters_set (algorithm, evaluations, population_size, runs, objective, task_id)"
 				+ " values (?, ?, ?, ?, ?, ?)"; 
@@ -311,6 +307,11 @@ public final class DatabaseService {
 			stmt.setInt(5, objectiveOpt);
 			stmt.setInt(6, taskId);
 			stmt.execute();
+			
+			rs = stmt.getGeneratedKeys();
+			if (rs.next()) {
+				parameter = new ParameterSet(rs.getInt(1), algorithm, evaluations, populationSize, runs, objectiveOpt, taskId);
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -319,6 +320,7 @@ public final class DatabaseService {
 			e.printStackTrace();
 			throw e;
 		} finally {
+			if (rs != null) rs.close();
 			if (stmt != null)
 				stmt.close();
 			if (conn != null)
@@ -429,7 +431,7 @@ public final class DatabaseService {
 			if (rs.next()) {
 
 				id = rs.getInt("id");
-				String finalBindingEnergy = rs.getString("finalBindingEnergy");
+				int finalBindingEnergy = rs.getInt("finalBindingEnergy");
 				String objective1 = rs.getString("objective1");
 				String objective2 = rs.getString("objective2");
 				objectives.add(objective1);

@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 
 import es.uma.khaos.docking_service.exception.DatabaseException;
+import es.uma.khaos.docking_service.model.ParameterSet;
 import es.uma.khaos.docking_service.model.Task;
-import es.uma.khaos.docking_service.model.response.TaskResponse;
 import es.uma.khaos.docking_service.properties.Constants;
 import es.uma.khaos.docking_service.service.DatabaseService;
 import es.uma.khaos.docking_service.service.ThreadPoolService;
@@ -40,7 +40,7 @@ public class TaskServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		int taskId = 0;
-		TaskResponse objResp = null;
+		Task task = null;
 		
 		String id = request.getParameter("id");
 		String token = request.getParameter("token");
@@ -54,12 +54,12 @@ public class TaskServlet extends HttpServlet {
 						String.format(Constants.RESPONSE_MANDATORY_PARAMETER_ERROR, "id"));
 			} else {
 				taskId = Integer.parseInt(id);
-				Task task = DatabaseService.getInstance().getTask(taskId);
+				task = DatabaseService.getInstance().getTaskParameter(taskId);
 				if (task==null || !task.getHash().equals(token)) {
 					response.sendError(HttpServletResponse.SC_FORBIDDEN, Constants.RESPONSE_TASK_MSG_UNALLOWED);
+					task = null;
 				} else {
 					response.setStatus(HttpServletResponse.SC_OK);
-					objResp = new TaskResponse(taskId, token, task.getState());
 				}
 			}
 			
@@ -72,10 +72,10 @@ public class TaskServlet extends HttpServlet {
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, Constants.RESPONSE_ERROR_DATABASE);
 		}
 		
-		if (objResp!=null) {
+		if (task!=null) {
 			Gson gson = new Gson();
 			PrintWriter out = response.getWriter();
-			out.print(gson.toJson(objResp));
+			out.print(gson.toJson(task));
 			out.flush();
 		}
 	}
@@ -100,26 +100,33 @@ public class TaskServlet extends HttpServlet {
 		response.setContentType("application/json");
 		
 		try {
-			Random sr = SecureRandom.getInstance("SHA1PRNG");
-			String token = new BigInteger(130, sr).toString(32);
 			
-			Task task = DatabaseService.getInstance().insertTask(token);
-			DatabaseService.getInstance().insertParameter(algorithm, evals, popSize, runs, objectiveOpt, task.getId());
+			if (algorithm==null) {
+				
+				response.sendError(
+						HttpServletResponse.SC_BAD_REQUEST,
+						String.format(Constants.RESPONSE_MANDATORY_PARAMETER_ERROR, "algorithm"));
+			}else{
 			
-			Gson gson = new Gson();
-			TaskResponse objResp
-				= new TaskResponse(
-						task.getId(), token, task.getState());
-			String json = gson.toJson(objResp);
+				Random sr = SecureRandom.getInstance("SHA1PRNG");
+				String token = new BigInteger(130, sr).toString(32);
 			
-			response.setStatus(HttpServletResponse.SC_CREATED);
-			PrintWriter out = response.getWriter();
-			out.print(json);
-			out.flush();
+				Task task = DatabaseService.getInstance().insertTask(token);
+				ParameterSet parameters = DatabaseService.getInstance().insertParameter(algorithm, evals, popSize, runs, objectiveOpt, task.getId());
 			
-			Runnable worker = new WorkerThread("DOCKING", task.getId(), algorithm, runs, popSize, evals, objectiveOpt);
-			ThreadPoolService.getInstance().execute(worker);
+				Gson gson = new Gson();
+				task.setParameters(parameters);
+				String json = gson.toJson(task);
 			
+				response.setStatus(HttpServletResponse.SC_CREATED);
+				PrintWriter out = response.getWriter();
+				out.print(json);
+				out.flush();
+				Runnable worker = new WorkerThread("DOCKING", task.getId(), algorithm, runs, popSize, evals, objectiveOpt);
+				ThreadPoolService.getInstance().execute(worker);
+			
+			}
+				
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, Constants.RESPONSE_ERROR_DATABASE);
