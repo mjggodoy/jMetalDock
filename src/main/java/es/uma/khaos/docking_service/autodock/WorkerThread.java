@@ -37,6 +37,7 @@ public class WorkerThread implements Runnable {
 		this.algorithm = algorithm;
 		this.runs = runs;
 		this.evals = evals;
+		this.populationSize = populationSize;
 		this.objectiveOpt = objectiveOpt;
 	}
 	

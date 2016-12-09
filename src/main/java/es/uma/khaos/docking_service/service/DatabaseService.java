@@ -298,7 +298,7 @@ public final class DatabaseService {
 		PreparedStatement stmt = null;
 		Parameter parameter = null;
 		
-		String statement = "insert into parameter (algorithm, evaluations, population_size, runs, objective, task_id)"
+		String statement = "insert into parameters_set (algorithm, evaluations, population_size, runs, objective, task_id)"
 				+ " values (?, ?, ?, ?, ?, ?)"; 
 
 		try {
