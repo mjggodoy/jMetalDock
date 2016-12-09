@@ -54,12 +54,12 @@ public class TaskServlet extends HttpServlet {
 						String.format(Constants.RESPONSE_MANDATORY_PARAMETER_ERROR, "id"));
 			} else {
 				taskId = Integer.parseInt(id);
-				Task task = DatabaseService.getInstance().getTask(taskId);
+				Task task = DatabaseService.getInstance().getTaskParameter(taskId);
 				if (task==null || !task.getHash().equals(token)) {
 					response.sendError(HttpServletResponse.SC_FORBIDDEN, Constants.RESPONSE_TASK_MSG_UNALLOWED);
 				} else {
 					response.setStatus(HttpServletResponse.SC_OK);
-					objResp = new TaskResponse(taskId, token, task.getState());
+					objResp = new TaskResponse(taskId, token, task.getState(), task.getParameter());
 				}
 			}
 			
@@ -100,26 +100,33 @@ public class TaskServlet extends HttpServlet {
 		response.setContentType("application/json");
 		
 		try {
-			Random sr = SecureRandom.getInstance("SHA1PRNG");
-			String token = new BigInteger(130, sr).toString(32);
 			
-			Task task = DatabaseService.getInstance().insertTask(token);
-			DatabaseService.getInstance().insertParameter(algorithm, evals, popSize, runs, objectiveOpt, task.getId());
+			if (algorithm==null) {
+				
+				response.sendError(
+						HttpServletResponse.SC_BAD_REQUEST,
+						String.format(Constants.RESPONSE_MANDATORY_PARAMETER_ERROR, "algorithm"));
+			}else{
 			
-			Gson gson = new Gson();
-			TaskResponse objResp
-				= new TaskResponse(
-						task.getId(), token, task.getState());
-			String json = gson.toJson(objResp);
+				Random sr = SecureRandom.getInstance("SHA1PRNG");
+				String token = new BigInteger(130, sr).toString(32);
 			
-			response.setStatus(HttpServletResponse.SC_CREATED);
-			PrintWriter out = response.getWriter();
-			out.print(json);
-			out.flush();
+				Task task = DatabaseService.getInstance().insertTask(token);
+				DatabaseService.getInstance().insertParameter(algorithm, evals, popSize, runs, objectiveOpt, task.getId());
 			
-			Runnable worker = new WorkerThread("DOCKING", task.getId(), algorithm, runs, popSize, evals, objectiveOpt);
-			ThreadPoolService.getInstance().execute(worker);
+				Gson gson = new Gson();
+				TaskResponse objResp= new TaskResponse(task.getId(), token, task.getState(), task.getParameter());
+				String json = gson.toJson(objResp);
 			
+				response.setStatus(HttpServletResponse.SC_CREATED);
+				PrintWriter out = response.getWriter();
+				out.print(json);
+				out.flush();
+				Runnable worker = new WorkerThread("DOCKING", task.getId(), algorithm, runs, popSize, evals, objectiveOpt);
+				ThreadPoolService.getInstance().execute(worker);
+			
+			}
+				
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, Constants.RESPONSE_ERROR_DATABASE);
