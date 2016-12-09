@@ -115,7 +115,6 @@ public final class DatabaseService {
 			if (rs.next()) {
 				task = new Task(rs.getInt(1), hash, "sent");
 			}
-			rs.close();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -197,16 +196,12 @@ public final class DatabaseService {
 
 	}
 	
-	
-	
 	public Task getTaskParameter(int id) throws DatabaseException {
 
 		Task task = null;
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		int count=0;
-
 
 		try {
 
@@ -297,6 +292,7 @@ public final class DatabaseService {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		Parameter parameter = null;
+		ResultSet rs = null;
 		
 		String statement = "insert into parameters_set (algorithm, evaluations, population_size, runs, objective, task_id)"
 				+ " values (?, ?, ?, ?, ?, ?)"; 
@@ -311,6 +307,11 @@ public final class DatabaseService {
 			stmt.setInt(5, objectiveOpt);
 			stmt.setInt(6, taskId);
 			stmt.execute();
+			
+			rs = stmt.getGeneratedKeys();
+			if (rs.next()) {
+				parameter = new Parameter(rs.getInt(1), algorithm, evaluations, populationSize, runs, objectiveOpt, taskId);
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -319,6 +320,7 @@ public final class DatabaseService {
 			e.printStackTrace();
 			throw e;
 		} finally {
+			if (rs != null) rs.close();
 			if (stmt != null)
 				stmt.close();
 			if (conn != null)
