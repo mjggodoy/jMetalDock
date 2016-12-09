@@ -6,11 +6,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 
-import org.pua.autodock.bean.AutoDockSolution;
-import org.pua.autodock.bean.DLGResult;
-import org.pua.autodock.exception.PuaException;
-import org.pua.autodock.rmsd.bean.Conformation;
-import org.pua.autodock.util.Scientific;
+import es.uma.khaos.docking_service.exception.PuaException;
+import es.uma.khaos.docking_service.model.dlg.AutoDockSolution;
+import es.uma.khaos.docking_service.model.dlg.Conformation;
+import es.uma.khaos.docking_service.model.dlg.DLGResult;
+import es.uma.khaos.docking_service.model.dlg.util.Scientific;
+
 
 /**
  * Parseador general de ficheros DLG que recoge y almacena todos los resultados.

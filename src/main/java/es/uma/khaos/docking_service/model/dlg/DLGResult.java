@@ -2,8 +2,7 @@ package es.uma.khaos.docking_service.model.dlg;
 
 import java.util.List;
 
-import org.pua.autodock.exception.PuaException;
-import org.pua.autodock.rmsd.bean.Reference;
+import es.uma.khaos.docking_service.exception.PuaException;
 
 public interface DLGResult<T> extends List<T> {
 	
