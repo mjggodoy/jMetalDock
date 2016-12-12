@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.mysql.jdbc.StringUtils;
 
 import es.uma.khaos.docking_service.exception.DatabaseException;
 import es.uma.khaos.docking_service.model.ParameterSet;
@@ -101,7 +102,9 @@ public class TaskServlet extends HttpServlet {
 		
 		try {
 			
-			if (algorithm==null) {
+			if(StringUtils.isNullOrEmpty(algorithm)) {
+				
+				System.out.println("XUXA");
 				
 				response.sendError(
 						HttpServletResponse.SC_BAD_REQUEST,
