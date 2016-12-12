@@ -8,7 +8,7 @@ public class Result {
 	public int id;
 	public float finalBindingEnergy;
 	public ArrayList<String> objectives;
-	public int executionTaskId;
+	public int executionId;
 	
 	public Result(int id) {
 		super();
@@ -21,7 +21,7 @@ public class Result {
 		this.id = id;
 		this.finalBindingEnergy = finalBindingEnergy;
 		this.objectives = objectives;
-		this.executionTaskId = executionTaskId;
+		this.executionId = executionTaskId;
 	}
 
 
@@ -40,7 +40,7 @@ public class Result {
 
 
 	public int getExecutionTaskId() {
-		return executionTaskId;
+		return executionId;
 	}
 
 }

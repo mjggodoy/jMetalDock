@@ -467,7 +467,7 @@ public final class DatabaseService {
 	
 	
 
-	public Result insertResult(float finalBindingEnergy, String objective1, String objective2, int execution_task_id ) throws Exception {
+	public Result insertResult(float finalBindingEnergy, String objective1, String objective2, int execution_id ) throws Exception {
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -485,13 +485,13 @@ public final class DatabaseService {
 			stmt.setFloat(1, finalBindingEnergy);
 			stmt.setString(2, objective1);
 			stmt.setString(3, objective2);
-			stmt.setInt(4, execution_task_id);
+			stmt.setInt(4, execution_id);
 			stmt.execute();
 			rs = stmt.getGeneratedKeys();
 
 			if (rs.next()) {
 				
-				result = new Result(rs.getInt(1), finalBindingEnergy, objectives, execution_task_id);
+				result = new Result(rs.getInt(1), finalBindingEnergy, objectives, execution_id);
 			}
 
 		} catch (SQLException e) {
