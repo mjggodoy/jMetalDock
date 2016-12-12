@@ -334,7 +334,7 @@ public final class DatabaseService {
 	*/
 	
 	
-	public Execution getExecution(int id) throws Exception{
+	public Execution getExecutionById(int id) throws Exception{
 
 		Execution execution = null;
 		Connection conn = null;
@@ -346,6 +346,48 @@ public final class DatabaseService {
 			conn = openConnection();
 			stmt = conn
 					.prepareStatement("select * from execution where id=?");
+			stmt.setInt(1, id);
+
+			rs = stmt.executeQuery();
+
+			if (rs.next()) {
+
+				id = rs.getInt("id");
+				int task_id = rs.getInt("task_id");
+				int run = rs.getInt("run");
+				execution = new Execution(id, task_id, run);
+	
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (rs != null)
+				rs.close();
+			if (stmt != null)
+				stmt.close();
+			if (conn != null)
+				conn.close();
+		}
+	
+		return execution;
+		
+		
+	}
+	
+	public Execution getExecutionByTaskId(int id) throws Exception{
+
+		Execution execution = null;
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			
+			conn = openConnection();
+			stmt = conn
+					.prepareStatement("select * from execution where task_id=?");
 			stmt.setInt(1, id);
 
 			rs = stmt.executeQuery();
@@ -439,13 +481,13 @@ public final class DatabaseService {
 			if (rs.next()) {
 
 				id = rs.getInt("id");
-				int finalBindingEnergy = rs.getInt("finalBindingEnergy");
+				int finalBindingEnergy = rs.getInt("final_binding_energy");
 				String objective1 = rs.getString("objective1");
 				String objective2 = rs.getString("objective2");
 				objectives.add(objective1);
 				objectives.add(objective2);
-				int executionTaskId = rs.getInt("execution_task_id");
-				result = new Result(id,finalBindingEnergy, objectives, executionTaskId);
+				int executionId = rs.getInt("execution_id");
+				result = new Result(id,finalBindingEnergy, objectives, executionId);
 			
 			}
 
@@ -518,5 +560,11 @@ public final class DatabaseService {
 		this.updateTaskState(id, FINISHED_STATE);
 	}
 	
+	public static void main(String[] args) throws Exception {
+		int id=1;
+		Result result = DatabaseService.getInstance().getResult(id);
+		System.out.println(result.getFinalBindingEnergy());
+		
+	}
 	
 }

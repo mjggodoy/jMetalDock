@@ -131,13 +131,10 @@ public class TaskServlet extends HttpServlet {
 			
 				
 				}else{
-					
-					System.out.println("ERROR DE VALORES MÍNIMOS");
-					
+										
 					response.sendError(
 							HttpServletResponse.SC_BAD_REQUEST,
-							String.format(Constants.RESPONSE_MIN_MAX_VALUES, "algorithm"));
-						
+							String.format(Constants.RESPONSE_MIN_MAX_VALUES, "algorithm"));		
 				}
 			}
 				
