@@ -307,8 +307,8 @@ public final class DatabaseService {
 			stmt.setInt(5, objectiveOpt);
 			stmt.setInt(6, taskId);
 			stmt.execute();
-			
 			rs = stmt.getGeneratedKeys();
+			
 			if (rs.next()) {
 				parameter = new ParameterSet(rs.getInt(1), algorithm, evaluations, populationSize, runs, objectiveOpt, taskId);
 			}
@@ -354,7 +354,8 @@ public final class DatabaseService {
 
 				id = rs.getInt("id");
 				int task_id = rs.getInt("task_id");
-				execution = new Execution(id, task_id);
+				int run = rs.getInt("run");
+				execution = new Execution(id, task_id, run);
 	
 			}
 
@@ -375,19 +376,26 @@ public final class DatabaseService {
 		
 	}
 	
-	public Execution insertExecution(int id, int task_id ) throws Exception {
+	public Execution insertExecution(int task_id, int run) throws Exception {
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
+		ResultSet rs = null;
 		Execution execution = null;
 
 		try {
 			conn = openConnection();
-			stmt = conn.prepareStatement("insert into execution values (?, ?)",
+			stmt = conn.prepareStatement("insert into execution values (?,?)",
 					Statement.RETURN_GENERATED_KEYS);
-			stmt.setInt(1, id);
-			stmt.setInt(2, task_id);
+			stmt.setInt(1, task_id);
+			stmt.setInt(2, run);
 			stmt.execute();
+			rs = stmt.getGeneratedKeys();
+			
+			if (rs.next()) {
+				
+				execution = new Execution(rs.getInt(1), task_id, run);
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -438,7 +446,7 @@ public final class DatabaseService {
 				objectives.add(objective2);
 				int executionTaskId = rs.getInt("execution_task_id");
 				result = new Result(id,finalBindingEnergy, objectives, executionTaskId);
-
+			
 			}
 
 		} catch (Exception e) {
@@ -459,22 +467,32 @@ public final class DatabaseService {
 	
 	
 
-	public Result insertResult(int id, String finalbinidngenergy, String objective1, String objective2, int execution_task_id ) throws Exception {
+	public Result insertResult(float finalBindingEnergy, String objective1, String objective2, int execution_task_id ) throws Exception {
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		Result result = null;
+		ResultSet rs = null;
+		ArrayList<String> objectives = new ArrayList<String>();
+		objectives.add(objective1);
+		objectives.add(objective2);
 
 		try {
+			
 			conn = openConnection();
-			stmt = conn.prepareStatement("insert into result values (?, ?, ?, ?, ?)",
+			stmt = conn.prepareStatement("insert into result values (?, ?, ?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
-			stmt.setInt(1, id);
-			stmt.setString(2, finalbinidngenergy);
-			stmt.setString(3, objective1);
-			stmt.setString(4, objective2);
-			stmt.setInt(5, execution_task_id);
+			stmt.setFloat(1, finalBindingEnergy);
+			stmt.setString(2, objective1);
+			stmt.setString(3, objective2);
+			stmt.setInt(4, execution_task_id);
 			stmt.execute();
+			rs = stmt.getGeneratedKeys();
+
+			if (rs.next()) {
+				
+				result = new Result(rs.getInt(1), finalBindingEnergy, objectives, execution_task_id);
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();

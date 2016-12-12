@@ -6,18 +6,16 @@ public class Result {
 	
 	
 	public int id;
-	public int finalBindingEnergy;
+	public float finalBindingEnergy;
 	public ArrayList<String> objectives;
 	public int executionTaskId;
 	
-
-
 	public Result(int id) {
 		super();
 		this.id = id;
 	}
 
-	public Result(int id, int finalBindingEnergy,
+	public Result(int id, float finalBindingEnergy,
 			ArrayList<String> objectives, int executionTaskId) {
 		super();
 		this.id = id;
@@ -31,11 +29,9 @@ public class Result {
 		return id;
 	}
 
-
-	public int getFinalBindingEnergy() {
+	public float getFinalBindingEnergy() {
 		return finalBindingEnergy;
 	}
-
 
 
 	public ArrayList<String> getObjectives() {

@@ -2,16 +2,12 @@ package es.uma.khaos.docking_service.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.google.gson.Gson;
-
 import es.uma.khaos.docking_service.model.Result;
-import es.uma.khaos.docking_service.model.response.TaskRunResponse;
 import es.uma.khaos.docking_service.properties.Constants;
 import es.uma.khaos.docking_service.service.DatabaseService;
 
@@ -36,7 +32,7 @@ public class RunTaskServlet extends HttpServlet {
 			 
     	
 		int idExecution;
-    	TaskRunResponse taskRunResponse = null;   
+    	Result taskRunResponse = null;   
 		String id = request.getParameter("id");
 		Result result = null;
 		
@@ -52,7 +48,7 @@ public class RunTaskServlet extends HttpServlet {
 				
 				idExecution = Integer.parseInt(id);
 				result = DatabaseService.getInstance().getResult(idExecution);
-				taskRunResponse = new TaskRunResponse(idExecution, result.getFinalBindingEnergy(),result.getObjectives(), result.getExecutionTaskId());
+				taskRunResponse = new Result(idExecution, result.getFinalBindingEnergy(),result.getObjectives(), result.getExecutionTaskId());
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
