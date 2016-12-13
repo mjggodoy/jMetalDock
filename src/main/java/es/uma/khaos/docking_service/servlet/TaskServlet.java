@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.mysql.jdbc.StringUtils;
 
 import es.uma.khaos.docking_service.exception.DatabaseException;
 import es.uma.khaos.docking_service.model.ParameterSet;
@@ -101,30 +102,40 @@ public class TaskServlet extends HttpServlet {
 		
 		try {
 			
-			if (algorithm==null) {
-				
+			if(StringUtils.isNullOrEmpty(algorithm)) {
+								
 				response.sendError(
 						HttpServletResponse.SC_BAD_REQUEST,
 						String.format(Constants.RESPONSE_MANDATORY_PARAMETER_ERROR, "algorithm"));
 			}else{
+				
+				if((runs>=Constants.DEFAULT_MIN_NUMBER_RUNS && runs<= Constants.DEFAULT_MAX_NUMBER_RUNS) && (evals>=Constants.DEFAULT_MIN_NUMBER_EVALUATIONS && evals<=Constants.DEFAULT_MAX_NUMBER_EVALUATIONS)
+						&& (popSize>=Constants.DEFAULT_MIN_NUMBER_POPULATION_SIZE && popSize<=Constants.DEFAULT_MAX_NUMBER_POPULATION_SIZE)){
 			
-				Random sr = SecureRandom.getInstance("SHA1PRNG");
-				String token = new BigInteger(130, sr).toString(32);
+					Random sr = SecureRandom.getInstance("SHA1PRNG");
+					String token = new BigInteger(130, sr).toString(32);
 			
-				Task task = DatabaseService.getInstance().insertTask(token);
-				ParameterSet parameters = DatabaseService.getInstance().insertParameter(algorithm, evals, popSize, runs, objectiveOpt, task.getId());
+					Task task = DatabaseService.getInstance().insertTask(token);
+					ParameterSet parameters = DatabaseService.getInstance().insertParameter(algorithm, evals, popSize, runs, objectiveOpt, task.getId());
 			
-				Gson gson = new Gson();
-				task.setParameters(parameters);
-				String json = gson.toJson(task);
+					Gson gson = new Gson();
+					task.setParameters(parameters);
+					String json = gson.toJson(task);
 			
-				response.setStatus(HttpServletResponse.SC_CREATED);
-				PrintWriter out = response.getWriter();
-				out.print(json);
-				out.flush();
-				Runnable worker = new WorkerThread("DOCKING", task.getId(), algorithm, runs, popSize, evals, objectiveOpt);
-				ThreadPoolService.getInstance().execute(worker);
+					response.setStatus(HttpServletResponse.SC_CREATED);
+					PrintWriter out = response.getWriter();
+					out.print(json);
+					out.flush();
+					Runnable worker = new WorkerThread("DOCKING", task.getId(), algorithm, runs, popSize, evals, objectiveOpt);
+					ThreadPoolService.getInstance().execute(worker);
 			
+				
+				}else{
+										
+					response.sendError(
+							HttpServletResponse.SC_BAD_REQUEST,
+							String.format(Constants.RESPONSE_MIN_MAX_VALUES, "algorithm"));		
+				}
 			}
 				
 		} catch (Exception e) {

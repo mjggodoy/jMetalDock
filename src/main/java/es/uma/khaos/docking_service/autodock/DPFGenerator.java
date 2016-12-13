@@ -18,9 +18,9 @@ public class DPFGenerator {
 	
 	private String algorithm;
 	
-	private int numEvals =  Constants.DEFAULT_NUMBER_EVALUATIONS;
-	private int numRuns = Constants.DEFAULT_NUMBER_RUNS;
-	private int populationSize = Constants.DEFAULT_NUMBER_POPULATION_SIZE;
+	private int numEvals =  Constants.DEFAULT_MIN_NUMBER_EVALUATIONS;
+	private int numRuns = Constants.DEFAULT_MIN_NUMBER_RUNS;
+	private int populationSize = Constants.DEFAULT_MIN_NUMBER_POPULATION_SIZE;
 	
 	private final String EVALS_DPF_KEY = "ga_num_evals";
 	private final String POPULATION_SIZE_DPF_KEY = "ga_pop_size";
