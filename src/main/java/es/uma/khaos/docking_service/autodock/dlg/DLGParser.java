@@ -59,9 +59,9 @@ public abstract class DLGParser<T> {
 			throws IOException, DlgParseException {
 		
 		String line = null;
-		Double totalEnergy = null;
-		Double energy1 = null;
-		Double energy2 = null;
+		Float totalEnergy = null;
+		Float energy1 = null;
+		Float energy2 = null;
 		Scientific ki = null;
 		Conformation conformation = null;
 		
@@ -91,10 +91,10 @@ public abstract class DLGParser<T> {
 		return solution;
 	}
 	
-	private double getEnergyComponent(String line, String prefix) {
+	private float getEnergyComponent(String line, String prefix) {
 		line = line.replace(prefix, "");
 		line = line.substring(0, line.indexOf(" kcal/mol"));
-		return Double.valueOf(line);
+		return Float.valueOf(line);
 	}
 	
 	private Scientific getInhibitionConstant(String line, String prefix) throws DlgParseException {

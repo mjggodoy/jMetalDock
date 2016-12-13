@@ -234,6 +234,14 @@ public final class DatabaseService {
 		return task;
 
 	}
+
+	public void startTask(int id) throws Exception {
+		this.updateTaskState(id, RUNNING_STATE);
+	}
+
+	public void finishTask(int id) throws Exception {
+		this.updateTaskState(id, FINISHED_STATE);
+	}
 	
 	public void finishTaskWithError(int id) throws Exception {
 		this.updateTaskState(id, ERROR_STATE);
@@ -333,7 +341,6 @@ public final class DatabaseService {
 	 * EXECUTION
 	*/
 	
-	
 	public Execution getExecutionById(int id) throws Exception{
 
 		Execution execution = null;
@@ -418,7 +425,7 @@ public final class DatabaseService {
 		
 	}
 	
-	public Execution insertExecution(int task_id, int run) throws Exception {
+	public Execution insertExecution(int task_id, int run) throws DatabaseException {
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -427,7 +434,7 @@ public final class DatabaseService {
 
 		try {
 			conn = openConnection();
-			stmt = conn.prepareStatement("insert into execution values (?,?)",
+			stmt = conn.prepareStatement("insert into execution (task_id, run) values (?,?)",
 					Statement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, task_id);
 			stmt.setInt(2, run);
@@ -440,16 +447,17 @@ public final class DatabaseService {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DatabaseException();
+			throw new DatabaseException(e);
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
+			throw new DatabaseException(e);
 		} finally {
-			if (stmt != null)
-				stmt.close();
-			if (conn != null)
-				conn.close();
+			try {
+				if (rs != null) rs.close();
+				if (stmt != null) stmt.close();
+				if (conn != null) conn.close();
+			} catch (SQLException e) {
+				throw new DatabaseException(e);
+			}
 		}
 		return execution;
 	}
@@ -509,7 +517,7 @@ public final class DatabaseService {
 	
 	
 
-	public Result insertResult(float finalBindingEnergy, String objective1, String objective2, int execution_id ) throws Exception {
+	public Result insertResult(float finalBindingEnergy, String objective1, String objective2, int execution_id ) throws DatabaseException {
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -522,7 +530,8 @@ public final class DatabaseService {
 		try {
 			
 			conn = openConnection();
-			stmt = conn.prepareStatement("insert into result values (?, ?, ?, ?)",
+			stmt = conn.prepareStatement("insert into result (final_binding_energy, objective1, objective2, execution_id) "
+					+ "values (?, ?, ?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
 			stmt.setFloat(1, finalBindingEnergy);
 			stmt.setString(2, objective1);
@@ -532,32 +541,23 @@ public final class DatabaseService {
 			rs = stmt.getGeneratedKeys();
 
 			if (rs.next()) {
-				
 				result = new Result(rs.getInt(1), finalBindingEnergy, objectives, execution_id);
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DatabaseException();
+			throw new DatabaseException(e);
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
+			throw new DatabaseException(e);
 		} finally {
-			if (stmt != null)
-				stmt.close();
-			if (conn != null)
-				conn.close();
+			try {
+				if (rs != null) rs.close();
+				if (stmt != null) stmt.close();
+				if (conn != null) conn.close();
+			} catch (SQLException e) {
+				throw new DatabaseException(e);
+			}
 		}
 		return result;
-	}
-	
-	
-	public void startTask(int id) throws Exception {
-		this.updateTaskState(id, RUNNING_STATE);
-	}
-
-	public void finishTask(int id) throws Exception {
-		this.updateTaskState(id, FINISHED_STATE);
 	}
 	
 	public static void main(String[] args) throws Exception {

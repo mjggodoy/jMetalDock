@@ -8,10 +8,12 @@ import java.io.InputStreamReader;
 import es.uma.khaos.docking_service.autodock.dlg.DLGMonoParser;
 import es.uma.khaos.docking_service.autodock.dlg.DLGParser;
 import es.uma.khaos.docking_service.exception.CommandExecutionException;
+import es.uma.khaos.docking_service.exception.DatabaseException;
 import es.uma.khaos.docking_service.exception.DlgNotFoundException;
 import es.uma.khaos.docking_service.exception.DlgParseException;
 import es.uma.khaos.docking_service.exception.DpfNotFoundException;
 import es.uma.khaos.docking_service.exception.DpfWriteException;
+import es.uma.khaos.docking_service.model.Execution;
 import es.uma.khaos.docking_service.model.dlg.AutoDockSolution;
 import es.uma.khaos.docking_service.model.dlg.result.DLGResult;
 import es.uma.khaos.docking_service.properties.Constants;
@@ -66,7 +68,7 @@ public class WorkerThread implements Runnable {
 		
 	}
 	
-	private void processCommand() throws DpfWriteException, DpfNotFoundException, CommandExecutionException {
+	private void processCommand() throws DpfWriteException, DpfNotFoundException, CommandExecutionException, DlgParseException, DlgNotFoundException, DatabaseException {
 		
 		String command;
 		
@@ -158,14 +160,17 @@ public class WorkerThread implements Runnable {
 		dpfGen.generate();
 	}
 	
-	private void readDLG(String dlgFile) throws DlgParseException, DlgNotFoundException {
-		DLGParser parser;
+	private void readDLG(String dlgFile) throws DlgParseException, DlgNotFoundException, DatabaseException {
+		DLGParser<AutoDockSolution> parser;
 		if (objectiveOpt==0) {
 			parser = new DLGMonoParser();
 			try {
 				DLGResult<AutoDockSolution> dlgResult = parser.readFile(dlgFile);
+				int run = 1;
 				for (AutoDockSolution sol : dlgResult) {
-					DatabaseService.getInstance();
+					Execution exec = DatabaseService.getInstance().insertExecution(id, run);
+					DatabaseService.getInstance().insertResult(sol.getTotalEnergy(), "Total Binding Energy", null, exec.getId());
+					run++;
 				}
 			} catch (IOException e) {
 				throw new DlgNotFoundException(e);
