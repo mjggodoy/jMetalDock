@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import com.jcraft.jsch.JSch;
@@ -376,9 +377,11 @@ public final class DatabaseService {
 		
 	}
 	
-	public Execution getExecutionByTaskId(int id) throws Exception{
+	public List<Execution> getExecutionByTaskId(int id) throws Exception{
 
 		Execution execution = null;
+		List<Execution> executionList = new ArrayList<Execution>();
+
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -389,15 +392,15 @@ public final class DatabaseService {
 			stmt = conn
 					.prepareStatement("select * from execution where task_id=?");
 			stmt.setInt(1, id);
-
 			rs = stmt.executeQuery();
 
-			if (rs.next()) {
+			while (rs.next()) {
 
 				id = rs.getInt("id");
 				int task_id = rs.getInt("task_id");
 				int run = rs.getInt("run");
 				execution = new Execution(id, task_id, run);
+				executionList.add(execution);
 	
 			}
 
@@ -413,11 +416,12 @@ public final class DatabaseService {
 				conn.close();
 		}
 	
-		return execution;
+		return executionList;
 		
 		
 	}
 	
+
 	public Execution insertExecution(int task_id, int run) throws Exception {
 
 		Connection conn = null;
@@ -475,7 +479,6 @@ public final class DatabaseService {
 			stmt = conn
 					.prepareStatement("select * from result where id=?");
 			stmt.setInt(1, id);
-
 			rs = stmt.executeQuery();
 
 			if (rs.next()) {
@@ -508,6 +511,100 @@ public final class DatabaseService {
 	}
 	
 	
+	public Result getResultByExecutionId(int executionId) throws Exception{
+		
+		Result result = null;
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		ArrayList<String> objectives = new ArrayList<String>();
+
+		
+		try {
+			
+			conn = openConnection();
+			stmt = conn
+					.prepareStatement("select * from result where execution_id=?");
+			stmt.setInt(1,executionId);
+			rs = stmt.executeQuery();
+
+			if (rs.next()) {
+
+				int id = rs.getInt("id");
+				int finalBindingEnergy = rs.getInt("final_binding_energy");
+				String objective1 = rs.getString("objective1");
+				String objective2 = rs.getString("objective2");
+				objectives.add(objective1);
+				objectives.add(objective2);
+				executionId = rs.getInt("execution_id");
+				result = new Result(id,finalBindingEnergy, objectives, executionId);
+			
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (rs != null)
+				rs.close();
+			if (stmt != null)
+				stmt.close();
+			if (conn != null)
+				conn.close();
+		}
+	
+		return result;
+		
+	}
+	
+	public Result getResultByTaskIdAndRun(int id, int run) throws Exception{
+
+		Result result = null;
+		ArrayList<String> objectives = new ArrayList<String>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			
+			conn = openConnection();
+			stmt = conn
+					.prepareStatement("select * from execution a, result b where task_id = ? and run = ? and a.id = b.execution_id;");
+			stmt.setInt(1, id);
+			stmt.setInt(2, run);
+			rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				
+				id = rs.getInt("id");
+				int finalBindingEnergy = rs.getInt("final_binding_energy");
+				String objective1 = rs.getString("objective1");
+				String objective2 = rs.getString("objective2");
+				objectives.add(objective1);
+				objectives.add(objective2);
+				int executionId = rs.getInt("execution_id");
+				result = new Result(id,finalBindingEnergy, objectives, executionId);		
+	
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (rs != null)
+				rs.close();
+			if (stmt != null)
+				stmt.close();
+			if (conn != null)
+				conn.close();
+		}
+	
+		return result;
+		
+		
+	}
+
+		
 
 	public Result insertResult(float finalBindingEnergy, String objective1, String objective2, int execution_id ) throws Exception {
 
