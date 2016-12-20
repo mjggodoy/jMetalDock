@@ -14,6 +14,7 @@ public class Properties {
 	public static final String SSH_PORT = "ssh.port";
 	public static final String SSH_USER = "ssh.user";
 	public static final String SSH_PASS = "ssh.password";
+	public static final String SSH_REDIRECTION_PORT = "ssh.redirection.port";
 	
 	// Directories
 	public static final String DIR_AUTODOCK = "dir.autodock";
