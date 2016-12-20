@@ -144,11 +144,18 @@ public class TaskServlet extends HttpServlet {
 			}else if(StringUtils.isNullOrEmpty(evalsParam)){
 				
 				int popSize = Integer.parseInt(popSizeParam);
-				int evals = Integer.parseInt(evalsParam);
-				int runs = Constants.DEFAULT_NUMBER_RUNS;
-				System.out.println("runs" + runs);
+				int runs = Integer.parseInt(runsParam);
+				int evals = Constants.DEFAULT_NUMBER_EVALUATIONS;
+				System.out.println("evals" + evals);
 				defaultValues(popSize, evals, runs, algorithm, objectiveOpt, response);
+			
+			}else if(StringUtils.isNullOrEmpty(popSizeParam)){
 				
+				int evals = Integer.parseInt(evalsParam);
+				int runs = Integer.parseInt(runsParam);
+				int popSize = Constants.DEFAULT_NUMBER_POPULATION_SIZE;
+				System.out.println("popSize" + popSize);
+				defaultValues(popSize, evals, runs, algorithm, objectiveOpt, response);
 					
 			}else{	
 				
