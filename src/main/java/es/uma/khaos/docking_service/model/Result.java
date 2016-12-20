@@ -9,6 +9,7 @@ public class Result {
 	public float finalBindingEnergy;
 	public ArrayList<String> objectives;
 	public int executionId;
+	public float rmsd;
 	
 	public Result(int id) {
 		super();
@@ -16,11 +17,12 @@ public class Result {
 	}
 
 	public Result(int id, float finalBindingEnergy,
-			ArrayList<String> objectives, int executionTaskId) {
+			ArrayList<String> objectives, float rmsd, int executionTaskId) {
 		super();
 		this.id = id;
 		this.finalBindingEnergy = finalBindingEnergy;
 		this.objectives = objectives;
+		this.rmsd = rmsd;
 		this.executionId = executionTaskId;
 	}
 
@@ -43,4 +45,8 @@ public class Result {
 		return executionId;
 	}
 
+	public float getRmsd() {
+		return rmsd;
+	}
+	
 }

@@ -484,13 +484,14 @@ public final class DatabaseService {
 			if (rs.next()) {
 
 				id = rs.getInt("id");
-				int finalBindingEnergy = rs.getInt("final_binding_energy");
+				float finalBindingEnergy = rs.getFloat("final_binding_energy");
 				String objective1 = rs.getString("objective1");
 				String objective2 = rs.getString("objective2");
 				objectives.add(objective1);
 				objectives.add(objective2);
+				float rmsd = rs.getInt("rmsd");
 				int executionId = rs.getInt("execution_id");
-				result = new Result(id,finalBindingEnergy, objectives, executionId);
+				result = new Result(id,finalBindingEnergy, objectives,rmsd, executionId);
 			
 			}
 
@@ -531,13 +532,14 @@ public final class DatabaseService {
 			if (rs.next()) {
 
 				int id = rs.getInt("id");
-				int finalBindingEnergy = rs.getInt("final_binding_energy");
+				float finalBindingEnergy = rs.getFloat("final_binding_energy");
 				String objective1 = rs.getString("objective1");
 				String objective2 = rs.getString("objective2");
 				objectives.add(objective1);
 				objectives.add(objective2);
+				float rmsd = rs.getFloat("rmsd");
 				executionId = rs.getInt("execution_id");
-				result = new Result(id,finalBindingEnergy, objectives, executionId);
+				result = new Result(id,finalBindingEnergy, objectives,rmsd, executionId);
 			
 			}
 
@@ -577,13 +579,14 @@ public final class DatabaseService {
 			while (rs.next()) {
 				
 				id = rs.getInt("id");
-				int finalBindingEnergy = rs.getInt("final_binding_energy");
+				float finalBindingEnergy = rs.getFloat("final_binding_energy");
 				String objective1 = rs.getString("objective1");
 				String objective2 = rs.getString("objective2");
 				objectives.add(objective1);
 				objectives.add(objective2);
+				float rmsd = rs.getFloat("rmsd");
 				int executionId = rs.getInt("execution_id");
-				result = new Result(id,finalBindingEnergy, objectives, executionId);		
+				result = new Result(id,finalBindingEnergy, objectives, rmsd, executionId);		
 	
 			}
 
@@ -606,7 +609,7 @@ public final class DatabaseService {
 
 		
 
-	public Result insertResult(float finalBindingEnergy, String objective1, String objective2, int execution_id ) throws Exception {
+	public Result insertResult(float finalBindingEnergy, String objective1, String objective2, float rmsd, int execution_id) throws Exception {
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -619,18 +622,19 @@ public final class DatabaseService {
 		try {
 			
 			conn = openConnection();
-			stmt = conn.prepareStatement("insert into result values (?, ?, ?, ?)",
+			stmt = conn.prepareStatement("insert into result values (?, ?, ?, ?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
 			stmt.setFloat(1, finalBindingEnergy);
 			stmt.setString(2, objective1);
 			stmt.setString(3, objective2);
-			stmt.setInt(4, execution_id);
+			stmt.setFloat(5, rmsd);
+			stmt.setInt(6, execution_id);
 			stmt.execute();
 			rs = stmt.getGeneratedKeys();
 
 			if (rs.next()) {
 				
-				result = new Result(rs.getInt(1), finalBindingEnergy, objectives, execution_id);
+				result = new Result(rs.getInt(1), finalBindingEnergy, objectives, rmsd, execution_id);
 			}
 
 		} catch (SQLException e) {
