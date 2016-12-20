@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Properties;
 
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
@@ -26,33 +25,36 @@ public final class DatabaseService {
 	private static final String FINISHED_STATE = "finished";
 	private static final String ERROR_STATE = "error";
 
-	private static final String ip = Constants.MYSQL_IP;
-	private static final String port = Constants.MYSQL_PORT;
 	private static final String schema = Constants.MYSQL_SCHEMA;
 	private static final String user = Constants.MYSQL_USER;
 	private static final String pass = Constants.MYSQL_PASS;
+	
+	private String ip = Constants.MYSQL_IP;
+	private String port = Constants.MYSQL_PORT;
 	
 	private static final String SSH_HOST = Constants.SSH_HOST;
 	private static final String SSH_PORT = Constants.SSH_PORT;
 	private static final String SSH_USER = Constants.SSH_USER;
 	private static final String SSH_PASS = Constants.SSH_PASS;
+	private static final String SSH_REDIRECTION_PORT = Constants.SSH_REDIRECTION_PORT;
 	
 	private static DatabaseService instance;
 	private Session jschSession = null;
 	
 	private DatabaseService() {
 		if (!SSH_HOST.isEmpty()) {
-			Properties config = new Properties();
-	        JSch jsch = new JSch();
-	        int sshPortNumber = Integer.valueOf(SSH_PORT);
+			int sshPortNumber = Integer.valueOf(SSH_PORT);
+			int sshRedirectionPortNumber = Integer.valueOf(SSH_REDIRECTION_PORT);
+			int dbPortNumber = Integer.valueOf(port);
 			try {
-				jschSession = jsch.getSession(SSH_USER, SSH_HOST, sshPortNumber);
+				jschSession = new JSch().getSession(SSH_USER, SSH_HOST, sshPortNumber);
 				jschSession.setPassword(SSH_PASS);
-		        config.put("StrictHostKeyChecking", "no");
-		        //config.put("ConnectionAttempts", "3");
-		        jschSession.setConfig(config);
-		        jschSession.connect();
-		        System.out.println("SSH connected.");
+				jschSession.setConfig("StrictHostKeyChecking", "no");
+				jschSession.connect();
+				jschSession.setPortForwardingL(sshRedirectionPortNumber, ip, dbPortNumber);
+				ip = "localhost";
+				port = SSH_REDIRECTION_PORT;
+				System.out.println("SSH connected.");
 			} catch (JSchException e) {
 				e.printStackTrace();
 			}
