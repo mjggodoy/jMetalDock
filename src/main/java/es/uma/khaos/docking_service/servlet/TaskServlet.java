@@ -3,6 +3,7 @@ package es.uma.khaos.docking_service.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigInteger;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Random;
 
@@ -26,7 +27,10 @@ import es.uma.khaos.docking_service.autodock.WorkerThread;
  * Servlet implementation class Task
  */
 public class TaskServlet extends HttpServlet {
+	
+	
 	private static final long serialVersionUID = 1L;
+	
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -80,6 +84,30 @@ public class TaskServlet extends HttpServlet {
 			out.flush();
 		}
 	}
+	
+	
+	protected void defaultValues(int popSize, int evals, int runs, String algorithm, int objectiveOpt, HttpServletResponse response) throws Exception{
+		
+		response.setContentType("application/json");
+		
+		Random sr = SecureRandom.getInstance("SHA1PRNG");
+		String token = new BigInteger(130, sr).toString(32);
+
+		Task task = DatabaseService.getInstance().insertTask(token);
+		ParameterSet parameters = DatabaseService.getInstance().insertParameter(algorithm, evals, popSize, runs, objectiveOpt, task.getId());
+
+		Gson gson = new Gson();
+		task.setParameters(parameters);
+		String json = gson.toJson(task);
+
+		response.setStatus(HttpServletResponse.SC_CREATED);
+		PrintWriter out = response.getWriter();
+		out.print(json);
+		out.flush();
+		Runnable worker = new WorkerThread("DOCKING", task.getId(), algorithm, runs, popSize, evals, objectiveOpt);
+		ThreadPoolService.getInstance().execute(worker);
+		
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -91,23 +119,42 @@ public class TaskServlet extends HttpServlet {
 		String runsParam  = request.getParameter("runs");
 		String algorithm  = request.getParameter("algorithm");
 		String evalsParam = request.getParameter("evaluations");
-		String popSizeParam = request.getParameter("population_size");
-		
+		String popSizeParam = request.getParameter("population_size");	
 		int objectiveOpt = 0;
-		int runs = Integer.parseInt(runsParam);
-		int evals = Integer.parseInt(evalsParam);
-		int popSize = Integer.parseInt(popSizeParam);
+
 		
 		response.setContentType("application/json");
 		
 		try {
 			
 			if(StringUtils.isNullOrEmpty(algorithm)) {
-								
+																
 				response.sendError(
 						HttpServletResponse.SC_BAD_REQUEST,
 						String.format(Constants.RESPONSE_MANDATORY_PARAMETER_ERROR, "algorithm"));
-			}else{
+				
+			}else if(StringUtils.isNullOrEmpty(runsParam)){
+				
+				int popSize = Integer.parseInt(popSizeParam);
+				int evals = Integer.parseInt(evalsParam);
+				int runs = Constants.DEFAULT_NUMBER_RUNS;
+				System.out.println("runs" + runs);
+				defaultValues(popSize, evals, runs, algorithm, objectiveOpt, response);
+				
+			}else if(StringUtils.isNullOrEmpty(evalsParam)){
+				
+				int popSize = Integer.parseInt(popSizeParam);
+				int evals = Integer.parseInt(evalsParam);
+				int runs = Constants.DEFAULT_NUMBER_RUNS;
+				System.out.println("runs" + runs);
+				defaultValues(popSize, evals, runs, algorithm, objectiveOpt, response);
+				
+					
+			}else{	
+				
+				int runs = Integer.parseInt(runsParam);
+				int evals = Integer.parseInt(evalsParam);
+				int popSize = Integer.parseInt(popSizeParam);
 				
 				if((runs>=Constants.DEFAULT_MIN_NUMBER_RUNS && runs<= Constants.DEFAULT_MAX_NUMBER_RUNS) && (evals>=Constants.DEFAULT_MIN_NUMBER_EVALUATIONS && evals<=Constants.DEFAULT_MAX_NUMBER_EVALUATIONS)
 						&& (popSize>=Constants.DEFAULT_MIN_NUMBER_POPULATION_SIZE && popSize<=Constants.DEFAULT_MAX_NUMBER_POPULATION_SIZE)){
@@ -131,7 +178,8 @@ public class TaskServlet extends HttpServlet {
 			
 				
 				}else{
-										
+				
+					System.out.println("error m’nimos");
 					response.sendError(
 							HttpServletResponse.SC_BAD_REQUEST,
 							String.format(Constants.RESPONSE_MIN_MAX_VALUES, "algorithm"));		
@@ -142,6 +190,8 @@ public class TaskServlet extends HttpServlet {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, Constants.RESPONSE_ERROR_DATABASE);
 		}
+		
 	}
-	
 }
+
+
