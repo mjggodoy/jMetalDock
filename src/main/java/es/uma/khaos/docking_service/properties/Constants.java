@@ -45,6 +45,12 @@ public class Constants {
 	public static final String SINGLE_OBJECTIVE_ALGORITHMS[] = {"gGA", "ssGA", "DE", "PSO"};
 	public static final String MULTI_OBJECTIVE_ALGORITHMS[] = {"NSGAII", "ssNSGAII", "GDE3", "SMPSO", "MOEAD"};
 	
+	//Input default parameters
+	
+	public static final int DEFAULT_NUMBER_EVALUATIONS = Integer.parseInt(Configurations.getProperty(Properties.DEFAULT_NUMBER_EVALUATIONS));
+	public static final int DEFAULT_NUMBER_RUNS = Integer.parseInt(Configurations.getProperty(Properties.DEFAULT_NUMBER_RUNS));
+	public static final int DEFAULT_NUMBER_POPULATION_SIZE = Integer.parseInt(Configurations.getProperty(Properties.DEFAULT_NUMBER_POPULATION_SIZE));
+
 	//Input min parameters
 	public static final int DEFAULT_MIN_NUMBER_EVALUATIONS = Integer.parseInt(Configurations.getProperty(Properties.DEFAULT_MIN_NUMBER_EVALUATIONS));
 	public static final int DEFAULT_MIN_NUMBER_RUNS = Integer.parseInt(Configurations.getProperty(Properties.DEFAULT_MIN_NUMBER_RUNS));

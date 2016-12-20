@@ -26,6 +26,12 @@ public class Properties {
 	public static final String TEST_DIR_INSTANCE = "test.dir.instance";
 	public static final String TEST_FILE_DPF = "test.file.dpf";
 	
+	//Input default parameters
+	
+	public static final String DEFAULT_NUMBER_EVALUATIONS = "input.default.evaluations";
+	public static final String DEFAULT_NUMBER_RUNS = "input.default.evaluations";
+	public static final String DEFAULT_NUMBER_POPULATION_SIZE = "input.default.evaluations";
+	
 	// Input min parameters
 	public static final String DEFAULT_MIN_NUMBER_EVALUATIONS = "input.default.min.evaluations";
 	public static final String DEFAULT_MIN_NUMBER_RUNS = "input.default.min.runs";
