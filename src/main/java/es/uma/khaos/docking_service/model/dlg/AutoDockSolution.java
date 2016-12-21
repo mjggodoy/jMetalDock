@@ -5,12 +5,12 @@ import es.uma.khaos.docking_service.model.dlg.util.Scientific;
 
 
 /**
- * Clase que almacena una soluciÛn de AutoDock
+ * Clase que almacena una soluci√≥n de AutoDock
  * 
- * Hecha desde que se realizar· el c·lculo de RMSDs para las ejecuciones
+ * Hecha desde que se realizar√° el c√°lculo de RMSDs para las ejecuciones
  * de multiobjetivo.
  * 
- * @author Esteban LÛpez Camacho
+ * @author Esteban L√≥pez Camacho
  *
  */
 public class AutoDockSolution {
