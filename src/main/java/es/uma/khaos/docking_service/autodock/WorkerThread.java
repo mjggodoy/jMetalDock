@@ -36,7 +36,7 @@ public class WorkerThread implements Runnable {
 	private int runs;
 	private int evals;
 	private int populationSize;
-	//TODO: Tratar este par·metro
+	//TODO: Tratar este par√°metro
 	private int objectiveOpt;
 	
 	public WorkerThread(String name, int id, String algorithm, int runs, int populationSize, int evals, int objectiveOpt) {
@@ -88,7 +88,7 @@ public class WorkerThread implements Runnable {
 				"cp -r %s. %s", TEST_DIR_INSTANCE, workDir);
 		executeCommand(command);
 		
-		// PREPARAMOS DPF CON LOS PAR¡METROS
+		// PREPARAMOS DPF CON LOS PAR√ÅMETROS
 		formatDPF(new File(workDir+"/"+TEST_FILE_DPF), new File(workDir+"/"+inputFile));
 		
 		// EJECUTAMOS AUTODOCK
