@@ -115,49 +115,11 @@ public class TaskServlet extends HttpServlet {
 		ThreadPoolService.getInstance().execute(worker);
 
 	}
-
-
-	protected int maxMinRangeEvals(int evals) {
-
-		if (evals > Constants.DEFAULT_MAX_NUMBER_EVALUATIONS) {
-
-			evals = Constants.DEFAULT_MAX_NUMBER_EVALUATIONS;
-
-		} else if (evals < Constants.DEFAULT_MIN_NUMBER_EVALUATIONS) {
-
-			evals = Constants.DEFAULT_MIN_NUMBER_EVALUATIONS;
-		}
-
-		return evals;
-	}
-
-	protected int maxMinRangePopSize(int popSize) {
-
-		if (popSize > Constants.DEFAULT_MAX_NUMBER_POPULATION_SIZE) {
-
-			popSize = Constants.DEFAULT_MAX_NUMBER_POPULATION_SIZE;
-
-		} else if (popSize < Constants.DEFAULT_MIN_NUMBER_POPULATION_SIZE) {
-
-			popSize = Constants.DEFAULT_MIN_NUMBER_POPULATION_SIZE;
-		}
-
-		return popSize;
-	}
-
-	protected int maxMinRangeRuns(int runs) {
-
-		if (runs > Constants.DEFAULT_MAX_NUMBER_RUNS) {
-
-			runs = Constants.DEFAULT_MAX_NUMBER_RUNS;
-
-		} else if (runs < Constants.DEFAULT_MIN_NUMBER_RUNS) {
-
-			runs = Constants.DEFAULT_MIN_NUMBER_RUNS;
-		}
-
-		return runs;
-
+	
+	private int inRangeCheck(int value, int minValue, int maxValue) {
+		if (value > maxValue) return maxValue;
+		else if (value < minValue) return minValue;
+		else return value;
 	}
 
 	/**
@@ -173,11 +135,18 @@ public class TaskServlet extends HttpServlet {
 		String algorithm = request.getParameter("algorithm");
 		String evalsParam = request.getParameter("evaluations");
 		String popSizeParam = request.getParameter("population_size");
+	
 		int objectiveOpt = 0;
-
 		int popSize = 0;
 		int evals = 0;
 		int runs = 0;
+		
+		int maxValueRun = Constants.DEFAULT_MAX_NUMBER_RUNS;
+		int minValueRun = Constants.DEFAULT_MIN_NUMBER_RUNS;
+		int maxValuePopSize = Constants.DEFAULT_MAX_NUMBER_POPULATION_SIZE;
+		int minValuePopSize = Constants.DEFAULT_MIN_NUMBER_POPULATION_SIZE;
+		int maxEvaluations = Constants.DEFAULT_MAX_NUMBER_EVALUATIONS;
+		int minEvaluations = Constants.DEFAULT_MIN_NUMBER_EVALUATIONS;
 
 		response.setContentType("application/json");
 
@@ -189,103 +158,37 @@ public class TaskServlet extends HttpServlet {
 						.format(Constants.RESPONSE_MANDATORY_PARAMETER_ERROR,
 								"algorithm"));
 			} else {
+				
+				System.out.println("runs1: " + runs);
+			
 
-				if (StringUtils.isNullOrEmpty(runsParam)){
-
-					if (popSizeParam != null) {
-
-						popSize = Integer.parseInt(popSizeParam);
-
-					} else {
-
-						popSize = Constants.DEFAULT_NUMBER_POPULATION_SIZE;
-					}
-
-					if (evalsParam != null) {
-
-						evals = Integer.parseInt(evalsParam);
-
-					} else {
-
-						evals = Constants.DEFAULT_NUMBER_POPULATION_SIZE;
-					}
-
+				if (StringUtils.isNullOrEmpty(runsParam)) {
 					runs = Constants.DEFAULT_NUMBER_RUNS;
-					System.out.println("runs" + runs);
-					popSize = maxMinRangePopSize(popSize);
-					evals = maxMinRangeEvals(evals);
-					defaultValues(popSize, evals, runs, algorithm,objectiveOpt, response);
+					System.out.println("runs2: " + runs);
 
-				}
-
-				if (StringUtils.isNullOrEmpty(evalsParam)){
-
-					if (popSizeParam != null) {
-
-						popSize = Integer.parseInt(popSizeParam);
-
-					} else {
-
-						popSize = Constants.DEFAULT_NUMBER_POPULATION_SIZE;
-					}
-
-					if (runsParam != null) {
-
-						runs = Integer.parseInt(runsParam);
-
-					} else {
-
-						runs = Constants.DEFAULT_NUMBER_RUNS;
-					}
-
-					evals = Constants.DEFAULT_NUMBER_EVALUATIONS;
-					System.out.println("evals" + evals);
-					popSize = maxMinRangePopSize(popSize);
-					runs = maxMinRangeRuns(runs);
-					defaultValues(popSize, evals, runs, algorithm,objectiveOpt, response);
-
-				}
-
-				if (StringUtils.isNullOrEmpty(popSizeParam)) {
-
-					if (evalsParam != null) {
-
-						evals = Integer.parseInt(evalsParam);
-
-					} else {
-
-						evals = Constants.DEFAULT_NUMBER_POPULATION_SIZE;
-					}
-
-					if (runsParam != null) {
-
-						runs = Integer.parseInt(runsParam);
-
-					} else {
-
-						runs = Constants.DEFAULT_NUMBER_RUNS;
-					}
-
-					popSize = Constants.DEFAULT_NUMBER_POPULATION_SIZE;
-					System.out.println("popSize" + popSize);
-					evals = maxMinRangeEvals(evals);
-					runs = maxMinRangeRuns(runs);
-					defaultValues(popSize, evals, runs, algorithm,objectiveOpt, response);
-
-				}
-
-				if (!StringUtils.isNullOrEmpty(runsParam)
-						&& !StringUtils.isNullOrEmpty(evalsParam)
-						&& !StringUtils.isNullOrEmpty(popSizeParam)) {
-
+				} else {
 					runs = Integer.parseInt(runsParam);
-					evals = Integer.parseInt(evalsParam);
-					popSize = Integer.parseInt(popSizeParam);
-					popSize = maxMinRangePopSize(popSize);
-					evals = maxMinRangeEvals(evals);
-					runs = maxMinRangeRuns(runs);
-					defaultValues(popSize, evals, runs, algorithm,objectiveOpt, response);
+					System.out.println("runs3: " + runs);
+					runs = inRangeCheck(runs, minValueRun, maxValueRun);
 				}
+				
+				if (StringUtils.isNullOrEmpty(popSizeParam)) {
+					popSize = Constants.DEFAULT_NUMBER_POPULATION_SIZE;
+				} else {
+					popSize = Integer.parseInt(popSizeParam);
+					popSize = inRangeCheck(popSize, minValuePopSize,maxValuePopSize);
+				}
+				
+				if (StringUtils.isNullOrEmpty(evalsParam)) {
+					evals = Constants.DEFAULT_NUMBER_EVALUATIONS;
+				} else {
+					evals = Integer.parseInt(evalsParam);
+					evals = inRangeCheck(evals, minEvaluations, maxEvaluations);
+				}
+				
+				
+				defaultValues(popSize, evals, runs, algorithm,objectiveOpt, response);
+				
 			}
 
 		} catch (Exception e) {
