@@ -90,7 +90,7 @@ public class TaskServlet extends HttpServlet {
 
 	protected void defaultValues(int popSize, int evals, int runs,
 			String algorithm, int objectiveOpt, HttpServletResponse response)
-			throws Exception {
+					throws Exception {
 
 		response.setContentType("application/json");
 
@@ -183,15 +183,14 @@ public class TaskServlet extends HttpServlet {
 
 		try {
 
-			if (StringUtils.isNullOrEmpty(algorithm)) {
+			if (StringUtils.isNullOrEmpty(algorithm)){
 
 				response.sendError(HttpServletResponse.SC_BAD_REQUEST, String
 						.format(Constants.RESPONSE_MANDATORY_PARAMETER_ERROR,
 								"algorithm"));
-
 			} else {
 
-				if (StringUtils.isNullOrEmpty(runsParam)) {
+				if (StringUtils.isNullOrEmpty(runsParam)){
 
 					if (popSizeParam != null) {
 
@@ -219,7 +218,7 @@ public class TaskServlet extends HttpServlet {
 
 				}
 
-				if (StringUtils.isNullOrEmpty(evalsParam)) {
+				if (StringUtils.isNullOrEmpty(evalsParam)){
 
 					if (popSizeParam != null) {
 
