@@ -160,7 +160,7 @@ public final class DatabaseService {
 		}
 	}
 
-	//TODO: Tratar las excepciones en todos los m�todos como aqu�
+	//TODO: Tratar las excepciones en todos los métodos como aquí
 	public Task getTask(int id) throws DatabaseException {
 
 		Task task = null;
