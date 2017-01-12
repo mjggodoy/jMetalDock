@@ -3,10 +3,7 @@ package es.uma.khaos.docking_service.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigInteger;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import javax.servlet.ServletException;
@@ -88,7 +85,7 @@ public class TaskServlet extends HttpServlet {
 		}
 	}
 
-	protected void defaultValues(int popSize, int evals, int runs,
+	private void launchTask(int popSize, int evals, int runs,
 			String algorithm, int objectiveOpt, HttpServletResponse response)
 					throws Exception {
 
@@ -128,26 +125,16 @@ public class TaskServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
-		// TODO: Check correctness of parameters
+		
+		// TODO: Tratar objectiveOpt
+		
+		int objectiveOpt = 0, popSize, evals, runs;
 
 		String runsParam = request.getParameter("runs");
 		String algorithm = request.getParameter("algorithm");
 		String evalsParam = request.getParameter("evaluations");
 		String popSizeParam = request.getParameter("population_size");
-	
-		int objectiveOpt = 0;
-		int popSize = 0;
-		int evals = 0;
-		int runs = 0;
 		
-		int maxValueRun = Constants.DEFAULT_MAX_NUMBER_RUNS;
-		int minValueRun = Constants.DEFAULT_MIN_NUMBER_RUNS;
-		int maxValuePopSize = Constants.DEFAULT_MAX_NUMBER_POPULATION_SIZE;
-		int minValuePopSize = Constants.DEFAULT_MIN_NUMBER_POPULATION_SIZE;
-		int maxEvaluations = Constants.DEFAULT_MAX_NUMBER_EVALUATIONS;
-		int minEvaluations = Constants.DEFAULT_MIN_NUMBER_EVALUATIONS;
-
 		response.setContentType("application/json");
 
 		try {
@@ -159,35 +146,37 @@ public class TaskServlet extends HttpServlet {
 								"algorithm"));
 			} else {
 				
-				System.out.println("runs1: " + runs);
-			
-
 				if (StringUtils.isNullOrEmpty(runsParam)) {
 					runs = Constants.DEFAULT_NUMBER_RUNS;
-					System.out.println("runs2: " + runs);
-
 				} else {
 					runs = Integer.parseInt(runsParam);
-					System.out.println("runs3: " + runs);
-					runs = inRangeCheck(runs, minValueRun, maxValueRun);
+					runs = inRangeCheck(
+							runs,
+							Constants.DEFAULT_MIN_NUMBER_RUNS,
+							Constants.DEFAULT_MAX_NUMBER_RUNS);
 				}
 				
 				if (StringUtils.isNullOrEmpty(popSizeParam)) {
 					popSize = Constants.DEFAULT_NUMBER_POPULATION_SIZE;
 				} else {
 					popSize = Integer.parseInt(popSizeParam);
-					popSize = inRangeCheck(popSize, minValuePopSize,maxValuePopSize);
+					popSize = inRangeCheck(
+							popSize,
+							Constants.DEFAULT_MIN_NUMBER_POPULATION_SIZE,
+							Constants.DEFAULT_MAX_NUMBER_POPULATION_SIZE);
 				}
 				
 				if (StringUtils.isNullOrEmpty(evalsParam)) {
 					evals = Constants.DEFAULT_NUMBER_EVALUATIONS;
 				} else {
 					evals = Integer.parseInt(evalsParam);
-					evals = inRangeCheck(evals, minEvaluations, maxEvaluations);
+					evals = inRangeCheck(
+							evals,
+							Constants.DEFAULT_MIN_NUMBER_EVALUATIONS,
+							Constants.DEFAULT_MAX_NUMBER_EVALUATIONS);
 				}
 				
-				
-				defaultValues(popSize, evals, runs, algorithm,objectiveOpt, response);
+				launchTask(popSize, evals, runs, algorithm, objectiveOpt, response);
 				
 			}
 
