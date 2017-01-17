@@ -3,6 +3,7 @@ package es.uma.khaos.docking_service.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigInteger;
+import java.nio.file.Paths;
 import java.security.SecureRandom;
 import java.util.Random;
 
@@ -10,6 +11,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
+
+import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
 
 import com.google.gson.Gson;
 import com.mysql.jdbc.StringUtils;
@@ -118,18 +123,33 @@ public class TaskServlet extends HttpServlet {
 		else if (value < minValue) return minValue;
 		else return value;
 	}
+	
+	
+	public static void unzip(){
+	    String source = "some/compressed/file.zip";
+	    String destination = "some/destination/folder";
+
+	    try {
+	         
+	    	ZipFile zipFile = new ZipFile(source);
+	        zipFile.extractAll(destination);
+	    
+	    } catch (ZipException e) {
+	        e.printStackTrace();
+	    }
+	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		// TODO: Tratar objectiveOpt
-		
+				
 		int objectiveOpt = 0, popSize, evals, runs;
 
+		Part filePart = request.getPart("file");	
 		String runsParam = request.getParameter("runs");
 		String algorithm = request.getParameter("algorithm");
 		String evalsParam = request.getParameter("evaluations");
@@ -139,12 +159,14 @@ public class TaskServlet extends HttpServlet {
 
 		try {
 
-			if (StringUtils.isNullOrEmpty(algorithm)){
+			if (StringUtils.isNullOrEmpty(algorithm) || (filePart==null)){
 
 				response.sendError(HttpServletResponse.SC_BAD_REQUEST, String
 						.format(Constants.RESPONSE_MANDATORY_PARAMETER_ERROR,
 								"algorithm"));
 			} else {
+				
+				System.out.println("filePart" + filePart);
 				
 				if (StringUtils.isNullOrEmpty(runsParam)) {
 					runs = Constants.DEFAULT_NUMBER_RUNS;
