@@ -159,7 +159,7 @@ public class TaskServlet extends HttpServlet {
 
 		try {
 
-			if (StringUtils.isNullOrEmpty(algorithm) || (filePart==null)){
+			if (StringUtils.isNullOrEmpty(algorithm)){
 
 				response.sendError(HttpServletResponse.SC_BAD_REQUEST, String
 						.format(Constants.RESPONSE_MANDATORY_PARAMETER_ERROR,
