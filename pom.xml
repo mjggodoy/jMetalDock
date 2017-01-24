@@ -34,6 +34,11 @@
       <artifactId>gson</artifactId>
       <version>2.8.0</version>
     </dependency>
+    <dependency>
+      <groupId>jstl</groupId>
+      <artifactId>jstl</artifactId>
+      <version>1.2</version>
+    </dependency>
   </dependencies>
   <profiles>
    <profile>
@@ -121,5 +126,6 @@
   </build>
   <properties>
   	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <failOnMissingWebXml>false</failOnMissingWebXml>
   </properties>
 </project>

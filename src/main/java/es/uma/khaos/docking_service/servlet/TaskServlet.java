@@ -6,7 +6,9 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.Random;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,6 +26,9 @@ import es.uma.khaos.docking_service.autodock.WorkerThread;
 /**
  * Servlet implementation class Task
  */
+
+@WebServlet(name="taskServlet", urlPatterns={"/task"})
+//,initParams={@InitParam(name="configFile", value="config.xml")})
 public class TaskServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -45,7 +50,8 @@ public class TaskServlet extends HttpServlet {
 		String id = request.getParameter("id");
 		String token = request.getParameter("token");
 		
-		response.setContentType("application/json");
+		//response.setContentType("application/json");
+		response.setContentType("text/html");
 		
 		try {
 			if (id==null) {
@@ -73,10 +79,19 @@ public class TaskServlet extends HttpServlet {
 		}
 		
 		if (task!=null) {
+			
+			System.out.println(request.getHeader("Accept"));
+			
 			Gson gson = new Gson();
-			PrintWriter out = response.getWriter();
-			out.print(gson.toJson(task));
-			out.flush();
+			//PrintWriter out = response.getWriter();
+			System.out.println(gson.toJson(task));
+			
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/task.jsp");
+			request.setAttribute("task", task); // set your String value in the attribute
+			dispatcher.forward( request, response );
+
+			//out.print(gson.toJson(task));
+			//out.flush();
 		}
 	}
 
