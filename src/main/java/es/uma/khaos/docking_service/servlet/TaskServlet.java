@@ -1,13 +1,17 @@
 package es.uma.khaos.docking_service.servlet;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.math.BigInteger;
-import java.nio.file.Paths;
 import java.security.SecureRandom;
 import java.util.Random;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,6 +34,9 @@ import es.uma.khaos.docking_service.autodock.WorkerThread;
 /**
  * Servlet implementation class Task
  */
+
+@WebServlet("/Task")
+@MultipartConfig
 public class TaskServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
@@ -140,16 +147,37 @@ public class TaskServlet extends HttpServlet {
 	}
 
 	/**
+	 * @throws IOException 
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+	
+	protected void readFile(InputStream in) throws IOException{
+		
+		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+        String line;
+        while ((line = reader.readLine()) != null) {
+        	System.out.println(line);
+        }
+        reader.close();
+		
+		
+	}
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		// TODO: Tratar objectiveOpt
 				
 		int objectiveOpt = 0, popSize, evals, runs;
+		
+		//File as Parameter
+		
+	    Part filePart = request.getPart("file"); 
+	    InputStream fileContent = filePart.getInputStream();
+	    readFile(fileContent);
+	    
+	    //Parameter
 
-		Part filePart = request.getPart("file");	
 		String runsParam = request.getParameter("runs");
 		String algorithm = request.getParameter("algorithm");
 		String evalsParam = request.getParameter("evaluations");
@@ -166,7 +194,6 @@ public class TaskServlet extends HttpServlet {
 								"algorithm"));
 			} else {
 				
-				System.out.println("filePart" + filePart);
 				
 				if (StringUtils.isNullOrEmpty(runsParam)) {
 					runs = Constants.DEFAULT_NUMBER_RUNS;
