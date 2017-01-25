@@ -39,11 +39,39 @@
       <artifactId>jstl</artifactId>
       <version>1.2</version>
     </dependency>
+    
+    <!-- Jersey packages -->
     <dependency>
       <groupId>javax.ws.rs</groupId>
       <artifactId>javax.ws.rs-api</artifactId>
       <version>2.0.1</version>
     </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.containers</groupId>
+      <artifactId>jersey-container-servlet</artifactId>
+      <version>2.25</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.bundles</groupId>
+      <artifactId>jaxrs-ri</artifactId>
+      <version>2.25</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.media</groupId>
+      <artifactId>jersey-media-json-jackson</artifactId>
+      <version>2.25</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.media</groupId>
+      <artifactId>jersey-media-jaxb</artifactId>
+      <version>2.25</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.ext</groupId>
+      <artifactId>jersey-mvc-jsp</artifactId>
+      <version>2.25</version>
+    </dependency>
+    
   </dependencies>
   <profiles>
    <profile>

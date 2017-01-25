@@ -9,15 +9,11 @@
 %>
 <!DOCTYPE html>
 <html>
-	<c:set var="task" value='${requestScope["task"]}' />
+	<c:set var="task" value='${it}' />
 	<body>
 	<%= "hello" %>
-		<%= request.getAttribute("Name") %>
-		<c:out value='${requestScope["numList"]}' /><br/>
-		<c:out value='${requestScope.numList}'/>
-		<h1>HELLO PUA!!!!</h1>
+		<h1>HELLO PUA2!!!!</h1>
 		<h2>VAYA</h2>
-		<c:out value='${requestScope["task"].id}'/>
 		<c:out value="${task.id}"/>
 		<c:out value="${task.hash}"/>
 		<c:out value="${task.state}"/>
