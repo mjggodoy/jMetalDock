@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.math.BigInteger;
+import java.nio.file.Paths;
 import java.security.SecureRandom;
 import java.util.Random;
 
@@ -132,9 +133,9 @@ public class TaskServlet extends HttpServlet {
 	}
 	
 	
-	public static void unzip(){
-	    String source = "some/compressed/file.zip";
-	    String destination = "some/destination/folder";
+	public static void unzip(String nameFile){
+	    String source = "/Users/mariajesus/Desktop/AutoDockInstance/"+ nameFile;
+	    String destination = "/Users/mariajesus/Desktop/AutoDockInstance/";
 
 	    try {
 	         
@@ -159,10 +160,23 @@ public class TaskServlet extends HttpServlet {
         while ((line = reader.readLine()) != null) {
         	System.out.println(line);
         }
-        reader.close();
-		
-		
+        
+        reader.close();	
 	}
+	
+	
+	 private String extractFileName(Part part) {
+	       
+		 	String contentDisp = part.getHeader("content-disposition");
+	        String[] items = contentDisp.split(";");
+	        for (String s : items) {
+	            if (s.trim().startsWith("filename")) {
+	                return s.substring(s.indexOf("=") + 2, s.length()-1);
+	            }
+	        }
+	        return "";
+	    }
+	
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
@@ -173,10 +187,9 @@ public class TaskServlet extends HttpServlet {
 		//File as Parameter
 		
 	    Part filePart = request.getPart("file"); 
-	    InputStream fileContent = filePart.getInputStream();
-	    readFile(fileContent);
-	    
-	    //Parameter
+	    String fileName = extractFileName(filePart);
+	    unzip(fileName);
+
 
 		String runsParam = request.getParameter("runs");
 		String algorithm = request.getParameter("algorithm");
