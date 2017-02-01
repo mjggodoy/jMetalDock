@@ -13,9 +13,15 @@
 	<body>
 	<%= "hello" %>
 		<h1>HELLO PUA2!!!!</h1>
-		<h2>VAYA</h2>
-		<c:out value="${task.id}"/>
-		<c:out value="${task.hash}"/>
-		<c:out value="${task.state}"/>
+		<h2>TASK</h2>
+		<c:out value="${task.id}"/><br>
+		<c:out value="${task.hash}"/><br>
+		<c:out value="${task.state}"/><br>
+		<h3>Parameters</h3>
+		<c:out value="${task.parameters.algorithm}"/><br>
+		<c:out value="${task.parameters.evaluation}"/><br>
+		<c:out value="${task.parameters.populationSize}"/><br>
+		<c:out value="${task.parameters.run}"/><br>
+		<c:out value="${task.parameters.objective}"/><br>
 	</body>
 </html>
