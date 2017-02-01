@@ -153,7 +153,7 @@ public class TaskServlet extends HttpServlet {
 	 *      response)
 	 */
 	
-	protected void readFile(InputStream in) throws IOException{
+	/*protected void readFile(InputStream in) throws IOException{
 		
 		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
         String line;
@@ -162,7 +162,7 @@ public class TaskServlet extends HttpServlet {
         }
         
         reader.close();	
-	}
+	}*/
 	
 	
 	 private String extractFileName(Part part) {
