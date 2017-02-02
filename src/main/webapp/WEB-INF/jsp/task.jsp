@@ -12,7 +12,7 @@
 	<c:set var="task" value='${it}' />
 	<body>
 	<%= "hello" %>
-		<h1>HELLO PUA2!!!!</h1>
+		<h1>HELLO XUXA!!!!</h1>
 		<h2>TASK</h2>
 		<c:out value="${task.id}"/><br>
 		<c:out value="${task.hash}"/><br>
