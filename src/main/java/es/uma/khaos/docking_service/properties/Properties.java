@@ -31,6 +31,14 @@ public class Properties {
 	public static final String DEFAULT_NUMBER_EVALUATIONS = "input.default.evaluations";
 	public static final String DEFAULT_NUMBER_RUNS = "input.default.runs";
 	public static final String DEFAULT_NUMBER_POPULATION_SIZE = "input.default.population_size";
+	
+	public static final String DEFAULT_MIN_NUMBER_EVALUATIONS = "input.default.min.evaluations";
+	public static final String DEFAULT_MIN_NUMBER_RUNS = "input.default.min.runs";
+	public static final String DEFAULT_MIN_NUMBER_POPULATION_SIZE = "input.default.min.population_size";
+	
+	public static final String DEFAULT_MAX_NUMBER_EVALUATIONS = "input.default.max.evaluations";
+	public static final String DEFAULT_MAX_NUMBER_RUNS = "input.default.max.runs";
+	public static final String DEFAULT_MAX_NUMBER_POPULATION_SIZE = "input.default.max.population_size";
 
 
 }
