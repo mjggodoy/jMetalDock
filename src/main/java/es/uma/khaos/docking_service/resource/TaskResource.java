@@ -1,21 +1,14 @@
 package es.uma.khaos.docking_service.resource;
 
-import java.net.HttpURLConnection;
-
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 import org.glassfish.jersey.server.mvc.Viewable;
-
-import com.mysql.jdbc.StringUtils;
-
 import es.uma.khaos.docking_service.exception.DatabaseException;
 import es.uma.khaos.docking_service.model.Task;
 import es.uma.khaos.docking_service.properties.Constants;
@@ -24,19 +17,12 @@ import es.uma.khaos.docking_service.service.DatabaseService;
 @Path("/task2/{id}")
 public class TaskResource extends Application {
 	
-//	@GET
-//	@Produces(MediaType.TEXT_PLAIN)
-//	public String doGetAsPlainText() {
-//		return "HELLO PUA";
-//	}
-	
 	//TODO: Tratar mejor las excepciones
 	@GET
 	@Path("{token}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Response doGetAsJson(@NotNull @PathParam("id") int id,  @PathParam("token") String token) throws DatabaseException {
 		
-
 		try{
 		
 				Task task = DatabaseService.getInstance().getTaskParameter(id);
@@ -94,5 +80,5 @@ public class TaskResource extends Application {
 			return Response.serverError().build();
 		}	   
     }
-
+    
 }
