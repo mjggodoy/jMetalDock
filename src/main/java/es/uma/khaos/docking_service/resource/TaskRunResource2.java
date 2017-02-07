@@ -4,7 +4,13 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.Random;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
@@ -35,11 +41,7 @@ public class TaskRunResource2 extends Application {
 		task.setParameters(parameters);
 		Runnable worker = new WorkerThread("DOCKING", task.getId(), algorithm,
 				runs, popSize, evals, objectiveOpt);
-		ThreadPoolService.getInstance().execute(worker);
-		
-		System.out.println("Parameters: " + task.getParameters().getAlgorithm() + " " +	
-				task.getParameters().getEvaluation() + " " + task.getParameters().getPopulationSize() 
-				+ " " + task.getParameters().getRun());
+		ThreadPoolService.getInstance().execute(worker);		
 		
 		return Response.ok(task).build();
 
@@ -56,13 +58,13 @@ public class TaskRunResource2 extends Application {
 	@POST
 	@Path("/post")
     @Consumes(MediaType.APPLICATION_JSON)
-		public Response postPatameterTask(@QueryParam("algorithm") String algorithm, @QueryParam("runs") String  runs,
-				@QueryParam("population_size") String population_size, @QueryParam("evaluations") String evaluations ) {
+		public Response postPatameterTask(@QueryParam("algorithm") String algorithm,  @QueryParam("runs") @DefaultValue("30") @Min(5) int runs,
+				@QueryParam("population_size") Integer population_size, @QueryParam("evaluations") Integer evaluations ) {
 		
-		int runs_param = Integer.parseInt(runs);
-		int population_size_param = Integer.parseInt(population_size);
-		int evaluations_param = Integer.parseInt(evaluations);
 		int objectiveOpt = 0;
+		
+		System.out.println(runs);
+
 
 			try{
 				
@@ -72,48 +74,43 @@ public class TaskRunResource2 extends Application {
 			
 				}else{
 					
-					if (StringUtils.isNullOrEmpty(runs)) {
-						
-						runs_param = Constants.DEFAULT_NUMBER_RUNS;
-						
-					} else {
-						runs_param = inRangeCheck(runs_param,
-								Constants.DEFAULT_MIN_NUMBER_RUNS,
-								Constants.DEFAULT_MAX_NUMBER_RUNS);
-					}
-							
+
 					
-					if (StringUtils.isNullOrEmpty(population_size)) {
+					
+					
+					if (population_size == null || population_size.equals("")) {
 						
-						population_size_param = Constants.DEFAULT_NUMBER_POPULATION_SIZE;
+						population_size = Constants.DEFAULT_NUMBER_POPULATION_SIZE;
 						
 					} else {
 						
-						population_size_param = inRangeCheck(
-								population_size_param,
+						population_size = inRangeCheck(
+								population_size,
 								Constants.DEFAULT_MIN_NUMBER_POPULATION_SIZE,
 								Constants.DEFAULT_MAX_NUMBER_POPULATION_SIZE);
 					}
 					
-					if (StringUtils.isNullOrEmpty(evaluations)) {
+					if (evaluations == null || evaluations.equals("")) {
 						
-						evaluations_param = Constants.DEFAULT_NUMBER_EVALUATIONS;
+						evaluations = Constants.DEFAULT_NUMBER_EVALUATIONS;
 						
 					} else {
 						
-						evaluations_param = inRangeCheck(
-								evaluations_param,
+						evaluations = inRangeCheck(
+								evaluations,
 								Constants.DEFAULT_MIN_NUMBER_EVALUATIONS,
 								Constants.DEFAULT_MAX_NUMBER_EVALUATIONS);
 					}
 					
-					return launchTask(population_size_param, evaluations_param, runs_param, algorithm, objectiveOpt);
+					return launchTask(population_size, evaluations, runs, algorithm, objectiveOpt);
 
 				}
 			
 			} catch (Exception e) {
+				
+				Response.status(Response.Status.EXPECTATION_FAILED).entity(Constants.RESPONSE_MANDATORY_PARAMETER_ERROR).build();			
 			
-				e.printStackTrace();
+				//e.printStackTrace();
 				return Response.serverError().build();
 		}
 			

@@ -1,12 +1,13 @@
 package es.uma.khaos.docking_service.model;
 
 public class ParameterSet {
+	
 
+	private int run;
 	private int id;
 	private String algorithm;
 	private int evaluation;
 	private int populationSize;
-	private int run;
 	private int objective;
 	private int task_id;
 	
