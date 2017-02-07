@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response;
 import com.mysql.jdbc.StringUtils;
 
 import es.uma.khaos.docking_service.autodock.WorkerThread;
+import es.uma.khaos.docking_service.model.ParameterSet;
 import es.uma.khaos.docking_service.model.Task;
 import es.uma.khaos.docking_service.properties.Constants;
 import es.uma.khaos.docking_service.service.DatabaseService;
@@ -24,22 +25,21 @@ import es.uma.khaos.docking_service.service.ThreadPoolService;
 public class TaskRunResource2 extends Application {
 	
 	
-	private Response launchTask(int popSize, int evals, int runs,
-			String algorithm, int objectiveOpt)
-					throws Exception {
+	private Response launchTask(int popSize, int evals, int runs, String algorithm, int objectiveOpt) throws Exception {
 
 		Random sr = SecureRandom.getInstance("SHA1PRNG");
 		String token = new BigInteger(130, sr).toString(32);
 
 		Task task = DatabaseService.getInstance().insertTask(token);
-		DatabaseService.getInstance().insertParameter(algorithm, evals, popSize, runs, objectiveOpt,
+		ParameterSet parameters = DatabaseService.getInstance().insertParameter(algorithm, evals, popSize, runs, objectiveOpt,
 						task.getId());
-
+		task.setParameters(parameters);
 		Runnable worker = new WorkerThread("DOCKING", task.getId(), algorithm,
 				runs, popSize, evals, objectiveOpt);
 		ThreadPoolService.getInstance().execute(worker);
 		
-		return Response.status(Response.Status.CREATED).build();
+		return Response.ok(task).build();
+
 
 	}
 

@@ -18,6 +18,6 @@
 		<c:out value='${requestScope["task"].id}'/>
 		<c:out value="${task.id}"/>
 		<c:out value="${task.hash}"/>
-		<c:out value="${task.state}"/>
+		<c:out value="${task.state}"/>		
 	</body>
 </html>
