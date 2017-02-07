@@ -1,5 +1,7 @@
 package es.uma.khaos.docking_service.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 public class ParameterSet {
 
 	private int id;

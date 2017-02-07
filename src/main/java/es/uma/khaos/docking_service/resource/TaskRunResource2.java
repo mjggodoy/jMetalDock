@@ -5,7 +5,6 @@ import java.security.SecureRandom;
 import java.util.Random;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
@@ -38,17 +37,21 @@ public class TaskRunResource2 extends Application {
 				runs, popSize, evals, objectiveOpt);
 		ThreadPoolService.getInstance().execute(worker);
 		
+		System.out.println("Parameters: " + task.getParameters().getAlgorithm() + " " +	
+				task.getParameters().getEvaluation() + " " + task.getParameters().getPopulationSize() 
+				+ " " + task.getParameters().getRun());
+		
 		return Response.ok(task).build();
 
 
 	}
 
-	
 	private int inRangeCheck(int value, int minValue, int maxValue) {
 		if (value > maxValue) return maxValue;
 		else if (value < minValue) return minValue;
 		else return value;
 	}
+	
 	
 	@POST
 	@Path("/post")
@@ -78,9 +81,7 @@ public class TaskRunResource2 extends Application {
 								Constants.DEFAULT_MIN_NUMBER_RUNS,
 								Constants.DEFAULT_MAX_NUMBER_RUNS);
 					}
-					
-				}
-				
+							
 					
 					if (StringUtils.isNullOrEmpty(population_size)) {
 						
@@ -105,10 +106,10 @@ public class TaskRunResource2 extends Application {
 								Constants.DEFAULT_MIN_NUMBER_EVALUATIONS,
 								Constants.DEFAULT_MAX_NUMBER_EVALUATIONS);
 					}
+					
+					return launchTask(population_size_param, evaluations_param, runs_param, algorithm, objectiveOpt);
 
-				
-				return launchTask(population_size_param, evaluations_param, runs_param, algorithm, objectiveOpt);
-
+				}
 			
 			} catch (Exception e) {
 			
