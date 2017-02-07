@@ -5,6 +5,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -19,9 +20,9 @@ public class TaskResource extends Application {
 	
 	//TODO: Tratar mejor las excepciones
 	@GET
-	@Path("{token}")
+	@Path("/id/")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public Response doGetAsJson(@NotNull @PathParam("id") int id,  @PathParam("token") String token) throws DatabaseException {
+	public Response doGetAsJson(@NotNull @PathParam("id") int id,  @QueryParam("token") String token) throws DatabaseException {
 		
 		try{
 		
