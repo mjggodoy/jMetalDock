@@ -2,6 +2,8 @@ package es.uma.khaos.docking_service.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,9 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.mysql.jdbc.StringUtils;
 
+import es.uma.khaos.docking_service.exception.DatabaseException;
+import es.uma.khaos.docking_service.model.Execution;
 import es.uma.khaos.docking_service.model.Result;
-import es.uma.khaos.docking_service.model.response.TaskRunResponse;
+import es.uma.khaos.docking_service.model.Task;
 import es.uma.khaos.docking_service.properties.Constants;
 import es.uma.khaos.docking_service.service.DatabaseService;
 
@@ -38,14 +43,20 @@ public class RunTaskServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 			 
     	
-		int idExecution;
-    	TaskRunResponse taskRunResponse = null;   
+		Task task= null;
 		String id = request.getParameter("id");
-		Result result = null;
+		String token = request.getParameter("token");
+		String run = request.getParameter("run");
+		Result result= null;
+		List<Execution> executionList = new ArrayList<Execution>();
+		List <Result> resultList = new ArrayList<Result>();
 		
+
+		response.setContentType("application/json");
+
 		try {
 			
-			if (id==null) {
+			if (StringUtils.isNullOrEmpty(id)) {
 				
 				response.sendError(
 				HttpServletResponse.SC_BAD_REQUEST,
@@ -53,23 +64,65 @@ public class RunTaskServlet extends HttpServlet {
 			
 			}else{
 				
-				idExecution = Integer.parseInt(id);
-				result = DatabaseService.getInstance().getResult(idExecution);
-				taskRunResponse = new TaskRunResponse(idExecution, result.getFinalBindingEnergy(),result.getObjectives(), result.getExecutionTaskId());
+				
+				if(StringUtils.isNullOrEmpty(run)){
+				
+					int idTask = Integer.parseInt(id);		
+					task = DatabaseService.getInstance().getTask(idTask);
+					executionList = DatabaseService.getInstance().getExecutionByTaskId(idTask);
+				
+					for(Execution element : executionList){
+					
+						resultList.add(DatabaseService.getInstance().getResultByExecutionId(element.getId()));			
+				
+					}
+				
+				}else{
+					
+					int idTask = Integer.parseInt(id);		
+					int runTask = Integer.parseInt(run);
+					task = DatabaseService.getInstance().getTask(idTask);
+					result = DatabaseService.getInstance().getResultByTaskIdAndRun(idTask, runTask);
+					
+				}
+			
+				if (task==null || !task.getHash().equals(token)) {
+					response.sendError(HttpServletResponse.SC_FORBIDDEN, Constants.RESPONSE_TASK_MSG_UNALLOWED);
+					task = null;
+				} else {
+					response.setStatus(HttpServletResponse.SC_OK);
+				}
+				
 			}
+				
+		} catch (NumberFormatException e) {
+			response.sendError(
+					HttpServletResponse.SC_BAD_REQUEST,
+					String.format(Constants.RESPONSE_NOT_A_NUMBER_ERROR, "id"));
+		} catch (DatabaseException e) {
+			e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, Constants.RESPONSE_ERROR_DATABASE);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}	
-		
-		response.setContentType("application/json");
+		} 
 		
 		
-		if(taskRunResponse!=null){
+		if(task!=null && run == null){
 			
 			Gson gson = new Gson();
 			PrintWriter out = response.getWriter();
-			out.print(gson.toJson(taskRunResponse));
+			out.print(gson.toJson(resultList));
+			out.flush();
+			
+		}
+		
+		
+		if(task!=null && run!=null){
+			
+			Gson gson = new Gson();
+			PrintWriter out = response.getWriter();
+			out.print(gson.toJson(result));
 			out.flush();
 			
 		}

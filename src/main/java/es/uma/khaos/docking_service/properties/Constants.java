@@ -38,22 +38,27 @@ public class Constants {
 	public static final String RESPONSE_ERROR_DATABASE = "There was an error with the database. Contact with the administrators.";
 	public static final String RESPONSE_NOT_A_NUMBER_ERROR = "%s should be a valid number";
 	public static final String RESPONSE_MANDATORY_PARAMETER_ERROR = "%s is a mandatory parameter";
+	public static final String RESPONSE_MIN_MAX_VALUES = "There was an error based on the parameters introduced. The minimum values for evaluations, runs and population sizes are 1500000, 10 and 100, respectively. The maximum values for evaluations, runs and population are 25000000, 50 and 500, respectively";
+
+	
 	
 	// Input parameters
 	public static final String SINGLE_OBJECTIVE_ALGORITHMS[] = {"gGA", "ssGA", "DE", "PSO"};
 	public static final String MULTI_OBJECTIVE_ALGORITHMS[] = {"NSGAII", "ssNSGAII", "GDE3", "SMPSO", "MOEAD"};
 	
+	//Input default parameters
 	public static final int DEFAULT_NUMBER_EVALUATIONS = Integer.parseInt(Configurations.getProperty(Properties.DEFAULT_NUMBER_EVALUATIONS));
 	public static final int DEFAULT_NUMBER_RUNS = Integer.parseInt(Configurations.getProperty(Properties.DEFAULT_NUMBER_RUNS));
 	public static final int DEFAULT_NUMBER_POPULATION_SIZE = Integer.parseInt(Configurations.getProperty(Properties.DEFAULT_NUMBER_POPULATION_SIZE));
-	
+
+	//Input min parameters
 	public static final int DEFAULT_MIN_NUMBER_EVALUATIONS = Integer.parseInt(Configurations.getProperty(Properties.DEFAULT_MIN_NUMBER_EVALUATIONS));
 	public static final int DEFAULT_MIN_NUMBER_RUNS = Integer.parseInt(Configurations.getProperty(Properties.DEFAULT_MIN_NUMBER_RUNS));
 	public static final int DEFAULT_MIN_NUMBER_POPULATION_SIZE = Integer.parseInt(Configurations.getProperty(Properties.DEFAULT_MIN_NUMBER_POPULATION_SIZE));
 	
+	//Input max parameters
 	public static final int DEFAULT_MAX_NUMBER_EVALUATIONS = Integer.parseInt(Configurations.getProperty(Properties.DEFAULT_MAX_NUMBER_EVALUATIONS));
 	public static final int DEFAULT_MAX_NUMBER_RUNS = Integer.parseInt(Configurations.getProperty(Properties.DEFAULT_MAX_NUMBER_RUNS));
 	public static final int DEFAULT_MAX_NUMBER_POPULATION_SIZE = Integer.parseInt(Configurations.getProperty(Properties.DEFAULT_MAX_NUMBER_POPULATION_SIZE));
-	
 	
 }
