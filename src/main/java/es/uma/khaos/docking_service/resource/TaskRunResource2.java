@@ -1,10 +1,12 @@
 package es.uma.khaos.docking_service.resource;
 
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.Random;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
@@ -54,10 +56,10 @@ public class TaskRunResource2 extends Application {
 		public Response postPatameterTask(@QueryParam("algorithm") String algorithm,  
 				@QueryParam("runs") @DefaultValue("30")  int runs,
 				@QueryParam("population_size") @DefaultValue("150") int population_size, 
-				@QueryParam("evaluations") @DefaultValue("1500000") int evaluations ) {
-		
-		int objectiveOpt = 0;
-		
+				@QueryParam("evaluations") @DefaultValue("1500000") int evaluations,
+				@QueryParam("objectives") @DefaultValue("1") int objectiveOpt,
+				@FormParam("file") InputStream fileInputStream) {
+			
 			try{
 				
 				if (StringUtils.isNullOrEmpty(algorithm)) {
