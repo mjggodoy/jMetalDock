@@ -1,5 +1,7 @@
 package es.uma.khaos.docking_service.model;
 
+import javax.validation.constraints.Min;
+
 public class ParameterSet {
 	
 

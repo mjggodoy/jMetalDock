@@ -3,12 +3,6 @@ package es.uma.khaos.docking_service.resource;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.Random;
-
-import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.POST;
@@ -18,7 +12,6 @@ import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import com.mysql.jdbc.StringUtils;
-
 import es.uma.khaos.docking_service.autodock.WorkerThread;
 import es.uma.khaos.docking_service.model.ParameterSet;
 import es.uma.khaos.docking_service.model.Task;
@@ -58,14 +51,13 @@ public class TaskRunResource2 extends Application {
 	@POST
 	@Path("/post")
     @Consumes(MediaType.APPLICATION_JSON)
-		public Response postPatameterTask(@QueryParam("algorithm") String algorithm,  @QueryParam("runs") @DefaultValue("30") @Min(5) int runs,
-				@QueryParam("population_size") Integer population_size, @QueryParam("evaluations") Integer evaluations ) {
+		public Response postPatameterTask(@QueryParam("algorithm") String algorithm,  
+				@QueryParam("runs") @DefaultValue("30")  int runs,
+				@QueryParam("population_size") @DefaultValue("150") int population_size, 
+				@QueryParam("evaluations") @DefaultValue("1500000") int evaluations ) {
 		
 		int objectiveOpt = 0;
 		
-		System.out.println(runs);
-
-
 			try{
 				
 				if (StringUtils.isNullOrEmpty(algorithm)) {
@@ -74,33 +66,20 @@ public class TaskRunResource2 extends Application {
 			
 				}else{
 					
-
+					runs = inRangeCheck(
+							runs,
+							Constants.DEFAULT_MIN_NUMBER_RUNS,
+							Constants.DEFAULT_MAX_NUMBER_RUNS);
 					
-					
-					
-					if (population_size == null || population_size.equals("")) {
-						
-						population_size = Constants.DEFAULT_NUMBER_POPULATION_SIZE;
-						
-					} else {
-						
-						population_size = inRangeCheck(
-								population_size,
-								Constants.DEFAULT_MIN_NUMBER_POPULATION_SIZE,
-								Constants.DEFAULT_MAX_NUMBER_POPULATION_SIZE);
-					}
-					
-					if (evaluations == null || evaluations.equals("")) {
-						
-						evaluations = Constants.DEFAULT_NUMBER_EVALUATIONS;
-						
-					} else {
-						
-						evaluations = inRangeCheck(
+					population_size = inRangeCheck(
+							population_size,
+							Constants.DEFAULT_MIN_NUMBER_POPULATION_SIZE,
+							Constants.DEFAULT_MAX_NUMBER_POPULATION_SIZE);
+				
+					evaluations = inRangeCheck(
 								evaluations,
 								Constants.DEFAULT_MIN_NUMBER_EVALUATIONS,
 								Constants.DEFAULT_MAX_NUMBER_EVALUATIONS);
-					}
 					
 					return launchTask(population_size, evaluations, runs, algorithm, objectiveOpt);
 
