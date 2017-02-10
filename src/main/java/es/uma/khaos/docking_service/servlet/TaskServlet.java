@@ -1,12 +1,12 @@
 package es.uma.khaos.docking_service.servlet;
 
-import java.io.BufferedReader;
+//import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+//import java.io.InputStream;
+//import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.math.BigInteger;
-import java.nio.file.Paths;
+//import java.nio.file.Paths;
 import java.security.SecureRandom;
 import java.util.Random;
 
@@ -37,7 +37,9 @@ import es.uma.khaos.docking_service.autodock.WorkerThread;
  * Servlet implementation class Task
  */
 
-@WebServlet("/Task")
+// TODO: Borrar cuando no sea necesario
+
+@WebServlet("/old/task")
 @MultipartConfig
 public class TaskServlet extends HttpServlet {
 
@@ -64,7 +66,7 @@ public class TaskServlet extends HttpServlet {
 		String token = request.getParameter("token");
 
 		response.setContentType("application/json");
-
+		
 		try {
 			if (id == null) {
 				response.sendError(HttpServletResponse.SC_BAD_REQUEST, String
