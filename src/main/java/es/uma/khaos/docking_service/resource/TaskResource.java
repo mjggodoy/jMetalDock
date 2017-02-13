@@ -15,12 +15,12 @@ import es.uma.khaos.docking_service.model.Task;
 import es.uma.khaos.docking_service.properties.Constants;
 import es.uma.khaos.docking_service.service.DatabaseService;
 
-@Path("/task2/{id}")
+@Path("/task2")
 public class TaskResource extends Application {
 	
 	//TODO: Tratar mejor las excepciones
 	@GET
-	@Path("/token")
+	@Path("/{id}")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Response doGetAsJson(@NotNull @PathParam("id") int id,  @QueryParam("token") String token) throws DatabaseException {
 		
