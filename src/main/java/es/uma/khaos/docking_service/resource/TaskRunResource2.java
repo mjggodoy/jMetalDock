@@ -2,6 +2,7 @@ package es.uma.khaos.docking_service.resource;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -62,6 +63,7 @@ public class TaskRunResource2 extends Application {
 	
 	public static void unzip(String nameFile){
 	    String source = "/Users/mariajesus/Desktop/AutoDockInstance/"+ nameFile;
+	    System.out.println("source: " + source);
 	    String destination = "/Users/mariajesus/Desktop/AutoDockInstance/";
 
 	    try {
@@ -103,9 +105,12 @@ public class TaskRunResource2 extends Application {
 				@QueryParam("population_size") @DefaultValue("150") int population_size, 
 				@QueryParam("evaluations") @DefaultValue("1500000") int evaluations,
 				@QueryParam("objectives") @DefaultValue("1") int objectiveOpt,
-				@FormDataParam("file") InputStream file) throws IOException {
+				@FormDataParam("file") FormDataContentDisposition file) throws IOException {
 					
-			readFile(file);
+		
+			String nameFile = file.getFileName();
+			System.out.println("Name file: " + nameFile);
+			unzip(nameFile);
 					
 			try{
 				
