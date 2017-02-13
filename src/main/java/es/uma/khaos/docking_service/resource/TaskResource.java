@@ -20,7 +20,7 @@ public class TaskResource extends Application {
 	
 	//TODO: Tratar mejor las excepciones
 	@GET
-	@Path("/id/")
+	@Path("/token")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Response doGetAsJson(@NotNull @PathParam("id") int id,  @QueryParam("token") String token) throws DatabaseException {
 		
@@ -33,6 +33,7 @@ public class TaskResource extends Application {
 					return Response.status(Response.Status.FORBIDDEN).entity(Constants.RESPONSE_TASK_MSG_UNALLOWED).build();			
 			
 				}else{
+					
 					
 					return Response.ok(task).build();
 				}
