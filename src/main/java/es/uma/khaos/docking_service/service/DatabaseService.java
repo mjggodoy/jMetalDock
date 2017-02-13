@@ -433,12 +433,12 @@ public final class DatabaseService {
 			if (rs.next()) {
 
 				id = rs.getInt("id");
-				int finalBindingEnergy = rs.getInt("finalBindingEnergy");
+				int finalBindingEnergy = rs.getInt("final_binding_energy");
 				String objective1 = rs.getString("objective1");
 				String objective2 = rs.getString("objective2");
 				objectives.add(objective1);
 				objectives.add(objective2);
-				int executionTaskId = rs.getInt("execution_task_id");
+				int executionTaskId = rs.getInt("execution_id");
 				result = new Result(id,finalBindingEnergy, objectives, executionTaskId);
 
 			}

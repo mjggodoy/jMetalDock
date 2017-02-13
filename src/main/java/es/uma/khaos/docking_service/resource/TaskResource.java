@@ -117,8 +117,6 @@ public class TaskResource extends Application {
 		ThreadPoolService.getInstance().execute(worker);		
 		
 		return Response.ok(task).build();
-
-
 	}
 	
 	
@@ -196,11 +194,5 @@ public class TaskResource extends Application {
 		}
 			
 	}
-	
-	
-	
-	
-	
-	
 	
 }
