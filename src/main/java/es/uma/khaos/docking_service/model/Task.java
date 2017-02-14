@@ -1,5 +1,8 @@
 package es.uma.khaos.docking_service.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Task {
 
 	private int id;
@@ -7,6 +10,8 @@ public class Task {
 	private String state;
 	//TODO: Hacer que los dos IDs no aparezcan en el JSON
 	private ParameterSet parameters;
+	
+	public Task() { }
 
 	public Task(int id, String hash, String state) {
 		super();
@@ -34,6 +39,18 @@ public class Task {
 	
 	public String getState() {
 		return state;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setHash(String hash) {
+		this.hash = hash;
+	}
+
+	public void setState(String state) {
+		this.state = state;
 	}
 
 	public ParameterSet getParameters() {
