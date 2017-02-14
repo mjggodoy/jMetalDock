@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
@@ -336,8 +337,9 @@ public final class DatabaseService {
 	*/
 	
 	
-	public Execution getExecution(int id) throws Exception{
+	public List<Execution> getExecutions(int task_id) throws Exception{
 
+		List<Execution> executions = new ArrayList<Execution>();
 		Execution execution = null;
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -347,17 +349,17 @@ public final class DatabaseService {
 			
 			conn = openConnection();
 			stmt = conn
-					.prepareStatement("select * from execution where id=?");
-			stmt.setInt(1, id);
+					.prepareStatement("select * from execution where task_id=?");
+			stmt.setInt(1, task_id);
 
 			rs = stmt.executeQuery();
 
-			if (rs.next()) {
+			while (rs.next()) {
 
-				id = rs.getInt("id");
-				int task_id = rs.getInt("task_id");
+				int id = rs.getInt("id");
+				task_id = rs.getInt("task_id");
 				execution = new Execution(id, task_id);
-	
+				executions.add(execution);	
 			}
 
 		} catch (Exception e) {
@@ -372,10 +374,54 @@ public final class DatabaseService {
 				conn.close();
 		}
 	
-		return execution;
-		
+		return executions;
 		
 	}
+	
+	
+	//Execution objective with run and id as parameters
+	
+	public Execution getExecution(int task_id, int run) throws Exception{
+
+		Execution execution = null;
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			
+			conn = openConnection();
+			stmt = conn
+					.prepareStatement("select * from execution where task_id=? and run=?");
+			stmt.setInt(1, task_id);
+			stmt.setInt(2, run);
+
+			rs = stmt.executeQuery();
+
+			while (rs.next()) {
+
+				int id = rs.getInt("id");
+				task_id = rs.getInt("task_id");
+				execution = new Execution(id, task_id);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (rs != null)
+				rs.close();
+			if (stmt != null)
+				stmt.close();
+			if (conn != null)
+				conn.close();
+		}
+	
+		return execution;	
+		
+	}
+	
+	
 	
 	public Execution insertExecution(int id, int task_id ) throws Exception {
 
