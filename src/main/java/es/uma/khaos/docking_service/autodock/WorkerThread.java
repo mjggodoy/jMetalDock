@@ -169,7 +169,7 @@ public class WorkerThread implements Runnable {
 				int run = 1;
 				for (AutoDockSolution sol : dlgResult) {
 					Execution exec = DatabaseService.getInstance().insertExecution(id, run);
-					DatabaseService.getInstance().insertResult(sol.getTotalEnergy(), "Total Binding Energy", null, exec.getId());
+					//DatabaseService.getInstance().insertResult(sol.getTotalEnergy(), "Total Binding Energy", null, exec.getId());
 					run++;
 				}
 			} catch (IOException e) {

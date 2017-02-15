@@ -69,7 +69,7 @@ public class RunTaskServlet extends HttpServlet {
 				
 					int idTask = Integer.parseInt(id);		
 					task = DatabaseService.getInstance().getTask(idTask);
-					executionList = DatabaseService.getInstance().getExecutionByTaskId(idTask);
+					executionList = DatabaseService.getInstance().getExecutions(idTask);
 				
 					for(Execution element : executionList){
 					

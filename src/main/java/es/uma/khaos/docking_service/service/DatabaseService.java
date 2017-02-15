@@ -344,53 +344,10 @@ public final class DatabaseService {
 	 * EXECUTION
 	 */
 	
-	public Execution getExecutionById(int id) throws Exception{
+	public List<Execution> getExecutions(int task_id) throws Exception{
 
+		List<Execution> executions = new ArrayList<Execution>();
 		Execution execution = null;
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-
-		try {
-			
-			conn = openConnection();
-			stmt = conn
-					.prepareStatement("select * from execution where id=?");
-			stmt.setInt(1, id);
-
-			rs = stmt.executeQuery();
-
-			if (rs.next()) {
-
-				id = rs.getInt("id");
-				int task_id = rs.getInt("task_id");
-				int run = rs.getInt("run");
-				execution = new Execution(id, task_id, run);
-	
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		} finally {
-			if (rs != null)
-				rs.close();
-			if (stmt != null)
-				stmt.close();
-			if (conn != null)
-				conn.close();
-		}
-	
-		return execution;
-		
-		
-	}
-	
-	public List<Execution> getExecutionByTaskId(int id) throws Exception{
-
-		Execution execution = null;
-		List<Execution> executionList = new ArrayList<Execution>();
-
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -400,17 +357,17 @@ public final class DatabaseService {
 			conn = openConnection();
 			stmt = conn
 					.prepareStatement("select * from execution where task_id=?");
-			stmt.setInt(1, id);
+			stmt.setInt(1, task_id);
+
 			rs = stmt.executeQuery();
 
 			while (rs.next()) {
 
-				id = rs.getInt("id");
-				int task_id = rs.getInt("task_id");
+				int id = rs.getInt("id");
+				task_id = rs.getInt("task_id");
 				int run = rs.getInt("run");
 				execution = new Execution(id, task_id, run);
-				executionList.add(execution);
-	
+				executions.add(execution);	
 			}
 
 		} catch (Exception e) {
@@ -425,11 +382,53 @@ public final class DatabaseService {
 				conn.close();
 		}
 	
-		return executionList;
-		
+		return executions;
 		
 	}
+	
+	
+	//Execution objective with run and id as parameters
+	
+	public Execution getExecution(int task_id, int run) throws Exception{
 
+		Execution execution = null;
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			
+			conn = openConnection();
+			stmt = conn
+					.prepareStatement("select * from execution where task_id=? and run=?");
+			stmt.setInt(1, task_id);
+			stmt.setInt(2, run);
+
+			rs = stmt.executeQuery();
+
+			while (rs.next()) {
+
+				int id = rs.getInt("id");
+				task_id = rs.getInt("task_id");
+				execution = new Execution(id, task_id, run);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (rs != null)
+				rs.close();
+			if (stmt != null)
+				stmt.close();
+			if (conn != null)
+				conn.close();
+		}
+	
+		return execution;	
+		
+	}
+	
 	public Execution insertExecution(int task_id, int run) throws DatabaseException {
 
 		Connection conn = null;
