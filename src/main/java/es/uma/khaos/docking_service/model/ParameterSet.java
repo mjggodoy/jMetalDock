@@ -2,13 +2,15 @@ package es.uma.khaos.docking_service.model;
 
 public class ParameterSet {
 
+	private int run;
 	private int id;
 	private String algorithm;
 	private int evaluation;
 	private int populationSize;
-	private int run;
 	private int objective;
 	private int task_id;
+	
+	public ParameterSet() { }
 	
 	public ParameterSet(int id, String algorithm, int evaluations, int populationSize, int runs,
 			int objectives, int task_id) {
@@ -49,5 +51,33 @@ public class ParameterSet {
 	public int getTask_id() {
 		return task_id;
 	}
-	
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public void setAlgorithm(String algorithm) {
+		this.algorithm = algorithm;
+	}
+
+	public void setEvaluation(int evaluation) {
+		this.evaluation = evaluation;
+	}
+
+	public void setPopulationSize(int populationSize) {
+		this.populationSize = populationSize;
+	}
+
+	public void setRun(int run) {
+		this.run = run;
+	}
+
+	public void setObjective(int objective) {
+		this.objective = objective;
+	}
+
+	public void setTask_id(int task_id) {
+		this.task_id = task_id;
+	}
+
 }

@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
@@ -341,7 +342,7 @@ public final class DatabaseService {
 	
 	/*
 	 * EXECUTION
-	*/
+	 */
 	
 	public Execution getExecutionById(int id) throws Exception{
 
@@ -385,9 +386,11 @@ public final class DatabaseService {
 		
 	}
 	
-	public Execution getExecutionByTaskId(int id) throws Exception{
+	public List<Execution> getExecutionByTaskId(int id) throws Exception{
 
 		Execution execution = null;
+		List<Execution> executionList = new ArrayList<Execution>();
+
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -398,15 +401,15 @@ public final class DatabaseService {
 			stmt = conn
 					.prepareStatement("select * from execution where task_id=?");
 			stmt.setInt(1, id);
-
 			rs = stmt.executeQuery();
 
-			if (rs.next()) {
+			while (rs.next()) {
 
 				id = rs.getInt("id");
 				int task_id = rs.getInt("task_id");
 				int run = rs.getInt("run");
 				execution = new Execution(id, task_id, run);
+				executionList.add(execution);
 	
 			}
 
@@ -422,11 +425,11 @@ public final class DatabaseService {
 				conn.close();
 		}
 	
-		return execution;
+		return executionList;
 		
 		
 	}
-	
+
 	public Execution insertExecution(int task_id, int run) throws DatabaseException {
 
 		Connection conn = null;
@@ -464,11 +467,9 @@ public final class DatabaseService {
 		return execution;
 	}
 	
-	
 	/*
 	 * RESULT
-	*/
-	
+	 */
 	
 	public Result getResult(int id) throws Exception{
 		
@@ -477,7 +478,6 @@ public final class DatabaseService {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		ArrayList<String> objectives = new ArrayList<String>();
-
 		
 		try {
 			
@@ -485,19 +485,21 @@ public final class DatabaseService {
 			stmt = conn
 					.prepareStatement("select * from result where id=?");
 			stmt.setInt(1, id);
-
 			rs = stmt.executeQuery();
 
 			if (rs.next()) {
 
 				id = rs.getInt("id");
-				int finalBindingEnergy = rs.getInt("final_binding_energy");
+				float finalBindingEnergy = rs.getFloat("final_binding_energy");
 				String objective1 = rs.getString("objective1");
 				String objective2 = rs.getString("objective2");
 				objectives.add(objective1);
 				objectives.add(objective2);
+				float intermolecularEnergy = rs.getFloat("intermolecular_energy");
+				float intramolecularEnergy = rs.getFloat("intramolecular_energy");
+				float rmsd = rs.getInt("rmsd");
 				int executionId = rs.getInt("execution_id");
-				result = new Result(id,finalBindingEnergy, objectives, executionId);
+				result = new Result(id,finalBindingEnergy, objectives,intermolecularEnergy, intramolecularEnergy, rmsd, executionId);
 			
 			}
 
@@ -517,9 +519,106 @@ public final class DatabaseService {
 		
 	}
 	
-	
+	public Result getResultByExecutionId(int executionId) throws Exception{
+		
+		Result result = null;
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		ArrayList<String> objectives = new ArrayList<String>();
 
-	public Result insertResult(float finalBindingEnergy, String objective1, String objective2, int execution_id ) throws DatabaseException {
+		
+		try {
+			
+			conn = openConnection();
+			stmt = conn
+					.prepareStatement("select * from result where execution_id=?");
+			stmt.setInt(1,executionId);
+			rs = stmt.executeQuery();
+
+			if (rs.next()) {
+
+				int id = rs.getInt("id");
+				float finalBindingEnergy = rs.getFloat("final_binding_energy");
+				String objective1 = rs.getString("objective1");
+				String objective2 = rs.getString("objective2");
+				objectives.add(objective1);
+				objectives.add(objective2);
+				float intermolecularEnergy = rs.getFloat("intermolecular_energy");
+				float intramolecularEnergy = rs.getFloat("intramolecular_energy");
+				float rmsd = rs.getFloat("rmsd");
+				executionId = rs.getInt("execution_id");
+				result = new Result(id,finalBindingEnergy, objectives,intermolecularEnergy, intramolecularEnergy, rmsd, executionId);
+			
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (rs != null)
+				rs.close();
+			if (stmt != null)
+				stmt.close();
+			if (conn != null)
+				conn.close();
+		}
+	
+		return result;
+		
+	}
+	
+	public Result getResultByTaskIdAndRun(int id, int run) throws Exception{
+
+		Result result = null;
+		ArrayList<String> objectives = new ArrayList<String>();
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			
+			conn = openConnection();
+			stmt = conn
+					.prepareStatement("select * from execution a, result b where task_id = ? and run = ? and a.id = b.execution_id;");
+			stmt.setInt(1, id);
+			stmt.setInt(2, run);
+			rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				
+				id = rs.getInt("id");
+				float finalBindingEnergy = rs.getFloat("final_binding_energy");
+				String objective1 = rs.getString("objective1");
+				String objective2 = rs.getString("objective2");
+				objectives.add(objective1);
+				objectives.add(objective2);
+				float intermolecularEnergy = rs.getFloat("intermolecular_energy");
+				float intramolecularEnergy = rs.getFloat("intramolecular_energy");
+				float rmsd = rs.getFloat("rmsd");
+				int executionId = rs.getInt("execution_id");
+				result = new Result(id,finalBindingEnergy, objectives, intermolecularEnergy, intramolecularEnergy, rmsd, executionId);		
+	
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (rs != null)
+				rs.close();
+			if (stmt != null)
+				stmt.close();
+			if (conn != null)
+				conn.close();
+		}
+	
+		return result;
+		
+		
+	}
+
+	public Result insertResult(float finalBindingEnergy, String objective1, String objective2, float intermolecularEnergy, float intramolecularEnergy, float rmsd, int execution_id) throws DatabaseException {
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -538,12 +637,15 @@ public final class DatabaseService {
 			stmt.setFloat(1, finalBindingEnergy);
 			stmt.setString(2, objective1);
 			stmt.setString(3, objective2);
-			stmt.setInt(4, execution_id);
+			stmt.setFloat(4, intermolecularEnergy);
+			stmt.setFloat(5, intramolecularEnergy);
+			stmt.setFloat(6, rmsd);
+			stmt.setInt(7, execution_id);
 			stmt.execute();
 			rs = stmt.getGeneratedKeys();
 
 			if (rs.next()) {
-				result = new Result(rs.getInt(1), finalBindingEnergy, objectives, execution_id);
+				result = new Result(rs.getInt(1), finalBindingEnergy, objectives, intermolecularEnergy, intramolecularEnergy, rmsd, execution_id);
 			}
 
 		} catch (SQLException e) {

@@ -1,37 +1,43 @@
-<!DOCTYPE web-app PUBLIC
- "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd" >
-
-<web-app>
-  <display-name>Archetype Created Web Application</display-name>
-  <servlet>
-  	<servlet-name>Task</servlet-name>
-  	<display-name>Task</display-name>
-  	<description></description>
-  	<servlet-class>es.uma.khaos.docking_service.servlet.TaskServlet</servlet-class>
-  </servlet>
-  <servlet>
-  	<servlet-name>RunTaskServlet</servlet-name>
-  	<display-name>RunTaskServlet</display-name>
-  	<description></description>
-  	<servlet-class>es.uma.khaos.docking_service.servlet.RunTaskServlet</servlet-class>
-  </servlet>
-  <servlet>
-  	<servlet-name>TaskParameterServlet</servlet-name>
-  	<display-name>TaskParameterServlet</display-name>
-  	<description></description>
-  	<servlet-class>es.uma.khaos.docking_service.servlet.TaskParameterServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-  	<servlet-name>Task</servlet-name>
-  	<url-pattern>/task</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-  	<servlet-name>RunTaskServlet</servlet-name>
-  	<url-pattern>/RunTaskServlet</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-  	<servlet-name>TaskParameterServlet</servlet-name>
-  	<url-pattern>/TaskParameterServlet</url-pattern>
-  </servlet-mapping>
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
+  <display-name>docking-service</display-name>
+  <!--
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  -->
+  <filter>
+    <filter-name>jersey</filter-name>
+    <filter-class>org.glassfish.jersey.servlet.ServletContainer</filter-class>
+    <init-param>
+      <param-name>jersey.config.server.provider.classnames</param-name>
+      <param-value>
+      	org.glassfish.jersey.server.mvc.jsp.JspMvcFeature,
+      	org.glassfish.jersey.media.multipart.MultiPartFeature
+      </param-value>
+    </init-param>
+    <init-param>
+      <param-name>jersey.config.server.provider.packages</param-name>
+      <param-value>es.uma.khaos.docking_service.resource</param-value>
+    </init-param>
+    <init-param>
+      <param-name>jersey.config.server.mvc.templateBasePath.jsp</param-name>
+      <param-value>/WEB-INF/jsp</param-value>
+    </init-param>
+    <!--
+    <init-param>
+      <param-name>com.sun.jersey.config.property.WebPageContentRegex</param-name>
+      <param-value>/(resources|(WEB-INF/jsp))/.*</param-value>
+    </init-param>
+    -->
+  </filter>
+  <filter-mapping>
+    <filter-name>jersey</filter-name>
+    <url-pattern>/rest/*</url-pattern>
+  </filter-mapping>
 </web-app>
