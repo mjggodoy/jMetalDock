@@ -39,7 +39,7 @@ import es.uma.khaos.docking_service.autodock.WorkerThread;
 
 // TODO: Borrar cuando no sea necesario
 
-@WebServlet("/old/task")
+@WebServlet("/task")
 @MultipartConfig
 public class TaskServlet extends HttpServlet {
 

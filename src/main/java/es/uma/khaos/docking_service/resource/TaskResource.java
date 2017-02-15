@@ -40,13 +40,24 @@ import net.lingala.zip4j.exception.ZipException;
 @Path("/task")
 public class TaskResource extends Application {
 	
+	@GET
+	@Path("/{id}")
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	public Response doGetAsJsonOrXml(@NotNull @PathParam("id") int id,  @QueryParam("token") String token) throws DatabaseException {
+		return getTask(id, token, new PojoResponseBuilder());
+	}
+	
+	@GET
+	@Path("/{id}")
+    @Produces("text/html")
+    public Response doGetAsHtml(@NotNull @PathParam("id") int id, @QueryParam("token") String token) throws DatabaseException {
+		// TODO: Sacar path del jsp a fichero de propiedades (PRIVATE)
+		return getTask(id, token, new JspResponseBuilder("/task.jsp"));
+    }
+	
 	private Response getTask(int id, String token, ResponseBuilder builder) {
 		try{
 			Task task = DatabaseService.getInstance().getTaskParameter(id);
-			
-			System.out.println(task);
-			System.out.println(token);
-			System.out.println(task.getHash());
 			
 			if (task == null || !task.getHash().equals(token)) {
 				return Response.status(Response.Status.FORBIDDEN).entity(Constants.RESPONSE_TASK_MSG_UNALLOWED).build();			
@@ -62,23 +73,15 @@ public class TaskResource extends Application {
 			e.printStackTrace();
 			return Response.serverError().build();
 		}
-		
 	}
 	
-	@GET
-	@Path("/{id}")
-	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public Response doGetAsJson(@NotNull @PathParam("id") int id,  @QueryParam("token") String token) throws DatabaseException {
-		return getTask(id, token, new PojoResponseBuilder());
+	private int inRangeCheck(int value, int minValue, int maxValue) {
+		if (value > maxValue) return maxValue;
+		else if (value < minValue) return minValue;
+		else return value;
 	}
 	
-	@GET
-	@Path("/{id}")
-    @Produces("text/html")
-    public Response index(@NotNull @PathParam("id") int id, @QueryParam("token") String token) throws DatabaseException {
-		// TODO: Sacar path del jsp a fichero de propiedades (PRIVATE)
-		return getTask(id, token, new JspResponseBuilder("/task.jsp"));
-    }
+	
 	
 	// TODO: Ordenar la parte del POST
 	private Response launchTask(int popSize, int evals, int runs, String algorithm, int objectiveOpt) throws Exception {
@@ -113,62 +116,47 @@ public class TaskResource extends Application {
 	    }
 	}
 	
-
-	private int inRangeCheck(int value, int minValue, int maxValue) {
-		if (value > maxValue) return maxValue;
-		else if (value < minValue) return minValue;
-		else return value;
-	}
-	
-	
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
-		public Response postPatameterTask(@QueryParam("algorithm") String algorithm,  
-				@QueryParam("runs") @DefaultValue("30")  int runs,
-				@QueryParam("population_size") @DefaultValue("150") int population_size, 
-				@QueryParam("evaluations") @DefaultValue("1500000") int evaluations,
-				@QueryParam("objectives") @DefaultValue("1") int objectiveOpt,
-				@FormDataParam("file") FormDataContentDisposition file) throws IOException {
-					
+	public Response postPatameterTask(@QueryParam("algorithm") String algorithm,
+			@QueryParam("runs") @DefaultValue("30")  int runs,
+			@QueryParam("population_size") @DefaultValue("150") int population_size, 
+			@QueryParam("evaluations") @DefaultValue("1500000") int evaluations,
+			@QueryParam("objectives") @DefaultValue("1") int objectiveOpt,
+			@FormDataParam("file") FormDataContentDisposition file) throws IOException {
 		
+		// TODO: Usar fichero zip subido
+		if (file!=null) {
 			String nameFile = file.getFileName();
 			System.out.println("Name file: " + nameFile);
 			unzip(nameFile);
+		}
 					
-			try{
-				
-				if (StringUtils.isNullOrEmpty(algorithm)) {
-				
-					return Response.status(Response.Status.EXPECTATION_FAILED).entity(Constants.RESPONSE_MANDATORY_PARAMETER_ERROR).build();			
+		try{
+			if (StringUtils.isNullOrEmpty(algorithm)) {
+				return Response.status(Response.Status.EXPECTATION_FAILED).entity(Constants.RESPONSE_MANDATORY_PARAMETER_ERROR).build();			
+			}else{
+				runs = inRangeCheck(
+						runs,
+						Constants.DEFAULT_MIN_NUMBER_RUNS,
+						Constants.DEFAULT_MAX_NUMBER_RUNS);
+				population_size = inRangeCheck(
+						population_size,
+						Constants.DEFAULT_MIN_NUMBER_POPULATION_SIZE,
+						Constants.DEFAULT_MAX_NUMBER_POPULATION_SIZE);
+				evaluations = inRangeCheck(
+						evaluations,
+						Constants.DEFAULT_MIN_NUMBER_EVALUATIONS,
+						Constants.DEFAULT_MAX_NUMBER_EVALUATIONS);
+				return launchTask(population_size, evaluations, runs, algorithm, objectiveOpt);
+			}
 			
-				}else{
-					
-					
-					runs = inRangeCheck(
-							runs,
-							Constants.DEFAULT_MIN_NUMBER_RUNS,
-							Constants.DEFAULT_MAX_NUMBER_RUNS);
-					
-					population_size = inRangeCheck(
-							population_size,
-							Constants.DEFAULT_MIN_NUMBER_POPULATION_SIZE,
-							Constants.DEFAULT_MAX_NUMBER_POPULATION_SIZE);
-				
-					evaluations = inRangeCheck(
-								evaluations,
-								Constants.DEFAULT_MIN_NUMBER_EVALUATIONS,
-								Constants.DEFAULT_MAX_NUMBER_EVALUATIONS);
-					
-					return launchTask(population_size, evaluations, runs, algorithm, objectiveOpt);
-
-				}
+		} catch (Exception e) {
 			
-			} catch (Exception e) {
-				
-				Response.status(Response.Status.EXPECTATION_FAILED).entity(Constants.RESPONSE_MANDATORY_PARAMETER_ERROR).build();			
-			
-				//e.printStackTrace();
-				return Response.serverError().build();
+			Response.status(Response.Status.EXPECTATION_FAILED).entity(Constants.RESPONSE_MANDATORY_PARAMETER_ERROR).build();			
+		
+			//e.printStackTrace();
+			return Response.serverError().build();
 		}
 			
 	}
