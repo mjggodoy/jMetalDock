@@ -617,7 +617,7 @@ public final class DatabaseService {
 		
 	}
 
-	public Result insertResult(float finalBindingEnergy, String objective1, String objective2, float intermolecularEnergy, float intramolecularEnergy, float rmsd, int execution_id) throws DatabaseException {
+	public Result insertResult(float finalBindingEnergy, String objective1, String objective2, float intermolecularEnergy, Float intramolecularEnergy, Float rmsd, int execution_id) throws DatabaseException {
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
