@@ -3,8 +3,8 @@ package es.uma.khaos.docking_service.resource;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -17,7 +17,6 @@ import es.uma.khaos.docking_service.exception.DatabaseException;
 import es.uma.khaos.docking_service.model.Execution;
 import es.uma.khaos.docking_service.model.Result;
 import es.uma.khaos.docking_service.model.Task;
-import es.uma.khaos.docking_service.model.response.TaskRunResponse;
 import es.uma.khaos.docking_service.properties.Constants;
 import es.uma.khaos.docking_service.service.DatabaseService;
 
@@ -27,7 +26,8 @@ public class RunTaskResource extends Application {
 	
 	@GET
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public Response doGetAsJson(@NotNull @QueryParam("id") Integer id, @QueryParam("token") String token, @QueryParam("run") Integer run) throws DatabaseException {
+	public Response doGetAsJson(@NotNull @QueryParam("id") Integer id, @QueryParam("token") String token, 
+			@DefaultValue("0") @QueryParam("run") Integer run) throws DatabaseException {
 			
 		List<Result> results = new ArrayList<Result>();
 		int idExecution = 0;
@@ -42,7 +42,7 @@ public class RunTaskResource extends Application {
 
 			}else{
 				
-				if(run.equals("")){
+				if(run==0){
 				
 					List<Execution> executions  = DatabaseService.getInstance().getExecutions(id);
 				
