@@ -5,6 +5,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
@@ -36,6 +38,21 @@ public class Utils {
 	    } catch (ZipException e) {
 	        e.printStackTrace();
 	    }
+	}
+	
+	public static List<String> searchFileWithExtension (String dir, String extension) {
+		List <String> list = new ArrayList<>();
+		File f = new File(dir);
+		if (f.exists()) { // Directorio existe }
+			File[] ficheros = f.listFiles();
+			for (int x=0; x<ficheros.length; x++) {
+				String fichero = ficheros[x].getName();
+				if (fichero.indexOf(extension)!=-1) {
+					list.add(fichero);
+				}
+			}
+		}
+		return list;
 	}
 
 }

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 
 import es.uma.khaos.docking_service.autodock.dlg.DLGMonoParser;
 import es.uma.khaos.docking_service.autodock.dlg.DLGParser;
@@ -38,8 +39,6 @@ public class WorkerThread implements Runnable {
 	//TODO: Tratar este parámetro
 	private int objectiveOpt;
 	
-//	private String fileDir;
-//	private String dpfFileName;
 	private String zipFile;
 	
 	public WorkerThread(String name, int id, String algorithm, int runs, int populationSize, int evals, int objectiveOpt, String zipFile) {
@@ -52,18 +51,6 @@ public class WorkerThread implements Runnable {
 		this.objectiveOpt = objectiveOpt;
 		this.zipFile = zipFile;
 	}
-	
-//	public WorkerThread(String name, int id, String algorithm, int runs, int populationSize, int evals, int objectiveOpt, String fileDir, String dpfFileName) {
-//		this.name = name;
-//		this.id = id;
-//		this.algorithm = algorithm;
-//		this.runs = runs;
-//		this.evals = evals;
-//		this.populationSize = populationSize;
-//		this.objectiveOpt = objectiveOpt;
-//		this.fileDir = fileDir;
-//		this.dpfFileName = dpfFileName;
-//	}
 	
 	public void run() {
 		
@@ -104,7 +91,7 @@ public class WorkerThread implements Runnable {
 				"mkdir %s", workDir);
 		executeCommand(command);
 		
-//		// COPIAMOS FICHEROS DE ENTRADA EN CARPETA DE TRABAJO
+		// COPIAMOS FICHEROS DE ENTRADA EN CARPETA DE TRABAJO
 //		command = String.format(
 //				"cp -r %s. %s", fileDir, workDir);
 //		executeCommand(command);
@@ -113,7 +100,9 @@ public class WorkerThread implements Runnable {
 		Utils.unzip(zipFile, workDir);
 		
 		// TODO: Buscamos fichero DPF en carpeta
-		dpfFileName = null;
+		List<String> dpfs = Utils.searchFileWithExtension(workDir, "dpf");
+		if (dpfs.size()!=1) throw new DpfNotFoundException();
+		dpfFileName = dpfs.get(0);
 		
 		// PREPARAMOS DPF CON LOS PARÁMETROS
 		formatDPF(new File(workDir+"/"+dpfFileName), new File(workDir+"/"+inputFile));
