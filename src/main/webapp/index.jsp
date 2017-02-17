@@ -24,9 +24,10 @@
 	    <div id="menubar">
           <ul id="menu">
             <li class="current"><a href="index.html">Home</a></li>
-            <li><a href="file.html">Run Docking Task</a></li>
-            <li><a href="projects.html">Tutorials</a></li>
-            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="file.html">Features</a></li>
+            <li><a href="projects.html">Tutorial</a></li>
+            <li><a href="projects.html">Benchmark</a></li>
+            <li><a href="contact.html">References</a></li>
           </ul>
         </div><!--close menubar-->	  
 	  </div><!--close banner-->	
@@ -80,7 +81,7 @@
   
   <div id="footer_container">
     <div id="footer">
-	  <a href="http://www.uma.khaos.es">Khaos Group</a>
+	  <a href="http://www.uma.khaos.es">Khaos Group 2017</a>
     </div><!--close footer-->  
   </div><!--close footer_container-->  
   
