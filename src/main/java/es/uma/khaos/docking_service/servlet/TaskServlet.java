@@ -129,8 +129,9 @@ public class TaskServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		out.print(json);
 		out.flush();
+		// TODO: Cambiar por instancia por defecto para que siga funcionando
 		Runnable worker = new WorkerThread("DOCKING", task.getId(), algorithm,
-				runs, popSize, evals, objectiveOpt);
+				runs, popSize, evals, objectiveOpt, null);
 		ThreadPoolService.getInstance().execute(worker);
 
 	}
