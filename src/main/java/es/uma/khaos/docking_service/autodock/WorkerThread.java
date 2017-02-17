@@ -119,12 +119,13 @@ public class WorkerThread implements Runnable {
 		readDLG(workDir+"/"+outputFile);
 		
 		// BORRAMOS CARPETA
-		// TODO: Borrar carpeta una vez acabado
 		
+		System.out.println("pathway:" + workDir);
 		
 		deleteFolder(workDir);
-		
-		deleteZip(workDir+"/"+zipFile);	
+	
+		System.out.println("ZipFile: " + zipFile);
+		deleteZip(zipFile);	
 		
 	}
 	
@@ -133,27 +134,12 @@ public class WorkerThread implements Runnable {
 	}
 	
 	
-	private void deleteZip(String workDir){
-		
-    	File file = new File(workDir);
-    	
-    	if(file.exists()){
-    		
-    		file.delete();
-    		
-    	}else{
-    		
-    		System.out.println("Something about deleting file has failed ");
-    		
-    	}
-	}
-	
 	private void deleteFolder(String workDir){
 		
     	File directory = new File(workDir);
     	try{
     	
-    		if(directory.exists()){
+    		if(!directory.exists()){
     			System.out.println("Directory already exists");
     		}else{
     			deleteFile(directory);	
@@ -176,15 +162,44 @@ public class WorkerThread implements Runnable {
     			String files[] = file.list();
     			for (String temp : files) {
         	      
-         		  File fileDelete = new File(file, temp);
-         		  deleteFile(fileDelete);
+    				File fileDelete = new File(file, temp);
+    				deleteFile(fileDelete);
+    			}
+    			
+    			if(file.list().length==0){
+              	     file.delete();
     			}
     		}
     	
     	}else{
+    		
     		file.delete(); //se borra	
+    		System.out.println("File is deleted : " + file.getAbsolutePath());
+
     	}	
 	}
+	
+	
+	private void deleteZip(String workDir){
+		
+    	File file = new File(workDir);
+    	
+    	
+    	if(file.exists()){
+    		
+        	System.out.println("Deleting zip file: " + file.getName());
+
+    		
+    		file.delete();
+    		
+    	}else{
+    		
+    		System.out.println("Something about deleting file has failed ");
+    		
+    	}
+	}
+	
+	
 	
 	private void executeCommand(String command, File workDir) throws CommandExecutionException {
 		
