@@ -1,6 +1,7 @@
 package es.uma.khaos.docking_service.resource;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.Random;
@@ -25,6 +26,7 @@ import com.mysql.jdbc.StringUtils;
 
 import es.uma.khaos.docking_service.autodock.WorkerThread;
 import es.uma.khaos.docking_service.exception.DatabaseException;
+import es.uma.khaos.docking_service.model.ErrorResponse;
 import es.uma.khaos.docking_service.model.ParameterSet;
 import es.uma.khaos.docking_service.model.Task;
 import es.uma.khaos.docking_service.properties.Constants;
@@ -33,20 +35,75 @@ import es.uma.khaos.docking_service.response.PojoResponseBuilder;
 import es.uma.khaos.docking_service.response.ResponseBuilder;
 import es.uma.khaos.docking_service.service.DatabaseService;
 import es.uma.khaos.docking_service.service.ThreadPoolService;
-
-import net.lingala.zip4j.core.ZipFile;
-import net.lingala.zip4j.exception.ZipException;
+import es.uma.khaos.docking_service.utils.Utils;
 
 @Path("/task")
 public class TaskResource extends Application {
 	
-	private Response getTask(int id, String token, ResponseBuilder builder) {
+	private final String BASE_FOLDER = Constants.DIR_BASE;
+	
+	@GET
+	@Path("/{id}")
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	public Response doGetAsJsonOrXml(@NotNull @PathParam("id") int id,  @QueryParam("token") String token) throws DatabaseException {
+		return getTaskResponse(id, token, new PojoResponseBuilder());
+	}
+	
+	@GET
+	@Path("/{id}")
+    @Produces("text/html")
+    public Response doGetAsHtml(@NotNull @PathParam("id") int id, @QueryParam("token") String token) throws DatabaseException {
+		// TODO: Sacar path del jsp a fichero de propiedades (PRIVATE)
+		return getTaskResponse(id, token, new JspResponseBuilder("/task.jsp"));
+    }
+	
+	@POST
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public Response doPost(
+			@QueryParam("algorithm") String algorithm,
+			@QueryParam("runs") @DefaultValue("2") int runs,
+			@QueryParam("population_size") @DefaultValue("150") int populationSize, 
+			@QueryParam("evaluations") @DefaultValue("1500000") int evaluations,
+			@QueryParam("objectives") @DefaultValue("1") int objectiveOpt,
+			@QueryParam("instance") String instance) {
+		System.out.println("HERE I AM!");
+		
+		// TODO: DESCARGAR Y PREPARAR instancia seleccionada
+		String zipFile = null;
+		
+		String filesFolder = Constants.TEST_DIR_INSTANCE;
+		String dpfFile = Constants.TEST_FILE_DPF;
+		
+//		return Response.ok().build();
+		return createTaskResponse(populationSize, evaluations, runs, algorithm, objectiveOpt, zipFile);
+		
+	}
+	
+	@POST
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	public Response doPost(
+			@QueryParam("algorithm") String algorithm,
+			@QueryParam("runs") @DefaultValue("2") int runs,
+			@QueryParam("population_size") @DefaultValue("150") int populationSize, 
+			@QueryParam("evaluations") @DefaultValue("1500000") int evaluations,
+			@QueryParam("objectives") @DefaultValue("1") int objectiveOpt,
+			@FormDataParam("file") final FormDataContentDisposition fileDetails,
+			@FormDataParam("file") final InputStream inputStream) throws IOException {
+		System.out.println("HERE I STAY!");
+		
+		// TODO: Autogenerar nombre de zip
+		String zipFile = BASE_FOLDER + fileDetails.getFileName();
+		Utils.saveFile(inputStream, zipFile);
+		
+		//return Response.ok().build();
+		return createTaskResponse(populationSize, evaluations, runs, algorithm, objectiveOpt, zipFile);
+	}
+	
+	private Response getTaskResponse(int id, String token, ResponseBuilder builder) {
 		try{
 			Task task = DatabaseService.getInstance().getTaskParameter(id);
-			
-			System.out.println(task);
-			System.out.println(token);
-			System.out.println(task.getHash());
 			
 			if (task == null || !task.getHash().equals(token)) {
 				return Response.status(Response.Status.FORBIDDEN).entity(Constants.RESPONSE_TASK_MSG_UNALLOWED).build();			
@@ -62,26 +119,49 @@ public class TaskResource extends Application {
 			e.printStackTrace();
 			return Response.serverError().build();
 		}
+	}
+	
+	private Response createTaskResponse(int popSize, int evals, int runs, String algorithm, int objectiveOpt,
+			String zipFile) {
 		
+		System.out.println("HERE I STAY 2!");
+		
+		System.out.println("HERE I STAY 4!");
+		
+		try{
+			if (StringUtils.isNullOrEmpty(algorithm)) {
+				//TODO: EXPECTATION_FAILED no debería ser el error. Cambiarlo por otro. 400, quizá
+				return Response
+						.status(Response.Status.EXPECTATION_FAILED)
+						.entity(new ErrorResponse(
+								Response.Status.EXPECTATION_FAILED,
+								String.format(Constants.RESPONSE_MANDATORY_PARAMETER_ERROR, "algorithm")))
+						.build();			
+			}else{
+				runs = inRangeCheck(
+						runs,
+						Constants.DEFAULT_MIN_NUMBER_RUNS,
+						Constants.DEFAULT_MAX_NUMBER_RUNS);
+				popSize = inRangeCheck(
+						popSize,
+						Constants.DEFAULT_MIN_NUMBER_POPULATION_SIZE,
+						Constants.DEFAULT_MAX_NUMBER_POPULATION_SIZE);
+				evals = inRangeCheck(
+						evals,
+						Constants.DEFAULT_MIN_NUMBER_EVALUATIONS,
+						Constants.DEFAULT_MAX_NUMBER_EVALUATIONS);
+				Task task = createTask(popSize, evals, runs, algorithm, objectiveOpt, zipFile);
+				//return Response.ok(task, mediaType).build();
+				return Response.ok(task).build();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Response.serverError().build();
+		}
 	}
 	
-	@GET
-	@Path("/{id}")
-	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public Response doGetAsJson(@NotNull @PathParam("id") int id,  @QueryParam("token") String token) throws DatabaseException {
-		return getTask(id, token, new PojoResponseBuilder());
-	}
-	
-	@GET
-	@Path("/{id}")
-    @Produces("text/html")
-    public Response index(@NotNull @PathParam("id") int id, @QueryParam("token") String token) throws DatabaseException {
-		// TODO: Sacar path del jsp a fichero de propiedades (PRIVATE)
-		return getTask(id, token, new JspResponseBuilder("/task.jsp"));
-    }
-	
-	// TODO: Ordenar la parte del POST
-	private Response launchTask(int popSize, int evals, int runs, String algorithm, int objectiveOpt) throws Exception {
+	private Task createTask(int popSize, int evals, int runs, String algorithm, int objectiveOpt,
+			String zipFile) throws Exception {
 
 		Random sr = SecureRandom.getInstance("SHA1PRNG");
 		String token = new BigInteger(130, sr).toString(32);
@@ -91,86 +171,16 @@ public class TaskResource extends Application {
 						task.getId());
 		task.setParameters(parameters);
 		Runnable worker = new WorkerThread("DOCKING", task.getId(), algorithm,
-				runs, popSize, evals, objectiveOpt);
-		ThreadPoolService.getInstance().execute(worker);		
+				runs, popSize, evals, objectiveOpt, zipFile);
+		ThreadPoolService.getInstance().execute(worker);
 		
-		return Response.ok(task).build();
+		return task;
 	}
 	
-	
-	public static void unzip(String nameFile){
-	    String source = "/Users/mariajesus/Desktop/AutoDockInstance/"+ nameFile;
-	    System.out.println("source: " + source);
-	    String destination = "/Users/mariajesus/Desktop/AutoDockInstance/";
-
-	    try {
-	         
-	    	ZipFile zipFile = new ZipFile(source);
-	        zipFile.extractAll(destination);
-	    
-	    } catch (ZipException e) {
-	        e.printStackTrace();
-	    }
-	}
-	
-
 	private int inRangeCheck(int value, int minValue, int maxValue) {
 		if (value > maxValue) return maxValue;
 		else if (value < minValue) return minValue;
 		else return value;
 	}
-	
-	
-	@POST
-	@Consumes(MediaType.MULTIPART_FORM_DATA)
-		public Response postPatameterTask(@QueryParam("algorithm") String algorithm,  
-				@QueryParam("runs") @DefaultValue("30")  int runs,
-				@QueryParam("population_size") @DefaultValue("150") int population_size, 
-				@QueryParam("evaluations") @DefaultValue("1500000") int evaluations,
-				@QueryParam("objectives") @DefaultValue("1") int objectiveOpt,
-				@FormDataParam("file") FormDataContentDisposition file) throws IOException {
-					
-		
-			String nameFile = file.getFileName();
-			System.out.println("Name file: " + nameFile);
-			unzip(nameFile);
-					
-			try{
-				
-				if (StringUtils.isNullOrEmpty(algorithm)) {
-				
-					return Response.status(Response.Status.EXPECTATION_FAILED).entity(Constants.RESPONSE_MANDATORY_PARAMETER_ERROR).build();			
-			
-				}else{
-					
-					
-					runs = inRangeCheck(
-							runs,
-							Constants.DEFAULT_MIN_NUMBER_RUNS,
-							Constants.DEFAULT_MAX_NUMBER_RUNS);
-					
-					population_size = inRangeCheck(
-							population_size,
-							Constants.DEFAULT_MIN_NUMBER_POPULATION_SIZE,
-							Constants.DEFAULT_MAX_NUMBER_POPULATION_SIZE);
-				
-					evaluations = inRangeCheck(
-								evaluations,
-								Constants.DEFAULT_MIN_NUMBER_EVALUATIONS,
-								Constants.DEFAULT_MAX_NUMBER_EVALUATIONS);
-					
-					return launchTask(population_size, evaluations, runs, algorithm, objectiveOpt);
 
-				}
-			
-			} catch (Exception e) {
-				
-				Response.status(Response.Status.EXPECTATION_FAILED).entity(Constants.RESPONSE_MANDATORY_PARAMETER_ERROR).build();			
-			
-				//e.printStackTrace();
-				return Response.serverError().build();
-		}
-			
-	}
-	
 }

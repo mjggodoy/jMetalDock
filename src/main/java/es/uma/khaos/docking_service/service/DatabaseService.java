@@ -237,6 +237,14 @@ public final class DatabaseService {
 		return task;
 
 	}
+
+	public void startTask(int id) throws Exception {
+		this.updateTaskState(id, RUNNING_STATE);
+	}
+
+	public void finishTask(int id) throws Exception {
+		this.updateTaskState(id, FINISHED_STATE);
+	}
 	
 	public void finishTaskWithError(int id) throws Exception {
 		this.updateTaskState(id, ERROR_STATE);
@@ -334,56 +342,12 @@ public final class DatabaseService {
 	
 	/*
 	 * EXECUTION
-	*/
+	 */
 	
-	
-	public Execution getExecutionById(int id) throws Exception{
+	public List<Execution> getExecutions(int task_id) throws Exception{
 
+		List<Execution> executions = new ArrayList<Execution>();
 		Execution execution = null;
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-
-		try {
-			
-			conn = openConnection();
-			stmt = conn
-					.prepareStatement("select * from execution where id=?");
-			stmt.setInt(1, id);
-
-			rs = stmt.executeQuery();
-
-			if (rs.next()) {
-
-				id = rs.getInt("id");
-				int task_id = rs.getInt("task_id");
-				int run = rs.getInt("run");
-				execution = new Execution(id, task_id, run);
-	
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		} finally {
-			if (rs != null)
-				rs.close();
-			if (stmt != null)
-				stmt.close();
-			if (conn != null)
-				conn.close();
-		}
-	
-		return execution;
-		
-		
-	}
-	
-	public List<Execution> getExecutionByTaskId(int id) throws Exception{
-
-		Execution execution = null;
-		List<Execution> executionList = new ArrayList<Execution>();
-
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -393,17 +357,17 @@ public final class DatabaseService {
 			conn = openConnection();
 			stmt = conn
 					.prepareStatement("select * from execution where task_id=?");
-			stmt.setInt(1, id);
+			stmt.setInt(1, task_id);
+
 			rs = stmt.executeQuery();
 
 			while (rs.next()) {
 
-				id = rs.getInt("id");
-				int task_id = rs.getInt("task_id");
+				int id = rs.getInt("id");
+				task_id = rs.getInt("task_id");
 				int run = rs.getInt("run");
 				execution = new Execution(id, task_id, run);
-				executionList.add(execution);
-	
+				executions.add(execution);	
 			}
 
 		} catch (Exception e) {
@@ -418,13 +382,54 @@ public final class DatabaseService {
 				conn.close();
 		}
 	
-		return executionList;
-		
+		return executions;
 		
 	}
 	
+	
+	//Execution objective with run and id as parameters
+	
+	public Execution getExecution(int task_id, int run) throws Exception{
 
-	public Execution insertExecution(int task_id, int run) throws Exception {
+		Execution execution = null;
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			
+			conn = openConnection();
+			stmt = conn
+					.prepareStatement("select * from execution where task_id=? and run=?");
+			stmt.setInt(1, task_id);
+			stmt.setInt(2, run);
+
+			rs = stmt.executeQuery();
+
+			while (rs.next()) {
+
+				int id = rs.getInt("id");
+				task_id = rs.getInt("task_id");
+				execution = new Execution(id, task_id, run);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (rs != null)
+				rs.close();
+			if (stmt != null)
+				stmt.close();
+			if (conn != null)
+				conn.close();
+		}
+	
+		return execution;	
+		
+	}
+	
+	public Execution insertExecution(int task_id, int run) throws DatabaseException {
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -433,7 +438,7 @@ public final class DatabaseService {
 
 		try {
 			conn = openConnection();
-			stmt = conn.prepareStatement("insert into execution values (?,?)",
+			stmt = conn.prepareStatement("insert into execution (task_id, run) values (?,?)",
 					Statement.RETURN_GENERATED_KEYS);
 			stmt.setInt(1, task_id);
 			stmt.setInt(2, run);
@@ -446,25 +451,24 @@ public final class DatabaseService {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DatabaseException();
+			throw new DatabaseException(e);
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
+			throw new DatabaseException(e);
 		} finally {
-			if (stmt != null)
-				stmt.close();
-			if (conn != null)
-				conn.close();
+			try {
+				if (rs != null) rs.close();
+				if (stmt != null) stmt.close();
+				if (conn != null) conn.close();
+			} catch (SQLException e) {
+				throw new DatabaseException(e);
+			}
 		}
 		return execution;
 	}
 	
-	
 	/*
 	 * RESULT
-	*/
-	
+	 */
 	
 	public Result getResult(int id) throws Exception{
 		
@@ -473,7 +477,6 @@ public final class DatabaseService {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		ArrayList<String> objectives = new ArrayList<String>();
-
 		
 		try {
 			
@@ -514,7 +517,6 @@ public final class DatabaseService {
 		return result;
 		
 	}
-	
 	
 	public Result getResultByExecutionId(int executionId) throws Exception{
 		
@@ -615,9 +617,7 @@ public final class DatabaseService {
 		
 	}
 
-		
-
-	public Result insertResult(float finalBindingEnergy, String objective1, String objective2, float intermolecularEnergy, float intramolecularEnergy, float rmsd, int execution_id) throws Exception {
+	public Result insertResult(float finalBindingEnergy, String objective1, String objective2, float intermolecularEnergy, Float intramolecularEnergy, Float rmsd, int execution_id) throws DatabaseException {
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -630,7 +630,8 @@ public final class DatabaseService {
 		try {
 			
 			conn = openConnection();
-			stmt = conn.prepareStatement("insert into result values (?, ?, ?, ?, ?, ?, ?)",
+			stmt = conn.prepareStatement("insert into result (final_binding_energy, objective1, objective2, execution_id) "
+					+ "values (?, ?, ?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
 			stmt.setFloat(1, finalBindingEnergy);
 			stmt.setString(2, objective1);
@@ -643,32 +644,23 @@ public final class DatabaseService {
 			rs = stmt.getGeneratedKeys();
 
 			if (rs.next()) {
-				
 				result = new Result(rs.getInt(1), finalBindingEnergy, objectives, intermolecularEnergy, intramolecularEnergy, rmsd, execution_id);
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new DatabaseException();
+			throw new DatabaseException(e);
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
+			throw new DatabaseException(e);
 		} finally {
-			if (stmt != null)
-				stmt.close();
-			if (conn != null)
-				conn.close();
+			try {
+				if (rs != null) rs.close();
+				if (stmt != null) stmt.close();
+				if (conn != null) conn.close();
+			} catch (SQLException e) {
+				throw new DatabaseException(e);
+			}
 		}
 		return result;
-	}
-	
-	
-	public void startTask(int id) throws Exception {
-		this.updateTaskState(id, RUNNING_STATE);
-	}
-
-	public void finishTask(int id) throws Exception {
-		this.updateTaskState(id, FINISHED_STATE);
 	}
 	
 	public static void main(String[] args) throws Exception {

@@ -5,11 +5,20 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import es.uma.khaos.docking_service.autodock.dlg.DLGMonoParser;
+import es.uma.khaos.docking_service.autodock.dlg.DLGParser;
 import es.uma.khaos.docking_service.exception.CommandExecutionException;
+import es.uma.khaos.docking_service.exception.DatabaseException;
+import es.uma.khaos.docking_service.exception.DlgNotFoundException;
+import es.uma.khaos.docking_service.exception.DlgParseException;
 import es.uma.khaos.docking_service.exception.DpfNotFoundException;
 import es.uma.khaos.docking_service.exception.DpfWriteException;
+import es.uma.khaos.docking_service.model.Execution;
+import es.uma.khaos.docking_service.model.dlg.AutoDockSolution;
+import es.uma.khaos.docking_service.model.dlg.result.DLGResult;
 import es.uma.khaos.docking_service.properties.Constants;
 import es.uma.khaos.docking_service.service.DatabaseService;
+import es.uma.khaos.docking_service.utils.Utils;
 
 public class WorkerThread implements Runnable {
 	
@@ -17,9 +26,6 @@ public class WorkerThread implements Runnable {
 	private final String AUTODOCK_LOCATION = Constants.DIR_AUTODOCK;
 	private final String AUTODOCK_EXECUTABLE = Constants.FILE_AUTODOCK;
 	private final String BASE_FOLDER = Constants.DIR_BASE;
-	
-	private final String TEST_DIR_INSTANCE = Constants.TEST_DIR_INSTANCE;
-	private final String TEST_FILE_DPF = Constants.TEST_FILE_DPF;
 	
 	private String name;
 	private int id;
@@ -31,7 +37,11 @@ public class WorkerThread implements Runnable {
 	//TODO: Tratar este parámetro
 	private int objectiveOpt;
 	
-	public WorkerThread(String name, int id, String algorithm, int runs, int populationSize, int evals, int objectiveOpt) {
+//	private String fileDir;
+//	private String dpfFileName;
+	private String zipFile;
+	
+	public WorkerThread(String name, int id, String algorithm, int runs, int populationSize, int evals, int objectiveOpt, String zipFile) {
 		this.name = name;
 		this.id = id;
 		this.algorithm = algorithm;
@@ -39,7 +49,20 @@ public class WorkerThread implements Runnable {
 		this.evals = evals;
 		this.populationSize = populationSize;
 		this.objectiveOpt = objectiveOpt;
+		this.zipFile = zipFile;
 	}
+	
+//	public WorkerThread(String name, int id, String algorithm, int runs, int populationSize, int evals, int objectiveOpt, String fileDir, String dpfFileName) {
+//		this.name = name;
+//		this.id = id;
+//		this.algorithm = algorithm;
+//		this.runs = runs;
+//		this.evals = evals;
+//		this.populationSize = populationSize;
+//		this.objectiveOpt = objectiveOpt;
+//		this.fileDir = fileDir;
+//		this.dpfFileName = dpfFileName;
+//	}
 	
 	public void run() {
 		
@@ -60,13 +83,15 @@ public class WorkerThread implements Runnable {
 		
 	}
 	
-	private void processCommand() throws DpfWriteException, DpfNotFoundException, CommandExecutionException {
+	private void processCommand() throws DpfWriteException, DpfNotFoundException, CommandExecutionException, DlgParseException, DlgNotFoundException, DatabaseException {
 		
 		String command;
 		
 		String workDir = String.format("%sexec-%d", BASE_FOLDER, id);
 		String inputFile = String.format("exec-%d.dpf", id);
 		String outputFile = String.format("exec-%d.dlg", id);
+		
+		String dpfFileName;
 		
 		System.out.println(workDir);
 		
@@ -75,13 +100,19 @@ public class WorkerThread implements Runnable {
 				"mkdir %s", workDir);
 		executeCommand(command);
 		
-		// COPIAMOS FICHEROS DE ENTRADA
-		command = String.format(
-				"cp -r %s. %s", TEST_DIR_INSTANCE, workDir);
-		executeCommand(command);
+//		// COPIAMOS FICHEROS DE ENTRADA EN CARPETA DE TRABAJO
+//		command = String.format(
+//				"cp -r %s. %s", fileDir, workDir);
+//		executeCommand(command);
+
+		// DESCOMPRIMIMOS FICHERO ZIP EN CARPETA DE TRABAJO
+		Utils.unzip(zipFile, workDir);
+		
+		// TODO: Buscamos fichero DPF en carpeta
+		dpfFileName = null;
 		
 		// PREPARAMOS DPF CON LOS PARÁMETROS
-		formatDPF(new File(workDir+"/"+TEST_FILE_DPF), new File(workDir+"/"+inputFile));
+		formatDPF(new File(workDir+"/"+dpfFileName), new File(workDir+"/"+inputFile));
 		
 		// EJECUTAMOS AUTODOCK
 		command= String.format(COMMAND_TEMPLATE,
@@ -92,8 +123,13 @@ public class WorkerThread implements Runnable {
 		if (!"".equals(Constants.DIR_AUTODOCK)) executeCommand(command, new File(workDir));
 		
 		// PROCESAMOS RESULTADOS
+		readDLG(workDir+"/"+outputFile);
 		
-		// BORRAMOS CARPETA?
+		// BORRAMOS CARPETA
+		// TODO: Borrar carpeta una vez acabado
+		
+		// BORRAMOS FICHERO ZIP
+		// TODO: Borrar fichero ZIP
 		
 	}
 	
@@ -149,6 +185,25 @@ public class WorkerThread implements Runnable {
 		dpfGen.setPopulationSize(populationSize);
 		System.out.println(objectiveOpt);
 		dpfGen.generate();
+	}
+	
+	private void readDLG(String dlgFile) throws DlgParseException, DlgNotFoundException, DatabaseException {
+		DLGParser<AutoDockSolution> parser;
+		if (objectiveOpt==0) {
+			parser = new DLGMonoParser();
+			try {
+				DLGResult<AutoDockSolution> dlgResult = parser.readFile(dlgFile);
+				int run = 1;
+				for (AutoDockSolution sol : dlgResult) {
+					Execution exec = DatabaseService.getInstance().insertExecution(id, run);
+					DatabaseService.getInstance().insertResult(sol.getTotalEnergy(), "Total Binding Energy", null, sol.getEnergy1(), sol.getEnergy2(), null, exec.getId());
+					run++;
+				}
+			} catch (IOException e) {
+				throw new DlgNotFoundException(e);
+			}
+			
+		}
 	}
 	
 	@Override
