@@ -32,7 +32,7 @@ public class RunTaskResource extends Application {
 		int idExecution = 0;
 
 		try {
-			
+						
 			Task task = DatabaseService.getInstance().getTaskParameter(id);
 
 			if (task == null || !task.getHash().equals(token)) {

@@ -22,6 +22,8 @@ import es.uma.khaos.docking_service.utils.Utils;
 
 public class WorkerThread implements Runnable {
 	
+	//BASE_FOLDER: /Users/mariajesus/Desktop/AutoDockBase/
+	
 	private final String COMMAND_TEMPLATE = "%s%s -p %s -l %s";
 	private final String AUTODOCK_LOCATION = Constants.DIR_AUTODOCK;
 	private final String AUTODOCK_EXECUTABLE = Constants.FILE_AUTODOCK;
@@ -128,13 +130,80 @@ public class WorkerThread implements Runnable {
 		// BORRAMOS CARPETA
 		// TODO: Borrar carpeta una vez acabado
 		
-		// BORRAMOS FICHERO ZIP
-		// TODO: Borrar fichero ZIP
+		
+		deleteFolder(workDir);
+		
+		deleteZip(workDir+"/"+zipFile);	
 		
 	}
 	
 	private void executeCommand(String command) throws CommandExecutionException {
 		executeCommand(command, null);
+	}
+	
+	
+	private void deleteZip(String workDir){
+		
+    	File file = new File(workDir);
+    	
+    	if(file.exists()){
+    		
+    		file.delete();
+    		
+    	}else{
+    		
+    		System.out.println("Something about deleting file has failed ");
+    		
+    	}
+	}
+	
+	private void deleteFolder(String workDir){
+		
+		String path = workDir;
+    	File directory = new File(path);
+    	
+    	try{
+    	
+    		if(directory.exists()){
+    		
+    			System.out.println("Directory already exists");
+    		
+    		}else{
+    		
+    			deleteFile(directory);
+    			
+    		}
+    
+    	}catch(Exception e){
+    	
+    		e.printStackTrace();
+    	} 
+    }
+	
+	
+	private void deleteFile(File file){
+		
+    	if(file.isDirectory()){
+    		
+    		if(file.list().length==0){
+    			
+    			file.delete(); // si está vacío el directorio, elimina el directorio
+    			
+    		}else{
+    			
+    			String files[] = file.list();
+    			
+    			for (String temp : files) {
+        	      
+         		  File fileDelete = new File(file, temp);
+         		  deleteFile(fileDelete);
+    			}
+    		}
+    	
+    	}else{
+    	
+    		file.delete(); //se borra	
+    	}	
 	}
 	
 	private void executeCommand(String command, File workDir) throws CommandExecutionException {

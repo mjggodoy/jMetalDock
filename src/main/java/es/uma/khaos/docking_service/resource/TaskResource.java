@@ -103,8 +103,9 @@ public class TaskResource extends Application {
 	
 	private Response getTaskResponse(int id, String token, ResponseBuilder builder) {
 		try{
+
 			Task task = DatabaseService.getInstance().getTaskParameter(id);
-			
+		
 			if (task == null || !task.getHash().equals(token)) {
 				return Response.status(Response.Status.FORBIDDEN).entity(Constants.RESPONSE_TASK_MSG_UNALLOWED).build();			
 			}else{
