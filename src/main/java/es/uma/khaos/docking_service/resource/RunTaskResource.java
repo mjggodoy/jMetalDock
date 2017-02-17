@@ -23,7 +23,6 @@ import es.uma.khaos.docking_service.service.DatabaseService;
 @Path("/runTask")
 public class RunTaskResource extends Application {
 	
-	
 	@GET
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Response doGetAsJson(@NotNull @QueryParam("id") Integer id, @QueryParam("token") String token, 

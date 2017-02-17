@@ -83,7 +83,6 @@
     <div id="footer">
 	  <a href="http://www.uma.khaos.es">Khaos Group 2017</a>
     </div><!--close footer-->  
-  </div><!--close footer_container-->  
-  
+  </div>
 </body>
 </html>

@@ -6,24 +6,26 @@ public class Result {
 	
 	
 	public int id;
-	public int finalBindingEnergy;
+	public float finalBindingEnergy;
 	public ArrayList<String> objectives;
-	public int executionTaskId;
+	public int executionId;
+	public float intermolecularEnergy;
+	public float intramolecuarEnergy;
+	public float rmsd;
 	
-
-
 	public Result(int id) {
 		super();
 		this.id = id;
 	}
 
-	public Result(int id, int finalBindingEnergy,
-			ArrayList<String> objectives, int executionTaskId) {
+	public Result(int id, float finalBindingEnergy,
+			ArrayList<String> objectives, float intermolecularEnergy, float intramolecuarEnergy, float rmsd, int executionTaskId) {
 		super();
 		this.id = id;
 		this.finalBindingEnergy = finalBindingEnergy;
 		this.objectives = objectives;
-		this.executionTaskId = executionTaskId;
+		this.rmsd = rmsd;
+		this.executionId = executionTaskId;
 	}
 
 
@@ -31,20 +33,30 @@ public class Result {
 		return id;
 	}
 
-
-	public int getFinalBindingEnergy() {
+	public float getFinalBindingEnergy() {
 		return finalBindingEnergy;
 	}
-
 
 
 	public ArrayList<String> getObjectives() {
 		return objectives;
 	}
-
-
-	public int getExecutionTaskId() {
-		return executionTaskId;
+	
+	public float getRmsd() {
+		return rmsd;
+	}
+	
+	public float getIntermolecularEnergy() {
+		return intermolecularEnergy;
 	}
 
+	public float getIntramolecuarEnergy() {
+		return intramolecuarEnergy;
+	}
+
+	public int getExecutionTaskId() {
+		return executionId;
+	}
+
+	
 }

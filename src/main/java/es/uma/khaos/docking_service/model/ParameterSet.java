@@ -1,9 +1,6 @@
 package es.uma.khaos.docking_service.model;
 
-import javax.validation.constraints.Min;
-
 public class ParameterSet {
-	
 
 	private int run;
 	private int id;
@@ -13,7 +10,7 @@ public class ParameterSet {
 	private int objective;
 	private int task_id;
 	
-	public ParameterSet(){}
+	public ParameterSet() { }
 	
 	public ParameterSet(int id, String algorithm, int evaluations, int populationSize, int runs,
 			int objectives, int task_id) {
@@ -82,4 +79,5 @@ public class ParameterSet {
 	public void setTask_id(int task_id) {
 		this.task_id = task_id;
 	}
+
 }
