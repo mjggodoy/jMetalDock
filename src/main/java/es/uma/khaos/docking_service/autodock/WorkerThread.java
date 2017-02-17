@@ -162,19 +162,13 @@ public class WorkerThread implements Runnable {
 	private void deleteFolder(String workDir){
 		
     	File directory = new File(workDir);
-    	
     	try{
     	
     		if(directory.exists()){
-    		
     			System.out.println("Directory already exists");
-    		
     		}else{
-    		
-    			deleteFile(directory);
-    			
+    			deleteFile(directory);	
     		}
-    
     	}catch(Exception e){
     	
     		e.printStackTrace();
@@ -186,14 +180,11 @@ public class WorkerThread implements Runnable {
 		
     	if(file.isDirectory()){
     		
-    		if(file.list().length==0){
-    			
-    			file.delete(); // si está vacío el directorio, elimina el directorio
-    			
+    		if(file.list().length==0){	
+    			file.delete(); // si está vacío el directorio, elimina el directorio	
     		}else{
     			
     			String files[] = file.list();
-    			
     			for (String temp : files) {
         	      
          		  File fileDelete = new File(file, temp);
@@ -202,7 +193,6 @@ public class WorkerThread implements Runnable {
     		}
     	
     	}else{
-    	
     		file.delete(); //se borra	
     	}	
 	}
