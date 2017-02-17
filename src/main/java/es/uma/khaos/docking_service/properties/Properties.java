@@ -26,6 +26,7 @@ public class Properties {
 	// Test
 	public static final String TEST_DIR_INSTANCE = "test.dir.instance";
 	public static final String TEST_FILE_DPF = "test.file.dpf";
+	public static final String TEST_FILE_ZIP = "test.file.zip";
 	
 	//Input default parameters
 	
@@ -42,6 +43,5 @@ public class Properties {
 	public static final String DEFAULT_MAX_NUMBER_EVALUATIONS = "input.default.max.evaluations";
 	public static final String DEFAULT_MAX_NUMBER_RUNS = "input.default.max.runs";
 	public static final String DEFAULT_MAX_NUMBER_POPULATION_SIZE = "input.default.max.population_size";
-
 
 }
