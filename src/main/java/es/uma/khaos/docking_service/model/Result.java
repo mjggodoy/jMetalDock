@@ -4,14 +4,13 @@ import java.util.ArrayList;
 
 public class Result {
 	
-	
 	public int id;
 	public float finalBindingEnergy;
 	public ArrayList<String> objectives;
 	public int executionId;
 	public float intermolecularEnergy;
 	public float intramolecuarEnergy;
-	public float rmsd;
+	public Float rmsd;
 	
 	public Result(int id) {
 		super();
@@ -19,7 +18,7 @@ public class Result {
 	}
 
 	public Result(int id, float finalBindingEnergy,
-			ArrayList<String> objectives, float intermolecularEnergy, float intramolecuarEnergy, float rmsd, int executionTaskId) {
+			ArrayList<String> objectives, float intermolecularEnergy, float intramolecuarEnergy, Float rmsd, int executionTaskId) {
 		super();
 		this.id = id;
 		this.finalBindingEnergy = finalBindingEnergy;
@@ -27,7 +26,6 @@ public class Result {
 		this.rmsd = rmsd;
 		this.executionId = executionTaskId;
 	}
-
 
 	public int getId() {
 		return id;
@@ -37,12 +35,11 @@ public class Result {
 		return finalBindingEnergy;
 	}
 
-
 	public ArrayList<String> getObjectives() {
 		return objectives;
 	}
 	
-	public float getRmsd() {
+	public Float getRmsd() {
 		return rmsd;
 	}
 	
@@ -57,6 +54,5 @@ public class Result {
 	public int getExecutionTaskId() {
 		return executionId;
 	}
-
 	
 }

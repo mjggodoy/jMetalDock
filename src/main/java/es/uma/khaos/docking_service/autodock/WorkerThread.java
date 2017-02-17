@@ -103,16 +103,21 @@ public class WorkerThread implements Runnable {
 		// PREPARAMOS DPF CON LOS PARÁMETROS
 		formatDPF(new File(workDir+"/"+dpfFileName), new File(workDir+"/"+inputFile));
 		
-		// EJECUTAMOS AUTODOCK
-		command= String.format(COMMAND_TEMPLATE,
-				AUTODOCK_LOCATION,
-				AUTODOCK_EXECUTABLE,
-				inputFile,
-				outputFile);
-		if (!"".equals(Constants.DIR_AUTODOCK)) executeCommand(command, new File(workDir));
-		
-		// PROCESAMOS RESULTADOS
-		readDLG(workDir+"/"+outputFile);
+		// SI TENEMOS EL EJECUTABLE DE AUTODOCK:
+		if (!"".equals(Constants.DIR_AUTODOCK))  {
+			
+			// EJECUTAMOS AUTODOCK
+			command= String.format(COMMAND_TEMPLATE,
+					AUTODOCK_LOCATION,
+					AUTODOCK_EXECUTABLE,
+					inputFile,
+					outputFile);
+			executeCommand(command, new File(workDir));
+			
+			// PROCESAMOS RESULTADOS
+			readDLG(workDir+"/"+outputFile);
+			
+		}
 		
 		// BORRAMOS CARPETA
 		// TODO: Borrar carpeta una vez acabado
@@ -178,7 +183,7 @@ public class WorkerThread implements Runnable {
 	
 	private void readDLG(String dlgFile) throws DlgParseException, DlgNotFoundException, DatabaseException {
 		DLGParser<AutoDockSolution> parser;
-		if (objectiveOpt==0) {
+		if (objectiveOpt==1) {
 			parser = new DLGMonoParser();
 			try {
 				DLGResult<AutoDockSolution> dlgResult = parser.readFile(dlgFile);

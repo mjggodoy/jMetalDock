@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -617,7 +618,7 @@ public final class DatabaseService {
 		
 	}
 
-	public Result insertResult(float finalBindingEnergy, String objective1, String objective2, float intermolecularEnergy, Float intramolecularEnergy, Float rmsd, int execution_id) throws DatabaseException {
+	public Result insertResult(float finalBindingEnergy, String objective1, String objective2, float intermolecularEnergy, float intramolecularEnergy, Float rmsd, int execution_id) throws DatabaseException {
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -630,15 +631,16 @@ public final class DatabaseService {
 		try {
 			
 			conn = openConnection();
-			stmt = conn.prepareStatement("insert into result (final_binding_energy, objective1, objective2, execution_id) "
-					+ "values (?, ?, ?, ?)",
+			stmt = conn.prepareStatement("insert into result (final_binding_energy, objective1, objective2, intermolecular_energy, intramolecular_energy, rmsd, execution_id) "
+					+ "values (?, ?, ?, ?, ?, ?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
 			stmt.setFloat(1, finalBindingEnergy);
 			stmt.setString(2, objective1);
 			stmt.setString(3, objective2);
 			stmt.setFloat(4, intermolecularEnergy);
 			stmt.setFloat(5, intramolecularEnergy);
-			stmt.setFloat(6, rmsd);
+			if (rmsd == null) stmt.setNull(6, Types.FLOAT);
+			else stmt.setFloat(6, rmsd);
 			stmt.setInt(7, execution_id);
 			stmt.execute();
 			rs = stmt.getGeneratedKeys();
