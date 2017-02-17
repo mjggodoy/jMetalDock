@@ -70,12 +70,8 @@ public class TaskResource extends Application {
 		System.out.println("HERE I AM!");
 		
 		// TODO: DESCARGAR Y PREPARAR instancia seleccionada
-		String zipFile = null;
+		String zipFile = Constants.TEST_DIR_INSTANCE + Constants.TEST_FILE_ZIP;
 		
-		String filesFolder = Constants.TEST_DIR_INSTANCE;
-		String dpfFile = Constants.TEST_FILE_DPF;
-		
-//		return Response.ok().build();
 		return createTaskResponse(populationSize, evaluations, runs, algorithm, objectiveOpt, zipFile);
 		
 	}
@@ -97,7 +93,6 @@ public class TaskResource extends Application {
 		String zipFile = BASE_FOLDER + fileDetails.getFileName();
 		Utils.saveFile(inputStream, zipFile);
 		
-		//return Response.ok().build();
 		return createTaskResponse(populationSize, evaluations, runs, algorithm, objectiveOpt, zipFile);
 	}
 	
@@ -106,7 +101,10 @@ public class TaskResource extends Application {
 			Task task = DatabaseService.getInstance().getTaskParameter(id);
 			
 			if (task == null || !task.getHash().equals(token)) {
-				return Response.status(Response.Status.FORBIDDEN).entity(Constants.RESPONSE_TASK_MSG_UNALLOWED).build();			
+				return Response
+						.status(Response.Status.FORBIDDEN)
+						.entity(new ErrorResponse(Response.Status.FORBIDDEN,Constants.RESPONSE_TASK_MSG_UNALLOWED))
+						.build();			
 			}else{
 				return builder.buildResponse(task);
 			}
@@ -123,10 +121,6 @@ public class TaskResource extends Application {
 	
 	private Response createTaskResponse(int popSize, int evals, int runs, String algorithm, int objectiveOpt,
 			String zipFile) {
-		
-		System.out.println("HERE I STAY 2!");
-		
-		System.out.println("HERE I STAY 4!");
 		
 		try{
 			if (StringUtils.isNullOrEmpty(algorithm)) {
@@ -151,7 +145,6 @@ public class TaskResource extends Application {
 						Constants.DEFAULT_MIN_NUMBER_EVALUATIONS,
 						Constants.DEFAULT_MAX_NUMBER_EVALUATIONS);
 				Task task = createTask(popSize, evals, runs, algorithm, objectiveOpt, zipFile);
-				//return Response.ok(task, mediaType).build();
 				return Response.ok(task).build();
 			}
 		} catch (Exception e) {
