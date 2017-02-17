@@ -22,7 +22,6 @@ import es.uma.khaos.docking_service.utils.Utils;
 
 public class WorkerThread implements Runnable {
 	
-	//BASE_FOLDER: /Users/mariajesus/Desktop/AutoDockBase/
 	
 	private final String COMMAND_TEMPLATE = "%s%s -p %s -l %s";
 	private final String AUTODOCK_LOCATION = Constants.DIR_AUTODOCK;
@@ -89,6 +88,9 @@ public class WorkerThread implements Runnable {
 		
 		String command;
 		
+		
+		//BASE_FOLDER: /Users/mariajesus/Desktop/AutoDockBase/exec-1
+
 		String workDir = String.format("%sexec-%d", BASE_FOLDER, id);
 		String inputFile = String.format("exec-%d.dpf", id);
 		String outputFile = String.format("exec-%d.dlg", id);
@@ -159,8 +161,7 @@ public class WorkerThread implements Runnable {
 	
 	private void deleteFolder(String workDir){
 		
-		String path = workDir;
-    	File directory = new File(path);
+    	File directory = new File(workDir);
     	
     	try{
     	
