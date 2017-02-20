@@ -16,7 +16,7 @@ import com.mysql.jdbc.StringUtils;
 
 import es.uma.khaos.docking_service.exception.DatabaseException;
 import es.uma.khaos.docking_service.model.Execution;
-import es.uma.khaos.docking_service.model.Result;
+import es.uma.khaos.docking_service.model.Solution;
 import es.uma.khaos.docking_service.model.Task;
 import es.uma.khaos.docking_service.properties.Constants;
 import es.uma.khaos.docking_service.service.DatabaseService;
@@ -47,9 +47,9 @@ public class RunTaskServlet extends HttpServlet {
 		String id = request.getParameter("id");
 		String token = request.getParameter("token");
 		String run = request.getParameter("run");
-		Result result= null;
+		Solution result= null;
 		List<Execution> executionList = new ArrayList<Execution>();
-		List <Result> resultList = new ArrayList<Result>();
+		List <Solution> resultList = new ArrayList<Solution>();
 		
 
 		response.setContentType("application/json");

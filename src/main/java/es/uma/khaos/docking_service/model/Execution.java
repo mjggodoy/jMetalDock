@@ -1,5 +1,7 @@
 package es.uma.khaos.docking_service.model;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 public class Execution {
 	
 	public int id;
@@ -25,4 +27,9 @@ public class Execution {
 		return run;
 	}
 
+	@Override
+	public String toString() {
+		return "Execution [id=" + id + ", task_id=" + task_id + ", run=" + run + "]";
+	}
+	
 }

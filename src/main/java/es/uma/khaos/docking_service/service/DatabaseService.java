@@ -17,7 +17,7 @@ import com.jcraft.jsch.Session;
 import es.uma.khaos.docking_service.exception.DatabaseException;
 import es.uma.khaos.docking_service.model.Execution;
 import es.uma.khaos.docking_service.model.ParameterSet;
-import es.uma.khaos.docking_service.model.Result;
+import es.uma.khaos.docking_service.model.Solution;
 import es.uma.khaos.docking_service.model.Task;
 import es.uma.khaos.docking_service.properties.Constants;
 
@@ -471,9 +471,9 @@ public final class DatabaseService {
 	 * RESULT
 	 */
 	
-	public Result getResult(int id) throws Exception{
+	public Solution getResult(int id) throws Exception{
 		
-		Result result = null;
+		Solution result = null;
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -499,7 +499,7 @@ public final class DatabaseService {
 				float intramolecularEnergy = rs.getFloat("intramolecular_energy");
 				float rmsd = rs.getInt("rmsd");
 				int executionId = rs.getInt("execution_id");
-				result = new Result(id,finalBindingEnergy, objectives,intermolecularEnergy, intramolecularEnergy, rmsd, executionId);
+				result = new Solution(id,finalBindingEnergy, objectives,intermolecularEnergy, intramolecularEnergy, rmsd, executionId);
 			
 			}
 
@@ -519,9 +519,9 @@ public final class DatabaseService {
 		
 	}
 	
-	public Result getResultByExecutionId(int executionId) throws Exception{
+	public Solution getResultByExecutionId(int executionId) throws Exception{
 		
-		Result result = null;
+		Solution result = null;
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -546,9 +546,10 @@ public final class DatabaseService {
 				objectives.add(objective2);
 				float intermolecularEnergy = rs.getFloat("intermolecular_energy");
 				float intramolecularEnergy = rs.getFloat("intramolecular_energy");
-				float rmsd = rs.getFloat("rmsd");
+				Float rmsd = rs.getFloat("rmsd");
+				if (rs.wasNull()) rmsd = null;
 				executionId = rs.getInt("execution_id");
-				result = new Result(id,finalBindingEnergy, objectives,intermolecularEnergy, intramolecularEnergy, rmsd, executionId);
+				result = new Solution(id,finalBindingEnergy, objectives,intermolecularEnergy, intramolecularEnergy, rmsd, executionId);
 			
 			}
 
@@ -568,9 +569,9 @@ public final class DatabaseService {
 		
 	}
 	
-	public Result getResultByTaskIdAndRun(int id, int run) throws Exception{
+	public Solution getResultByTaskIdAndRun(int id, int run) throws Exception{
 
-		Result result = null;
+		Solution result = null;
 		ArrayList<String> objectives = new ArrayList<String>();
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -597,7 +598,7 @@ public final class DatabaseService {
 				float intramolecularEnergy = rs.getFloat("intramolecular_energy");
 				float rmsd = rs.getFloat("rmsd");
 				int executionId = rs.getInt("execution_id");
-				result = new Result(id,finalBindingEnergy, objectives, intermolecularEnergy, intramolecularEnergy, rmsd, executionId);		
+				result = new Solution(id,finalBindingEnergy, objectives, intermolecularEnergy, intramolecularEnergy, rmsd, executionId);		
 	
 			}
 
@@ -618,11 +619,11 @@ public final class DatabaseService {
 		
 	}
 
-	public Result insertResult(float finalBindingEnergy, String objective1, String objective2, float intermolecularEnergy, float intramolecularEnergy, Float rmsd, int execution_id) throws DatabaseException {
+	public Solution insertResult(float finalBindingEnergy, String objective1, String objective2, float intermolecularEnergy, float intramolecularEnergy, Float rmsd, int execution_id) throws DatabaseException {
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
-		Result result = null;
+		Solution result = null;
 		ResultSet rs = null;
 		ArrayList<String> objectives = new ArrayList<String>();
 		objectives.add(objective1);
@@ -646,7 +647,7 @@ public final class DatabaseService {
 			rs = stmt.getGeneratedKeys();
 
 			if (rs.next()) {
-				result = new Result(rs.getInt(1), finalBindingEnergy, objectives, intermolecularEnergy, intramolecularEnergy, rmsd, execution_id);
+				result = new Solution(rs.getInt(1), finalBindingEnergy, objectives, intermolecularEnergy, intramolecularEnergy, rmsd, execution_id);
 			}
 
 		} catch (SQLException e) {
@@ -667,7 +668,7 @@ public final class DatabaseService {
 	
 	public static void main(String[] args) throws Exception {
 		int id=1;
-		Result result = DatabaseService.getInstance().getResult(id);
+		Solution result = DatabaseService.getInstance().getResult(id);
 		System.out.println(result.getFinalBindingEnergy());
 		
 	}

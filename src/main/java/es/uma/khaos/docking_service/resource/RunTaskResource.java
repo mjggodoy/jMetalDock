@@ -10,12 +10,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Application;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import es.uma.khaos.docking_service.exception.DatabaseException;
 import es.uma.khaos.docking_service.model.Execution;
-import es.uma.khaos.docking_service.model.Result;
+import es.uma.khaos.docking_service.model.Solution;
 import es.uma.khaos.docking_service.model.Task;
 import es.uma.khaos.docking_service.properties.Constants;
 import es.uma.khaos.docking_service.service.DatabaseService;
@@ -28,9 +29,6 @@ public class RunTaskResource extends Application {
 	public Response doGetAsJson(@NotNull @QueryParam("id") Integer id, @QueryParam("token") String token, 
 			@DefaultValue("0") @QueryParam("run") Integer run) throws DatabaseException {
 			
-		List<Result> results = new ArrayList<Result>();
-		int idExecution = 0;
-
 		try {
 			
 			Task task = DatabaseService.getInstance().getTaskParameter(id);
@@ -42,39 +40,51 @@ public class RunTaskResource extends Application {
 			}else{
 				
 				if(run==0){
-				
-					List<Execution> executions  = DatabaseService.getInstance().getExecutions(id);
-				
-					for(Execution execution: executions){
 					
-						idExecution = execution.getId();
-						Result result = DatabaseService.getInstance().getResult(idExecution);
+					System.out.println("RUN == 0");
+				
+					List<Solution> results = new ArrayList<Solution>();
+					List<Execution> executions  = DatabaseService.getInstance().getExecutions(id);
+					
+					// TODO: Cambiar a una sóla consulta
+					for(Execution execution: executions){
+						
+						System.out.println(execution);
+					
+						int executionId = execution.getId();
+						Solution result = DatabaseService.getInstance().getResultByExecutionId(executionId);
 						results.add(result);
+						System.out.println(result);
 					}
 					
-					return Response.ok(results).build();
-
+					System.out.println("AQUI");
+					GenericEntity<List<Solution>> entity = new GenericEntity<List<Solution>>(results) {};
+					System.out.println(entity);
+					
+					List<String> list = new ArrayList<String>();
+					list.add("PUA");
+					list.add("XUXA");
+					GenericEntity<List<String>> entity2 = new GenericEntity<List<String>>(list) {};
+					
+					return Response.ok(entity).build();
 				
 				}else{
 					
+					System.out.println("RUN == OTRA COSA");
+					
 					Execution execution = DatabaseService.getInstance().getExecution(id, run);
-					idExecution = execution.getId();
-					Result result = DatabaseService.getInstance().getResult(idExecution);
+					int executionId = execution.getId();
+					Solution result = DatabaseService.getInstance().getResult(executionId);
 					
 					return Response.ok(result).build();
-
 					
 				}
-				
 			}
 		
 		} catch (Exception e) {
-			
 			e.printStackTrace();
 			return Response.serverError().build();
-
 		}	
-		
 
 	}
 }
