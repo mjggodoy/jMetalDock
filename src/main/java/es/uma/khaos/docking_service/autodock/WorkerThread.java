@@ -175,7 +175,6 @@ public class WorkerThread implements Runnable {
     		
     		file.delete(); //se borra	
     		System.out.println("File is deleted : " + file.getAbsolutePath());
-
     	}	
 	}
 	
@@ -192,8 +191,6 @@ public class WorkerThread implements Runnable {
     		System.out.println("Something about deleting file has failed ");
     	}
 	}
-	
-	
 	
 	private void executeCommand(String command, File workDir) throws CommandExecutionException {
 		
