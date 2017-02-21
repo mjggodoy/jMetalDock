@@ -24,7 +24,7 @@ import es.uma.khaos.docking_service.response.ResponseBuilder;
 import es.uma.khaos.docking_service.service.DatabaseService;
 
 @Path("/task")
-public class RunTaskResource extends Application {
+public class ResultResource extends Application {
 	
 	@GET
 	@Path("/{taskId}/result")
@@ -44,6 +44,8 @@ public class RunTaskResource extends Application {
 			@QueryParam("token") String token) {
 		return getResultResponse(taskId, run, token, new PojoResponseBuilder());
 	}
+	
+	//TODO: Sacar los GETS de HTML
 	
 	private List<Solution> getSolutionsFromResult(int resultId) throws DatabaseException {
 		return DatabaseService.getInstance().getSolutionsFromResult(resultId);
@@ -65,6 +67,8 @@ public class RunTaskResource extends Application {
 		return result;
 	}
 	
+	
+	//TODO: Código repetido. Mí no gusta.
 	private Response getResultsResponse(int taskId, String token, ResponseBuilder builder) {
 		try{
 			Task task = DatabaseService.getInstance().getTaskParameter(taskId);

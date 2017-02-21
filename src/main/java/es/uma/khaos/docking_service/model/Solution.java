@@ -7,7 +7,7 @@ public class Solution {
 	public int id;
 	public float finalBindingEnergy;
 	public List<String> objectives;
-	public int executionId;
+	public int resultId;
 	public float intermolecularEnergy;
 	public float intramolecularEnergy;
 	public Float rmsd;
@@ -22,7 +22,7 @@ public class Solution {
 	}
 
 	public Solution(int id, float finalBindingEnergy,
-			List<String> objectives, float intermolecularEnergy, float intramolecularEnergy, Float rmsd, int executionTaskId) {
+			List<String> objectives, float intermolecularEnergy, float intramolecularEnergy, Float rmsd, int resultId) {
 		super();
 		this.id = id;
 		this.finalBindingEnergy = finalBindingEnergy;
@@ -30,7 +30,7 @@ public class Solution {
 		this.intermolecularEnergy = intermolecularEnergy;
 		this.intramolecularEnergy = intramolecularEnergy;
 		this.rmsd = rmsd;
-		this.executionId = executionTaskId;
+		this.resultId = resultId;
 	}
 
 	public int getId() {
@@ -57,14 +57,14 @@ public class Solution {
 		return intramolecularEnergy;
 	}
 
-	public int getExecutionTaskId() {
-		return executionId;
+	public int getResultId() {
+		return resultId;
 	}
 
 	@Override
 	public String toString() {
 		return "Result [id=" + id + ", finalBindingEnergy=" + finalBindingEnergy + ", objectives=" + objectives
-				+ ", executionId=" + executionId + ", intermolecularEnergy=" + intermolecularEnergy
+				+ ", resultId=" + resultId + ", intermolecularEnergy=" + intermolecularEnergy
 				+ ", intramolecularEnergy=" + intramolecularEnergy + ", rmsd=" + rmsd + "]";
 	}
 	
