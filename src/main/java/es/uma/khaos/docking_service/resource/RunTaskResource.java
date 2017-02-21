@@ -1,90 +1,108 @@
 package es.uma.khaos.docking_service.resource;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Application;
-import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import es.uma.khaos.docking_service.exception.DatabaseException;
-import es.uma.khaos.docking_service.model.Execution;
+import es.uma.khaos.docking_service.model.ErrorResponse;
+import es.uma.khaos.docking_service.model.Result;
+import es.uma.khaos.docking_service.model.Results;
 import es.uma.khaos.docking_service.model.Solution;
 import es.uma.khaos.docking_service.model.Task;
 import es.uma.khaos.docking_service.properties.Constants;
+import es.uma.khaos.docking_service.response.PojoResponseBuilder;
+import es.uma.khaos.docking_service.response.ResponseBuilder;
 import es.uma.khaos.docking_service.service.DatabaseService;
 
-@Path("/runTask")
+@Path("/task")
 public class RunTaskResource extends Application {
 	
 	@GET
+	@Path("/{taskId}/result")
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-	public Response doGetAsJson(@NotNull @QueryParam("id") Integer id, @QueryParam("token") String token, 
-			@DefaultValue("0") @QueryParam("run") Integer run) throws DatabaseException {
+	public Response getResultsAsJsonOrXml(
+			@NotNull @PathParam("taskId") int taskId,
+			@QueryParam("token") String token) {
+		return getResultsResponse(taskId, token, new PojoResponseBuilder());
+	}
+	
+	@GET
+	@Path("/{taskId}/result/{run}")
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	public Response getResultAsJsonOrXml(
+			@NotNull @PathParam("taskId") int taskId,
+			@NotNull @PathParam("run") int run,
+			@QueryParam("token") String token) {
+		return getResultResponse(taskId, run, token, new PojoResponseBuilder());
+	}
+	
+	private List<Solution> getSolutionsFromResult(int resultId) throws DatabaseException {
+		return DatabaseService.getInstance().getSolutionsFromResult(resultId);
+	}
+	
+	private List<Result> getResultsFromTask(int taskId) throws DatabaseException {
+		// TODO: Hacerlo en una sóla consulta
+		List<Result> resultList = DatabaseService.getInstance().getResults(taskId);
+		for (Result result : resultList) {
+			result.setSolutions(getSolutionsFromResult(result.getId()));
+		}
+		return resultList;
+	}
+	
+	private Result getResultFromTask(int taskId, int run) throws DatabaseException {
+		// TODO: Hacerlo en una sóla consulta
+		Result result = DatabaseService.getInstance().getResult(taskId, run);
+		result.setSolutions(getSolutionsFromResult(result.getId()));
+		return result;
+	}
+	
+	private Response getResultsResponse(int taskId, String token, ResponseBuilder builder) {
+		try{
+			Task task = DatabaseService.getInstance().getTaskParameter(taskId);
 			
-		try {
-			
-			Task task = DatabaseService.getInstance().getTaskParameter(id);
-
 			if (task == null || !task.getHash().equals(token)) {
-
-				return Response.status(Response.Status.FORBIDDEN).entity(Constants.RESPONSE_TASK_MSG_UNALLOWED).build();			
-
+				return Response
+						.status(Response.Status.FORBIDDEN)
+						.entity(new ErrorResponse(Response.Status.FORBIDDEN,Constants.RESPONSE_TASK_MSG_UNALLOWED))
+						.build();			
 			}else{
-				
-				if(run==0){
-					
-					System.out.println("RUN == 0");
-				
-					List<Solution> results = new ArrayList<Solution>();
-					List<Execution> executions  = DatabaseService.getInstance().getExecutions(id);
-					
-					// TODO: Cambiar a una sóla consulta
-					for(Execution execution: executions){
-						
-						System.out.println(execution);
-					
-						int executionId = execution.getId();
-						Solution result = DatabaseService.getInstance().getResultByExecutionId(executionId);
-						results.add(result);
-						System.out.println(result);
-					}
-					
-					System.out.println("AQUI");
-					GenericEntity<List<Solution>> entity = new GenericEntity<List<Solution>>(results) {};
-					System.out.println(entity);
-					
-					List<String> list = new ArrayList<String>();
-					list.add("PUA");
-					list.add("XUXA");
-					GenericEntity<List<String>> entity2 = new GenericEntity<List<String>>(list) {};
-					
-					return Response.ok(entity).build();
-				
-				}else{
-					
-					System.out.println("RUN == OTRA COSA");
-					
-					Execution execution = DatabaseService.getInstance().getExecution(id, run);
-					int executionId = execution.getId();
-					Solution result = DatabaseService.getInstance().getResult(executionId);
-					
-					return Response.ok(result).build();
-					
-				}
+				List<Result> resultList = getResultsFromTask(task.getId());
+				Results results = new Results(resultList);
+				return builder.buildResponse(results);
 			}
 		
-		} catch (Exception e) {
+		} catch (DatabaseException e) {
 			e.printStackTrace();
 			return Response.serverError().build();
-		}	
-
+		}
+	}
+	
+	private Response getResultResponse(int taskId, int run, String token, ResponseBuilder builder) {
+		try{
+			Task task = DatabaseService.getInstance().getTaskParameter(taskId);
+			
+			if (task == null || !task.getHash().equals(token)) {
+				return Response
+						.status(Response.Status.FORBIDDEN)
+						.entity(new ErrorResponse(Response.Status.FORBIDDEN,Constants.RESPONSE_TASK_MSG_UNALLOWED))
+						.build();			
+			}else{
+				Result result = getResultFromTask(taskId, run);
+				return builder.buildResponse(result);
+			}
+		
+		} catch (DatabaseException e) {
+			e.printStackTrace();
+			return Response.serverError().build();
+		}
 	}
 }

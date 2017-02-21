@@ -4,20 +4,25 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "results")
+@XmlRootElement
 public class Results {
 
-    List<Solution> resultList;
-
-	public Results() {
+    List<Result> resultList;
+    
+    public Results() {
+    	super();
+    }
+    
+	public Results(List<Result> resultList) {
 		super();
+		this.resultList = resultList;
 	}
 
-	public List<Solution> getResultList() {
+	public List<Result> getResultList() {
 		return resultList;
 	}
 
-	public void setResultList(List<Solution> resultList) {
+	public void setResultList(List<Result> resultList) {
 		this.resultList = resultList;
 	}
 

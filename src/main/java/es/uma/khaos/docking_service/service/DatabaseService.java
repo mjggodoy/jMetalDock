@@ -17,6 +17,7 @@ import com.jcraft.jsch.Session;
 import es.uma.khaos.docking_service.exception.DatabaseException;
 import es.uma.khaos.docking_service.model.Execution;
 import es.uma.khaos.docking_service.model.ParameterSet;
+import es.uma.khaos.docking_service.model.Result;
 import es.uma.khaos.docking_service.model.Solution;
 import es.uma.khaos.docking_service.model.Task;
 import es.uma.khaos.docking_service.properties.Constants;
@@ -345,88 +346,88 @@ public final class DatabaseService {
 	 * EXECUTION
 	 */
 	
-	public List<Execution> getExecutions(int task_id) throws Exception{
+	// TODO: Mantener!
+	public List<Result> getResults(int taskId)  throws DatabaseException {
 
-		List<Execution> executions = new ArrayList<Execution>();
-		Execution execution = null;
+		List<Result> results = new ArrayList<Result>();
+		Result result = null;
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
 		try {
 			
+			// TODO: Cambiar nombre de tabla
 			conn = openConnection();
 			stmt = conn
 					.prepareStatement("select * from execution where task_id=?");
-			stmt.setInt(1, task_id);
+			stmt.setInt(1, taskId);
 
 			rs = stmt.executeQuery();
 
 			while (rs.next()) {
-
 				int id = rs.getInt("id");
-				task_id = rs.getInt("task_id");
+				taskId = rs.getInt("task_id");
 				int run = rs.getInt("run");
-				execution = new Execution(id, task_id, run);
-				executions.add(execution);	
+				result = new Result(id, taskId, run);
+				results.add(result);	
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
+			throw new DatabaseException(e);
 		} finally {
-			if (rs != null)
-				rs.close();
-			if (stmt != null)
-				stmt.close();
-			if (conn != null)
-				conn.close();
+			try {
+				if (rs != null) rs.close();
+				if (stmt != null) stmt.close();
+				if (conn != null) conn.close();
+			} catch (SQLException e) {
+				throw new DatabaseException(e);
+			}
 		}
 	
-		return executions;
-		
+		return results;
 	}
 	
 	
 	//Execution objective with run and id as parameters
-	
-	public Execution getExecution(int task_id, int run) throws Exception{
+	//TODO: Mantener!
+	public Result getResult(int taskId, int run) throws DatabaseException {
 
-		Execution execution = null;
+		Result result = null;
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
 		try {
 			
+			//TODO: Cambiar nombre de tabla
 			conn = openConnection();
 			stmt = conn
 					.prepareStatement("select * from execution where task_id=? and run=?");
-			stmt.setInt(1, task_id);
+			stmt.setInt(1, taskId);
 			stmt.setInt(2, run);
 
 			rs = stmt.executeQuery();
 
-			while (rs.next()) {
-
+			if (rs.next()) {
 				int id = rs.getInt("id");
-				task_id = rs.getInt("task_id");
-				execution = new Execution(id, task_id, run);
+				taskId = rs.getInt("task_id");
+				result = new Result(id, taskId, run);
 			}
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
+			throw new DatabaseException(e);
 		} finally {
-			if (rs != null)
-				rs.close();
-			if (stmt != null)
-				stmt.close();
-			if (conn != null)
-				conn.close();
+			try {
+				if (rs != null) rs.close();
+				if (stmt != null) stmt.close();
+				if (conn != null) conn.close();
+			} catch (SQLException e) {
+				throw new DatabaseException(e);
+			}
 		}
 	
-		return execution;	
+		return result;	
 		
 	}
 	
@@ -471,13 +472,61 @@ public final class DatabaseService {
 	 * RESULT
 	 */
 	
+	public List<Solution> getSolutionsFromResult(int executionId) throws DatabaseException {
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		List<String> objectives;
+		List<Solution> solutions = new ArrayList<Solution>();
+		
+		try {
+			
+			conn = openConnection();
+			stmt = conn
+					.prepareStatement("select * from result where execution_id=?");
+			stmt.setInt(1, executionId);
+			rs = stmt.executeQuery();
+
+			while (rs.next()) {
+
+				int id = rs.getInt("id");
+				float finalBindingEnergy = rs.getFloat("final_binding_energy");
+				String objective1 = rs.getString("objective1");
+				String objective2 = rs.getString("objective2");
+				objectives = new ArrayList<String>();
+				objectives.add(objective1);
+				objectives.add(objective2);
+				float intermolecularEnergy = rs.getFloat("intermolecular_energy");
+				float intramolecularEnergy = rs.getFloat("intramolecular_energy");
+				Float rmsd = rs.getFloat("rmsd");
+				if (rs.wasNull()) rmsd = null;
+				solutions.add(new Solution(id,finalBindingEnergy, objectives, intermolecularEnergy, intramolecularEnergy, rmsd, executionId));
+			
+			}
+
+		} catch (Exception e) {
+			throw new  DatabaseException(e);
+		} finally {
+			try {
+				if (rs != null) rs.close();
+				if (stmt != null) stmt.close();
+				if (conn != null) conn.close();
+			} catch (SQLException e) {
+				throw new DatabaseException(e);
+			}
+		}
+	
+		return solutions;
+	}
+	
 	public Solution getResult(int id) throws Exception{
 		
 		Solution result = null;
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		ArrayList<String> objectives = new ArrayList<String>();
+		List<String> objectives = new ArrayList<String>();
 		
 		try {
 			
@@ -497,7 +546,8 @@ public final class DatabaseService {
 				objectives.add(objective2);
 				float intermolecularEnergy = rs.getFloat("intermolecular_energy");
 				float intramolecularEnergy = rs.getFloat("intramolecular_energy");
-				float rmsd = rs.getInt("rmsd");
+				Float rmsd = rs.getFloat("rmsd");
+				if (rs.wasNull()) rmsd = null;
 				int executionId = rs.getInt("execution_id");
 				result = new Solution(id,finalBindingEnergy, objectives,intermolecularEnergy, intramolecularEnergy, rmsd, executionId);
 			
@@ -664,13 +714,6 @@ public final class DatabaseService {
 			}
 		}
 		return result;
-	}
-	
-	public static void main(String[] args) throws Exception {
-		int id=1;
-		Solution result = DatabaseService.getInstance().getResult(id);
-		System.out.println(result.getFinalBindingEnergy());
-		
 	}
 	
 }

@@ -1,19 +1,20 @@
 package es.uma.khaos.docking_service.model;
 
-import java.util.ArrayList;
+import java.util.List;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement
 public class Solution {
 	
 	public int id;
 	public float finalBindingEnergy;
-	public ArrayList<String> objectives;
+	public List<String> objectives;
 	public int executionId;
 	public float intermolecularEnergy;
 	public float intramolecularEnergy;
 	public Float rmsd;
+	
+	public Solution() {
+		
+	}
 	
 	public Solution(int id) {
 		super();
@@ -21,7 +22,7 @@ public class Solution {
 	}
 
 	public Solution(int id, float finalBindingEnergy,
-			ArrayList<String> objectives, float intermolecularEnergy, float intramolecularEnergy, Float rmsd, int executionTaskId) {
+			List<String> objectives, float intermolecularEnergy, float intramolecularEnergy, Float rmsd, int executionTaskId) {
 		super();
 		this.id = id;
 		this.finalBindingEnergy = finalBindingEnergy;
@@ -40,7 +41,7 @@ public class Solution {
 		return finalBindingEnergy;
 	}
 
-	public ArrayList<String> getObjectives() {
+	public List<String> getObjectives() {
 		return objectives;
 	}
 	
