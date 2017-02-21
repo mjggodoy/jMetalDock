@@ -183,19 +183,13 @@ public class WorkerThread implements Runnable {
 	private void deleteZip(String workDir){
 		
     	File file = new File(workDir);
-    	
-    	
     	if(file.exists()){
-    		
-        	System.out.println("Deleting zip file: " + file.getName());
-
-    		
+    		System.out.println("Deleting zip file: " + file.getName());
     		file.delete();
     		
     	}else{
     		
     		System.out.println("Something about deleting file has failed ");
-    		
     	}
 	}
 	
