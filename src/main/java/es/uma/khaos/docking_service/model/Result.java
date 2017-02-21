@@ -1,62 +1,61 @@
 package es.uma.khaos.docking_service.model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Result {
 	
+	private int id;
+	private int taskId;
+	private int run;
+	private List<Solution> solutions;
 	
-	public int id;
-	public float finalBindingEnergy;
-	public ArrayList<String> objectives;
-	public int executionId;
-	public float intermolecularEnergy;
-	public float intramolecuarEnergy;
-	public float rmsd;
-	
-	public Result(int id) {
+	public Result() {
 		super();
-		this.id = id;
 	}
 
-	public Result(int id, float finalBindingEnergy,
-			ArrayList<String> objectives, float intermolecularEnergy, float intramolecuarEnergy, float rmsd, int executionTaskId) {
+	public Result(int id, int taskId, int run) {
 		super();
 		this.id = id;
-		this.finalBindingEnergy = finalBindingEnergy;
-		this.objectives = objectives;
-		this.rmsd = rmsd;
-		this.executionId = executionTaskId;
+		this.taskId = taskId;
+		this.run = run;
 	}
 
+//	public Result(int run, List<Solution> solutions) {
+//		super();
+//		this.run = run;
+//		this.solutions = solutions;
+//	}
+	
+	public int getRun() {
+		return run;
+	}
 
 	public int getId() {
 		return id;
 	}
-
-	public float getFinalBindingEnergy() {
-		return finalBindingEnergy;
-	}
-
-
-	public ArrayList<String> getObjectives() {
-		return objectives;
+	
+	public int getTaskId() {
+		return taskId;
 	}
 	
-	public float getRmsd() {
-		return rmsd;
-	}
-	
-	public float getIntermolecularEnergy() {
-		return intermolecularEnergy;
+	public List<Solution> getSolutions() {
+		return solutions;
 	}
 
-	public float getIntramolecuarEnergy() {
-		return intramolecuarEnergy;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public int getExecutionTaskId() {
-		return executionId;
+	public void setTaskId(int taskId) {
+		this.taskId = taskId;
 	}
 
+	public void setRun(int run) {
+		this.run = run;
+	}
+
+	public void setSolutions(List<Solution> solutions) {
+		this.solutions = solutions;
+	}
 	
 }
