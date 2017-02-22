@@ -4,7 +4,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
 import java.util.List;
+
+import org.apache.commons.io.FileUtils;
 
 import es.uma.khaos.docking_service.autodock.dlg.DLGMonoParser;
 import es.uma.khaos.docking_service.autodock.dlg.DLGParser;
@@ -120,10 +123,7 @@ public class WorkerThread implements Runnable {
 		
 		// BORRAMOS CARPETA
 		
-		System.out.println("pathway:" + workDir);
 		Utils.deleteFolder(workDir);
-	
-		System.out.println("ZipFile: " + zipFile);
 		Utils.deleteFolder(zipFile);
 		
 	}
@@ -132,63 +132,17 @@ public class WorkerThread implements Runnable {
 		executeCommand(command, null);
 	}
 	
-	
-	private void deleteFolder(String workDir){
+	private void copyFile(String sourceFile, String destFile) {
 		
-    	File directory = new File(workDir);
-    	try{
-    	
-    		if(!directory.exists()){
-    			System.out.println("Directory already exists");
-    		}else{
-    			deleteFile(directory);	
-    		}
-    	}catch(Exception e){
-    	
-    		e.printStackTrace();
-    	} 
-    }
-	
-	
-	private void deleteFile(File file){
 		
-    	if(file.isDirectory()){
-    		
-    		if(file.list().length==0){	
-    			file.delete(); // si está vacío el directorio, elimina el directorio	
-    		}else{
-    			
-    			String files[] = file.list();
-    			for (String temp : files) {
-        	      
-    				File fileDelete = new File(file, temp);
-    				deleteFile(fileDelete);
-    			}
-    			
-    			if(file.list().length==0){
-              	     file.delete();
-    			}
-    		}
-    	
-    	}else{
-    		
-    		file.delete(); //se borra	
-    		System.out.println("File is deleted : " + file.getAbsolutePath());
-    	}	
-	}
-	
-	
-	private void deleteZip(String workDir){
+		File source = new File(sourceFile);
+		File dest = new File(destFile);
+		try {
+		    FileUtils.copyDirectory(source, dest);
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
 		
-    	File file = new File(workDir);
-    	if(file.exists()){
-    		System.out.println("Deleting zip file: " + file.getName());
-    		file.delete();
-    		
-    	}else{
-    		
-    		System.out.println("Something about deleting file has failed ");
-    	}
 	}
 	
 	private void executeCommand(String command, File workDir) throws CommandExecutionException {

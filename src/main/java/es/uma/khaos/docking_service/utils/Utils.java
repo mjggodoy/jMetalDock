@@ -61,7 +61,7 @@ public class Utils {
     	File directory = new File(workDir);
     	try{
     		if(!directory.exists()){
-    			System.out.println("Directory already exists");
+    			System.out.println("The directory already exists");
     		}else{
     			deleteFile(directory);	
     		}
