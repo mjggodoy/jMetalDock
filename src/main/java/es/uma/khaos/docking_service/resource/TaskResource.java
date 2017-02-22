@@ -65,14 +65,14 @@ public class TaskResource extends Application {
 			@QueryParam("runs") @DefaultValue("2") int runs,
 			@QueryParam("population_size") @DefaultValue("150") int populationSize, 
 			@QueryParam("evaluations") @DefaultValue("1500000") int evaluations,
-			@QueryParam("objectives") @DefaultValue("1") int objectiveOpt,
+			@QueryParam("use_rmsd_as_obj") @DefaultValue("False") boolean useRmsdAsObjective,
 			@QueryParam("instance") String instance) {
 		System.out.println("HERE I AM!");
 		
 		// TODO: DESCARGAR Y PREPARAR instancia seleccionada
 		String zipFile = Constants.TEST_DIR_INSTANCE + Constants.TEST_FILE_ZIP;
 		
-		return createTaskResponse(populationSize, evaluations, runs, algorithm, objectiveOpt, zipFile);
+		return createTaskResponse(populationSize, evaluations, runs, algorithm, useRmsdAsObjective, zipFile);
 		
 	}
 	
@@ -84,7 +84,7 @@ public class TaskResource extends Application {
 			@QueryParam("runs") @DefaultValue("2") int runs,
 			@QueryParam("population_size") @DefaultValue("150") int populationSize, 
 			@QueryParam("evaluations") @DefaultValue("1500000") int evaluations,
-			@QueryParam("objectives") @DefaultValue("1") int objectiveOpt,
+			@QueryParam("use_rmsd_as_obj") @DefaultValue("False") boolean useRmsdAsObjective,
 			@FormDataParam("file") final FormDataContentDisposition fileDetails,
 			@FormDataParam("file") final InputStream inputStream) throws IOException {
 		System.out.println("HERE I STAY!");
@@ -93,7 +93,7 @@ public class TaskResource extends Application {
 		String zipFile = BASE_FOLDER + fileDetails.getFileName();
 		Utils.saveFile(inputStream, zipFile);
 		
-		return createTaskResponse(populationSize, evaluations, runs, algorithm, objectiveOpt, zipFile);
+		return createTaskResponse(populationSize, evaluations, runs, algorithm, useRmsdAsObjective, zipFile);
 	}
 	
 	private Response getTaskResponse(int id, String token, ResponseBuilder builder) {
@@ -119,33 +119,43 @@ public class TaskResource extends Application {
 		}
 	}
 	
-	private Response createTaskResponse(int popSize, int evals, int runs, String algorithm, int objectiveOpt,
+	private Response createTaskResponse(int popSize, int evals, int runs, String algorithm, boolean useRmsdAsObjective,
 			String zipFile) {
 		
 		try{
 			if (StringUtils.isNullOrEmpty(algorithm)) {
-				//TODO: EXPECTATION_FAILED no debería ser el error. Cambiarlo por otro. 400, quizá
 				return Response
-						.status(Response.Status.EXPECTATION_FAILED)
+						.status(Response.Status.BAD_REQUEST)
 						.entity(new ErrorResponse(
-								Response.Status.EXPECTATION_FAILED,
+								Response.Status.BAD_REQUEST,
 								String.format(Constants.RESPONSE_MANDATORY_PARAMETER_ERROR, "algorithm")))
 						.build();			
 			}else{
-				runs = inRangeCheck(
-						runs,
-						Constants.DEFAULT_MIN_NUMBER_RUNS,
-						Constants.DEFAULT_MAX_NUMBER_RUNS);
-				popSize = inRangeCheck(
-						popSize,
-						Constants.DEFAULT_MIN_NUMBER_POPULATION_SIZE,
-						Constants.DEFAULT_MAX_NUMBER_POPULATION_SIZE);
-				evals = inRangeCheck(
-						evals,
-						Constants.DEFAULT_MIN_NUMBER_EVALUATIONS,
-						Constants.DEFAULT_MAX_NUMBER_EVALUATIONS);
-				Task task = createTask(popSize, evals, runs, algorithm, objectiveOpt, zipFile);
-				return Response.ok(task).build();
+				
+				int objectiveOpt = checkAlgorithm(algorithm, useRmsdAsObjective);
+				if (objectiveOpt==0) {
+					return Response
+							.status(Response.Status.BAD_REQUEST)
+							.entity(new ErrorResponse(
+									Response.Status.BAD_REQUEST,
+									String.format(Constants.RESPONSE_NOT_VALID_PARAMETER_ERROR, "algorithm")))
+							.build();
+				} else {
+					runs = inRangeCheck(
+							runs,
+							Constants.DEFAULT_MIN_NUMBER_RUNS,
+							Constants.DEFAULT_MAX_NUMBER_RUNS);
+					popSize = inRangeCheck(
+							popSize,
+							Constants.DEFAULT_MIN_NUMBER_POPULATION_SIZE,
+							Constants.DEFAULT_MAX_NUMBER_POPULATION_SIZE);
+					evals = inRangeCheck(
+							evals,
+							Constants.DEFAULT_MIN_NUMBER_EVALUATIONS,
+							Constants.DEFAULT_MAX_NUMBER_EVALUATIONS);
+					Task task = createTask(popSize, evals, runs, algorithm, objectiveOpt, zipFile);
+					return Response.ok(task).build();
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -168,6 +178,15 @@ public class TaskResource extends Application {
 		ThreadPoolService.getInstance().execute(worker);
 		
 		return task;
+	}
+	
+	private int checkAlgorithm(String algorithm, boolean useRmsdAsObjective) {
+		if (Constants.SINGLE_OBJECTIVE_ALGORITHMS.contains(algorithm)) return 1;
+		else if (Constants.MULTI_OBJECTIVE_ALGORITHMS.contains(algorithm)) {
+			if (useRmsdAsObjective) return 3;
+			else return 2;
+		} else return 0;
+		
 	}
 	
 	private int inRangeCheck(int value, int minValue, int maxValue) {

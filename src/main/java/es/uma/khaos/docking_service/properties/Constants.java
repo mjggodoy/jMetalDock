@@ -1,5 +1,7 @@
 package es.uma.khaos.docking_service.properties;
 
+import java.util.List;
+
 public class Constants {
 	
 	public static final String PATH_DOCKING_SERVICE_PROPS = "docking_service.properties";
@@ -39,13 +41,12 @@ public class Constants {
 	public static final String RESPONSE_ERROR_DATABASE = "There was an error with the database. Contact with the administrators.";
 	public static final String RESPONSE_NOT_A_NUMBER_ERROR = "%s should be a valid number";
 	public static final String RESPONSE_MANDATORY_PARAMETER_ERROR = "Mandatory parameter not provided: %s";
+	public static final String RESPONSE_NOT_VALID_PARAMETER_ERROR = "Parameter with a non allowed value: %s. Check possible values.";
 	public static final String RESPONSE_MIN_MAX_VALUES = "There was an error based on the parameters introduced. The minimum values for evaluations, runs and population sizes are 1500000, 10 and 100, respectively. The maximum values for evaluations, runs and population are 25000000, 50 and 500, respectively";
 
-	
-	
-	// Input parameters
-	public static final String SINGLE_OBJECTIVE_ALGORITHMS[] = {"gGA", "ssGA", "DE", "PSO"};
-	public static final String MULTI_OBJECTIVE_ALGORITHMS[] = {"NSGAII", "ssNSGAII", "GDE3", "SMPSO", "MOEAD"};
+	// Algorithm values allowed
+	public static final List<String> SINGLE_OBJECTIVE_ALGORITHMS = Configurations.getListProperties(Properties.SINGLE_OBJ_ALGORITHMS);
+	public static final List<String> MULTI_OBJECTIVE_ALGORITHMS = Configurations.getListProperties(Properties.MULTI_OBJ_ALGORITHMS);
 	
 	//Input default parameters
 	public static final int DEFAULT_NUMBER_EVALUATIONS = Integer.parseInt(Configurations.getProperty(Properties.DEFAULT_NUMBER_EVALUATIONS));

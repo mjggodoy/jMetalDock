@@ -35,8 +35,8 @@ public class WorkerThread implements Runnable {
 	private int runs;
 	private int evals;
 	private int populationSize;
-	//TODO: Tratar este parámetro
 	private int objectiveOpt;
+	private boolean useRmsdAsObjective = false;
 	
 	private String zipFile;
 	
@@ -48,6 +48,7 @@ public class WorkerThread implements Runnable {
 		this.evals = evals;
 		this.populationSize = populationSize;
 		this.objectiveOpt = objectiveOpt;
+		if (objectiveOpt==3) this.useRmsdAsObjective = true;
 		this.zipFile = zipFile;
 	}
 	
@@ -174,10 +175,10 @@ public class WorkerThread implements Runnable {
 	private void formatDPF(File inputFile, File outputFile) throws DpfWriteException, DpfNotFoundException {
 		System.out.println(outputFile.getAbsolutePath());
 		DPFGenerator dpfGen = new DPFGenerator(inputFile, outputFile, algorithm);
+		if (useRmsdAsObjective) dpfGen.setUseRmsdAsObjective();
 		dpfGen.setNumEvals(evals);
 		dpfGen.setNumRuns(runs);
 		dpfGen.setPopulationSize(populationSize);
-		System.out.println(objectiveOpt);
 		dpfGen.generate();
 	}
 	
@@ -196,7 +197,8 @@ public class WorkerThread implements Runnable {
 			} catch (IOException e) {
 				throw new DlgNotFoundException(e);
 			}
-			
+		} else {
+			// TODO: Tratar lectura de DLGs multiobjetivo
 		}
 	}
 	
