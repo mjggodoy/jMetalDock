@@ -54,5 +54,41 @@ public class Utils {
 		}
 		return list;
 	}
+	
+	
+	//delete folder
+	public static void deleteFolder(String workDir){
+    	File directory = new File(workDir);
+    	try{
+    		if(!directory.exists()){
+    			System.out.println("Directory already exists");
+    		}else{
+    			deleteFile(directory);	
+    		}
+    	}catch(Exception e){
+    		e.printStackTrace();
+    	} 
+    }
+	
+	
+	public static void deleteFile(File file){
+    	if(file.isDirectory()){
+    		if(file.list().length==0){	
+    			file.delete(); // si está vacío el directorio, elimina el directorio	
+    		}else{
+    			String files[] = file.list();
+    			for (String temp : files) {
+    				File fileDelete = new File(file, temp);
+    				deleteFile(fileDelete);
+    			}
+    			if(file.list().length==0){
+              	     file.delete();
+    			}
+    		}
+    	}else{
+    		file.delete(); //se borra	
+    		System.out.println("File is deleted : " + file.getAbsolutePath());
+    	}	
+	}
 
 }

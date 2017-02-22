@@ -121,11 +121,10 @@ public class WorkerThread implements Runnable {
 		// BORRAMOS CARPETA
 		
 		System.out.println("pathway:" + workDir);
-		
-		deleteFolder(workDir);
+		Utils.deleteFolder(workDir);
 	
 		System.out.println("ZipFile: " + zipFile);
-		deleteZip(zipFile);	
+		Utils.deleteFolder(zipFile);
 		
 	}
 	
