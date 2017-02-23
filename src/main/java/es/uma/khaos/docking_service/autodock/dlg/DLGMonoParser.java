@@ -7,6 +7,7 @@ import java.util.StringTokenizer;
 
 import es.uma.khaos.docking_service.exception.DlgParseException;
 import es.uma.khaos.docking_service.model.dlg.AutoDockSolution;
+import es.uma.khaos.docking_service.model.dlg.AutoDockSolution.Optimization;
 import es.uma.khaos.docking_service.model.dlg.result.DLGMonoResult;
 import es.uma.khaos.docking_service.model.dlg.result.DLGResult;
 
@@ -16,46 +17,58 @@ import es.uma.khaos.docking_service.model.dlg.result.DLGResult;
  * Created by esteban on 14/01/14.
  */
 public class DLGMonoParser extends DLGParser<AutoDockSolution> {
-
+	
+	private final static Optimization monoOptimizationType
+		= Optimization.TOTAL_ENERGY;
+	
 	public DLGMonoParser() {
+		super(monoOptimizationType);
 	}
 
 	/**
-	 * Lee los valores de energía totales de las soluciones del fichero DLG
-	 * 
-	 * @throws java.io.IOException
-	 * @throws DlgParseException
+	 * Lee los valores de energÃ­a totales de las soluciones del fichero DLG
+	 * @throws DlgParseException 
 	 */
 	protected DLGResult<AutoDockSolution> parseDLGFile(String dlgFilePath)
-			throws IOException, DlgParseException {
+			throws DlgParseException {
 
 		DLGResult<AutoDockSolution> monoResult = new DLGMonoResult();
+		BufferedReader br = null;
+		
+		try {
+			
+			br = new BufferedReader(new FileReader(dlgFilePath));
 
-		BufferedReader br = new BufferedReader(new FileReader(dlgFilePath));
+			int i = 1;
+			String line;
+			while ((line = br.readLine()) != null) {
 
-		int i = 1;
-		String line;
-		while ((line = br.readLine()) != null) {
+				String startRunLine = "DOCKED: USER    Run = " + i;
+				String lineRmsdTable = "RMSD TABLE";
 
-			String startRunLine = "DOCKED: USER    Run = " + i;
-			String lineRmsdTable = "RMSD TABLE";
+				if (line.equals(startRunLine)) {
 
-			if (line.equals(startRunLine)) {
+					AutoDockSolution solution = getSolution(br, optimizationType);
+					//solution.setConformation(getConformation(br));
+					i++;
+					monoResult.add(solution);
 
-				AutoDockSolution solution = getSolution(br);
-				//solution.setConformation(getConformation(br));
-				i++;
-				monoResult.add(solution);
+				} else if (line.contains(lineRmsdTable)) {
+					readRmsdTable(dlgFilePath, br, monoResult);
+				}
+			}
 
-			} else if (line.contains(lineRmsdTable)) {
-				readRmsdTable(dlgFilePath, br, monoResult);
+		} catch (IOException e) {
+			throw new DlgParseException(e);
+		} finally {
+			try {
+				if (br!=null) br.close();
+			} catch (IOException e) {
+				throw new DlgParseException(e);
 			}
 		}
 
-		br.close();
-
 		return monoResult;
-
 	}
 
 	private void readRmsdTable(String dlgFilePath, BufferedReader br,
@@ -82,7 +95,7 @@ public class DLGMonoParser extends DLGParser<AutoDockSolution> {
 			String endString = st.nextToken(" ");
 			if ((!"RANKING".equals(endString)) || st.hasMoreTokens()) {
 				System.err.println("ERROR EN RMSD LEYENDO: " + dlgFilePath);
-				System.err.println("Error leyendo línea: " + line);
+				System.err.println("Error leyendo lÃ­nea: " + line);
 				System.out.println("endString: " + endString);
 				System.out.println(st.hasMoreTokens());
 				System.exit(-1);
