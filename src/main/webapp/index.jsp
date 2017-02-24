@@ -15,6 +15,7 @@
 </head>
 
 <body>
+<div class="container">
   <div id="main">
     <div id="header">
 	  <div id="banner">
@@ -24,7 +25,7 @@
 	    <div id="menubar">
           <ul id="menu">
             <li class="current"><a href="index.html">Home</a></li>
-            <li><a href="file.html">Features</a></li>
+            <li><a href="file.html">Run</a></li>
             <li><a href="projects.html">Tutorial</a></li>
             <li><a href="projects.html">Benchmark</a></li>
             <li><a href="contact.html">References</a></li>
@@ -37,8 +38,8 @@
 
       <div class="slideshow">  
 		<ul class="slideshow">
-          <li class="show"><img width="350" height="250" src="images/LGAConformation.png" alt="&quot;Enter your caption here&quot;" /></li>
-          <li><img width="900" height="500" src="images/receptor_aero.png" alt="&quot;Enter your caption here&quot;" /></li>
+          <li class="show"><img width="500" height="350" src="images/macro-ligand.png" alt="&quot;Enter your caption here&quot;" /></li>
+          <li><img width="1100" height="700" src="images/macrointeractions.png" alt="&quot;Enter your caption here&quot;" /></li>
         </ul> 
       </div><!--close slideshow-->		
 	  	 
@@ -46,43 +47,21 @@
 	  <div id="content">
         <div class="content_item">
 		  <h1>Welcome to jMetalDock Web Server</h1> 
-          <p>This standards compliant, simple, fixed width website template is released as an 'open source' design (under the Creative Commons Attribution 3.0 Licence), which means that you are free to download and use it for anything you want (including modifying and amending it). If you would like to remove the &lsquo;website template by ARaynorDesign&rsquo; link from the footer of a template / website then that is OK, all I ask is for a donation of &pound;20.00 GBP. Please feel free to contact me with any questions you may have about my free website templates or bespoke work.</p>   				  
+          <p>jMetalDock provides a set of web-services that offers mono- and multi-objectives approaches applied to the problem of molecular docking. 
+          In case of resolving the docking problem from a mono-objective approach, there are several available algorithms such as gGA, ssGA, DE and PSO. 
+          The total free binding energy (measured in kcal/mol) is the objective to optimize. When the user tries to solve using a multi-objetive approach, there
+          are more than one objectives to optimize. Algorithms like NSGA-II, GDE3, SMPSO, SMSEMOA and MOEA/D. The energy function used to evaluare all the solutions returned by
+          the algorithms is the AutoDock 4.2 energy function.</p>   				  
 		</div><!--close content_item-->
-      </div><!--close content-->   
-	
-	</div><!--close site_content--> 
-    
-	<div id="content_grey">
-	  <div class="content_grey_container_box">
-		<h4>Latest Blog Post</h4>
-	    <p> Phasellus laoreet feugiat risus. Ut tincidunt, ante vel fermentum iaculis.</p>
-		<div class="readmore">
-		  <a href="#">Read more</a>
-		</div><!--close readmore-->
-	  </div><!--close content_grey_container_box-->
-      <div class="content_grey_container_box">
-       <h4>Latest News</h4>
-	    <p> Phasellus laoreet feugiat risus. Ut tincidunt, ante vel fermentum iaculis.</p>
-	    <div class="readmore">
-		  <a href="#">Read more</a>
-		</div><!--close readmore-->
-	  </div><!--close content_grey_container_box-->
-      <div class="content_grey_container_boxl">
-		<h4>Contact Us</h4>
-	    <p> Phasellus laoreet feugiat risus. Ut tincidunt, ante vel fermentum iaculis.</p>
-	    <div class="readmore">
-		  <a href="#">Read more</a>
-		</div><!--close readmore-->	  
-	  </div><!--close content_grey_container_box1-->      
-	  <br style="clear:both"/>
-    </div><!--close content_grey-->   
+      	</div><!--close content-->   
+      </div><!--close main-->
  
-  </div><!--close main-->
   
   <div id="footer_container">
     <div id="footer">
-	  <a href="http://www.uma.khaos.es">Khaos Group 2017</a>
+	  <p>Copyright © 2017 Powered by <a href="http://khaos.uma.es" target="_blank">Khaos Research</a></p>
     </div><!--close footer-->  
   </div>
+</div>
 </body>
 </html>
