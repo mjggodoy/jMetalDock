@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 import es.uma.khaos.docking_service.autodock.dlg.DLGMonoParser;
+import es.uma.khaos.docking_service.autodock.dlg.DLGMultiParser;
 import es.uma.khaos.docking_service.autodock.dlg.DLGParser;
 import es.uma.khaos.docking_service.exception.CommandExecutionException;
 import es.uma.khaos.docking_service.exception.DatabaseException;
@@ -16,6 +17,8 @@ import es.uma.khaos.docking_service.exception.DpfNotFoundException;
 import es.uma.khaos.docking_service.exception.DpfWriteException;
 import es.uma.khaos.docking_service.model.Result;
 import es.uma.khaos.docking_service.model.dlg.AutoDockSolution;
+import es.uma.khaos.docking_service.model.dlg.AutoDockSolution.Optimization;
+import es.uma.khaos.docking_service.model.dlg.Front;
 import es.uma.khaos.docking_service.model.dlg.result.DLGResult;
 import es.uma.khaos.docking_service.properties.Constants;
 import es.uma.khaos.docking_service.service.DatabaseService;
@@ -182,10 +185,11 @@ public class WorkerThread implements Runnable {
 		dpfGen.generate();
 	}
 	
+	// TODO: Cambiar método a otra manera.
 	private void readDLG(String dlgFile) throws DlgParseException, DlgNotFoundException, DatabaseException {
-		DLGParser<AutoDockSolution> parser;
+		
 		if (objectiveOpt==1) {
-			parser = new DLGMonoParser();
+			DLGParser<AutoDockSolution> parser = new DLGMonoParser();
 			try {
 				DLGResult<AutoDockSolution> dlgResult = parser.readFile(dlgFile);
 				int run = 1;
@@ -198,7 +202,33 @@ public class WorkerThread implements Runnable {
 				throw new DlgNotFoundException(e);
 			}
 		} else {
-			// TODO: Tratar lectura de DLGs multiobjetivo
+			DLGParser<Front> parser;
+			String obj1, obj2;
+			if (objectiveOpt==2) {
+				parser = new DLGMultiParser(Optimization.SUB_ENERGIES);
+				obj1 = "Intermolecular energy";
+				obj2 = "Intramolecular energy";
+			} else if (objectiveOpt==3) {
+				parser = new DLGMultiParser(Optimization.TOTAL_ENERGY_AND_RMSD);
+				obj1 = "Total Binding Energy";
+				obj2 = "RMSD";
+			} else {
+				throw new DlgParseException("Incorrect objectiveOpt value");
+			}
+			try {
+				DLGResult<Front> dlgResult = parser.readFile(dlgFile);
+				int run = 1;
+				for (Front front : dlgResult) {
+					Result result = DatabaseService.getInstance().insertResult(id, run);
+					for (AutoDockSolution sol : front) {
+						// TODO: Crear método que inserte todas las soluciones en una conexión.
+						DatabaseService.getInstance().insertSolution(sol.getTotalEnergy(), obj1, obj2, sol.getEnergy1(), sol.getEnergy2(), sol.getRmsd(), result.getId());
+					}
+					
+				}
+			} catch (IOException e) {
+				throw new DlgNotFoundException(e);
+			}
 		}
 	}
 	
