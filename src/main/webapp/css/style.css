@@ -83,6 +83,7 @@ ol li
   height: 50px;
   padding: 15px 0 0 0;
   background: transparent;}
+  
 
 #menu_container
 { height: 50px;}  
@@ -242,7 +243,8 @@ ul#menu li:hover a
   text-align: center;
   margin: 20px 0 10px 10px;
   float: left;}
- 
+  
+
 #footer_container
 { height: 60px;
   margin-top: 30px;
@@ -408,4 +410,24 @@ ul img {
   font: normal 130% arial, sans-serif;
   color: #FFF;
   text-shadow: 1px 1px #000;}
+  
+#container{
+ position:relative; 
+ height:100%;
+}
+
+#right {
+ position:absolute;
+ left:342px;
+ right:0;
+ height: 100%;
+}
+
+#sidebar {
+ width: 342px;
+ height: 100%;
+ float:right;
+}  
+  
+  
  
