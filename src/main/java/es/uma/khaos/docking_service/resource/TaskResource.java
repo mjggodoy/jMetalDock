@@ -51,7 +51,7 @@ public class TaskResource extends Application {
 	
 	@GET
 	@Path("/{id}")
-    @Produces("text/html")
+    @Produces(MediaType.TEXT_HTML)
     public Response doGetAsHtml(@NotNull @PathParam("id") int id, @QueryParam("token") String token) throws DatabaseException {
 		// TODO: Sacar path del jsp a fichero de propiedades (PRIVATE)
 		return getTaskResponse(id, token, new JspResponseBuilder("/task.jsp"));

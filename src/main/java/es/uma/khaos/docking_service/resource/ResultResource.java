@@ -45,6 +45,27 @@ public class ResultResource extends Application {
 		return getResultResponse(taskId, run, token, new PojoResponseBuilder());
 	}
 	
+	
+	@GET
+	@Path("/{taskId}/result")
+    @Produces("text/html")
+	public Response getResultsAsHtml(
+			@NotNull @PathParam("taskId") int taskId,
+			@QueryParam("token") String token) {
+		return getResultsResponse(taskId, token, new PojoResponseBuilder());
+	}
+	
+	@GET
+	@Path("/{taskId}/result/{run}")
+    @Produces("text/html")
+	public Response getResultAsHtml(
+			@NotNull @PathParam("taskId") int taskId,
+			@NotNull @PathParam("run") int run,
+			@QueryParam("token") String token) {
+		return getResultResponse(taskId, run, token, new PojoResponseBuilder());
+	}
+	
+	
 	//TODO: Sacar los GETS de HTML
 	
 	private List<Solution> getSolutionsFromResult(int resultId) throws DatabaseException {
