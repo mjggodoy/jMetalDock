@@ -27,7 +27,7 @@
             <li><a href="file.html">Run</a></li>
             <li><a href="projects.html">Tutorial</a></li>
             <li><a href="projects.html">Benchmark</a></li>
-            <li><a href="contact.html">References</a></li>
+            <li><a href="references.jsp">References</a></li>
           </ul>
         </div><!--close menubar-->	  
 	  </div><!--close banner-->	

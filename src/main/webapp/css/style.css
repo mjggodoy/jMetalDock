@@ -77,14 +77,14 @@ ol li
 #header
 { height: 80px;}
 
+
 #banner
 { width: 940px;
   position: relative;
   height: 50px;
   padding: 15px 0 0 0;
   background: transparent;}
-  
-
+ 
 #menu_container
 { height: 50px;}  
   
@@ -411,23 +411,12 @@ ul img {
   color: #FFF;
   text-shadow: 1px 1px #000;}
   
-#container{
- position:relative; 
- height:100%;
-}
-
-#right {
- position:absolute;
- left:342px;
- right:0;
- height: 100%;
-}
-
-#sidebar {
- width: 342px;
- height: 100%;
- float:right;
+blockquote {
+	margin: 1em; 
+	padding: 1em; 
+	font:Geneva, Arial, Helvetica, sans-serif 14px;
 }  
+
   
   
  
