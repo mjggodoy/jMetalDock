@@ -4,10 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.file.Files;
 import java.util.List;
-
-import org.apache.commons.io.FileUtils;
 
 import es.uma.khaos.docking_service.autodock.dlg.DLGMonoParser;
 import es.uma.khaos.docking_service.autodock.dlg.DLGParser;
@@ -25,7 +22,6 @@ import es.uma.khaos.docking_service.service.DatabaseService;
 import es.uma.khaos.docking_service.utils.Utils;
 
 public class WorkerThread implements Runnable {
-	
 	
 	private final String COMMAND_TEMPLATE = "%s%s -p %s -l %s";
 	private final String AUTODOCK_LOCATION = Constants.DIR_AUTODOCK;
@@ -77,9 +73,6 @@ public class WorkerThread implements Runnable {
 	private void processCommand() throws DpfWriteException, DpfNotFoundException, CommandExecutionException, DlgParseException, DlgNotFoundException, DatabaseException {
 		
 		String command;
-		
-		
-		//BASE_FOLDER: /Users/mariajesus/Desktop/AutoDockBase/exec-1
 
 		String workDir = String.format("%sexec-%d", BASE_FOLDER, id);
 		String inputFile = String.format("exec-%d.dpf", id);
@@ -121,8 +114,7 @@ public class WorkerThread implements Runnable {
 		// PROCESAMOS RESULTADOS
 		readDLG(workDir+"/"+outputFile);
 		
-		// BORRAMOS CARPETA
-		
+		// BORRAMOS CARPETA Y FICHERO ZIP
 		Utils.deleteFolder(workDir);
 		Utils.deleteFolder(zipFile);
 		
@@ -130,19 +122,6 @@ public class WorkerThread implements Runnable {
 	
 	private void executeCommand(String command) throws CommandExecutionException {
 		executeCommand(command, null);
-	}
-	
-	private void copyFile(String sourceFile, String destFile) {
-		
-		
-		File source = new File(sourceFile);
-		File dest = new File(destFile);
-		try {
-		    FileUtils.copyDirectory(source, dest);
-		} catch (IOException e) {
-		    e.printStackTrace();
-		}
-		
 	}
 	
 	private void executeCommand(String command, File workDir) throws CommandExecutionException {

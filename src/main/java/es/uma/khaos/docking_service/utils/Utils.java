@@ -5,8 +5,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigInteger;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
+import org.apache.commons.io.FileUtils;
 
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
@@ -55,7 +61,7 @@ public class Utils {
 		return list;
 	}
 	
-	
+	//TODO: Lanzar excepción si no puede borrar folder
 	//delete folder
 	public static void deleteFolder(String workDir){
     	File directory = new File(workDir);
@@ -70,7 +76,7 @@ public class Utils {
     	} 
     }
 	
-	
+	//TODO: Lanzar excepción si no puede borrar file
 	public static void deleteFile(File file){
     	if(file.isDirectory()){
     		if(file.list().length==0){	
@@ -89,6 +95,21 @@ public class Utils {
     		file.delete(); //se borra	
     		System.out.println("File is deleted : " + file.getAbsolutePath());
     	}	
+	}
+	
+	public static void copyFile(String sourceFile, String destFile) {
+		File source = new File(sourceFile);
+		File dest = new File(destFile);
+		try {
+		    FileUtils.copyFile(source, dest);
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+	}
+	
+	public static String generateHash() throws NoSuchAlgorithmException {
+		Random sr = SecureRandom.getInstance("SHA1PRNG");
+		return new BigInteger(130, sr).toString(32);
 	}
 
 }
