@@ -2,9 +2,6 @@ package es.uma.khaos.docking_service.resource;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigInteger;
-import java.security.SecureRandom;
-import java.util.Random;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
@@ -69,11 +66,16 @@ public class TaskResource extends Application {
 			@QueryParam("instance") String instance) {
 		System.out.println("HERE I AM!");
 		
-		// TODO: DESCARGAR Y PREPARAR instancia seleccionada
-		String zipFile = Constants.TEST_DIR_INSTANCE + Constants.TEST_FILE_ZIP;
-		
-		return createTaskResponse(populationSize, evaluations, runs, algorithm, useRmsdAsObjective, zipFile);
-		
+		try {
+			// TODO: DESCARGAR Y PREPARAR instancia seleccionada
+			String zipTestFile = Constants.TEST_DIR_INSTANCE + Constants.TEST_FILE_ZIP;
+			String zipFile = BASE_FOLDER + Utils.generateHash() + ".zip";
+			Utils.copyFile(zipTestFile, zipFile);
+			return createTaskResponse(populationSize, evaluations, runs, algorithm, useRmsdAsObjective, zipFile);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Response.serverError().build();
+		}
 	}
 	
 	@POST
@@ -89,17 +91,21 @@ public class TaskResource extends Application {
 			@FormDataParam("file") final InputStream inputStream) throws IOException {
 		System.out.println("HERE I STAY!");
 		
-		// TODO: Autogenerar nombre de zip
-		String zipFile = BASE_FOLDER + fileDetails.getFileName();
-		Utils.saveFile(inputStream, zipFile);
-		
-		return createTaskResponse(populationSize, evaluations, runs, algorithm, useRmsdAsObjective, zipFile);
+		try {
+			String zipFile = BASE_FOLDER + Utils.generateHash() + ".zip";
+			Utils.saveFile(inputStream, zipFile);
+			return createTaskResponse(populationSize, evaluations, runs, algorithm, useRmsdAsObjective, zipFile);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Response.serverError().build();
+		}
 	}
 	
 	private Response getTaskResponse(int id, String token, ResponseBuilder builder) {
 		try{
+
 			Task task = DatabaseService.getInstance().getTaskParameter(id);
-			
+		
 			if (task == null || !task.getHash().equals(token)) {
 				return Response
 						.status(Response.Status.FORBIDDEN)
@@ -166,9 +172,7 @@ public class TaskResource extends Application {
 	private Task createTask(int popSize, int evals, int runs, String algorithm, int objectiveOpt,
 			String zipFile) throws Exception {
 
-		Random sr = SecureRandom.getInstance("SHA1PRNG");
-		String token = new BigInteger(130, sr).toString(32);
-
+		String token = Utils.generateHash();
 		Task task = DatabaseService.getInstance().insertTask(token);
 		ParameterSet parameters = DatabaseService.getInstance().insertParameter(algorithm, evals, popSize, runs, objectiveOpt,
 						task.getId());

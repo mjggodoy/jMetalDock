@@ -77,7 +77,7 @@ public class WorkerThread implements Runnable {
 	private void processCommand() throws DpfWriteException, DpfNotFoundException, CommandExecutionException, DlgParseException, DlgNotFoundException, DatabaseException {
 		
 		String command;
-		
+
 		String workDir = String.format("%sexec-%d", BASE_FOLDER, id);
 		String inputFile = String.format("exec-%d.dpf", id);
 		String outputFile = String.format("exec-%d.dlg", id);
@@ -123,11 +123,9 @@ public class WorkerThread implements Runnable {
 			
 		}
 		
-		// BORRAMOS CARPETA
-		// TODO: Borrar carpeta una vez acabado
-		
-		// BORRAMOS FICHERO ZIP
-		// TODO: Borrar fichero ZIP
+		// BORRAMOS CARPETA Y FICHERO ZIP
+		Utils.deleteFolder(workDir);
+		Utils.deleteFolder(zipFile);
 		
 	}
 	
