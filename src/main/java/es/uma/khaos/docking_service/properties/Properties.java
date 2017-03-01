@@ -28,8 +28,11 @@ public class Properties {
 	public static final String TEST_FILE_DPF = "test.file.dpf";
 	public static final String TEST_FILE_ZIP = "test.file.zip";
 	
-	//Input default parameters
+	//Input possible algorithms
+	public static final String SINGLE_OBJ_ALGORITHMS = "input.algorithm.single";
+	public static final String MULTI_OBJ_ALGORITHMS = "input.algorithm.multi";
 	
+	//Input default parameters
 	public static final String DEFAULT_NUMBER_EVALUATIONS = "input.default.evaluations";
 	public static final String DEFAULT_NUMBER_RUNS = "input.default.runs";
 	public static final String DEFAULT_NUMBER_POPULATION_SIZE = "input.default.population_size";

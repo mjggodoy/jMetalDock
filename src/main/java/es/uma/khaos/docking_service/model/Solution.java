@@ -5,12 +5,12 @@ import java.util.List;
 public class Solution {
 	
 	public int id;
-	public float finalBindingEnergy;
+	public double finalBindingEnergy;
 	public List<String> objectives;
 	public int resultId;
-	public float intermolecularEnergy;
-	public float intramolecularEnergy;
-	public Float rmsd;
+	public double intermolecularEnergy;
+	public double intramolecularEnergy;
+	public Double rmsd;
 	
 	public Solution() {
 		
@@ -21,8 +21,8 @@ public class Solution {
 		this.id = id;
 	}
 
-	public Solution(int id, float finalBindingEnergy,
-			List<String> objectives, float intermolecularEnergy, float intramolecularEnergy, Float rmsd, int resultId) {
+	public Solution(int id, double finalBindingEnergy,
+			List<String> objectives, double intermolecularEnergy, double intramolecularEnergy, Double rmsd, int resultId) {
 		super();
 		this.id = id;
 		this.finalBindingEnergy = finalBindingEnergy;
@@ -37,7 +37,7 @@ public class Solution {
 		return id;
 	}
 
-	public float getFinalBindingEnergy() {
+	public double getFinalBindingEnergy() {
 		return finalBindingEnergy;
 	}
 
@@ -45,15 +45,15 @@ public class Solution {
 		return objectives;
 	}
 	
-	public Float getRmsd() {
+	public Double getRmsd() {
 		return rmsd;
 	}
 	
-	public float getIntermolecularEnergy() {
+	public double getIntermolecularEnergy() {
 		return intermolecularEnergy;
 	}
 
-	public float getIntramolecularEnergy() {
+	public double getIntramolecularEnergy() {
 		return intramolecularEnergy;
 	}
 

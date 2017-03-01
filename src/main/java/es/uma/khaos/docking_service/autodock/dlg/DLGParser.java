@@ -6,8 +6,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 
+import es.uma.khaos.docking_service.exception.DlgNotFoundException;
 import es.uma.khaos.docking_service.exception.DlgParseException;
 import es.uma.khaos.docking_service.model.dlg.AutoDockSolution;
+import es.uma.khaos.docking_service.model.dlg.AutoDockSolution.Optimization;
 import es.uma.khaos.docking_service.model.dlg.Conformation;
 import es.uma.khaos.docking_service.model.dlg.result.DLGResult;
 import es.uma.khaos.docking_service.model.dlg.util.Scientific;
@@ -15,7 +17,7 @@ import es.uma.khaos.docking_service.model.dlg.util.Scientific;
 
 /**
  * Parseador general de ficheros DLG que recoge y almacena todos los resultados.
- * Debe ser extendido con una clase especÌfica para DLGs con resultados
+ * Debe ser extendido con una clase espec√≠fica para DLGs con resultados
  * multiobjetivo o monoobjetivo.
  * 
  * @see DLGMonoParser DLGMultiParser
@@ -23,6 +25,8 @@ import es.uma.khaos.docking_service.model.dlg.util.Scientific;
  *      Created by esteban on 13/01/14.
  */
 public abstract class DLGParser<T> {
+	
+	protected Optimization optimizationType;
 
 	protected final String prefixStartModel = "DOCKED: MODEL";
 	private final String prefixEndModel = "DOCKED: ENDMDL";
@@ -41,7 +45,9 @@ public abstract class DLGParser<T> {
 	private final String prefixEnergy2 =
 			"DOCKED: USER    (2) Final Total Internal Energy     =";
 
-	public DLGParser() { }
+	public DLGParser(Optimization optimizationType) {
+		this.optimizationType = optimizationType;
+	}
 
 	/**
 	 * Devuelve todos los valores de los resultados de un fichero DLG en un
@@ -55,13 +61,13 @@ public abstract class DLGParser<T> {
 	protected abstract DLGResult<T> parseDLGFile(String dlgFilePath)
 			throws IOException, DlgParseException;
 
-	protected AutoDockSolution getSolution(BufferedReader br)
+	protected AutoDockSolution getSolution(BufferedReader br, Optimization opt)
 			throws IOException, DlgParseException {
 		
 		String line = null;
-		Float totalEnergy = null;
-		Float energy1 = null;
-		Float energy2 = null;
+		Double totalEnergy = null;
+		Double energy1 = null;
+		Double energy2 = null;
 		Scientific ki = null;
 		Conformation conformation = null;
 		
@@ -91,10 +97,10 @@ public abstract class DLGParser<T> {
 		return solution;
 	}
 	
-	private float getEnergyComponent(String line, String prefix) {
+	private double getEnergyComponent(String line, String prefix) {
 		line = line.replace(prefix, "");
 		line = line.substring(0, line.indexOf(" kcal/mol"));
-		return Float.valueOf(line);
+		return Double.valueOf(line);
 	}
 	
 	private Scientific getInhibitionConstant(String line, String prefix) throws DlgParseException {
@@ -121,6 +127,14 @@ public abstract class DLGParser<T> {
 			line = line.substring(0, line.indexOf(" fM (femtomolar)"));
 			ki = Double.valueOf(line);
 			exp = -15;
+		} else if (line.contains("aM (attomolar)")) {
+			line = line.substring(0, line.indexOf(" aM (attomolar)"));
+			ki = Double.valueOf(line);
+			exp = -18;
+		} else if (line.contains("zM (zeptomolar)")) {
+			line = line.substring(0, line.indexOf(" zM (zeptomolar)"));
+			ki = Double.valueOf(line);
+			exp = -18;
 		} else if (line.contains("yM (yottomolar)")) {
 			line = line.substring(0, line.indexOf(" yM (yottomolar)"));
 			ki = Double.valueOf(line);
@@ -140,13 +154,13 @@ public abstract class DLGParser<T> {
 	}
 
 	/**
-	 * Comprueba que todos los valores 3 de las energÌas sean el mismo
+	 * Comprueba que todos los valores 3 de las energ√≠as sean el mismo
 	 * 
 	 * @param value
 	 * @return true (todos los valores son el mismo), false (caso contrario)
 	 */
 	public boolean checkSameValue3(String dlgFilePath, double value)
-			throws DlgParseException {
+			throws DlgParseException, DlgNotFoundException {
 
 		System.out.println("Checking value 3 (" + value + ") of " + dlgFilePath);
 
@@ -173,7 +187,7 @@ public abstract class DLGParser<T> {
 					double actualValue = Double.valueOf(stringValue);
 					if (actualValue != value) {
 						System.out
-								.println("ENCONTRADO VALOR DIFERENTE EN LÕNEA ("
+								.println("ENCONTRADO VALOR DIFERENTE EN L√çNEA ("
 										+ lineCount + "):");
 						System.out.println(line);
 						res = false;
@@ -182,11 +196,10 @@ public abstract class DLGParser<T> {
 			}
 			br.close();
 		} catch (FileNotFoundException e) {
-			throw new DlgParseException("Fichero DLG (" + dlgFilePath
-					+ ") no encontrado.");
+			throw new DlgNotFoundException("Fichero DLG (" + dlgFilePath
+					+ ") no encontrado.", e);
 		} catch (IOException e) {
-			e.printStackTrace();
-			throw new DlgParseException();
+			throw new DlgParseException(e);
 		}
 
 		if (res)
