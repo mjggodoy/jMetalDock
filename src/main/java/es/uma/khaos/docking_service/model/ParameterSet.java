@@ -1,5 +1,7 @@
 package es.uma.khaos.docking_service.model;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 public class ParameterSet {
 
 	private int run;
@@ -24,6 +26,7 @@ public class ParameterSet {
 		this.task_id = task_id;
 	}
 
+	@XmlTransient
 	public int getId() {
 		return id;
 	}
@@ -48,6 +51,7 @@ public class ParameterSet {
 		return objective;
 	}
 
+	@XmlTransient
 	public int getTask_id() {
 		return task_id;
 	}

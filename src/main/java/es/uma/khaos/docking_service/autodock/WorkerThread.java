@@ -17,7 +17,7 @@ import es.uma.khaos.docking_service.exception.DlgNotFoundException;
 import es.uma.khaos.docking_service.exception.DlgParseException;
 import es.uma.khaos.docking_service.exception.DpfNotFoundException;
 import es.uma.khaos.docking_service.exception.DpfWriteException;
-import es.uma.khaos.docking_service.model.Execution;
+import es.uma.khaos.docking_service.model.Result;
 import es.uma.khaos.docking_service.model.dlg.AutoDockSolution;
 import es.uma.khaos.docking_service.model.dlg.result.DLGResult;
 import es.uma.khaos.docking_service.properties.Constants;
@@ -110,16 +110,21 @@ public class WorkerThread implements Runnable {
 		// PREPARAMOS DPF CON LOS PARÁMETROS
 		formatDPF(new File(workDir+"/"+dpfFileName), new File(workDir+"/"+inputFile));
 		
-		// EJECUTAMOS AUTODOCK
-		command= String.format(COMMAND_TEMPLATE,
-				AUTODOCK_LOCATION,
-				AUTODOCK_EXECUTABLE,
-				inputFile,
-				outputFile);
-		if (!"".equals(Constants.DIR_AUTODOCK)) executeCommand(command, new File(workDir));
-		
-		// PROCESAMOS RESULTADOS
-		readDLG(workDir+"/"+outputFile);
+		// SI TENEMOS EL EJECUTABLE DE AUTODOCK:
+		if (!"".equals(Constants.DIR_AUTODOCK))  {
+			
+			// EJECUTAMOS AUTODOCK
+			command= String.format(COMMAND_TEMPLATE,
+					AUTODOCK_LOCATION,
+					AUTODOCK_EXECUTABLE,
+					inputFile,
+					outputFile);
+			executeCommand(command, new File(workDir));
+			
+			// PROCESAMOS RESULTADOS
+			readDLG(workDir+"/"+outputFile);
+			
+		}
 		
 		// BORRAMOS CARPETA
 		
@@ -197,14 +202,14 @@ public class WorkerThread implements Runnable {
 	
 	private void readDLG(String dlgFile) throws DlgParseException, DlgNotFoundException, DatabaseException {
 		DLGParser<AutoDockSolution> parser;
-		if (objectiveOpt==0) {
+		if (objectiveOpt==1) {
 			parser = new DLGMonoParser();
 			try {
 				DLGResult<AutoDockSolution> dlgResult = parser.readFile(dlgFile);
 				int run = 1;
 				for (AutoDockSolution sol : dlgResult) {
-					Execution exec = DatabaseService.getInstance().insertExecution(id, run);
-					DatabaseService.getInstance().insertResult(sol.getTotalEnergy(), "Total Binding Energy", null, sol.getEnergy1(), sol.getEnergy2(), null, exec.getId());
+					Result result = DatabaseService.getInstance().insertResult(id, run);
+					DatabaseService.getInstance().insertSolution(sol.getTotalEnergy(), "Total Binding Energy", null, sol.getEnergy1(), sol.getEnergy2(), null, result.getId());
 					run++;
 				}
 			} catch (IOException e) {
