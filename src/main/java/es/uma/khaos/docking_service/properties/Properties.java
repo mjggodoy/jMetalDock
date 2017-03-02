@@ -9,6 +9,13 @@ public class Properties {
 	public static final String MYSQL_USER = "mysql.user";
 	public static final String MYSQL_PASS = "mysql.password";
 	
+	// FTP
+	public static final String FTP_IP = "ftp.ip";
+	public static final String FTP_PORT = "ftp.port";
+	public static final String FTP_USER = "ftp.user";
+	public static final String FTP_PASS = "ftp.password";
+	public static final String FTP_FOLDER_INSTANCES = "ftp.folder.instances";
+	
 	// SSH connection
 	public static final String SSH_HOST = "ssh.host";
 	public static final String SSH_PORT = "ssh.port";

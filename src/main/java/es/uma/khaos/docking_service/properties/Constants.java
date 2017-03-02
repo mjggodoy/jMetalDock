@@ -13,6 +13,13 @@ public class Constants {
 	public static final String MYSQL_USER = Configurations.getProperty(Properties.MYSQL_USER);
 	public static final String MYSQL_PASS = Configurations.getProperty(Properties.MYSQL_PASS);
 	
+	// FTP
+	public static final String FTP_IP = Configurations.getProperty(Properties.FTP_IP);
+	public static final String FTP_PORT = Configurations.getProperty(Properties.FTP_PORT);
+	public static final String FTP_USER = Configurations.getProperty(Properties.FTP_USER);
+	public static final String FTP_PASS = Configurations.getProperty(Properties.FTP_PASS);
+	public static final String FTP_FOLDER_INSTANCES = Configurations.getProperty(Properties.FTP_FOLDER_INSTANCES);
+	
 	// SSH Connection
 	public static final String SSH_HOST = Configurations.getProperty(Properties.SSH_HOST);
 	public static final String SSH_PORT = Configurations.getProperty(Properties.SSH_PORT);
