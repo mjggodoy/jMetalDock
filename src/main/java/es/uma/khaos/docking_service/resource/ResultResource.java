@@ -19,6 +19,7 @@ import es.uma.khaos.docking_service.model.Results;
 import es.uma.khaos.docking_service.model.Solution;
 import es.uma.khaos.docking_service.model.Task;
 import es.uma.khaos.docking_service.properties.Constants;
+import es.uma.khaos.docking_service.response.JspResponseBuilder;
 import es.uma.khaos.docking_service.response.PojoResponseBuilder;
 import es.uma.khaos.docking_service.response.ResponseBuilder;
 import es.uma.khaos.docking_service.service.DatabaseService;
@@ -52,7 +53,7 @@ public class ResultResource extends Application {
 	public Response getResultsAsHtml(
 			@NotNull @PathParam("taskId") int taskId,
 			@QueryParam("token") String token) {
-		return getResultsResponse(taskId, token, new PojoResponseBuilder());
+		return getResultsResponse(taskId, token, new JspResponseBuilder("/results.jsp"));
 	}
 	
 	@GET
@@ -62,7 +63,7 @@ public class ResultResource extends Application {
 			@NotNull @PathParam("taskId") int taskId,
 			@NotNull @PathParam("run") int run,
 			@QueryParam("token") String token) {
-		return getResultResponse(taskId, run, token, new PojoResponseBuilder());
+		return getResultResponse(taskId, run, token, new JspResponseBuilder("/result.jsp"));
 	}
 	
 	

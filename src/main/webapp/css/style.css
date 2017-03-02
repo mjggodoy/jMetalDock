@@ -417,6 +417,8 @@ blockquote {
 	font:Geneva, Arial, Helvetica, sans-serif 14px;
 }  
 
-  
+table, th, td {
+    border: 1px solid black;
+}
   
  

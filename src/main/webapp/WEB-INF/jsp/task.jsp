@@ -11,13 +11,12 @@
 <html>
 	<c:set var="task" value='${it}' />
 	<body>
-		<h1>HELLO XUXA!!!!</h1>
 		<h2>TASK</h2>
 		<c:out value="${task.id}"/><br>
 		<c:out value="${task.hash}"/><br>
 		<c:out value="${task.state}"/><br>
 		<h3>Parameters</h3>
-		<h4>Algorithm: </h4><c:out value="${task.parameters.algorithm}"/><br>
+		<c:out value="${task.parameters.algorithm}"/><br>
 		<c:out value="${task.parameters.evaluation}"/><br>
 		<c:out value="${task.parameters.populationSize}"/><br>
 		<c:out value="${task.parameters.run}"/><br>
