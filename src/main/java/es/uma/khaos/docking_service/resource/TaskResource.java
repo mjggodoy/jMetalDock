@@ -24,6 +24,7 @@ import com.mysql.jdbc.StringUtils;
 import es.uma.khaos.docking_service.autodock.WorkerThread;
 import es.uma.khaos.docking_service.exception.DatabaseException;
 import es.uma.khaos.docking_service.model.ErrorResponse;
+import es.uma.khaos.docking_service.model.Instance;
 import es.uma.khaos.docking_service.model.ParameterSet;
 import es.uma.khaos.docking_service.model.Task;
 import es.uma.khaos.docking_service.properties.Constants;
@@ -31,6 +32,7 @@ import es.uma.khaos.docking_service.response.JspResponseBuilder;
 import es.uma.khaos.docking_service.response.PojoResponseBuilder;
 import es.uma.khaos.docking_service.response.ResponseBuilder;
 import es.uma.khaos.docking_service.service.DatabaseService;
+import es.uma.khaos.docking_service.service.FtpService;
 import es.uma.khaos.docking_service.service.ThreadPoolService;
 import es.uma.khaos.docking_service.utils.Utils;
 
@@ -54,6 +56,7 @@ public class TaskResource extends Application {
 		return getTaskResponse(id, token, new JspResponseBuilder("/task.jsp"));
     }
 	
+	// TODO: Tratar error de FTP y tratar instancia no existente
 	@POST
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -67,11 +70,16 @@ public class TaskResource extends Application {
 		System.out.println("HERE I AM!");
 		
 		try {
-			// TODO: DESCARGAR Y PREPARAR instancia seleccionada
-			String zipTestFile = Constants.TEST_DIR_INSTANCE + Constants.TEST_FILE_ZIP;
 			String zipFile = BASE_FOLDER + Utils.generateHash() + ".zip";
-			Utils.copyFile(zipTestFile, zipFile);
-			return createTaskResponse(populationSize, evaluations, runs, algorithm, useRmsdAsObjective, zipFile);
+			if (instance==null) {
+				String zipTestFile = Constants.TEST_DIR_INSTANCE + Constants.TEST_FILE_ZIP;
+				Utils.copyFile(zipTestFile, zipFile);
+			} else {
+				Instance inst = DatabaseService.getInstance().getInstance(instance);
+				FtpService.getInstance().download(inst.getFileName(), zipFile);
+			}
+			//return createTaskResponse(populationSize, evaluations, runs, algorithm, useRmsdAsObjective, zipFile);
+			return Response.ok().build();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Response.serverError().build();
