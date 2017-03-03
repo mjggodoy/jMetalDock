@@ -26,6 +26,8 @@
         		<th>Task Id</th>
         		<th>Runs</th>
         		<th>Final Binding Energy</th>
+        		<th>Objectives</th>
+        		
     		</tr>
    		 
    		 <c:forEach items="${results.resultList}" var="result">
@@ -34,7 +36,10 @@
             	<td>${result.id}</td>
             	<td>${result.taskId}</td>
             	<td>${result.run}</td>
-            	<td>${solution.finalBindingEnergy}</td> 	
+            	<td>${solution.finalBindingEnergy}</td>
+            	<c:forEach items="${solution.objectives}" var="objective">	
+            		<td><div><c:out value="${objective}"/></div></td>
+            	</c:forEach> 
         	</tr>
         	</c:forEach>
     	</c:forEach>
