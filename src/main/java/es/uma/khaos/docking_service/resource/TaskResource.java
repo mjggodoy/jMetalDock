@@ -54,6 +54,7 @@ public class TaskResource extends Application {
 		return getTaskResponse(id, token, new JspResponseBuilder("/task.jsp"));
     }
 	
+	// TODO: Tratar error de FTP y tratar instancia no existente
 	@POST
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -67,11 +68,21 @@ public class TaskResource extends Application {
 		System.out.println("HERE I AM!");
 		
 		try {
-			// TODO: DESCARGAR Y PREPARAR instancia seleccionada
-			String zipTestFile = Constants.TEST_DIR_INSTANCE + Constants.TEST_FILE_ZIP;
-			String zipFile = BASE_FOLDER + Utils.generateHash() + ".zip";
-			Utils.copyFile(zipTestFile, zipFile);
-			return createTaskResponse(populationSize, evaluations, runs, algorithm, useRmsdAsObjective, zipFile);
+			String token = Utils.generateHash();
+			ParameterSet params;
+			
+			if (instance==null) {
+				String zipFile = BASE_FOLDER + token + ".zip";
+				String zipTestFile = Constants.TEST_DIR_INSTANCE + Constants.TEST_FILE_ZIP;
+				Utils.copyFile(zipTestFile, zipFile);
+				params = new ParameterSet(0, algorithm, evaluations, populationSize,
+						runs, useRmsdAsObjective, 0, Constants.TEST_FILE_ZIP, zipFile);
+			} else {
+				params = new ParameterSet(0, algorithm, evaluations, populationSize,
+						runs, useRmsdAsObjective, 0, instance);
+			}
+			
+			return createTaskResponse(token, params);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Response.serverError().build();
@@ -92,9 +103,13 @@ public class TaskResource extends Application {
 		System.out.println("HERE I STAY!");
 		
 		try {
-			String zipFile = BASE_FOLDER + Utils.generateHash() + ".zip";
+			String token = Utils.generateHash();
+			String zipFile = BASE_FOLDER + token + ".zip";
 			Utils.saveFile(inputStream, zipFile);
-			return createTaskResponse(populationSize, evaluations, runs, algorithm, useRmsdAsObjective, zipFile);
+			
+			ParameterSet params = new ParameterSet(0, algorithm, evaluations, populationSize,
+					runs, useRmsdAsObjective, 0, fileDetails.getName(), zipFile);
+			return createTaskResponse(token, params);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Response.serverError().build();
@@ -125,43 +140,26 @@ public class TaskResource extends Application {
 		}
 	}
 	
-	private Response createTaskResponse(int popSize, int evals, int runs, String algorithm, boolean useRmsdAsObjective,
-			String zipFile) {
+	private Response createTaskResponse(String token, ParameterSet params) {
 		
 		try{
-			if (StringUtils.isNullOrEmpty(algorithm)) {
+			if (StringUtils.isNullOrEmpty(params.getAlgorithm())) {
 				return Response
 						.status(Response.Status.BAD_REQUEST)
 						.entity(new ErrorResponse(
 								Response.Status.BAD_REQUEST,
 								String.format(Constants.RESPONSE_MANDATORY_PARAMETER_ERROR, "algorithm")))
 						.build();			
-			}else{
-				
-				int objectiveOpt = checkAlgorithm(algorithm, useRmsdAsObjective);
-				if (objectiveOpt==0) {
-					return Response
-							.status(Response.Status.BAD_REQUEST)
-							.entity(new ErrorResponse(
-									Response.Status.BAD_REQUEST,
-									String.format(Constants.RESPONSE_NOT_VALID_PARAMETER_ERROR, "algorithm")))
-							.build();
-				} else {
-					runs = inRangeCheck(
-							runs,
-							Constants.DEFAULT_MIN_NUMBER_RUNS,
-							Constants.DEFAULT_MAX_NUMBER_RUNS);
-					popSize = inRangeCheck(
-							popSize,
-							Constants.DEFAULT_MIN_NUMBER_POPULATION_SIZE,
-							Constants.DEFAULT_MAX_NUMBER_POPULATION_SIZE);
-					evals = inRangeCheck(
-							evals,
-							Constants.DEFAULT_MIN_NUMBER_EVALUATIONS,
-							Constants.DEFAULT_MAX_NUMBER_EVALUATIONS);
-					Task task = createTask(popSize, evals, runs, algorithm, objectiveOpt, zipFile);
-					return Response.ok(task).build();
-				}
+			} else if (params.getObjective()==0) {
+				return Response
+						.status(Response.Status.BAD_REQUEST)
+						.entity(new ErrorResponse(
+								Response.Status.BAD_REQUEST,
+								String.format(Constants.RESPONSE_NOT_VALID_PARAMETER_ERROR, "algorithm")))
+						.build();
+			} else {
+				Task task = createTask(token, params);
+				return Response.ok(task).build();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -169,34 +167,20 @@ public class TaskResource extends Application {
 		}
 	}
 	
-	private Task createTask(int popSize, int evals, int runs, String algorithm, int objectiveOpt,
-			String zipFile) throws Exception {
+//	private Task createTask(int popSize, int evals, int runs, String algorithm, int objectiveOpt,
+//			String zipFile) throws Exception {
+	private Task createTask(String token, ParameterSet params) throws Exception {
 
-		String token = Utils.generateHash();
 		Task task = DatabaseService.getInstance().insertTask(token);
-		ParameterSet parameters = DatabaseService.getInstance().insertParameter(algorithm, evals, popSize, runs, objectiveOpt,
-						task.getId());
+		params.setTask_id(task.getId());
+		
+		ParameterSet parameters = DatabaseService.getInstance().insertParameter(params);
 		task.setParameters(parameters);
-		Runnable worker = new WorkerThread("DOCKING", task.getId(), algorithm,
-				runs, popSize, evals, objectiveOpt, zipFile);
+		
+		Runnable worker = new WorkerThread("DOCKING", task);
 		ThreadPoolService.getInstance().execute(worker);
 		
 		return task;
 	}
 	
-	private int checkAlgorithm(String algorithm, boolean useRmsdAsObjective) {
-		if (Constants.SINGLE_OBJECTIVE_ALGORITHMS.contains(algorithm)) return 1;
-		else if (Constants.MULTI_OBJECTIVE_ALGORITHMS.contains(algorithm)) {
-			if (useRmsdAsObjective) return 3;
-			else return 2;
-		} else return 0;
-		
-	}
-	
-	private int inRangeCheck(int value, int minValue, int maxValue) {
-		if (value > maxValue) return maxValue;
-		else if (value < minValue) return minValue;
-		else return value;
-	}
-
 }
