@@ -111,5 +111,21 @@ public class Utils {
 		Random sr = SecureRandom.getInstance("SHA1PRNG");
 		return new BigInteger(130, sr).toString(32);
 	}
+	
+	public static void containerFolderCheck(String path) throws IOException {
+		File pathFile = new File(path);
+		File[] files = pathFile.listFiles();
+		if (files.length==1) {
+			if (files[0].isDirectory()) {
+				moveAllFilesFromFolderToFolder(files[0], pathFile);
+			}
+		}
+	}
+	
+	public static void moveAllFilesFromFolderToFolder(File path, File targetFolder) throws IOException {
+		for (File file : path.listFiles()) {
+			FileUtils.moveToDirectory(file, targetFolder, false);
+		}
+	}
 
 }

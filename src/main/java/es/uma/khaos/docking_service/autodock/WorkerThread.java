@@ -74,7 +74,7 @@ public class WorkerThread implements Runnable {
 		
 	}
 	
-	private void processCommand() throws DpfWriteException, DpfNotFoundException, CommandExecutionException, DlgParseException, DlgNotFoundException, DatabaseException {
+	private void processCommand() throws DpfWriteException, DpfNotFoundException, CommandExecutionException, DlgParseException, DlgNotFoundException, DatabaseException, IOException {
 		
 		String command;
 
@@ -99,7 +99,10 @@ public class WorkerThread implements Runnable {
 		// DESCOMPRIMIMOS FICHERO ZIP EN CARPETA DE TRABAJO
 		Utils.unzip(zipFile, workDir);
 		
-		// TODO: Buscamos fichero DPF en carpeta
+		// CHEQUEAMOS SI EL ZIP TIENE UNA CARPETA PADRE
+		// (Y MOVEMOS LOS FICHEROS EN ESE CASO)
+		Utils.containerFolderCheck(workDir);
+		
 		List<String> dpfs = Utils.searchFileWithExtension(workDir, "dpf");
 		if (dpfs.size()!=1) throw new DpfNotFoundException();
 		dpfFileName = dpfs.get(0);

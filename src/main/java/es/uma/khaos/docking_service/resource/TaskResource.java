@@ -78,8 +78,7 @@ public class TaskResource extends Application {
 				Instance inst = DatabaseService.getInstance().getInstance(instance);
 				FtpService.getInstance().download(inst.getFileName(), zipFile);
 			}
-			//return createTaskResponse(populationSize, evaluations, runs, algorithm, useRmsdAsObjective, zipFile);
-			return Response.ok().build();
+			return createTaskResponse(populationSize, evaluations, runs, algorithm, useRmsdAsObjective, zipFile);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Response.serverError().build();
