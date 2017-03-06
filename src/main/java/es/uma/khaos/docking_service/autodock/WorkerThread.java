@@ -89,15 +89,19 @@ public class WorkerThread implements Runnable {
 		String workDir = String.format("%sexec-%d", BASE_FOLDER, task.getId());
 		String inputFile = String.format("exec-%d.dpf", task.getId());
 		String outputFile = String.format("exec-%d.dlg", task.getId());
+		boolean fromFTP = false;
+		String dpfExtension = "dpf";
 		
 		String dpfFileName;
 		
 		System.out.println(workDir);
 		
+		// DESCARGAMOS DEL FTP SI NO TENEMOS UN ZIP
 		if (task.getParameters().getZipFile()==null) {
 			task.getParameters().setZipFile(BASE_FOLDER + task.getHash() + ".zip");
 			Instance inst = DatabaseService.getInstance().getInstance(task.getParameters().getInstance());
 			FtpService.getInstance().download(inst.getFileName(), task.getParameters().getZipFile());
+			fromFTP = true;
 		}
 		
 		// CREAMOS CARPETA
@@ -112,7 +116,8 @@ public class WorkerThread implements Runnable {
 		// (Y MOVEMOS LOS FICHEROS EN ESE CASO)
 		Utils.containerFolderCheck(workDir);
 		
-		List<String> dpfs = Utils.searchFileWithExtension(workDir, "dpf");
+		if (fromFTP) dpfExtension = "-AUTODOCK-LGA.dpf";
+		List<String> dpfs = Utils.searchFileWithExtension(workDir, dpfExtension);
 		if (dpfs.size()!=1) throw new DpfNotFoundException();
 		dpfFileName = dpfs.get(0);
 		
