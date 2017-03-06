@@ -1,9 +1,8 @@
 package es.uma.khaos.docking_service.autodock;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import es.uma.khaos.docking_service.autodock.dlg.DLGMonoParser;
@@ -15,13 +14,18 @@ import es.uma.khaos.docking_service.exception.DlgNotFoundException;
 import es.uma.khaos.docking_service.exception.DlgParseException;
 import es.uma.khaos.docking_service.exception.DpfNotFoundException;
 import es.uma.khaos.docking_service.exception.DpfWriteException;
+import es.uma.khaos.docking_service.exception.FtpException;
+import es.uma.khaos.docking_service.model.Instance;
+import es.uma.khaos.docking_service.model.ParameterSet;
 import es.uma.khaos.docking_service.model.Result;
+import es.uma.khaos.docking_service.model.Task;
 import es.uma.khaos.docking_service.model.dlg.AutoDockSolution;
 import es.uma.khaos.docking_service.model.dlg.AutoDockSolution.Optimization;
 import es.uma.khaos.docking_service.model.dlg.Front;
 import es.uma.khaos.docking_service.model.dlg.result.DLGResult;
 import es.uma.khaos.docking_service.properties.Constants;
 import es.uma.khaos.docking_service.service.DatabaseService;
+import es.uma.khaos.docking_service.service.FtpService;
 import es.uma.khaos.docking_service.utils.Utils;
 
 public class WorkerThread implements Runnable {
@@ -32,40 +36,44 @@ public class WorkerThread implements Runnable {
 	private final String BASE_FOLDER = Constants.DIR_BASE;
 	
 	private String name;
-	private int id;
 	
-	private String algorithm;
-	private int runs;
-	private int evals;
-	private int populationSize;
-	private int objectiveOpt;
+	private Task task;
+//	private ParameterSet params;
+//	private int id;
+//	
+//	private String algorithm;
+//	private int runs;
+//	private int evals;
+//	private int populationSize;
+//	private int objectiveOpt;
 	private boolean useRmsdAsObjective = false;
 	
-	private String zipFile;
+//	private String zipFile;
 	
-	public WorkerThread(String name, int id, String algorithm, int runs, int populationSize, int evals, int objectiveOpt, String zipFile) {
+	public WorkerThread(String name, Task task) {
 		this.name = name;
-		this.id = id;
-		this.algorithm = algorithm;
-		this.runs = runs;
-		this.evals = evals;
-		this.populationSize = populationSize;
-		this.objectiveOpt = objectiveOpt;
-		if (objectiveOpt==3) this.useRmsdAsObjective = true;
-		this.zipFile = zipFile;
+		this.task = task;
+//		this.id = id;
+//		this.algorithm = algorithm;
+//		this.runs = runs;
+//		this.evals = evals;
+//		this.populationSize = populationSize;
+//		this.objectiveOpt = objectiveOpt;
+		if (task.getParameters().getObjective()==3) this.useRmsdAsObjective = true;
+//		this.zipFile = zipFile;
 	}
 	
 	public void run() {
 		
 		try {
-			System.out.println(Thread.currentThread().getName()+" Start. ID = "+id);
-			DatabaseService.getInstance().startTask(id);
+			System.out.println(Thread.currentThread().getName()+" Start. ID = "+task.getId());
+			DatabaseService.getInstance().startTask(task.getId());
 			processCommand();
-			DatabaseService.getInstance().finishTask(id);
+			DatabaseService.getInstance().finishTask(task.getId());
 			System.out.println(Thread.currentThread().getName()+" End.");
 		} catch (Exception e) {
 			try {
-				DatabaseService.getInstance().finishTaskWithError(id);
+				DatabaseService.getInstance().finishTaskWithError(task.getId());
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
@@ -74,30 +82,31 @@ public class WorkerThread implements Runnable {
 		
 	}
 	
-	private void processCommand() throws DpfWriteException, DpfNotFoundException, CommandExecutionException, DlgParseException, DlgNotFoundException, DatabaseException, IOException {
+	private void processCommand() throws DpfWriteException, DpfNotFoundException, CommandExecutionException, DlgParseException, DlgNotFoundException, DatabaseException, IOException, NoSuchAlgorithmException, FtpException {
 		
 		String command;
 
-		String workDir = String.format("%sexec-%d", BASE_FOLDER, id);
-		String inputFile = String.format("exec-%d.dpf", id);
-		String outputFile = String.format("exec-%d.dlg", id);
+		String workDir = String.format("%sexec-%d", BASE_FOLDER, task.getId());
+		String inputFile = String.format("exec-%d.dpf", task.getId());
+		String outputFile = String.format("exec-%d.dlg", task.getId());
 		
 		String dpfFileName;
 		
 		System.out.println(workDir);
 		
+		if (task.getParameters().getZipFile()==null) {
+			task.getParameters().setZipFile(BASE_FOLDER + task.getHash() + ".zip");
+			Instance inst = DatabaseService.getInstance().getInstance(task.getParameters().getInstance());
+			FtpService.getInstance().download(inst.getFileName(), task.getParameters().getZipFile());
+		}
+		
 		// CREAMOS CARPETA
 		command = String.format(
 				"mkdir %s", workDir);
-		executeCommand(command);
+		Utils.executeCommand(command);
 		
-		// COPIAMOS FICHEROS DE ENTRADA EN CARPETA DE TRABAJO
-//		command = String.format(
-//				"cp -r %s. %s", fileDir, workDir);
-//		executeCommand(command);
-
 		// DESCOMPRIMIMOS FICHERO ZIP EN CARPETA DE TRABAJO
-		Utils.unzip(zipFile, workDir);
+		Utils.unzip(task.getParameters().getZipFile(), workDir);
 		
 		// CHEQUEAMOS SI EL ZIP TIENE UNA CARPETA PADRE
 		// (Y MOVEMOS LOS FICHEROS EN ESE CASO)
@@ -119,7 +128,7 @@ public class WorkerThread implements Runnable {
 					AUTODOCK_EXECUTABLE,
 					inputFile,
 					outputFile);
-			executeCommand(command, new File(workDir));
+			Utils.executeCommand(command, new File(workDir));
 			
 			// PROCESAMOS RESULTADOS
 			readDLG(workDir+"/"+outputFile);
@@ -128,74 +137,31 @@ public class WorkerThread implements Runnable {
 		
 		// BORRAMOS CARPETA Y FICHERO ZIP
 		Utils.deleteFolder(workDir);
-		Utils.deleteFolder(zipFile);
-		
-	}
-	
-	private void executeCommand(String command) throws CommandExecutionException {
-		executeCommand(command, null);
-	}
-	
-	private void executeCommand(String command, File workDir) throws CommandExecutionException {
-		
-		String s = null;
-		System.out.println(command);
-		
-		try {
-		
-			// Ejecutamos el comando
-			Process p;
-			if (workDir != null) {
-				p = Runtime.getRuntime().exec(command, null, workDir);
-			} else {
-				p = Runtime.getRuntime().exec(command);
-			}
-	
-	        BufferedReader stdInput = new BufferedReader(new InputStreamReader(
-	                p.getInputStream()));
-	
-	        BufferedReader stdError = new BufferedReader(new InputStreamReader(
-	                p.getErrorStream()));
-	
-	        // Leemos la salida del comando
-	        System.out.println("Esta es la salida standard del comando:\n");
-	        while ((s = stdInput.readLine()) != null) {
-	            System.out.println(s);
-	        }
-	
-	        // Leemos los errores si los hubiera
-	        System.out
-	                .println("Esta es la salida standard de error del comando (si la hay):\n");
-	        while ((s = stdError.readLine()) != null) {
-	            System.out.println(s);
-	        }
-	        
-		} catch (IOException e) {
-			throw new CommandExecutionException(e);
-		}
+		Utils.deleteFolder(task.getParameters().getZipFile());
 		
 	}
 	
 	private void formatDPF(File inputFile, File outputFile) throws DpfWriteException, DpfNotFoundException {
+		ParameterSet params = task.getParameters();
 		System.out.println(outputFile.getAbsolutePath());
-		DPFGenerator dpfGen = new DPFGenerator(inputFile, outputFile, algorithm);
+		DPFGenerator dpfGen = new DPFGenerator(inputFile, outputFile, params.getAlgorithm());
 		if (useRmsdAsObjective) dpfGen.setUseRmsdAsObjective();
-		dpfGen.setNumEvals(evals);
-		dpfGen.setNumRuns(runs);
-		dpfGen.setPopulationSize(populationSize);
+		dpfGen.setNumEvals(params.getEvaluation());
+		dpfGen.setNumRuns(params.getRun());
+		dpfGen.setPopulationSize(params.getPopulationSize());
 		dpfGen.generate();
 	}
 	
 	// TODO: Cambiar método a otra manera.
 	private void readDLG(String dlgFile) throws DlgParseException, DlgNotFoundException, DatabaseException {
 		
-		if (objectiveOpt==1) {
+		if (task.getParameters().getObjective()==1) {
 			DLGParser<AutoDockSolution> parser = new DLGMonoParser();
 			try {
 				DLGResult<AutoDockSolution> dlgResult = parser.readFile(dlgFile);
 				int run = 1;
 				for (AutoDockSolution sol : dlgResult) {
-					Result result = DatabaseService.getInstance().insertResult(id, run);
+					Result result = DatabaseService.getInstance().insertResult(task.getId(), run);
 					DatabaseService.getInstance().insertSolution(sol.getTotalEnergy(), "Total Binding Energy", null, sol.getEnergy1(), sol.getEnergy2(), null, result.getId());
 					run++;
 				}
@@ -205,11 +171,11 @@ public class WorkerThread implements Runnable {
 		} else {
 			DLGParser<Front> parser;
 			String obj1, obj2;
-			if (objectiveOpt==2) {
+			if (task.getParameters().getObjective()==2) {
 				parser = new DLGMultiParser(Optimization.SUB_ENERGIES);
 				obj1 = "Intermolecular energy";
 				obj2 = "Intramolecular energy";
-			} else if (objectiveOpt==3) {
+			} else if (task.getParameters().getObjective()==3) {
 				parser = new DLGMultiParser(Optimization.TOTAL_ENERGY_AND_RMSD);
 				obj1 = "Total Binding Energy";
 				obj2 = "RMSD";
@@ -220,7 +186,7 @@ public class WorkerThread implements Runnable {
 				DLGResult<Front> dlgResult = parser.readFile(dlgFile);
 				int run = 1;
 				for (Front front : dlgResult) {
-					Result result = DatabaseService.getInstance().insertResult(id, run);
+					Result result = DatabaseService.getInstance().insertResult(task.getId(), run);
 					for (AutoDockSolution sol : front) {
 						// TODO: Crear método que inserte todas las soluciones en una conexión.
 						DatabaseService.getInstance().insertSolution(sol.getTotalEnergy(), obj1, obj2, sol.getEnergy1(), sol.getEnergy2(), sol.getRmsd(), result.getId());

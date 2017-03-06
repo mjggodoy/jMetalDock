@@ -342,6 +342,45 @@ public final class DatabaseService {
 		return parameter;
 	}
 	
+	public ParameterSet insertParameter(ParameterSet parameters) throws Exception { 
+
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		String statement = "insert into parameters_set (algorithm, evaluations, population_size, runs, objective, task_id)"
+				+ " values (?, ?, ?, ?, ?, ?)"; 
+
+		try {
+			conn = openConnection();
+			stmt = conn.prepareStatement(statement, Statement.RETURN_GENERATED_KEYS);
+			stmt.setString(1, parameters.getAlgorithm());
+			stmt.setInt(2, parameters.getEvaluation());
+			stmt.setInt(3, parameters.getPopulationSize());
+			stmt.setInt(4, parameters.getRun());
+			stmt.setInt(5, parameters.getObjective());
+			stmt.setInt(6, parameters.getTask_id());
+			stmt.execute();
+			rs = stmt.getGeneratedKeys();
+			
+			if (rs.next()) {
+				parameters.setId(rs.getInt(1));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DatabaseException();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (rs != null) rs.close();
+			if (stmt != null) stmt.close();
+			if (conn != null) conn.close();
+		}
+		return parameters;
+	}
+	
 	/*
 	 * RESULT
 	 */
