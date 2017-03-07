@@ -1,13 +1,22 @@
 package es.uma.khaos.docking_service.utils;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.math.BigInteger;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
+import org.apache.commons.io.FileUtils;
+
+import es.uma.khaos.docking_service.exception.CommandExecutionException;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 
@@ -55,7 +64,7 @@ public class Utils {
 		return list;
 	}
 	
-	
+	//TODO: Lanzar excepción si no puede borrar folder
 	//delete folder
 	public static void deleteFolder(String workDir){
     	File directory = new File(workDir);
@@ -70,7 +79,7 @@ public class Utils {
     	} 
     }
 	
-	
+	//TODO: Lanzar excepción si no puede borrar file
 	public static void deleteFile(File file){
     	if(file.isDirectory()){
     		if(file.list().length==0){	
@@ -89,6 +98,81 @@ public class Utils {
     		file.delete(); //se borra	
     		System.out.println("File is deleted : " + file.getAbsolutePath());
     	}	
+	}
+	
+	public static void copyFile(String sourceFile, String destFile) {
+		File source = new File(sourceFile);
+		File dest = new File(destFile);
+		try {
+		    FileUtils.copyFile(source, dest);
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+	}
+	
+	public static String generateHash() throws NoSuchAlgorithmException {
+		Random sr = SecureRandom.getInstance("SHA1PRNG");
+		return new BigInteger(130, sr).toString(32);
+	}
+	
+	public static void containerFolderCheck(String path) throws IOException {
+		File pathFile = new File(path);
+		File[] files = pathFile.listFiles();
+		if (files.length==1) {
+			if (files[0].isDirectory()) {
+				moveAllFilesFromFolderToFolder(files[0], pathFile);
+			}
+		}
+	}
+	
+	public static void moveAllFilesFromFolderToFolder(File path, File targetFolder) throws IOException {
+		for (File file : path.listFiles()) {
+			FileUtils.moveToDirectory(file, targetFolder, false);
+		}
+	}
+	
+	public static void executeCommand(String command) throws CommandExecutionException {
+		executeCommand(command, null);
+	}
+	
+	public static void executeCommand(String command, File workDir) throws CommandExecutionException {
+		
+		String s = null;
+		System.out.println(command);
+		
+		try {
+		
+			// Ejecutamos el comando
+			Process p;
+			if (workDir != null) {
+				p = Runtime.getRuntime().exec(command, null, workDir);
+			} else {
+				p = Runtime.getRuntime().exec(command);
+			}
+	
+	        BufferedReader stdInput = new BufferedReader(new InputStreamReader(
+	                p.getInputStream()));
+	
+	        BufferedReader stdError = new BufferedReader(new InputStreamReader(
+	                p.getErrorStream()));
+	
+	        // Leemos la salida del comando
+	        System.out.println("Esta es la salida standard del comando:\n");
+	        while ((s = stdInput.readLine()) != null) {
+	            System.out.println(s);
+	        }
+	
+	        // Leemos los errores si los hubiera
+	        System.out
+	                .println("Esta es la salida standard de error del comando (si la hay):\n");
+	        while ((s = stdError.readLine()) != null) {
+	            System.out.println(s);
+	        }
+	        
+		} catch (IOException e) {
+			throw new CommandExecutionException(e);
+		}
+		
 	}
 
 }

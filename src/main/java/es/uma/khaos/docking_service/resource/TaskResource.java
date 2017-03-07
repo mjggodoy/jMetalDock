@@ -2,9 +2,6 @@ package es.uma.khaos.docking_service.resource;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigInteger;
-import java.security.SecureRandom;
-import java.util.Random;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
@@ -57,6 +54,7 @@ public class TaskResource extends Application {
 		return getTaskResponse(id, token, new JspResponseBuilder("/task.jsp"));
     }
 	
+	// TODO: Tratar error de FTP y tratar instancia no existente
 	@POST
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -65,15 +63,30 @@ public class TaskResource extends Application {
 			@QueryParam("runs") @DefaultValue("2") int runs,
 			@QueryParam("population_size") @DefaultValue("150") int populationSize, 
 			@QueryParam("evaluations") @DefaultValue("1500000") int evaluations,
-			@QueryParam("objectives") @DefaultValue("1") int objectiveOpt,
+			@QueryParam("use_rmsd_as_obj") @DefaultValue("False") boolean useRmsdAsObjective,
 			@QueryParam("instance") String instance) {
 		System.out.println("HERE I AM!");
 		
-		// TODO: DESCARGAR Y PREPARAR instancia seleccionada
-		String zipFile = Constants.TEST_DIR_INSTANCE + Constants.TEST_FILE_ZIP;
-		
-		return createTaskResponse(populationSize, evaluations, runs, algorithm, objectiveOpt, zipFile);
-		
+		try {
+			String token = Utils.generateHash();
+			ParameterSet params;
+			
+			if (instance==null) {
+				String zipFile = BASE_FOLDER + token + ".zip";
+				String zipTestFile = Constants.TEST_DIR_INSTANCE + Constants.TEST_FILE_ZIP;
+				Utils.copyFile(zipTestFile, zipFile);
+				params = new ParameterSet(0, algorithm, evaluations, populationSize,
+						runs, useRmsdAsObjective, 0, Constants.TEST_FILE_ZIP, zipFile);
+			} else {
+				params = new ParameterSet(0, algorithm, evaluations, populationSize,
+						runs, useRmsdAsObjective, 0, instance);
+			}
+			
+			return createTaskResponse(token, params);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Response.serverError().build();
+		}
 	}
 	
 	@POST
@@ -84,16 +97,23 @@ public class TaskResource extends Application {
 			@QueryParam("runs") @DefaultValue("2") int runs,
 			@QueryParam("population_size") @DefaultValue("150") int populationSize, 
 			@QueryParam("evaluations") @DefaultValue("1500000") int evaluations,
-			@QueryParam("objectives") @DefaultValue("1") int objectiveOpt,
+			@QueryParam("use_rmsd_as_obj") @DefaultValue("False") boolean useRmsdAsObjective,
 			@FormDataParam("file") final FormDataContentDisposition fileDetails,
 			@FormDataParam("file") final InputStream inputStream) throws IOException {
 		System.out.println("HERE I STAY!");
 		
-		// TODO: Autogenerar nombre de zip
-		String zipFile = BASE_FOLDER + fileDetails.getFileName();
-		Utils.saveFile(inputStream, zipFile);
-		
-		return createTaskResponse(populationSize, evaluations, runs, algorithm, objectiveOpt, zipFile);
+		try {
+			String token = Utils.generateHash();
+			String zipFile = BASE_FOLDER + token + ".zip";
+			Utils.saveFile(inputStream, zipFile);
+			
+			ParameterSet params = new ParameterSet(0, algorithm, evaluations, populationSize,
+					runs, useRmsdAsObjective, 0, fileDetails.getName(), zipFile);
+			return createTaskResponse(token, params);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Response.serverError().build();
+		}
 	}
 	
 	private Response getTaskResponse(int id, String token, ResponseBuilder builder) {
@@ -120,32 +140,25 @@ public class TaskResource extends Application {
 		}
 	}
 	
-	private Response createTaskResponse(int popSize, int evals, int runs, String algorithm, int objectiveOpt,
-			String zipFile) {
+	private Response createTaskResponse(String token, ParameterSet params) {
 		
 		try{
-			if (StringUtils.isNullOrEmpty(algorithm)) {
-				//TODO: EXPECTATION_FAILED no debería ser el error. Cambiarlo por otro. 400, quizá
+			if (StringUtils.isNullOrEmpty(params.getAlgorithm())) {
 				return Response
-						.status(Response.Status.EXPECTATION_FAILED)
+						.status(Response.Status.BAD_REQUEST)
 						.entity(new ErrorResponse(
-								Response.Status.EXPECTATION_FAILED,
+								Response.Status.BAD_REQUEST,
 								String.format(Constants.RESPONSE_MANDATORY_PARAMETER_ERROR, "algorithm")))
 						.build();			
-			}else{
-				runs = inRangeCheck(
-						runs,
-						Constants.DEFAULT_MIN_NUMBER_RUNS,
-						Constants.DEFAULT_MAX_NUMBER_RUNS);
-				popSize = inRangeCheck(
-						popSize,
-						Constants.DEFAULT_MIN_NUMBER_POPULATION_SIZE,
-						Constants.DEFAULT_MAX_NUMBER_POPULATION_SIZE);
-				evals = inRangeCheck(
-						evals,
-						Constants.DEFAULT_MIN_NUMBER_EVALUATIONS,
-						Constants.DEFAULT_MAX_NUMBER_EVALUATIONS);
-				Task task = createTask(popSize, evals, runs, algorithm, objectiveOpt, zipFile);
+			} else if (params.getObjective()==0) {
+				return Response
+						.status(Response.Status.BAD_REQUEST)
+						.entity(new ErrorResponse(
+								Response.Status.BAD_REQUEST,
+								String.format(Constants.RESPONSE_NOT_VALID_PARAMETER_ERROR, "algorithm")))
+						.build();
+			} else {
+				Task task = createTask(token, params);
 				return Response.ok(task).build();
 			}
 		} catch (Exception e) {
@@ -154,27 +167,20 @@ public class TaskResource extends Application {
 		}
 	}
 	
-	private Task createTask(int popSize, int evals, int runs, String algorithm, int objectiveOpt,
-			String zipFile) throws Exception {
-
-		Random sr = SecureRandom.getInstance("SHA1PRNG");
-		String token = new BigInteger(130, sr).toString(32);
+//	private Task createTask(int popSize, int evals, int runs, String algorithm, int objectiveOpt,
+//			String zipFile) throws Exception {
+	private Task createTask(String token, ParameterSet params) throws Exception {
 
 		Task task = DatabaseService.getInstance().insertTask(token);
-		ParameterSet parameters = DatabaseService.getInstance().insertParameter(algorithm, evals, popSize, runs, objectiveOpt,
-						task.getId());
+		params.setTask_id(task.getId());
+		
+		ParameterSet parameters = DatabaseService.getInstance().insertParameter(params);
 		task.setParameters(parameters);
-		Runnable worker = new WorkerThread("DOCKING", task.getId(), algorithm,
-				runs, popSize, evals, objectiveOpt, zipFile);
+		
+		Runnable worker = new WorkerThread("DOCKING", task);
 		ThreadPoolService.getInstance().execute(worker);
 		
 		return task;
 	}
 	
-	private int inRangeCheck(int value, int minValue, int maxValue) {
-		if (value > maxValue) return maxValue;
-		else if (value < minValue) return minValue;
-		else return value;
-	}
-
 }

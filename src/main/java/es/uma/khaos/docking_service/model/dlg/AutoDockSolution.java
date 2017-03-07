@@ -15,10 +15,19 @@ import es.uma.khaos.docking_service.model.dlg.util.Scientific;
  */
 public class AutoDockSolution {
 	
+	public enum Optimization {
+		TOTAL_ENERGY, SUB_ENERGIES, TOTAL_ENERGY_AND_RMSD
+	}
+	
+	/**
+	 * Optimization used to get this solution
+	 */
+//	private Optimization optimizationType;
+	
 	/**
 	 * Estimated Free Energy of Binding
 	 */
-	private Float totalEnergy;
+	private Double totalEnergy;
 	
 	/**
 	 * Estimated Inhibition Constant (M (molar))
@@ -28,12 +37,12 @@ public class AutoDockSolution {
 	/**
 	 * (1) Final Intermolecular Energy
 	 */
-	private Float energy1;
+	private Double energy1;
 	
 	/**
 	 * (2) Final Total Internal Energy
 	 */
-	private Float energy2;
+	private Double energy2;
 	
 	/**
 	 * RMSD
@@ -42,16 +51,8 @@ public class AutoDockSolution {
 	
 	private Conformation conformation;
 	
-	public AutoDockSolution(Float totalEnergy) {
-		this.totalEnergy = totalEnergy;
-		this.ki = null;
-		this.energy1 = null;
-		this.energy2 = null;
-		this.rmsd = null;
-		this.conformation = null;
-	}
-	
-	public AutoDockSolution(Float totalEnergy, Scientific ki, Float energy1, Float energy2) {
+	public AutoDockSolution(Double totalEnergy, Scientific ki,
+			Double energy1, Double energy2) {
 		this.totalEnergy = totalEnergy;
 		this.ki = ki;
 		this.energy1 = energy1;
@@ -60,7 +61,8 @@ public class AutoDockSolution {
 		this.conformation = null;
 	}
 	
-	public AutoDockSolution(Float totalEnergy, Scientific ki, Float energy1, Float energy2, Double rmsd) {
+	public AutoDockSolution(Double totalEnergy, Scientific ki,Double energy1,
+			Double energy2, Double rmsd) {
 		this.totalEnergy = totalEnergy;
 		this.ki = ki;
 		this.energy1 = energy1;
@@ -69,11 +71,11 @@ public class AutoDockSolution {
 		this.conformation = null;
 	}
 
-	public Float getTotalEnergy() {
+	public Double getTotalEnergy() {
 		return totalEnergy;
 	}
 
-	public void setTotalEnergy(Float totalEnergy) {
+	public void setTotalEnergy(Double totalEnergy) {
 		this.totalEnergy = totalEnergy;
 	}
 
@@ -85,19 +87,19 @@ public class AutoDockSolution {
 		this.ki = ki;
 	}
 
-	public Float getEnergy1() {
+	public Double getEnergy1() {
 		return energy1;
 	}
 
-	public void setEnergy1(Float energy1) {
+	public void setEnergy1(Double energy1) {
 		this.energy1 = energy1;
 	}
 
-	public Float getEnergy2() {
+	public Double getEnergy2() {
 		return energy2;
 	}
 
-	public void setEnergy2(Float energy2) {
+	public void setEnergy2(Double energy2) {
 		this.energy2 = energy2;
 	}
 
