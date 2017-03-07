@@ -24,12 +24,7 @@
 	  </div><!--close banner-->	
     </div><!--close header-->	
     
-	<div id="site_content">		
-      <div class="slideshow">  
-		<ul class="slideshow">
-          <li><img width="875" height="600" src="images/references.png" alt="&quot;Enter your caption here&quot;" /></li>
-        </ul> 
-      </div><!--close slideshow-->		
+		
 	  	 
 	  <div id="content">
         <div class="content_item">

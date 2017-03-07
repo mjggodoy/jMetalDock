@@ -1,18 +1,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.ArrayList"%>
-
 <!DOCTYPE html>
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="css/style.css" />
-
 </head>
 
 <c:set var="results" value='${it}' />
 <body>
 
 	<h2>RESULT</h2>
-	<table>
+	<div class="table-responsive">
+	
+	<table class="table table-condensed table-striped table-hover">
 		<tr>
 			<th>Id</th>
 			<th>Task Id</th>
@@ -42,5 +42,6 @@
 			</c:forEach>
 		</c:forEach>
 	</table>
+	</div>
 </body>
 </html>
