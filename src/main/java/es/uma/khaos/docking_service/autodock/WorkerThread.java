@@ -59,7 +59,7 @@ public class WorkerThread implements Runnable {
 //		this.evals = evals;
 //		this.populationSize = populationSize;
 //		this.objectiveOpt = objectiveOpt;
-		if (task.getParameters().getObjective()==3) this.useRmsdAsObjective = true;
+		if (task.getParameters().getObjectiveOption()==3) this.useRmsdAsObjective = true;
 //		this.zipFile = zipFile;
 	}
 	
@@ -98,7 +98,7 @@ public class WorkerThread implements Runnable {
 		
 		// DESCARGAMOS DEL FTP SI NO TENEMOS UN ZIP
 		if (task.getParameters().getZipFile()==null) {
-			task.getParameters().setZipFile(BASE_FOLDER + task.getHash() + ".zip");
+			task.getParameters().setZipFile(BASE_FOLDER + task.getToken() + ".zip");
 			Instance inst = DatabaseService.getInstance().getInstance(task.getParameters().getInstance());
 			FtpService.getInstance().download(inst.getFileName(), task.getParameters().getZipFile());
 			fromFTP = true;
@@ -151,8 +151,8 @@ public class WorkerThread implements Runnable {
 		System.out.println(outputFile.getAbsolutePath());
 		DPFGenerator dpfGen = new DPFGenerator(inputFile, outputFile, params.getAlgorithm());
 		if (useRmsdAsObjective) dpfGen.setUseRmsdAsObjective();
-		dpfGen.setNumEvals(params.getEvaluation());
-		dpfGen.setNumRuns(params.getRun());
+		dpfGen.setNumEvals(params.getEvaluations());
+		dpfGen.setNumRuns(params.getRuns());
 		dpfGen.setPopulationSize(params.getPopulationSize());
 		dpfGen.generate();
 	}
@@ -160,7 +160,7 @@ public class WorkerThread implements Runnable {
 	// TODO: Cambiar método a otra manera.
 	private void readDLG(String dlgFile) throws DlgParseException, DlgNotFoundException, DatabaseException {
 		
-		if (task.getParameters().getObjective()==1) {
+		if (task.getParameters().getObjectiveOption()==1) {
 			DLGParser<AutoDockSolution> parser = new DLGMonoParser();
 			try {
 				DLGResult<AutoDockSolution> dlgResult = parser.readFile(dlgFile);
@@ -176,11 +176,11 @@ public class WorkerThread implements Runnable {
 		} else {
 			DLGParser<Front> parser;
 			String obj1, obj2;
-			if (task.getParameters().getObjective()==2) {
+			if (task.getParameters().getObjectiveOption()==2) {
 				parser = new DLGMultiParser(Optimization.SUB_ENERGIES);
 				obj1 = "Intermolecular energy";
 				obj2 = "Intramolecular energy";
-			} else if (task.getParameters().getObjective()==3) {
+			} else if (task.getParameters().getObjectiveOption()==3) {
 				parser = new DLGMultiParser(Optimization.TOTAL_ENERGY_AND_RMSD);
 				obj1 = "Total Binding Energy";
 				obj2 = "RMSD";

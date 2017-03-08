@@ -1,25 +1,25 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="java.util.ArrayList"%>
-<%
-	ArrayList<String> numList = new ArrayList<String>();
-	numList.add("one");
-	numList.add("two");
-	numList.add("three");
-	request.setAttribute("numList", numList);
-%>
 <!DOCTYPE html>
 <html>
 	<c:set var="task" value='${it}' />
 	<body>
-		<h2>TASK</h2>
-		<c:out value="${task.id}"/><br>
-		<c:out value="${task.hash}"/><br>
-		<c:out value="${task.state}"/><br>
-		<h3>Parameters</h3>
-		<c:out value="${task.parameters.algorithm}"/><br>
-		<c:out value="${task.parameters.evaluation}"/><br>
-		<c:out value="${task.parameters.populationSize}"/><br>
-		<c:out value="${task.parameters.run}"/><br>
-		<c:out value="${task.parameters.objective}"/><br>
+		<h3>TASK</h3>
+		<p>
+			<strong>ID: </strong><c:out value="${task.id}"/><br>
+			<strong>Start time: </strong><br/>
+			<strong>End time: </strong><br/>
+			<strong>Token: </strong><c:out value="${task.token}"/><br>
+			<strong>State: </strong><c:out value="${task.state}"/><br>
+		</p>
+		<hr>
+		<h4>Parameters</h4>
+		<p>
+			<strong>Algorithm: </strong><c:out value="${task.parameters.algorithm}"/><br>
+			<strong>No. of runs: </strong><c:out value="${task.parameters.runs}"/><br>
+			<strong>No. of evaluations: </strong><c:out value="${task.parameters.evaluations}"/><br>
+			<strong>Population size: </strong><c:out value="${task.parameters.evaluations}"/><br>
+			<strong>Objective option: </strong><c:out value="${task.parameters.objectiveOption}"/><br>
+			<!-- Incluir una leyenda del significado de cada opción -->
+		</p>
 	</body>
 </html>

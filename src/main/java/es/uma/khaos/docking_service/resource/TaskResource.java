@@ -121,7 +121,7 @@ public class TaskResource extends Application {
 
 			Task task = DatabaseService.getInstance().getTaskParameter(id);
 		
-			if (task == null || !task.getHash().equals(token)) {
+			if (task == null || !task.getToken().equals(token)) {
 				return Response
 						.status(Response.Status.FORBIDDEN)
 						.entity(new ErrorResponse(Response.Status.FORBIDDEN,Constants.RESPONSE_TASK_MSG_UNALLOWED))
@@ -150,7 +150,7 @@ public class TaskResource extends Application {
 								Response.Status.BAD_REQUEST,
 								String.format(Constants.RESPONSE_MANDATORY_PARAMETER_ERROR, "algorithm")))
 						.build();			
-			} else if (params.getObjective()==0) {
+			} else if (params.getObjectiveOption()==0) {
 				return Response
 						.status(Response.Status.BAD_REQUEST)
 						.entity(new ErrorResponse(
@@ -172,7 +172,7 @@ public class TaskResource extends Application {
 	private Task createTask(String token, ParameterSet params) throws Exception {
 
 		Task task = DatabaseService.getInstance().insertTask(token);
-		params.setTask_id(task.getId());
+		params.setTaskId(task.getId());
 		
 		ParameterSet parameters = DatabaseService.getInstance().insertParameter(params);
 		task.setParameters(parameters);
