@@ -1,18 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
-
-<!-- Bootstrap core CSS -->
-<link href="resources/css/bootstrap.min.css" rel="stylesheet">
-
-	<!-- Custom styles for this template -->
-	<link href="resources/css/bootstrap.css" rel="stylesheet">
-		<link rel="stylesheet" type="text/css" href="css/style.css" />
+<%@ include file="/WEB-INF/jsp/header.jsp"%>
 </head>
 
 <body>
-
-
 	<div class="container">
 
 		<h3 class="text-muted">jMetalDock</h3>
@@ -23,13 +15,10 @@
 					<li><a href="index.jsp">Home</a></li>
 					<li><a href="#">Tutorials</a></li>
 					<li><a href="#">Benchmark</a></li>
-					<li><a href="#">Downloads</a></li>
 					<li class="active"><a href="references.jsp">Publications</a></li>
 				</ul>
 			</div>
 		</div>
-
-
 
 		<div class="starter-template">
 			<h1>Published Journals:</h1>
@@ -65,7 +54,7 @@
 					href="http://www.mdpi.com/1420-3049/21/11/1575" target="_blank">doi:10.3390/molecules21111575</a>
 				</li>
 			</ol>
-
+			<br/>
 
 			<h1>Published Chapters:</h1>
 			<ol>
@@ -90,22 +79,8 @@
 			</ol>
 		</div>
 		
-		
-		
-		<!-- Site footer -->
-		<footer class="footer">
-		<div class="container">
-			<div class="panel panel-default panel-ecompass-footer">
-				<div class="panel-body">
-					<div class="footer-container">
-						Copyright © 2017 <a href="http://www.uma.es/" target="_blank">University
-							of Málaga</a>. All rights reserved. Powered by <a
-							href="http://khaos.uma.es" target="_blank">Khaos Research</a>.
-					</div>
-				</div>
-			</div>
-		</div>
-		</footer>
+		<%@ include file="/WEB-INF/jsp/footer.jsp"%>
+
 
 	</div>
 </body>

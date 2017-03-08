@@ -2,30 +2,7 @@
 <!-- saved from url=(0057)https://v4-alpha.getbootstrap.com/examples/justified-nav/ -->
 <html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="">
-<meta name="author" content="">
-<link rel="icon" href="images/liferay.ico">
-
-<title>jMetalDock: A web-service that provides single and
-	multi-objetive approaches to molecular docking</title>
-
-<!-- Bootstrap core CSS -->
-<link href="resources/css/bootstrap.min.css" rel="stylesheet">
-
-<!-- Custom styles for this template -->
-<link href="resources/css/bootstrap.css" rel="stylesheet">
-<link href="css/style.css" rel="stylesheet">
-
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-
+<%@ include file="/WEB-INF/jsp/header.jsp"%>
 </head>
 
 
@@ -47,8 +24,7 @@
 			</div>
 		</div>
 
-		<div class="container">
-			<br>
+		<div class="container">		
 			<div id="myCarousel" class="carousel slide" data-ride="carousel">
 				<!-- Indicators -->
 				<ol class="carousel-indicators">
@@ -93,7 +69,7 @@
 
 		<!-- Example row of columns -->
 		<div class="row">
-			<div class="col-lg-4">
+			<div class="col-md-12">
 				<h2>Welcome to jMetalDock Web Server</h2>
 				<p>MetalDock provides a set of web-services that offers mono-
 					and multi-objectives approaches applied to the problem of molecular
@@ -119,19 +95,10 @@
 					are given above in the Tutorial section in the menu bar.</p>
 			</div>
 		</div>
+		
+		
+		<%@ include file="/WEB-INF/jsp/footer.jsp"%>
 
-		<!-- Site footer -->
-		<footer class="footer">
-	    <div class="container">
-			<div class="panel panel-default panel-ecompass-footer">
-				<div class="panel-body">
-					<div class="footer-container">
-						Copyright © 2017 <a href="http://www.uma.es/" target="_blank">University of Málaga</a>. All rights reserved. Powered by <a href="http://khaos.uma.es" target="_blank">Khaos Research</a>.
-					</div>
-				</div>
-			</div>
-		</div>
-		</footer>
 
 	</div>
 	<!-- /container -->
