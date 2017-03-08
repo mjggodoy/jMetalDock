@@ -134,6 +134,13 @@ public class ParameterSet {
 		this.zipFile = zipFile;
 	}
 	
+	@Override
+	public String toString() {
+		return "ParameterSet [runs=" + runs + ", id=" + id + ", algorithm=" + algorithm + ", evaluations=" + evaluations
+				+ ", populationSize=" + populationSize + ", objectiveOption=" + objectiveOption + ", taskId=" + taskId
+				+ ", instance=" + instance + ", uploadedFile=" + uploadedFile + ", zipFile=" + zipFile + "]";
+	}
+
 	private int inRangeCheck(int value, int minValue, int maxValue) {
 		if (value > maxValue) return maxValue;
 		else if (value < minValue) return minValue;
