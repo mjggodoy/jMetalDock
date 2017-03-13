@@ -43,11 +43,7 @@
 							<td>${result.run}</td>
 							<td><c:if test="${solution.finalBindingEnergy != null}">${solution.finalBindingEnergy}</c:if>
 								kcal/mol</td>
-							<td><c:forEach items="${solution.objectives}"
-									var="objective" varStatus="loop">
-									<%-- <c:if test="${empty solution.objectives[fn:length(solution.objectives)-1]}">
-									<c:out value="${objective}"/>
-							</c:if>  --%>
+							<td><c:forEach items="${solution.objectives}" var="objective" varStatus="loop">
 									<c:if
 										test="${not empty solution.objectives[fn:length(solution.objectives)-1]}">
 

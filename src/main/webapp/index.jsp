@@ -14,7 +14,7 @@
 
 		<div class="container">
 			<div class="navbar">
-				<ul class="nav nav-justified" id="myNav">
+				<ul class="nav nav-justified">
 					<li class="active"><a href="#">Home</a></li>
 					<li><a href="#">Tutorials</a></li>
 					<li><a href="#">Benchmark</a></li>
