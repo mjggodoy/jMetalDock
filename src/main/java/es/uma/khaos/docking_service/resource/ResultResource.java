@@ -19,6 +19,7 @@ import es.uma.khaos.docking_service.model.Results;
 import es.uma.khaos.docking_service.model.Solution;
 import es.uma.khaos.docking_service.model.Task;
 import es.uma.khaos.docking_service.properties.Constants;
+import es.uma.khaos.docking_service.response.JspResponseBuilder;
 import es.uma.khaos.docking_service.response.PojoResponseBuilder;
 import es.uma.khaos.docking_service.response.ResponseBuilder;
 import es.uma.khaos.docking_service.service.DatabaseService;
@@ -44,6 +45,27 @@ public class ResultResource extends Application {
 			@QueryParam("token") String token) {
 		return getResultResponse(taskId, run, token, new PojoResponseBuilder());
 	}
+	
+	
+	@GET
+	@Path("/{taskId}/result")
+    @Produces("text/html")
+	public Response getResultsAsHtml(
+			@NotNull @PathParam("taskId") int taskId,
+			@QueryParam("token") String token) {
+		return getResultsResponse(taskId, token, new JspResponseBuilder("/results.jsp"));
+	}
+	
+	@GET
+	@Path("/{taskId}/result/{run}")
+    @Produces("text/html")
+	public Response getResultAsHtml(
+			@NotNull @PathParam("taskId") int taskId,
+			@NotNull @PathParam("run") int run,
+			@QueryParam("token") String token) {
+		return getResultResponse(taskId, run, token, new JspResponseBuilder("/result.jsp"));
+	}
+	
 	
 	//TODO: Sacar los GETS de HTML
 	
@@ -73,7 +95,7 @@ public class ResultResource extends Application {
 		try{
 			Task task = DatabaseService.getInstance().getTaskParameter(taskId);
 			
-			if (task == null || !task.getHash().equals(token)) {
+			if (task == null || !task.getToken().equals(token)) {
 				return Response
 						.status(Response.Status.FORBIDDEN)
 						.entity(new ErrorResponse(Response.Status.FORBIDDEN,Constants.RESPONSE_TASK_MSG_UNALLOWED))
@@ -94,7 +116,7 @@ public class ResultResource extends Application {
 		try{
 			Task task = DatabaseService.getInstance().getTaskParameter(taskId);
 			
-			if (task == null || !task.getHash().equals(token)) {
+			if (task == null || !task.getToken().equals(token)) {
 				return Response
 						.status(Response.Status.FORBIDDEN)
 						.entity(new ErrorResponse(Response.Status.FORBIDDEN,Constants.RESPONSE_TASK_MSG_UNALLOWED))

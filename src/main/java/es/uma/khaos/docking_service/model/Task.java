@@ -6,17 +6,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Task {
 
 	private int id;
-	private String hash;
+	private String token;
 	private String state;
 	//TODO: Hacer que los dos IDs no aparezcan en el JSON
 	private ParameterSet parameters;
 	
 	public Task() { }
 
-	public Task(int id, String hash, String state) {
+	public Task(int id, String token, String state) {
 		super();
 		this.id = id;
-		this.hash = hash;
+		this.token = token;
 		this.state = state;
 	}
 	
@@ -24,7 +24,7 @@ public class Task {
 			ParameterSet parameters) {
 		super();
 		this.id = id;
-		this.hash = hash;
+		this.token = hash;
 		this.state = state;
 		this.parameters = parameters;
 	}
@@ -33,8 +33,8 @@ public class Task {
 		return id;
 	}
 
-	public String getHash() {
-		return hash;
+	public String getToken() {
+		return token;
 	}
 	
 	public String getState() {
@@ -45,8 +45,8 @@ public class Task {
 		this.id = id;
 	}
 
-	public void setHash(String hash) {
-		this.hash = hash;
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 	public void setState(String state) {
