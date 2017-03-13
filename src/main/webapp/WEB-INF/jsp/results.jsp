@@ -16,12 +16,15 @@
 </head>
 <c:set var="results" value='${it}' />
 <body>
-
+	
+	<div class="container">
+	
 	<h2>
 		RESULT<br>
 	</h2>
-	<div class="table-responsive">
-		<table class="table">
+	
+	<div class="table table-bordered">
+		<table  class="table table-striped table table-bordered">
 			<thead>
 				<tr>
 					<th>Id</th>
@@ -41,8 +44,7 @@
 							<td>${result.id}</td>
 							<td>${result.taskId}</td>
 							<td>${result.run}</td>
-							<td><c:if test="${solution.finalBindingEnergy != null}">${solution.finalBindingEnergy}</c:if>
-								kcal/mol</td>
+							<td><c:if test="${solution.finalBindingEnergy != null}">${solution.finalBindingEnergy}</c:if>kcal/mol</td>
 							<td><c:forEach items="${solution.objectives}" var="objective" varStatus="loop">
 									<c:if
 										test="${not empty solution.objectives[fn:length(solution.objectives)-1]}">
@@ -71,5 +73,9 @@
 			</tbody>
 		</table>
 	</div>
+	
+				<%@ include file="/WEB-INF/jsp/footer.jsp"%>
+	
+	</div>	
 </body>
 </html>
