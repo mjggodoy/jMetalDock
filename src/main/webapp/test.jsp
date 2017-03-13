@@ -11,8 +11,3 @@
     </div>
     <input type="submit" />
 </form>
-
-<script>
-//document.forms['newTaskForm'].setAttribute('enctype', 'application/x-www-form-urlencoded', 0);
-//console.log("ONE DAY I'LL GO");
-</script>
