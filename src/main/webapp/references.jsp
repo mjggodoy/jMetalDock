@@ -11,7 +11,7 @@
 
 		<div class="container">
 			<div class="navbar">
-				<ul class="nav nav-justified" id="myNav">
+				<ul class="nav nav-justified">
 					<li><a href="index.jsp">Home</a></li>
 					<li><a href="#">Tutorials</a></li>
 					<li><a href="#">Benchmark</a></li>
@@ -22,9 +22,8 @@
 
 		<div class="starter-template">
 			<h1>Published Journals:</h1>
-			<p class="lead"></p>
 
-			<ol>
+			<ol class="lead">
 				<li>Esteban López-Camacho, María Jesús García Godoy, Antonio J.
 					Nebro and José F. Aldana-Montes:<br /> jMetalCpp: optimizing
 					molecular docking problems with a C++ metaheuristic framework.<br />
@@ -57,7 +56,7 @@
 			<br/>
 
 			<h1>Published Chapters:</h1>
-			<ol>
+			<ol class="lead">
 				<li>José García-Nieto, Esteban López-Camacho, María Jesús
 					García Godoy, Antonio J. Nebro and José F. Aldana-Montes:<br /> A
 					Study of Archiving Strategies in Multi-objective PSO for Molecular

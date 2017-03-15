@@ -71,7 +71,7 @@
 		<div class="row">
 			<div class="col-md-12">
 				<h2>Welcome to jMetalDock Web Server</h2>
-				<p>MetalDock provides a set of web-services that offers mono-
+				<p class="lead">MetalDock provides a set of web-services that offers mono-
 					and multi-objectives approaches applied to the problem of molecular
 					docking. In case of resolving the docking problem from a
 					mono-objective approach, there are several available algorithms
@@ -83,7 +83,7 @@
 					solutions returned by the algorithms is the AutoDock 4.2 energy
 					function</p>
 				<h2>Why jMetalDock Web Server?</h2>
-				<p>Most of the proposed approaches that can be found in the
+				<p class="lead">Most of the proposed approaches that can be found in the
 					literature only optimize an objective that is the final binding
 					energy. jMetalDock allows users to execute one or more tasks in
 					which the algorithm is selected, the algorithm parameters have been

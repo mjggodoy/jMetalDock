@@ -38,16 +38,16 @@ p.thickerandblack {
     color:#3f0808;  
 }
 
-navbar.background {
-    background-color:#229922;
-    color:#ffffff;
-    border-radius:0;
-}
+
 
 .nav-justified{
 	
 	background-color:#dae1e0;
 } 
+
+.nav a{
+    font-size: 1.45em !important;
+}
  
 
 
