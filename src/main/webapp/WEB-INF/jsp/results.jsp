@@ -34,7 +34,7 @@
 					<th>Objectives</th>
 					<th>Inter- Energy</th>
 					<th>Intra- Energy</th>
-					<th>RMSD</th>
+					<th>RMSD (Å)</th>
 				</tr>
 			</thead>
 			<tbody>
