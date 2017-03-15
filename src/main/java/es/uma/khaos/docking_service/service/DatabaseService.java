@@ -355,11 +355,11 @@ public final class DatabaseService {
 			conn = openConnection();
 			stmt = conn.prepareStatement(statement, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, parameters.getAlgorithm());
-			stmt.setInt(2, parameters.getEvaluation());
+			stmt.setInt(2, parameters.getEvaluations());
 			stmt.setInt(3, parameters.getPopulationSize());
-			stmt.setInt(4, parameters.getRun());
-			stmt.setInt(5, parameters.getObjective());
-			stmt.setInt(6, parameters.getTask_id());
+			stmt.setInt(4, parameters.getRuns());
+			stmt.setInt(5, parameters.getObjectiveOption());
+			stmt.setInt(6, parameters.getTaskId());
 			stmt.execute();
 			rs = stmt.getGeneratedKeys();
 			

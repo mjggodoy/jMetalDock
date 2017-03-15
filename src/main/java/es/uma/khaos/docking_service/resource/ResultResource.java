@@ -95,7 +95,7 @@ public class ResultResource extends Application {
 		try{
 			Task task = DatabaseService.getInstance().getTaskParameter(taskId);
 			
-			if (task == null || !task.getHash().equals(token)) {
+			if (task == null || !task.getToken().equals(token)) {
 				return Response
 						.status(Response.Status.FORBIDDEN)
 						.entity(new ErrorResponse(Response.Status.FORBIDDEN,Constants.RESPONSE_TASK_MSG_UNALLOWED))
@@ -116,7 +116,7 @@ public class ResultResource extends Application {
 		try{
 			Task task = DatabaseService.getInstance().getTaskParameter(taskId);
 			
-			if (task == null || !task.getHash().equals(token)) {
+			if (task == null || !task.getToken().equals(token)) {
 				return Response
 						.status(Response.Status.FORBIDDEN)
 						.entity(new ErrorResponse(Response.Status.FORBIDDEN,Constants.RESPONSE_TASK_MSG_UNALLOWED))
