@@ -18,7 +18,7 @@
 					<li class="active"><a href="#">Home</a></li>
 					<li><a href="#">Tutorials</a></li>
 					<li><a href="#">Benchmark</a></li>
-					<li><a href="#">Downloads</a></li>
+					<li><a href="#">Task</a></li>
 					<li><a href="references.jsp">Publications</a></li>
 				</ul>
 			</div>

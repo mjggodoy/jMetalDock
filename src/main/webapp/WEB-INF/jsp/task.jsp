@@ -15,12 +15,12 @@
 		<div class="table">
 			<table class="table table-striped table table-bordered">
 					<tr>
-						<td><strong>ID:</strong></td>
-						<td><c:out value="${task.id}" /></td>
+						<td class="col-md-2"><strong>ID:</strong></td>
+						<td class="col-md-2"><c:out value="${task.id}" /></td>
 					</tr>
 					<tr>
-						<td><strong>Start time: </strong></td>
-						<td><c:out value="" /></td>
+						<td ><strong>Start time: </strong></td>
+						<td ><c:out value="" /></td>
 					</tr>
 					<tr>
 						<td><strong>End time: </strong></td>
@@ -45,8 +45,8 @@
 		<div class="table">
 			<table class="table table-striped table table-bordered">
 				<tr>
-					<td><strong>Algorithm:</strong></td>
-					<td><c:out value="${task.parameters.algorithm}" /></td>
+					<td class="col-md-2"><strong>Algorithm:</strong></td>
+					<td class="col-md-2"><c:out value="${task.parameters.algorithm}" /></td>
 				</tr>
 				<tr>
 					<td><strong>Number of runs:</strong></td>
@@ -66,7 +66,8 @@
 				</tr>
 			</table>
 		</div>	
-	<br/>	
+	<br/>
+	</div>
 	<%@ include file="/WEB-INF/jsp/footer.jsp"%>
 </body>
 </html>
