@@ -6,77 +6,108 @@
 <head>
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.2/css/bootstrap-select.min.css" />
 <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
-<%@ include file="WEB-INF/jsp/header.jsp"%>
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css" rel="stylesheet">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js"></script>
+ <%@ include file="/WEB-INF/jsp/header.jsp"%>
+
 </head>
 
 <body>
 	<div class="container">
-		<h3>
-
-			<strong>NEW TASK:<br /></strong>
-
-		</h3>
+		<h3><strong>NEW TASK:<br /></strong></h3>
+		
 			<form id="newTaskForm" name="newTaskForm" action="rest/task"
 			method="post" , enctype="multipart/form-data">
 			
+   				 	<label for="exampleInputFile">File Input: </label>
+   				 	<input type="file" id="exampleInputFile">
+    				<p class="help-block">Please, select a .zip in which all your  macromolecule and ligand files are prepared (.pdbqt) 
+					and also the output files from AutoGrid software (.map).</p>
+					
 			<div class="form-group">
-				<label for="exampleInputFile">File input</label> <input type="file"
-					class="form-control-file" id="exampleInputFile"
-					aria-describedby="fileHelp"> <small id="fileHelp"
-					class="form-text text-muted">This is some placeholder
-					block-level help text for the above input. It's a bit lighter and
-					easily wraps to a new line.</small>
-			</div>
-			</form>
-			<br />
-
+						
+				<label for="instance" class="control-label">Instance:<br/></label>
+   					 <div>
+						<input type="text" class="form-control input-restricted-width" name="instance" />
+					 </div>
+		
 			
-			
-			<div class="form-group">
-				<label for="algorithm" class="control-label">Algorithm:<br/> </label>
-				<form>
+				<label for="algorithm" class="control-label">Algorithm:*<br/> </label>
 				<select class="selectpicker">
-  					<optgroup label="Picnic">
-   					<option>Mustard</option>
-    				<option>Ketchup</option>
-    				<option>Relish</option>
+  					<optgroup label="MonoObjective">
+   					<option>PSO</option>
+    				<option>DE</option>
+    				<option>ssGA</option>
+    				<option>gGA</option>
  					</optgroup>
-  					<optgroup label="Camping">
-   					<option>Tent</option>
-    				<option>Flashlight</option>
-    				<option>Toilet Paper</option>
+  					<optgroup label="MultiObjective">
+   					<option>NSGAII</option>
+    				<option>GDE3</option>
+    				<option>MOEA/D</option>
+    				<option>SMS-EMOA</option>
   					</optgroup>
 				</select>
-
+			</div>	
 			</form>
+			<br />
 			
-					
-			</div>
-			<div class="form-group">
-				<label for="instance" class="control-label">Instance:<br/></label> <input
-					type="text" name="instance" />
-			</div>
-			<div class="form-group">
-				<label for="runs" class="control-label">Number of Runs:<br/></label> <input
+			
+			
+			
+			<!-- <select class="selectpicker">
+  					<optgroup label="MonoObjective">
+   					<option>PSO</option>
+    				<option>DE</option>
+    				<option>ssGA</option>
+    				<option>gGA</option>
+ 					</optgroup>
+  					<optgroup label="MultiObjective">
+   					<option>NSGAII</option>
+    				<option>GDE3</option>
+    				<option>MOEA/D</option>
+    				<option>SMS-EMOA</option>
+  					</optgroup>
+				</select>		 -->
+		
+			<!-- <div class="form-group">
+				<label for="instance" class="control-label">Instance:<br/></label>
+				<input type="text" class="form-control" name="instance" />
+			</div> -->
+		
+		
+		
+		<!-- 	<div>
+				<label for="runs" class="control-label">Number of Runs:<br/></label> 
+				<input class="form-control" type="text" name="runs" />
+			</div> -->
+			
+			
+			<!-- <div class="col-xs-4">
+				<label for="runs" class="control-label">Number of Runs:<br/></label> <input class="form-control"
 					type="text" name="runs" />
 			</div>
-			<div class="form-group">
+			<div class="col-xs-4">
 				<label for="population_size" class="control-label">Population size:<br/></label> <input
 					type="text" name="population_size" />
 			</div>
-			<div class="form-group">
+			<div class="col-xs-4">
 				<label for="evaluations" class="control-label">Evaluations:<br/></label> <input
 					type="text" name="evaluations" />
 			</div>
-			<div class="form-group">
+			<div class="col-xs-4">
 				<label for="use_rmsd_as_obj" class="control-label">RMSD to optimize:<br/></label> <input
 					type="text" name="use_rmsd_as_obj" />
-			</div>
+			</div> -->
 			
-			<input type="submit" />
-		</form>
+
+
+  
+
 
 	</div>
+	<br/>
+		<%@ include file="/WEB-INF/jsp/footer.jsp"%>
+	
 
 </body>
 </html>

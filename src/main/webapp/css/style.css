@@ -49,6 +49,19 @@ p.thickerandblack {
     font-size: 1.45em !important;
 }
  
+input.form-fixer {
+    padding: 1px;
+    font-size: 19px;
+}
+
+.form-group input{ 
+    height: 25px;
+    line-height: 14px;
+}
+ 
+ 
+
+ 
 
 
 
