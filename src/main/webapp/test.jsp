@@ -7,14 +7,14 @@
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.2/css/bootstrap-select.min.css" />
 <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css" rel="stylesheet">
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js"></script>
+
  <%@ include file="/WEB-INF/jsp/header.jsp"%>
 
 </head>
 
 <body>
 	<div class="container">
-		<h3><strong>NEW TASK:<br /></strong></h3>
+		<div class="page-header"><h3><strong>NEW TASK:<br /></strong></h3></div>
 		
 			<form id="newTaskForm" name="newTaskForm" action="rest/task"
 			method="post" , enctype="multipart/form-data">
@@ -30,8 +30,9 @@
    					 <div>
 						<input type="text" class="form-control input-restricted-width" name="instance" />
 					 </div>
-		
+			</div>
 			
+			<div class="form-group">
 				<label for="algorithm" class="control-label">Algorithm:*<br/> </label>
 				<select class="selectpicker">
   					<optgroup label="MonoObjective">
@@ -47,39 +48,30 @@
     				<option>SMS-EMOA</option>
   					</optgroup>
 				</select>
-			</div>	
+			</div>
+			
+			<div class="form-group">
+		
+			<label for="instance" class="control-label">Number of runs:<br/></label>
+   			
+   			<div class="input-group spinner">
+    			<input type="text" class="form-control" value="42">
+    				<div class="input-group-btn-vertical">
+      				<button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
+      				<button class="btn btn-default" type="button"><i class="fa fa-caret-down"></i></button>
+    			</div>
+  			</div>
+  			</div>
+ 
+			
 			</form>
+			
 			<br />
-			
-			
-			
-			
-			<!-- <select class="selectpicker">
-  					<optgroup label="MonoObjective">
-   					<option>PSO</option>
-    				<option>DE</option>
-    				<option>ssGA</option>
-    				<option>gGA</option>
- 					</optgroup>
-  					<optgroup label="MultiObjective">
-   					<option>NSGAII</option>
-    				<option>GDE3</option>
-    				<option>MOEA/D</option>
-    				<option>SMS-EMOA</option>
-  					</optgroup>
-				</select>		 -->
 		
-			<!-- <div class="form-group">
-				<label for="instance" class="control-label">Instance:<br/></label>
-				<input type="text" class="form-control" name="instance" />
-			</div> -->
+			
 		
 		
-		
-		<!-- 	<div>
-				<label for="runs" class="control-label">Number of Runs:<br/></label> 
-				<input class="form-control" type="text" name="runs" />
-			</div> -->
+	
 			
 			
 			<!-- <div class="col-xs-4">
@@ -110,4 +102,19 @@
 	
 
 </body>
+
+
+<script>
+
+(function ($) {
+  $('.spinner .btn:first-of-type').on('click', function() {
+    $('.spinner input').val( parseInt($('.spinner input').val(), 10) + 1);
+  });
+  $('.spinner .btn:last-of-type').on('click', function() {
+    $('.spinner input').val( parseInt($('.spinner input').val(), 10) - 1);
+  });
+})(jQuery);
+
+</script>
+
 </html>
