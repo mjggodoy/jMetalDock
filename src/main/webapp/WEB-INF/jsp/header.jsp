@@ -8,14 +8,15 @@
 
 <!-- Bootstrap core CSS -->
 <link href="resources/css/bootstrap.min.css" rel="stylesheet">
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 
 <!-- Custom styles for this template -->
-<link href="resources/css/bootstrap.css" rel="stylesheet">
+<!-- <link href="resources/css/bootstrap.css" rel="stylesheet"> -->
 <link href="css/style.css" rel="stylesheet">
 
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+	src="resources/js/bootstrap.min.js"></script>
+<!-- <link rel="stylesheet"
+	href="resources/css/bootstrap.min.css"> -->

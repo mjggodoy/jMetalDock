@@ -4,11 +4,8 @@
 <html>
 
 <head>
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.2/css/bootstrap-select.min.css" />
-<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
-<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css" rel="stylesheet">
-
- <%@ include file="/WEB-INF/jsp/header.jsp"%>
+<!-- <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/3.1.1/css/bootstrap-combined.min.css" rel="stylesheet"> -->
+<%@ include file="/WEB-INF/jsp/header.jsp"%>
 
 </head>
 
@@ -34,7 +31,7 @@
 			
 			<div class="form-group">
 				<label for="algorithm" class="control-label">Algorithm:*<br/> </label>
-				<select class="selectpicker">
+				<select class="form-control">
   					<optgroup label="MonoObjective">
    					<option>PSO</option>
     				<option>DE</option>
@@ -50,20 +47,17 @@
 				</select>
 			</div>
 			
-			<div class="form-group">
 		
 			<label for="instance" class="control-label">Number of runs:<br/></label>
    			
    			<div class="input-group spinner">
-    			<input type="text" class="form-control" value="42">
-    				<div class="input-group-btn-vertical">
-      				<button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
-      				<button class="btn btn-default" type="button"><i class="fa fa-caret-down"></i></button>
-    			</div>
-  			</div>
+    			<input type="text" class="form-control" value="25">
+    			<div class="input-group-btn-vertical">
+	      			<button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
+	      			<button class="btn btn-default" type="button"><i class="fa fa-caret-down"></i></button>
+	    		</div>
   			</div>
 			</form>
-			
 			<br />
 		
 			
@@ -91,16 +85,16 @@
 			
 
 
-  
+	<%@ include file="/WEB-INF/jsp/footer.jsp"%>
+
 
 
 	</div>
 	<br/>
-		<%@ include file="/WEB-INF/jsp/footer.jsp"%>
 	
 
 </body>
 
-
+<script	src="resources/js/taskJavaScript.js"></script>
 
 </html>
