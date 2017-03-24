@@ -1,41 +1,62 @@
+
+
 (function ($) { 
+	
+	
+	$("input[name='demo1']").TouchSpin({
+        min: 1,
+        max: 100,
+        step: 0.1,
+        decimals: 2,
+        boostat: 5,
+        maxboostedstep: 10,
+        postfix: '%'
+    });
 		
-    var minNumber = 1;
-    var maxNumber = 50;
-    
-    $('.spinner input').keydown(function(e){
+	/*
+       $('.spinner input').keydown(function(e){
     	
-		if($('.spinner input').val() >= maxNumber ){
-        e.preventDefault();
-        return false;
+    	var inputElem = $(this);
+    	console.log(inputElem);
+
+    	
+		if($(inputElem).val() > $(inputElem).data("max-value") ){
+			e.preventDefault();
+			return false;
         
 		}
 		
-		if($('.spinner input').val() < minNumber ){
+		if($(inputElem).val() < $(inputElem).data("min-value") ){
 	        e.preventDefault();
 	        return false;
 		}    
     });
     
-    
 
-	$('.spinner .btn:first-of-type').on('click', function() {
-				
-		if($('.spinner input').val() == maxNumber ){
+	$('.spinner .btn:first-of-type').on("wheel", function() {
+		
+		var inputElem = $(this).parent().parent().children('input');
+		inputElem.TouchSpin();
+    	console.log(inputElem);
+
+    	
+		if($(inputElem).val() == $(inputElem).data("max-value") ){
 			return false;
 		}else{		
-			$('.spinner input').val( parseInt($('.spinner input').val(), 10) + 1);			
+			$(inputElem).val( parseInt($(inputElem).val(), 10) + 1);			
 		}
 	}); 
 		
-	$('.spinner .btn:last-of-type').on('click', function() { 
+	$('.spinner .btn:last-of-type').on('click', function() {
+		
+		var inputElem = $(this).parent().parent().children('input');
 
-		if($('.spinner input').val() == minNumber ){
+		if($(inputElem).val() == $(inputElem).data("min-value") ){
 			return false;
 		}else{
 			
-			$('.spinner input').val( parseInt($('.spinner input').val(), 10) - 1);	
+			$(inputElem).val( parseInt($(inputElem).val(), 10) - 1);	
 		}	
-	}); 
+	}); */
 
 })(jQuery); 

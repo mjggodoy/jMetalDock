@@ -5,6 +5,9 @@
 
 <head>
 <!-- <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/3.1.1/css/bootstrap-combined.min.css" rel="stylesheet"> -->
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src=resources/js/jquery.bootstrap-touchspin.js></script>
+<link href="css/jquery.bootstrap-touchspin.css" rel="stylesheet">
 <%@ include file="/WEB-INF/jsp/header.jsp"%>
 
 </head>
@@ -47,16 +50,28 @@
 				</select>
 			</div>
 			
-		
-			<label for="instance" class="control-label">Number of runs:<br/></label>
-   			
+	
+			<label for="instance" class="control-label">Number of Runs:<br/></label>		
    			<div class="input-group spinner">
-    			<input type="text" class="form-control" value="25">
+    			<input type="text" class="form-control" value="25" data-min-value="10" data-max-value="50" name=demo1>
     			<div class="input-group-btn-vertical">
 	      			<button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
 	      			<button class="btn btn-default" type="button"><i class="fa fa-caret-down"></i></button>
 	    		</div>
   			</div>
+  			
+  			<br />
+  			
+  			<label for="instance" class="control-label">Number of Population'individuals:<br/></label>		
+   			<div class="input-group spinner">
+    			<input type="text" class="form-control" value="150" data-min-value="20" data-max-value="500" name=demo1>
+    			<div class="input-group-btn-vertical">
+	      			<button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
+	      			<button class="btn btn-default" type="button"><i class="fa fa-caret-down"></i></button>
+	    		</div>
+  			</div>
+  			
+  			
 			</form>
 			<br />
 		

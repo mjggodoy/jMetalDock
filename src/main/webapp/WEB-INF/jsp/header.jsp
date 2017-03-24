@@ -18,5 +18,8 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script
 	src="resources/js/bootstrap.min.js"></script>
+<script
+	src="resources/js/bootstrap.js"></script>
+	
 <!-- <link rel="stylesheet"
 	href="resources/css/bootstrap.min.css"> -->
