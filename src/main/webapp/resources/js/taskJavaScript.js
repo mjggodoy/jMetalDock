@@ -1,9 +1,9 @@
 
-
 (function ($) { 
 	
 	
-	$("input[name='demo1']").TouchSpin({
+	
+	/*$("input[name='demo1']").TouchSpin({
         min: 1,
         max: 100,
         step: 0.1,
@@ -11,7 +11,7 @@
         boostat: 5,
         maxboostedstep: 10,
         postfix: '%'
-    });
+    });*/
 		
 	/*
        $('.spinner input').keydown(function(e){
