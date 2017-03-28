@@ -7,19 +7,19 @@
 <title>jMetalDock: A web-service that provides single and multi-objetive approaches to solve the molecular docking problem</title>
 
 <!-- Bootstrap core CSS -->
-<link href="resources/css/bootstrap.min.css" rel="stylesheet">
+<link href='<c:url value="/resources/css/bootstrap.min.css" />' rel="stylesheet">
 <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 
 <!-- Custom styles for this template -->
 <!-- <link href="resources/css/bootstrap.css" rel="stylesheet"> -->
-<link href="css/style.css" rel="stylesheet">
+<link href="<c:url value="/css/style.css" />" rel="stylesheet">
 
 <script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	src="<c:url value="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"/>"></script>
 <script
-	src="resources/js/bootstrap.min.js"></script>
+	src="<c:url value="/resources/js/bootstrap.min.js"/>"></script>
 <script
-	src="resources/js/bootstrap.js"></script>
+	src="<c:url value="/resources/js/bootstrap.js"/>"></script>
 	
 <!-- <link rel="stylesheet"
 	href="resources/css/bootstrap.min.css"> -->
