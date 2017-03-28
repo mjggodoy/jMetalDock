@@ -1,7 +1,25 @@
 
 (function ($) { 
 	
-	
+	   $('#algorithm').on('change',function(){
+	        if( $(this).val()==="PSO" || $(this).val()==="DE" || $(this).val()==="ssGA" || $(this).val()==="gGA"){
+	        	
+	        	$("#monoobjective").show();
+	        	$("#multiobjective").hide();
+
+	       
+	        }else if($(this).val()==="NSGAII" || $(this).val()==="GDE3" || $(this).val()==="MOEAD" || $(this).val()==="SMSEMOA"){
+	        	
+	        	$("#multiobjective").show();
+	        	$("#monoobjective").hide();
+
+	        	
+	        }else{
+	        	
+	        $("#objectives").hide()
+	        
+	        }
+	    });
 	
 	/*$("input[name='demo1']").TouchSpin({
         min: 1,

@@ -48,12 +48,12 @@
 
 			<div class="form-group">
 				<label for="algorithm" class="control-label">Algorithm:*<br /></label> 
-				<select class="form-control">
+				<select class="form-control" name="algorithm" id= "algorithm">
 					<optgroup label="MonoObjective">
 						<option value="PSO">PSO</option>
 						<option value="DE">DE</option>
-						<option value="ssGA">ssGA</option>
-						<option>gGA</option>
+						<option value="ssGA" >ssGA</option>
+						<option value="gGA">gGA</option>
 					</optgroup>
 					<optgroup label="MultiObjective">
 						<option value="NSGAII">NSGA-II</option>
@@ -62,6 +62,25 @@
 						<option value="SMSEMOA">SMS-EMOA</option>
 					</optgroup>
 				</select>
+				<br/>
+				
+				
+				<div id="monoobjective" style="display:none;">
+  					<label for="objective">Objective to Optimize:</label>
+  					<select class="form-control" name="algorithm" id= "algorithm">				
+  						<option>Final Binding Energy</option>
+  					</select>
+				</div>
+				
+				
+				<div id="multiobjective" style="display:none;">
+  					<label for="objective">Objective to Optimize:</label>
+  					<select class="form-control" name="algorithm" id= "algorithm">				
+  						<option>Intermolecular and Intramoelcular Energy</option>
+  						<option>Binding energy and RMSD</option>		
+  					</select>
+				</div>
+				
 			</div>
 		
 		<label for="instance" class="control-label">Number of Runs:<br/></label>	
@@ -122,13 +141,9 @@
 						<span class="glyphicon glyphicon-plus" ></span>
 					</button>
 				</span>
-		</div>
-		
+		</div>	
 		<br />
 		
-
-		
-
 				<%@ include file="/WEB-INF/jsp/footer.jsp"%>
 
 </form>
