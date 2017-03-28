@@ -43,90 +43,91 @@
 						name="instance" />
 				</div>
 			</div>
+			
+			<br/>
 
 			<div class="form-group">
-				<label for="algorithm" class="control-label">Algorithm:*<br />
-				</label> <select class="form-control">
+				<label for="algorithm" class="control-label">Algorithm:*<br /></label> 
+				<select class="form-control">
 					<optgroup label="MonoObjective">
-						<option>PSO</option>
-						<option>DE</option>
-						<option>ssGA</option>
+						<option value="PSO">PSO</option>
+						<option value="DE">DE</option>
+						<option value="ssGA">ssGA</option>
 						<option>gGA</option>
 					</optgroup>
 					<optgroup label="MultiObjective">
-						<option>NSGAII</option>
-						<option>GDE3</option>
-						<option>MOEA/D</option>
-						<option>SMS-EMOA</option>
+						<option value="NSGAII">NSGA-II</option>
+						<option value="GDE3">GDE3</option>
+						<option value="MOEAD">MOEA/D</option>
+						<option value="SMSEMOA">SMS-EMOA</option>
 					</optgroup>
 				</select>
 			</div>
 		
-		<label for="instance" class="control-label">Number of Runs:<br/></label>
-			
+		<label for="instance" class="control-label">Number of Runs:<br/></label>	
 		<div class="input-group">
 				<span class="input-group-btn">
 					<button type="button" class="btn btn-default" data-value="-1"
-						data-target="#spinner2" data-toggle="spinner">
+						data-target="#spinner1" data-toggle="spinner" data-on="mousehold">
 						<span class="glyphicon glyphicon-minus"></span>
 					</button>
-				</span> <input type="text" data-ride="spinner" id="spinner2"
-					class="form-control input-number" value="1" data-min="1" data-max="50"> <span class="input-group-btn">
+				</span> <input type="text" data-ride="spinner" id="spinner1"
+					class="form-control input-number" value="25" data-min="1" data-max="50"> <span class="input-group-btn">
 					<button type="button" class="btn btn-default" data-value="2"
-						data-target="#spinner2" data-toggle="spinner" data-on="mousehold">
-						<span class="glyphicon glyphicon-plus"></span>
+						data-target="#spinner1" data-toggle="spinner" data-on="mousehold">
+						<span class="glyphicon glyphicon-plus" ></span>
 					</button>
 				</span>
-			</div>
+		</div>
+	
+		<br/>
+		
+		<label for="instance" class="control-label">Population size:<br/></label>
+		
+		
+		<div class="input-group">
+			<span class="input-group-btn">
+					<button type="button" class="btn btn-default" data-value="-1"
+						data-target="#spinner2" data-toggle="spinner" data-on="mousehold">
+						<span class="glyphicon glyphicon-minus"></span>
+					</button>
+				</span> 
+				<input type="text" data-ride="spinner" id="spinner2"
+					class="form-control input-number" value="250" data-min="20" data-max="500">
+				 <span class="input-group-btn">
+					<button type="button" class="btn btn-default" data-value="2"
+						data-target="#spinner2" data-toggle="spinner" data-on="mousehold">
+						<span class="glyphicon glyphicon-plus" ></span>
+					</button>
+				</span>
+		</div>
+		
+		<br />
+		
+		
+		<label for="instance" class="control-label">Number of Evaluations:<br/></label>
+		
+		<div class="input-group">
+			<span class="input-group-btn">
+					<button type="button" class="btn btn-default" data-value="-1000"
+						data-target="#spinner3" data-toggle="spinner" data-on="mousehold">
+						<span class="glyphicon glyphicon-minus"></span>
+					</button>
+				</span> 
+				<input type="text" data-ride="spinner" id="spinner3"
+					class="form-control input-number" value="1500000" data-min="1000" data-max="5000000">
+				 <span class="input-group-btn">
+					<button type="button" class="btn btn-default" data-value="1000"
+						data-target="#spinner3" data-toggle="spinner" data-on="mousehold">
+						<span class="glyphicon glyphicon-plus" ></span>
+					</button>
+				</span>
+		</div>
+		
+		<br />
+		
 
-				<!-- <label for="instance" class="control-label">Number of Runs:<br/></label>		
-   			<div class="input-group spinner">
-    			<input type="text" class="form-control" value="25" data-min-value="10" data-max-value="50" name="demo1">
-    			<div class="input-group-btn-vertical">
-	      			<button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
-	      			<button class="btn btn-default" type="button"><i class="fa fa-caret-down"></i></button>
-	    		</div>
-  			</div> -->
-
-				<br />
-
-				<!-- <label for="instance" class="control-label">Number of Population'individuals:<br/></label>		
-   			<div class="input-group spinner">
-    			<input type="text" class="form-control" value="150" data-min-value="20" data-max-value="500" name="demo2">
-    			<div class="input-group-btn-vertical">
-	      			<button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
-	      			<button class="btn btn-default" type="button"><i class="fa fa-caret-down"></i></button>
-	    		</div>
-  			</div>
-  			
-  			
-			</form>
-			<br /> -->
-
-
-
-
-
-
-
-				<!-- <div class="col-xs-4">
-				<label for="runs" class="control-label">Number of Runs:<br/></label> <input class="form-control"
-					type="text" name="runs" />
-			</div>
-			<div class="col-xs-4">
-				<label for="population_size" class="control-label">Population size:<br/></label> <input
-					type="text" name="population_size" />
-			</div>
-			<div class="col-xs-4">
-				<label for="evaluations" class="control-label">Evaluations:<br/></label> <input
-					type="text" name="evaluations" />
-			</div>
-			<div class="col-xs-4">
-				<label for="use_rmsd_as_obj" class="control-label">RMSD to optimize:<br/></label> <input
-					type="text" name="use_rmsd_as_obj" />
-			</div> -->
-
-
+		
 
 				<%@ include file="/WEB-INF/jsp/footer.jsp"%>
 
