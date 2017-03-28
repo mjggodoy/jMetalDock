@@ -83,13 +83,13 @@
 					<label for="objective">Objectives to Optimize:</label> <select
 						class="form-control" name="algorithm" id="algorithm">
 						<option>Intermolecular and Intramolecular Energy</option>
-						<option>Binding energy and RMSD score</option>
+						<option value=true>Binding Energy and RMSD score</option>
 					</select>
 				</div>
 
 			</div>
 
-			<label for="instance" class="control-label">Number of Runs:<br /></label>
+			<label for="runs" class="control-label">Number of Runs:<br /></label>
 			<div class="input-group">
 				<span class="input-group-btn">
 					<button type="button" class="btn btn-default" data-value="-1"
@@ -106,7 +106,9 @@
 				</span>
 			</div>
 
-			<br /> <label for="instance" class="control-label">Population
+			<br /> 
+			
+			<label for="population_size" class="control-label">Population
 				size:<br />
 			</label>
 
@@ -127,7 +129,7 @@
 				</span>
 			</div>
 
-			<br /> <label for="instance" class="control-label">Number of
+			<br /> <label for="evaluations" class="control-label">Number of
 				Evaluations:<br />
 			</label>
 
@@ -147,12 +149,13 @@
 				</span>
 			</div>
 			<br />
-
-			<%@ include file="/WEB-INF/jsp/footer.jsp"%>
-
+			<input type="submit" value="Submit" class="btn btn-default">
 		</form>
-
 	</div>
+	<br />
+	
+	<%@ include file="/WEB-INF/jsp/footer.jsp"%>
+	
 	<br />
 </body>
 
