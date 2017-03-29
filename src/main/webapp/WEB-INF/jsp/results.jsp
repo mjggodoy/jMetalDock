@@ -4,10 +4,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-<%@ include file="header.jsp"%>
+<%@ include file="/WEB-INF/jsp/header.jsp"%>
 </head>
 <c:set var="results" value='${it}' />
 <body>
+	<%= request.getRequestURI() %>
 	
 	<div class="container">
 	

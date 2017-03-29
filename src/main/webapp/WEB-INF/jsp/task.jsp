@@ -1,12 +1,12 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 
 <head>
-<%@ include file="header.jsp"%>
+<%@ include file="/WEB-INF/jsp/header.jsp"%>
 </head>
 <c:set var="task" value='${it}' />
 <body>
+
 	<div class="container">
 		<h4>
 			<strong>TASK:<br></strong>

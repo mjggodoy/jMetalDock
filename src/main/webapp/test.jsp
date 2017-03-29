@@ -1,5 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
 <!DOCTYPE html>
 <html>
 
@@ -15,7 +13,7 @@
 <script src=resources/js/mousehold.js></script>
 
 
-<%@ include file="/WEB-INF/jsp/header.jsp"%>
+<%@ include file="WEB-INF/jsp/header.jsp"%>
 
 </head>
 
