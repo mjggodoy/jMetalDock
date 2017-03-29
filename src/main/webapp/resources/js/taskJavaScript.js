@@ -20,6 +20,25 @@
 	        
 	        }
 	    });
+	   
+	   
+	   $('#optInput').on('change',function(){
+		   
+		   if($(this).val()==="file"){
+			   
+	        	$("#inputFile").show();
+	        	$("#inputInstance").hide();
+
+	        	
+		   }else if( $(this).val()==="instance") {   
+			   
+	        	$("#inputInstance").show();		   
+	        	$("#inputFile").hide();
+		   }
+		   
+	   });
+	   
+	   
 	
 	/*$("input[name='demo1']").TouchSpin({
         min: 1,

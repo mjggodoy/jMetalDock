@@ -27,18 +27,37 @@
 
 		<form id="newTaskForm" name="newTaskForm" action="rest/task"
 			method="post" , enctype="multipart/form-data">
+			
+		
+			<div class="form-group">
+			
+			
+			<label for="input">Choose a file in your directory to be processed or an instance from the benchmark </label> 
+			
+				<select class="form-control" id="optInput">
+					<optgroup label="Choose an input option">
+						<option value="file">Input File</option>
+						<option value="instance">Instance File</option>
+					</optgroup>
+				</select>
+			
+			<br/>	
+			
+			<div id="inputFile" style="display: none;">
 
-			<label for="exampleInputFile">File Input: </label> <input type="file"
-				id="exampleInputFile">
+			<label for="exampleInputFile">File Input: </label> 
+			<input type="file" id="exampleInputFile">
 			<p class="help-block">Please, select a .zip in which all your
 				macromolecule and ligand files are prepared (.pdbqt) and also the
 				output files from AutoGrid software (.map).</p>
-
-			<div class="form-group">
-
+				
+			</div>
+				
+			
+			<div id="inputInstance" style="display: none;">
+			
 				<label for="instance" class="control-label">Instance:<br /></label>
-
-				<select class="form-control" name="instance" id="instance">
+				<select class="form-control" name="instance">
 					<optgroup label="Instances">
 						<option value="1a94">1a94</option>
 						<option value="1a9m">1a9m</option>
@@ -47,6 +66,7 @@
 						<option value="1ajx">1ajx</option>
 					</optgroup>
 				</select>
+				</div>
 			</div>
 
 			<br />
