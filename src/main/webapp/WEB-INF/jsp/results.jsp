@@ -8,8 +8,7 @@
 </head>
 <c:set var="results" value='${it}' />
 <body>
-	<%= request.getRequestURI() %>
-	
+<%-- 	<%= request.getRequestURI() %>--%>	
 	<div class="container">
 	
 	<h2>

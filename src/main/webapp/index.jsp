@@ -10,7 +10,7 @@
 
 	<div class="container">
 
-		<h3 class="text-muted">jMetalDock</h3>
+		<h1 class="text-muted">jMetalDock</h1>
 
 		<div class="container">
 			<div class="navbar">
