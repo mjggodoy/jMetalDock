@@ -76,7 +76,6 @@
 						<option value="1kzk">1kzk</option>
 						<option value="1sgb">1sgb</option>
 						<option value="1tcx">1tcx</option>
-						
 					</optgroup>
 					
 					<optgroup label="Medium Inhibitors">
@@ -103,7 +102,7 @@
 						<option value="1mui">1mui</option>
 						<option value="2bpv">2bpv</option>
 						<option value="2bpx">2bpx</option>
-						<option value="2upj">3aid</option>
+						<option value="3aid">3aid</option>
 						<option value="4hvp">4hvp</option>
 						<option value="4phv">4phv</option>
 						<option value="5hvp">5hvp</option>
@@ -117,26 +116,25 @@
 						<option value="1a94">1a94</option>
 						<option value="1hiv">1hiv</option>
 						<option value="1hos">1hos</option>
-						<option value="1hos">1hpx</option>
+						<option value="1hpx">1hpx</option>
 						<option value="1htg">1htg</option>
 						<option value="1hvi">1hvi</option>
 						<option value="1hvj">1hvj</option>
 						<option value="1hvk">1hvk</option>
 						<option value="1hvl">1hvl</option>
 						<option value="1hvs">1hvs</option>
-						<option value="1hvs">1hwr</option>
+						<option value="1hwr">1hwr</option>
 						<option value="1ody">1ody</option>
 						<option value="1vij">1vij</option>
 						<option value="1vik">1vik</option>
 						<option value="3tlh">3tlh</option>
-						
 					</optgroup>
 					
 					<optgroup label="Cyclic Urea Inhibitors">
 						<option value="1ajv">1ajv</option>
 						<option value="1bv7">1bv7</option>
 						<option value="1bv9">1bv9</option>
-						<option value="1bv9">1bwa</option>
+						<option value="1bwa">1bwa</option>
 						<option value="1bwb">1bwb</option>
 						<option value="1dmp">1dmp</option>
 						<option value="1g2k">1g2k</option>
@@ -151,7 +149,6 @@
 						<option value="1qbu">1qbu</option>
 						<option value="1bv9">1bv9</option>
 						<option value="2upj">2upj</option>
-						
 					</optgroup>
 						
 				</select>
@@ -248,7 +245,9 @@
 					</button>
 				</span> <input type="text" data-ride="spinner" id="spinner3"
 					class="form-control input-number" value="1500000" data-min="1000"
-					data-max="5000000"> <span class="input-group-btn">
+					data-max="5000000"> 
+				
+				<span class="input-group-btn">
 					<button type="button" class="btn btn-default" data-value="1000"
 						data-target="#spinner3" data-toggle="spinner" data-on="mousehold">
 						<span class="glyphicon glyphicon-plus"></span>
