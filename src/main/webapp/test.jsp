@@ -196,14 +196,14 @@
 			<label for="runs" class="control-label">Number of Runs:<br /></label>
 			<div class="input-group">
 				<span class="input-group-btn">
-					<button type="button" class="btn btn-default" data-value="-1"
+					<button type="button" class="btn btn-default" data-value="-5"
 						data-target="#spinner1" data-toggle="spinner" data-on="mousehold">
 						<span class="glyphicon glyphicon-minus"></span>
 					</button>
 				</span> <input type="text" data-ride="spinner" id="spinner1"
 					class="form-control input-number" value="25" data-min="1"
 					data-max="50"> <span class="input-group-btn">
-					<button type="button" class="btn btn-default" data-value="2"
+					<button type="button" class="btn btn-default" data-value="5"
 						data-target="#spinner1" data-toggle="spinner" data-on="mousehold">
 						<span class="glyphicon glyphicon-plus"></span>
 					</button>
@@ -219,14 +219,14 @@
 
 			<div class="input-group">
 				<span class="input-group-btn">
-					<button type="button" class="btn btn-default" data-value="-1"
+					<button type="button" class="btn btn-default" data-value="-5"
 						data-target="#spinner2" data-toggle="spinner" data-on="mousehold">
 						<span class="glyphicon glyphicon-minus"></span>
 					</button>
 				</span> <input type="text" data-ride="spinner" id="spinner2"
-					class="form-control input-number" value="250" data-min="20"
+					class="form-control input-number" value="250" data-min="200"
 					data-max="500"> <span class="input-group-btn">
-					<button type="button" class="btn btn-default" data-value="2"
+					<button type="button" class="btn btn-default" data-value="5"
 						data-target="#spinner2" data-toggle="spinner" data-on="mousehold">
 						<span class="glyphicon glyphicon-plus"></span>
 					</button>
