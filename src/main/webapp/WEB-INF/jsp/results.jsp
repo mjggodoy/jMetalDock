@@ -22,10 +22,12 @@
 					<th>ID</th>
 					<th>Task ID</th>
 					<th>Runs</th>
-					<th>Final Binding Energy</th>
+					<th><p>Final Binding</p> 
+					Energy</th>
 					<th>Objectives</th>
-					<th>Inter- Energy</th>
-					<th>Intra- Energy</th>
+					<th><p>Intermolecular</p>
+					 Energy</th>
+					<th><p>Intramolecular</p> Energy</th>
 					<th>RMSD (Å)</th>
 				</tr>
 			</thead>
@@ -47,7 +49,7 @@
 
 										<c:if test="${not loop.last}">
 											<c:out value="${objective}" />,
-									</c:if>
+										</c:if>
 									</c:if>
 
 									<c:if
@@ -55,7 +57,8 @@
 										<c:out value="${objective}" />
 									</c:if>
 
-								</c:forEach></td>
+								</c:forEach>
+							</td>
 							<td><c:if test="${solution.intermolecularEnergy != null}">${solution.intermolecularEnergy} kcal/mol</c:if></td>
 							<td><c:if test="${solution.intramolecularEnergy != null}">${solution.intramolecularEnergy} kcal/mol</c:if></td>
 							<td><c:if test="${solution.rmsd != null}">${solution.rmsd}</c:if></td>
