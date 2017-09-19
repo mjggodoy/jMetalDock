@@ -19,8 +19,8 @@
 		<table  class="table table-striped table table-bordered">
 			<thead>
 				<tr>
-					<th>Id</th>
-					<th>Task Id</th>
+					<th>ID</th>
+					<th>Task ID</th>
 					<th>Runs</th>
 					<th>Final Binding Energy</th>
 					<th>Objectives</th>
