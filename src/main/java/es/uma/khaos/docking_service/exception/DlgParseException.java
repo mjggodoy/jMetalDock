@@ -1,7 +1,7 @@
 package es.uma.khaos.docking_service.exception;
 
 /**
- * Created by esteban on 08/01/14.
+ * Created by estebanpua on 08/01/14.
  */
 public class DlgParseException extends Exception {
 

@@ -89,6 +89,12 @@ public class TaskResource extends Application {
 				
 			}
 			
+			if(inputStream == null && instance == null){
+				
+				return Response.serverError().build();
+				
+			}
+			
 			return createTaskResponse(token, params, builder);
 		} catch (Exception e) {
 			e.printStackTrace();
