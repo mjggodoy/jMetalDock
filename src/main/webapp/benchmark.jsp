@@ -5,21 +5,22 @@
 </head>
 
 <body>
+	<div class="container">
 
-<h1 class="text-muted">jMetalDock</h1>
-
+	<h1 class="text-muted">jMetalDock</h1>
 		<div class="container">
 			<div class="navbar">
 				<ul class="nav nav-justified">
-					<li><a href="index.jsp">Home</a></li>
+					<li class="active"><a href="index.jsp">Home</a></li>
 					<li><a href="#">Tutorials</a></li>
-					<li><a href="#">Benchmark</a></li>
-					<li class="active"><a href="references.jsp">Publications</a></li>
+					<li><a href="benchmark.jsp">Benchmark</a></li>
+					<li><a href="#">Task</a></li>
+					<li><a href="references.jsp">Publications</a></li>
 				</ul>
 			</div>
 		</div>
 
 		<%@ include file="/WEB-INF/jsp/footer.jsp"%>
-
+	</div>
 </body>
 </html>
