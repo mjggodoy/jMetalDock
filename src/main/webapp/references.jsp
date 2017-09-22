@@ -13,9 +13,9 @@
 			<div class="navbar">
 				<ul class="nav nav-justified">
 					<li class="active"><a href="index.jsp">Home</a></li>
-					<li><a href="#">Tutorials</a></li>
+					<li><a href="tutorial.jsp">Tutorials</a></li>
 					<li><a href="benchmark.jsp">Benchmark</a></li>
-					<li><a href="#">Task</a></li>
+					<li><a href="task.jsp">Task</a></li>
 					<li><a href="references.jsp">Publications</a></li>
 				</ul>
 			</div>

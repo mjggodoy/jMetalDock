@@ -8,6 +8,14 @@ img.resize {
    background-image; url('references2.png');
 }
 
+img.resize2 {
+	
+	width: 75%;
+   	height: 75%; 
+   	text-align: center;
+	
+}
+
 .carousel-inner > .item > img,
   .carousel-inner > .item > a > img {
       width: 70%;

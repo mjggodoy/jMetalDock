@@ -22,9 +22,9 @@
 	
 <script src='<c:url value="/resources/js/bootstrap.js" />'></script>
 	
+<!--  <link rel="stylesheet" type="text/css" href="css/style.css" media="screen"/>
+-->
 
-	
 
-	
 <!-- <link rel="stylesheet"
 	href="resources/css/bootstrap.min.css"> -->
