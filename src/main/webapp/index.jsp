@@ -82,7 +82,7 @@
 			<div class="col-md-12">
 				<h3>Overview</h3>
 				<p class="h5">
-				The ligand-protein docking has an important role in pharmacology industry to
+				The ligand-protein docking has an important role in pharmacological industry to
 				know the intricate aspect of intermolecular recognition between a ligand and receptor. 
 				These computational approaches correspond to studies <em>in silico </em>, 
 				which are a complement to the laboratory experiments in order to figure out 
@@ -97,10 +97,10 @@
 				
 				<blockquote>
 				<p class="h5" id="Camacho">Esteban López-Camacho and María Jesús García Godoy and José García-Nieto and Antonio J. Nebro and José Francisco Aldana Montes
-				Solving molecular flexible docking problems with metaheuristics: A comparative study Appl. Soft Comput. 28: 379--393 (2015) 
+				Solving molecular flexible docking problems with metaheuristics: A comparative study <em>Appl. Soft Comput.</em> 28: 379--393 (2015) 
 				<a href="doi:10.1016/j.asoc.2014.10.049" target="_blank">doi:10.1016/j.asoc.2014.10.049</a></p>
 				<p class="h5" id="Godoy">María Jesús García Godoy, Esteban López-Camacho, José García-Nieto, Antonio J. Nebro and José F. Aldana-Montes: 
-				Solving molecular docking problems with multi-objective metaheuristics Molecules 20(6): 10154-10183
+				Solving molecular docking problems with multi-objective metaheuristics <em>Molecules</em> 20(6): 10154-10183
 				<a href="http://www.mdpi.com/1420-3049/20/6/10154" target="_blank">doi:10.3390/molecules200610154</a></p>
 				</blockquote>
 				
@@ -133,12 +133,36 @@
 			</div>
 		</div>
 		
-		<img class= "resize2" src="images/serverDocking.png" alt="jMetalDock_Server">
+		<a href="#" id="pop">
+			<img  id= "myImg" class= "resize2" src="images/serverDocking.png" alt="jMetalDock_Server">
+		</a>
 		
+		<!-- Creates the bootstrap modal where the image will appear -->
+		<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+ 			 <div class="modal-dialog">
+   				 <div class="modal-content">
+     				 <div class="modal-header">
+        				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+       							 <h4 class="modal-title" id="myModalLabel">Image preview</h4>
+      				</div>
+      			<div class="modal-body">
+        			<img src="" id="imagepreview" style="width: 400px; height: 264px;" >
+      			</div>
+     			<div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 		<%@ include file="/WEB-INF/jsp/footer.jsp"%>
 
 
 	</div>
 	<!-- /container -->
 </body>
+
+<script src="resources/js/imageSpan.js"></script>
+
+
 </html>
