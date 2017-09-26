@@ -114,9 +114,10 @@
 				such as gGA, ssGA, DE and PSO. The total free binding energy
 				(measured in kcal/mol) is the objective to optimize. When the user
 				tries to solve using a multi-objetive approach, there are more than
-				one objective to optimize, which are the Intermolecular and Intramolecular energy. 
-				The first corresponds to the ligand-receptor energy and the second to the energy related 
-				to the ligand's structure through the molecular docking simulation.
+				one objective to optimize, which are the Intermolecular, Intramolecular energy and the RMSD score. 
+				The first corresponds to the ligand-receptor energy, the second to the energy related 
+				to the ligand's structure through the molecular docking simulation and the third to the distance 
+				between the ligand and receptor.
 				Algorithms like NSGA-II, GDE3, SMPSO,
 				SMSEMOA and MOEA/D. The energy function used to evaluate all the
 				solutions returned by the algorithms is the AutoDock 4.2 energy
@@ -151,12 +152,15 @@
 						<h4 class="modal-title" id="myModalLabel">Image of how jMetalDock works on server</h4>
 					</div>
 					<div class="modal-body">
+						<figure>
 						<img src="" id="imagepreview" class= "resize3">
-						<p>The execution parameters of a given experiment are configured using a docking parameter file
+						<figcaption class="textCaption">The execution parameters of a given experiment are configured using a docking parameter file
 						containing the algorithm's settings. As metaheuristics are iterative algorithms that work with sets of tentative solutions 
 						that are modified according to a number of operators (e.g. in the case of GAs the operators are selection, crossover and mutation), 
 						whenever a new solution has to be evaluated, it is sent back to AutoDock 4.2 to apply its scoring function. 
-						In the case of a multi-objective approach, two objectives are minimized: the Intermolecular and Intramolecular energies.</p>
+						In the case of a multi-objective approach, two objectives can be minimized: the Intermolecular and Intramolecular energies 
+						or the RMSD score and the Intermolecular energy.</figcaption>
+						</figure>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

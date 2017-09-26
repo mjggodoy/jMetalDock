@@ -24,7 +24,7 @@
 		<div class="starter-template">
 			<h4><strong>Published Journals:</strong></h4>
 
-			<ul class="h4">
+			<ul class="h5">
 				
 				<li>María Jesús García Godoy, Esteban López-Camacho, José
 					García-Nieto, Antonio J. Nebro and José F. Aldana-Montes: <br />
@@ -61,7 +61,7 @@
 			<br/>
 
 			<h4><strong>Published Chapters:</strong></h4>
-			<ul class="h4">
+			<ul class="h5">
 				<li>José García-Nieto, Esteban López-Camacho, María Jesús
 					García Godoy, Antonio J. Nebro and José F. Aldana-Montes: <br /> <b>A
 					Study of Archiving Strategies in Multi-objective PSO for Molecular

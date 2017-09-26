@@ -28,6 +28,19 @@ img.resize3 {
  	
 }
 
+figcaption.textCaption{
+	
+	text-align: center;
+	font-family: serif;
+	
+}
+
+.modal-title{
+	
+	background-color: #ddd;
+	
+}
+
 .carousel-inner > .item > img,
   .carousel-inner > .item > a > img {
       width: 70%;
