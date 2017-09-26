@@ -114,7 +114,10 @@
 				such as gGA, ssGA, DE and PSO. The total free binding energy
 				(measured in kcal/mol) is the objective to optimize. When the user
 				tries to solve using a multi-objetive approach, there are more than
-				one objective to optimize. Algorithms like NSGA-II, GDE3, SMPSO,
+				one objective to optimize, which are the Intermolecular and Intramolecular energy. 
+				The first corresponds to the ligand-receptor energy and the second to the energy related 
+				to the ligand's structure through the molecular docking simulation.
+				Algorithms like NSGA-II, GDE3, SMPSO,
 				SMSEMOA and MOEA/D. The energy function used to evaluate all the
 				solutions returned by the algorithms is the AutoDock 4.2 energy
 				function. </p>
@@ -134,26 +137,33 @@
 		</div>
 		
 		<a href="#" id="pop">
-			<img  id= "myImg" class= "resize2" src="images/serverDocking.png" alt="jMetalDock_Server">
+			<img  id= "serverDocking" class= "resize2" src="images/serverDocking.png" alt="jMetalDock_Server">
 		</a>
 		
 		<!-- Creates the bootstrap modal where the image will appear -->
 		<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
- 			 <div class="modal-dialog">
-   				 <div class="modal-content">
-     				 <div class="modal-header">
-        				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-       							 <h4 class="modal-title" id="myModalLabel">Image preview</h4>
-      				</div>
-      			<div class="modal-body">
-        			<img src="" id="imagepreview" style="width: 400px; height: 264px;" >
-      			</div>
-     			<div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">
+							<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+						</button>
+						<h4 class="modal-title" id="myModalLabel">Image of how jMetalDock works on server</h4>
+					</div>
+					<div class="modal-body">
+						<img src="" id="imagepreview" class= "resize3">
+						<p>The execution parameters of a given experiment are configured using a docking parameter file
+						containing the algorithm's settings. As metaheuristics are iterative algorithms that work with sets of tentative solutions 
+						that are modified according to a number of operators (e.g. in the case of GAs the operators are selection, crossover and mutation), 
+						whenever a new solution has to be evaluated, it is sent back to AutoDock 4.2 to apply its scoring function. 
+						In the case of a multi-objective approach, two objectives are minimized: the Intermolecular and Intramolecular energies.</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
 		<%@ include file="/WEB-INF/jsp/footer.jsp"%>
 
