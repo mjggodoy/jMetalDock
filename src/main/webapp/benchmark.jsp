@@ -19,6 +19,10 @@
 				</ul>
 			</div>
 		</div>
+		
+		<h4>Ligand-Receptor Docking: Mono-Objective Approach</h4>
+	
+		<h4>Ligand-Receptor Docking: Multi-Objective Approach</h4>
 
 		<%@ include file="/WEB-INF/jsp/footer.jsp"%>
 	</div>
