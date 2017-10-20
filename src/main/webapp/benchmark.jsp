@@ -21,9 +21,14 @@
 		</div>
 		
 		<h4>Ligand-Receptor Docking: Mono-Objective Approach</h4>
+		<p>To test the mono-objective approach, </p>
+		
+		
 	
 		<h4>Ligand-Receptor Docking: Multi-Objective Approach</h4>
-
+		<p>To test the multi-objective approach,</p>
+		
+		
 		<%@ include file="/WEB-INF/jsp/footer.jsp"%>
 	</div>
 </body>
