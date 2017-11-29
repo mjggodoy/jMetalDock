@@ -58,6 +58,9 @@ public abstract class DLGParser<T> {
 		return parseDLGFile(dlgFilePath);
 	}
 
+	protected abstract void storeResults(String dlgFilePath, int taskId, int run)
+			throws IOException, DlgParseException;
+
 	protected abstract DLGResult<T> parseDLGFile(String dlgFilePath)
 			throws IOException, DlgParseException;
 

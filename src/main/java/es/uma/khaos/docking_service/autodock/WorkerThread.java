@@ -141,7 +141,7 @@ public class WorkerThread implements Runnable {
 		}
 		
 		// BORRAMOS CARPETA Y FICHERO ZIP
-		Utils.deleteFolder(workDir);
+		//Utils.deleteFolder(workDir);
 		Utils.deleteFolder(task.getParameters().getZipFile());
 		
 	}

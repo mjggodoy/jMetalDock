@@ -92,4 +92,9 @@ public class DLGMultiParser extends DLGParser<Front> {
 		return multiResult;
 	}
 
+	@Override
+	protected void storeResults(String dlgFilePath, int taskId, int run) throws IOException, DlgParseException {
+
+	}
+
 }

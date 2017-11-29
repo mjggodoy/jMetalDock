@@ -7,9 +7,6 @@
 <c:set var="task" value='${it}' />
 <body>
 
-	<!-- TODO: Arreglar esto (PREGUNTAR ANTES) -->
-	<a href="rest/task/${task.id}?token=${task.token}">LINK</a>
-
 	<div class="container">
 		<h4>
 			<strong>TASK:<br></strong>

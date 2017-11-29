@@ -5,11 +5,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
+import es.uma.khaos.docking_service.exception.DatabaseException;
 import es.uma.khaos.docking_service.exception.DlgParseException;
+import es.uma.khaos.docking_service.model.Result;
 import es.uma.khaos.docking_service.model.dlg.AutoDockSolution;
 import es.uma.khaos.docking_service.model.dlg.AutoDockSolution.Optimization;
 import es.uma.khaos.docking_service.model.dlg.result.DLGMonoResult;
 import es.uma.khaos.docking_service.model.dlg.result.DLGResult;
+import es.uma.khaos.docking_service.service.DatabaseService;
 
 /**
  * Parseador de DLGs creados con algoritmos mono-objetivo
@@ -69,6 +72,55 @@ public class DLGMonoParser extends DLGParser<AutoDockSolution> {
 		}
 
 		return monoResult;
+	}
+
+	/**
+	 * Guarda los valores de energía de las soluciones del fichero DLG
+	 * en la base de datos
+	 * @throws DlgParseException
+	 */
+	protected void storeResults(String dlgFilePath, int taskId, int run)
+			throws DlgParseException {
+
+		BufferedReader br = null;
+
+		try {
+
+			Result result = DatabaseService.getInstance().insertResult(taskId, run);
+
+			br = new BufferedReader(new FileReader(dlgFilePath));
+
+			int i = 1;
+			String line;
+			while ((line = br.readLine()) != null) {
+
+				String startRunLine = "DOCKED: USER    Run = " + i;
+				String lineRmsdTable = "RMSD TABLE";
+
+				if (line.equals(startRunLine)) {
+
+					AutoDockSolution sol = getSolution(br, optimizationType);
+					DatabaseService.getInstance().insertSolution(sol.getTotalEnergy(), "Total Binding Energy", null, sol.getEnergy1(), sol.getEnergy2(), null, result.getId());
+					//solution.setConformation(getConformation(br));
+					i++;
+
+				//} else if (line.contains(lineRmsdTable)) {
+				//	readRmsdTable(dlgFilePath, br, monoResult);
+				}
+			}
+
+		} catch (IOException e) {
+			throw new DlgParseException(e);
+		} catch (DatabaseException e) {
+			throw new DlgParseException(e);
+		} finally {
+			try {
+				if (br!=null) br.close();
+			} catch (IOException e) {
+				throw new DlgParseException(e);
+			}
+		}
+
 	}
 
 	private void readRmsdTable(String dlgFilePath, BufferedReader br,
