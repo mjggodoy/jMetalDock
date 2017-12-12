@@ -175,7 +175,7 @@
 				</select> <br />
 
 
-				<div style="display: none;">
+				<div id="monoobjective">
 					<label for="objective-single-opt">Objective to Optimize:</label> <select
 						class="form-control" name="objective-single-opt" id="objective-single-opt">
 						<option>Final Binding Energy</option>
@@ -183,10 +183,10 @@
 				</div>
 
 
-				<div style="display: none;">
+				<div id="multiobjective">
 					<label for="objective-multi-opt">Objectives to Optimize:</label> <select
-						class="form-control" name="objective-multi-opt" id="objective-multi-opt">
-						<option>Intermolecular and Intramolecular Energy</option>
+						class="form-control" name="use_rmsd_as_obj" id="objective-multi-opt">
+						<option value="false">Intermolecular and Intramolecular Energy</option>
 						<option value=true>Binding Energy and RMSD score</option>
 					</select>
 				</div>

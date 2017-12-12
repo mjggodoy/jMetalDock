@@ -6,4 +6,6 @@ public interface ResponseBuilder {
 	
 	public Response buildResponse(Object o);
 
+	public Response buildCreatedResponse(Object o);
+
 }

@@ -17,4 +17,13 @@ public class JspResponseBuilder implements ResponseBuilder {
 	    return Response.ok(new Viewable(jspFile, o)).build();
 	}
 
+	@Override
+	public Response buildCreatedResponse(Object o) {
+		return Response
+				.status(Response.Status.CREATED)
+				.entity(new Viewable(jspFile, o))
+				.build();
+	}
+
+
 }

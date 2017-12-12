@@ -6,11 +6,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Arrays;
 
+import es.uma.khaos.docking_service.exception.DatabaseException;
 import es.uma.khaos.docking_service.exception.DlgNotFoundException;
 import es.uma.khaos.docking_service.exception.DlgParseException;
 import es.uma.khaos.docking_service.model.dlg.AutoDockSolution;
 import es.uma.khaos.docking_service.model.dlg.AutoDockSolution.Optimization;
 import es.uma.khaos.docking_service.model.dlg.Conformation;
+import es.uma.khaos.docking_service.model.dlg.Reference;
 import es.uma.khaos.docking_service.model.dlg.result.DLGResult;
 import es.uma.khaos.docking_service.model.dlg.util.Scientific;
 
@@ -45,8 +47,27 @@ public abstract class DLGParser<T> {
 	private final String prefixEnergy2 =
 			"DOCKED: USER    (2) Final Total Internal Energy     =";
 
-	public DLGParser(Optimization optimizationType) {
+	protected String obj1 = null;
+	protected String obj2 = null;
+
+	protected Reference reference;
+
+	public DLGParser(Optimization optimizationType, Reference reference) {
 		this.optimizationType = optimizationType;
+		this.reference = reference;
+		switch (optimizationType) {
+			case TOTAL_ENERGY:
+				obj1 = "Total Binding Energy";
+				break;
+			case SUB_ENERGIES:
+				obj1 = "Intermolecular energy";
+				obj2 = "Intramolecular energy";
+				break;
+			case TOTAL_ENERGY_AND_RMSD:
+				obj1 = "Total Binding Energy";
+				obj2 = "RMSD";
+				break;
+		}
 	}
 
 	/**
@@ -58,8 +79,8 @@ public abstract class DLGParser<T> {
 		return parseDLGFile(dlgFilePath);
 	}
 
-	protected abstract void storeResults(String dlgFilePath, int taskId, int run)
-			throws IOException, DlgParseException;
+	public abstract void storeResults(String dlgFilePath, int taskId)
+			throws IOException, DlgParseException, DatabaseException;
 
 	protected abstract DLGResult<T> parseDLGFile(String dlgFilePath)
 			throws IOException, DlgParseException;

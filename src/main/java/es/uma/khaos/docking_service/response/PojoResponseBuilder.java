@@ -8,5 +8,13 @@ public class PojoResponseBuilder implements ResponseBuilder {
 	public Response buildResponse(Object o) {
 		return Response.ok(o).build();
 	}
-	
+
+	@Override
+	public Response buildCreatedResponse(Object o) {
+		return Response
+				.status(Response.Status.CREATED)
+				.entity(o)
+				.build();
+	}
+
 }

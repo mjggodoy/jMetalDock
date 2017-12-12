@@ -2,7 +2,6 @@ package es.uma.khaos.docking_service.resource;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
@@ -94,7 +93,8 @@ public class TaskResource extends Application {
 				
 			}
 
-			return createTaskResponse(token, params, uriInfo);
+			ResponseBuilder builder = getResponseBuilder(headers, "/standardResponse.jsp");
+			return createTaskResponse(token, params, uriInfo, builder);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Response.serverError().build();
@@ -125,7 +125,7 @@ public class TaskResource extends Application {
 		}
 	}
 	
-	private Response createTaskResponse(String token, ParameterSet params, UriInfo uriInfo) { //ResponseBuilder builder) {
+	private Response createTaskResponse(String token, ParameterSet params, UriInfo uriInfo, ResponseBuilder builder) {
 		
 		try{
 			if (StringUtils.isNullOrEmpty(params.getAlgorithm())) {
@@ -144,16 +144,12 @@ public class TaskResource extends Application {
 						.build();
 			} else {
 				Task task = createTask(token, params);
-				URI uri = new URI(String.format("%s/%s?token=%s",uriInfo.getAbsolutePath().toString(),
-						task.getId(), task.getToken()));
-				return Response
-						.status(Response.Status.CREATED)
-						.entity(new StandardResponse(
-								Response.Status.CREATED,
-								"Task successfully created!",
-								String.format("%s/%s?token=%s",uriInfo.getAbsolutePath().toString(),
-										task.getId(), task.getToken())))
-						.build();
+				Object o = new StandardResponse(
+						Response.Status.CREATED,
+						"Task successfully created!",
+						String.format("%s/%s?token=%s",uriInfo.getAbsolutePath().toString(),
+								task.getId(), task.getToken()));
+				return builder.buildCreatedResponse(o);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

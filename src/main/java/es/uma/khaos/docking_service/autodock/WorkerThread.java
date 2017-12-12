@@ -22,6 +22,7 @@ import es.uma.khaos.docking_service.model.Task;
 import es.uma.khaos.docking_service.model.dlg.AutoDockSolution;
 import es.uma.khaos.docking_service.model.dlg.AutoDockSolution.Optimization;
 import es.uma.khaos.docking_service.model.dlg.Front;
+import es.uma.khaos.docking_service.model.dlg.Reference;
 import es.uma.khaos.docking_service.model.dlg.result.DLGResult;
 import es.uma.khaos.docking_service.properties.Constants;
 import es.uma.khaos.docking_service.service.DatabaseService;
@@ -122,7 +123,17 @@ public class WorkerThread implements Runnable {
 		dpfFileName = dpfs.get(0);
 		
 		// PREPARAMOS DPF CON LOS PARÁMETROS
+		System.out.println("VOY A PROBAR CON ..." + task.getParameters().getEvaluations() + " EVALUATIONS");
 		formatDPF(new File(workDir+"/"+dpfFileName), new File(workDir+"/"+inputFile));
+
+		// LEEMOS EL FICHERO DE REFERENCIA (EN EL CASO DE QUE HAYA)
+		//TODO: Tratar mejor excepción para que continue sin RMSDs
+		Reference reference = null;
+		try {
+			reference = new Reference(new File(workDir+"/"+inputFile), workDir);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		// SI TENEMOS EL EJECUTABLE DE AUTODOCK:
 		if (!"".equals(Constants.DIR_AUTODOCK))  {
@@ -136,7 +147,7 @@ public class WorkerThread implements Runnable {
 			Utils.executeCommand(command, new File(workDir));
 			
 			// PROCESAMOS RESULTADOS
-			readDLG(workDir+"/"+outputFile);
+			readDLG(workDir+"/"+outputFile, reference);
 			
 		}
 		
@@ -158,46 +169,27 @@ public class WorkerThread implements Runnable {
 	}
 	
 	// TODO: Cambiar método a otra manera.
-	private void readDLG(String dlgFile) throws DlgParseException, DlgNotFoundException, DatabaseException {
+	private void readDLG(String dlgFile, Reference reference)
+			throws DlgParseException, DlgNotFoundException, DatabaseException {
 		
 		if (task.getParameters().getObjectiveOption()==1) {
-			DLGParser<AutoDockSolution> parser = new DLGMonoParser();
+			DLGParser<AutoDockSolution> parser = new DLGMonoParser(reference);
 			try {
-				DLGResult<AutoDockSolution> dlgResult = parser.readFile(dlgFile);
-				int run = 1;
-				for (AutoDockSolution sol : dlgResult) {
-					Result result = DatabaseService.getInstance().insertResult(task.getId(), run);
-					DatabaseService.getInstance().insertSolution(sol.getTotalEnergy(), "Total Binding Energy", null, sol.getEnergy1(), sol.getEnergy2(), null, result.getId());
-					run++;
-				}
+				parser.storeResults(dlgFile, task.getId());
 			} catch (IOException e) {
 				throw new DlgNotFoundException(e);
 			}
 		} else {
 			DLGParser<Front> parser;
-			String obj1, obj2;
 			if (task.getParameters().getObjectiveOption()==2) {
-				parser = new DLGMultiParser(Optimization.SUB_ENERGIES);
-				obj1 = "Intermolecular energy";
-				obj2 = "Intramolecular energy";
+				parser = new DLGMultiParser(Optimization.SUB_ENERGIES, reference);
 			} else if (task.getParameters().getObjectiveOption()==3) {
-				parser = new DLGMultiParser(Optimization.TOTAL_ENERGY_AND_RMSD);
-				obj1 = "Total Binding Energy";
-				obj2 = "RMSD";
+				parser = new DLGMultiParser(Optimization.TOTAL_ENERGY_AND_RMSD, reference);
 			} else {
 				throw new DlgParseException("Incorrect objectiveOpt value");
 			}
 			try {
-				DLGResult<Front> dlgResult = parser.readFile(dlgFile);
-				int run = 1;
-				for (Front front : dlgResult) {
-					Result result = DatabaseService.getInstance().insertResult(task.getId(), run);
-					for (AutoDockSolution sol : front) {
-						// TODO: Crear método que inserte todas las soluciones en una conexión.
-						DatabaseService.getInstance().insertSolution(sol.getTotalEnergy(), obj1, obj2, sol.getEnergy1(), sol.getEnergy2(), sol.getRmsd(), result.getId());
-					}
-					
-				}
+				parser.storeResults(dlgFile, task.getId());
 			} catch (IOException e) {
 				throw new DlgNotFoundException(e);
 			}
