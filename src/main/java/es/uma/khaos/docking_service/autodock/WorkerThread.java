@@ -148,6 +148,13 @@ public class WorkerThread implements Runnable {
 			
 			// PROCESAMOS RESULTADOS
 			readDLG(workDir+"/"+outputFile, reference);
+
+			//Intentamos guardar el DLG en la BD
+			try {
+				DatabaseService.getInstance().insertDLG(workDir+"/"+outputFile, task.getId());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			
 		}
 		

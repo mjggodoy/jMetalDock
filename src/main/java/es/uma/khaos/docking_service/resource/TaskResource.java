@@ -110,7 +110,7 @@ public class TaskResource extends Application {
 				return Response
 						.status(Response.Status.FORBIDDEN)
 						.entity(new ErrorResponse(Response.Status.FORBIDDEN,Constants.RESPONSE_TASK_MSG_UNALLOWED))
-						.build();			
+						.build();
 			}else{
 				return builder.buildResponse(task);
 			}
