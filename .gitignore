@@ -10,3 +10,7 @@
 *.iml
 
 \.idea/
+
+src/main/resources/docking_service\.properties
+
+src/main/resources/docking_service\.test\.properties

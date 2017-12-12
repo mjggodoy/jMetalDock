@@ -13,12 +13,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Application;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 
+import es.uma.khaos.docking_service.model.StandardResponse;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
@@ -60,18 +57,19 @@ public class TaskResource extends Application {
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public Response doPost(
 			@FormDataParam("algorithm") String algorithm,
-			@FormDataParam("runs") @DefaultValue("2") int runs,
+			@FormDataParam("runs") @DefaultValue("1") int runs,
 			@FormDataParam("population_size") @DefaultValue("150") int populationSize, 
 			@FormDataParam("evaluations") @DefaultValue("1500000") int evaluations,
-			@FormDataParam("use_rmsd_as_obj") @DefaultValue("False") boolean useRmsdAsObjective,
+			@FormDataParam("use_rmsd_as_obj") @DefaultValue("false") boolean useRmsdAsObjective,
 			@FormDataParam("instance") String instance,
 			@FormDataParam("file") final FormDataContentDisposition fileDetails,
 			@FormDataParam("file") final InputStream inputStream,
-			@Context HttpHeaders headers) throws IOException {
-		
-		ResponseBuilder builder = getResponseBuilder(headers, "/task.jsp");
-		
+			@Context HttpHeaders headers,
+			@Context UriInfo uriInfo) throws IOException {
+
 		try {
+			System.out.println("EVALUATIONS = "+evaluations);
+
 			String token = Utils.generateHash();
 			ParameterSet params;
 			
@@ -94,8 +92,9 @@ public class TaskResource extends Application {
 				return Response.serverError().build();
 				
 			}
-			
-			return createTaskResponse(token, params, builder);
+
+			ResponseBuilder builder = getResponseBuilder(headers, "/standardResponse.jsp");
+			return createTaskResponse(token, params, uriInfo, builder);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Response.serverError().build();
@@ -111,7 +110,7 @@ public class TaskResource extends Application {
 				return Response
 						.status(Response.Status.FORBIDDEN)
 						.entity(new ErrorResponse(Response.Status.FORBIDDEN,Constants.RESPONSE_TASK_MSG_UNALLOWED))
-						.build();			
+						.build();
 			}else{
 				return builder.buildResponse(task);
 			}
@@ -126,7 +125,7 @@ public class TaskResource extends Application {
 		}
 	}
 	
-	private Response createTaskResponse(String token, ParameterSet params, ResponseBuilder builder) {
+	private Response createTaskResponse(String token, ParameterSet params, UriInfo uriInfo, ResponseBuilder builder) {
 		
 		try{
 			if (StringUtils.isNullOrEmpty(params.getAlgorithm())) {
@@ -145,7 +144,12 @@ public class TaskResource extends Application {
 						.build();
 			} else {
 				Task task = createTask(token, params);
-				return builder.buildResponse(task);
+				Object o = new StandardResponse(
+						Response.Status.CREATED,
+						"Task successfully created!",
+						String.format("%s/%s?token=%s",uriInfo.getAbsolutePath().toString(),
+								task.getId(), task.getToken()));
+				return builder.buildCreatedResponse(o);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

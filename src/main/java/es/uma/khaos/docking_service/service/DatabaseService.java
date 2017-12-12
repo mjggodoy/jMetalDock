@@ -1,5 +1,7 @@
 package es.uma.khaos.docking_service.service;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -15,11 +17,7 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 
 import es.uma.khaos.docking_service.exception.DatabaseException;
-import es.uma.khaos.docking_service.model.Instance;
-import es.uma.khaos.docking_service.model.ParameterSet;
-import es.uma.khaos.docking_service.model.Result;
-import es.uma.khaos.docking_service.model.Solution;
-import es.uma.khaos.docking_service.model.Task;
+import es.uma.khaos.docking_service.model.*;
 import es.uma.khaos.docking_service.properties.Constants;
 
 public final class DatabaseService {
@@ -76,6 +74,12 @@ public final class DatabaseService {
 			jschSession.disconnect();
 			System.out.println("SSH disconected.");
 		}
+	}
+
+	//TODO: Cambiar a una única conexión persistente
+	public Connection getConnection() throws Exception {
+		Connection conn = openConnection();
+		return conn;
 	}
 	
 	private Connection openConnection() throws Exception {
@@ -710,5 +714,56 @@ public final class DatabaseService {
 
 		return instance;
 	}
+
+	/*
+	 * DLG
+	 */
+
+	public DLG insertDLG(String fileName, int taskId) throws DatabaseException {
+
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		DLG dlg = null;
+		ResultSet rs = null;
+
+		try {
+
+			conn = openConnection();
+			stmt = conn.prepareStatement("insert into dlg (file, task_id) "
+							+ "values (?, ?)",
+					Statement.RETURN_GENERATED_KEYS);
+
+			// read the file
+			File file = new File(fileName);
+			FileInputStream input = new FileInputStream(file);
+
+			stmt.setBinaryStream(1, input);
+			stmt.setInt(2, taskId);
+
+			//store the dlg file in database
+			System.out.println("Reading file " + file.getAbsolutePath());
+			stmt.execute();
+			rs = stmt.getGeneratedKeys();
+
+			if (rs.next()) {
+				dlg = new DLG(rs.getInt(1), fileName, taskId);
+			}
+
+		} catch (SQLException e) {
+			throw new DatabaseException(e);
+		} catch (Exception e) {
+			throw new DatabaseException(e);
+		} finally {
+			try {
+				if (rs != null) rs.close();
+				if (stmt != null) stmt.close();
+				if (conn != null) conn.close();
+			} catch (SQLException e) {
+				throw new DatabaseException(e);
+			}
+		}
+		return dlg;
+	}
+
 	
 }

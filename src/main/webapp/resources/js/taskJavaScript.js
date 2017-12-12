@@ -16,10 +16,12 @@
 	        	
 	        }else{
 	        	
-	        $("#objectives").hide()
+	        	$("#objectives").hide()
 	        
 	        }
 	    });
+
+    $('#algorithm').change();
 	   
 	   
 	   $('#optInput').on('change',function(){
@@ -37,6 +39,8 @@
 		   }
 		   
 	   });
+
+    $('#optInput').change();
 	   
 	   
 	
