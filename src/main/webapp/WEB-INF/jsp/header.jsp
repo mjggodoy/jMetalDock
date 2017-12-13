@@ -1,30 +1,69 @@
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="jMetalDock is a web-service oriented to provide users multi- and mono-objective approaches to solve the molecular docking problem">
-<meta name="author" content="Khaos Group. Language and Computing Science Department. University of Malaga">
-<link rel="icon" href="images/liferay.ico">
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="page" value="${param['page']}" />
 
-<title>jMetalDock: A web-service that provides single and multi-objetive approaches to solve the molecular docking problem</title>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">jMetalDock</a>
+        </div>
 
-<!-- Bootstrap core CSS -->
-<link href='<c:url value="/resources/css/bootstrap.min.css" />' rel="stylesheet">
-<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
 
-<!-- Custom styles for this template -->
-<!-- <link href="resources/css/bootstrap.css" rel="stylesheet"> -->
-<link href='<c:url value="/css/style.css" />' rel="stylesheet">
+                <c:choose>
+                    <c:when test="${page=='index'}">
+                        <li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
+                    </c:when>
+                    <c:otherwise>
+                        <li><a href="index.jsp">Home</a></li>
+                    </c:otherwise>
+                </c:choose>
 
-<script
-	src='<c:url value="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"/>'></script>
+                <c:choose>
+                    <c:when test="${page=='tutorial'}">
+                        <li class="active"><a href="#">Tutorial <span class="sr-only">(current)</span></a></li>
+                    </c:when>
+                    <c:otherwise>
+                        <li><a href="tutorial.jsp">Tutorial</a></li>
+                    </c:otherwise>
+                </c:choose>
 
-<script src='<c:url value="/resources/js/bootstrap.min.js"/>'></script>
-	
-<script src='<c:url value="/resources/js/bootstrap.js" />'></script>
-	
-<!--  <link rel="stylesheet" type="text/css" href="css/style.css" media="screen"/>
--->
+                <c:choose>
+                    <c:when test="${page=='benchmark'}">
+                        <li class="active"><a href="#">Benchmark <span class="sr-only">(current)</span></a></li>
+                    </c:when>
+                    <c:otherwise>
+                        <li><a href="benchmark.jsp">Benchmark</a></li>
+                    </c:otherwise>
+                </c:choose>
 
+                <c:choose>
+                    <c:when test="${page=='task'}">
+                        <li class="active"><a href="#">Task <span class="sr-only">(current)</span></a></li>
+                    </c:when>
+                    <c:otherwise>
+                        <li><a href="task.jsp">Task</a></li>
+                    </c:otherwise>
+                </c:choose>
 
-<!-- <link rel="stylesheet"
-	href="resources/css/bootstrap.min.css"> -->
+                <c:choose>
+                    <c:when test="${page=='references'}">
+                        <li class="active"><a href="#">References <span class="sr-only">(current)</span></a></li>
+                    </c:when>
+                    <c:otherwise>
+                        <li><a href="references.jsp">References</a></li>
+                    </c:otherwise>
+                </c:choose>
+
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>

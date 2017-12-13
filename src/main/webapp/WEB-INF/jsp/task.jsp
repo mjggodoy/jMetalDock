@@ -2,51 +2,65 @@
 <html>
 
 <head>
-<%@ include file="/WEB-INF/jsp/header.jsp"%>
+<%@ include file="/WEB-INF/jsp/headerHtml.jsp"%>
 </head>
 <c:set var="task" value='${it}' />
 <body>
 
-	<div class="container">
-		<h4>
-			<strong>TASK:<br></strong>
-		</h4>
+	<jsp:include page="/WEB-INF/jsp/header.jsp">
+		<jsp:param name="page" value="none" />
+	</jsp:include>
 
-		<div class="table">
-			<table class="table table-striped table table-bordered">
-					<tr>
-						<td class="col-md-2"><strong>ID:</strong></td>
-						<td class="col-md-2"><c:out value="${task.id}" /></td>
-					</tr>
-					<tr>
-						<td ><strong>Start time: </strong></td>
-						<td ><c:out value="" /></td>
-					</tr>
-					<tr>
-						<td><strong>End time: </strong></td>
-						<td><c:out value="" /></td>
-					</tr>
-					<tr>
-						<td><strong>Token: </strong></td>
-						<td><c:out value="${task.token}" /></td>
-					</tr>
-					<tr>
-						<td><strong>State: </strong></td>
-						<td><c:out value="${task.state}" /></td>
-					</tr>
+	<div class="container">
+
+		<div class="page-header">
+			<h3>TASK <small><c:out value="${task.id}" /></small></h3>
+		</div>
+
+		<div>
+			<table class="table table-striped table-condensed">
+				<tr>
+					<td class="col-md-6"><strong>State: </strong></td>
+					<td class="col-md-6">
+						<c:if test="${task.state=='finished'}">
+							<span class="label label-success">Finished</span>
+							<a href="<c:out value="${task.id}" />/result?token=<c:out value="${task.token}" />">Go to results</a>
+						</c:if>
+						<c:if test="${task.state=='error'}">
+							<span class="label label-danger">Error</span>
+						</c:if>
+						<c:if test="${task.state=='running'}">
+							<span class="label label-primary">Running</span>
+						</c:if>
+						<c:if test="${task.state=='queued'}">
+							<span class="label label-default">Queued</span>
+						</c:if>
+					</td>
+				</tr>
+				<tr>
+					<td><strong>Start time:</strong></td>
+					<td><c:out value="" /></td>
+				</tr>
+				<tr>
+					<td><strong>End time:</strong></td>
+					<td><c:out value="" /></td>
+				</tr>
+				<tr>
+					<td><strong>Token:</strong></td>
+					<td><c:out value="${task.token}" /></td>
+				</tr>
 			</table>
 		</div>
-		<br/>
 
-		<h4>
-			<strong>PARAMETERS:</strong><br>
-		</h4>
+		<div class="page-header">
+			<h4>Parameters</h4>
+		</div>
 
-		<div class="table">
-			<table class="table table-striped table table-bordered">
+		<div>
+			<table class="table table-striped table-condensed">
 				<tr>
-					<td class="col-md-2"><strong>Algorithm:</strong></td>
-					<td class="col-md-2"><c:out value="${task.parameters.algorithm}" /></td>
+					<td class="col-md-6"><strong>Algorithm:</strong></td>
+					<td class="col-md-6"><c:out value="${task.parameters.algorithm}" /></td>
 				</tr>
 				<tr>
 					<td><strong>Number of runs:</strong></td>
@@ -65,9 +79,10 @@
 					<td><c:out value="${task.parameters.objectiveOption}" /></td>
 				</tr>
 			</table>
-		</div>	
-	<br/>
+		</div>
+
 	</div>
 	<%@ include file="/WEB-INF/jsp/footer.jsp"%>
+
 </body>
 </html>
