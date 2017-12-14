@@ -13,7 +13,7 @@
 <script src=resources/js/mousehold.js></script>
 
 
-<%@ include file="WEB-INF/jsp/header.jsp"%>
+<%@ include file="WEB-INF/jsp/headerHtml.jsp"%>
 
 </head>
 

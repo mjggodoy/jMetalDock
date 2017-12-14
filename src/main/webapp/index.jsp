@@ -4,27 +4,29 @@
 <html lang="en">
 
 <head>
-<%@ include file="/WEB-INF/jsp/header.jsp"%>
+	<%@ include file="/WEB-INF/jsp/headerHtml.jsp"%>
 </head>
 
 
 <body>
 
-	<div class="container">
+	<jsp:include page="/WEB-INF/jsp/header.jsp">
+		<jsp:param name="page" value="index" />
+	</jsp:include>
 
-		<h1 class="text-muted">jMetalDock</h1>
-
+	<div class="bs-docs-header" id="content" tabindex="-1">
 		<div class="container">
-			<div class="navbar">
-				<ul class="nav nav-justified">
-					<li class="active"><a href="#">Home</a></li>
-					<li><a href="tutorial.jsp">Tutorials</a></li>
-					<li><a href="benchmark.jsp">Benchmark</a></li>
-					<li><a href="task.jsp">Task</a></li>
-					<li><a href="references.jsp">Publications</a></li>
-				</ul>
+			<h1>jMetalDock</h1>
+			<p>A web-service that provides single and multi-objetive approaches to solve the molecular docking problem.</p>
+			<div id="carbonads-container" style="display: none !important;">
+				<div class="carbonad" style="display: none !important;">
+					<div id="azcarbon"></div>
+				</div>
 			</div>
 		</div>
+	</div>
+
+	<div class="container">
 
 		<div class="container">		
 			<div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -81,32 +83,36 @@
 		<div class="row">
 			<div class="col-md-12">
 				<h3>Overview</h3>
-				<p class="h5">
+				<p>
 				The ligand-protein docking has an important role in pharmacological industry to
 				know the intricate aspect of intermolecular recognition between a ligand and receptor. 
 				These computational approaches correspond to studies <em>in silico </em>, 
 				which are a complement to the laboratory experiments in order to figure out 
 				how a given drug interacts to a therapeutic target. 
 				</p>
-				<p class="h5">
+				<p>
 				In previous studies, we have introduced several approaches based on the application of metaheuristics
 				from a mono- or multiobjective approach. The performance of the algorithms has been very successful being better
-				than the algorithms used in the state-of-the art as is shown in some publications <a href="#Camacho">[1]</a>,<a href="#Godoy">[2]</a>.</p>
-				
+				than the algorithms used in the state-of-the art as is shown in some publications <a href="#Camacho">[1]</a>,<a href="#Godoy">[2]</a>.
+				</p>
+
+				<p>
 				When you use this service, please cite the following references:
+				<ol>
+					<li id="Camacho">Esteban L&oacute;pez-Camacho, Mar&iacute;a Jes&uacute;s Garc&iacute;a Godoy, Jos&eacute; Garc&iacute;a-Nieto, Antonio J. Nebro and Jos&eacute; Francisco Aldana-Montes
+						Solving molecular flexible docking problems with metaheuristics: A comparative study <em>Appl. Soft Comput.</em> 28: 379--393 (2015)
+						<a href="doi:10.1016/j.asoc.2014.10.049" target="_blank">doi:10.1016/j.asoc.2014.10.049</a>
+					</li>
+					<li id="Godoy">Mar&iacute;a Jes&uacute;s Garc&iacute;a Godoy, Esteban L&oacute;pez-Camacho, Jos&eacute; Garc&iacute;a-Nieto, Antonio J. Nebro and Jos&eacute; F. Aldana-Montes:
+						Solving molecular docking problems with multi-objective metaheuristics <em>Molecules</em> 20(6): 10154-10183
+						<a href="http://www.mdpi.com/1420-3049/20/6/10154" target="_blank">doi:10.3390/molecules200610154</a>
+					</li>
+				</ol>
+
+				</p>
 				
-				<blockquote>
-				<p class="h5" id="Camacho">Esteban López-Camacho and María Jesús García Godoy and José García-Nieto and Antonio J. Nebro and José Francisco Aldana Montes
-				Solving molecular flexible docking problems with metaheuristics: A comparative study <em>Appl. Soft Comput.</em> 28: 379--393 (2015) 
-				<a href="doi:10.1016/j.asoc.2014.10.049" target="_blank">doi:10.1016/j.asoc.2014.10.049</a></p>
-				<p class="h5" id="Godoy">María Jesús García Godoy, Esteban López-Camacho, José García-Nieto, Antonio J. Nebro and José F. Aldana-Montes: 
-				Solving molecular docking problems with multi-objective metaheuristics <em>Molecules</em> 20(6): 10154-10183
-				<a href="http://www.mdpi.com/1420-3049/20/6/10154" target="_blank">doi:10.3390/molecules200610154</a></p>
-				</blockquote>
-				
-				<p class="h5">
 				<h3>The jMetalDock Web Server</h3>
-				<p class="h5">
+				<p>
 				jMetalDock is a web-service that provides mono- and multi-objectives approaches 
 				applied to solve the problem of molecular
 				docking. In case of resolving the docking problem from a
@@ -123,7 +129,7 @@
 				solutions returned by the algorithms is the AutoDock 4.2 energy
 				function. </p>
 				<h3>Why jMetalDock Web Server?</h3>
-				<p class="h5">Most of the proposed approaches that can be found in the
+				<p>Most of the proposed approaches that can be found in the
 				literature only optimize an objective that is the final binding
 				energy. jMetalDock allows users to execute one or more tasks in
 				which the algorithm is selected, the algorithm parameters can be
