@@ -118,9 +118,10 @@ public class Utils {
 	public static void containerFolderCheck(String path) throws IOException {
 		File pathFile = new File(path);
 		File[] files = pathFile.listFiles();
-		if (files.length==1) {
-			if (files[0].isDirectory()) {
-				moveAllFilesFromFolderToFolder(files[0], pathFile);
+		// No me gusta mucho cómo se ha arreglado este método :(
+		for (File f : files) {
+			if (f.isDirectory() && !f.getName().startsWith("_")) {
+				moveAllFilesFromFolderToFolder(f, pathFile);
 			}
 		}
 	}

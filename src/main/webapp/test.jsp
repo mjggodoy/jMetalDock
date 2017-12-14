@@ -13,7 +13,7 @@
 <script src=resources/js/mousehold.js></script>
 
 
-<%@ include file="WEB-INF/jsp/header.jsp"%>
+<%@ include file="WEB-INF/jsp/headerHtml.jsp"%>
 
 </head>
 
@@ -26,13 +26,13 @@
 		</div>
 
 		<form id="newTaskForm" name="newTaskForm" action="rest/task"
-			method="post" , enctype="multipart/form-data">
+			method="post" enctype="multipart/form-data">
 			
 		
 			<div class="form-group">
 			
 			
-			<label for="input">Choose a file in your directory to be processed or an instance from the benchmark </label> 
+			<label for="optInput">Choose a file in your directory to be processed or an instance from the benchmark </label>
 			
 				<select class="form-control" id="optInput">
 					<optgroup label="Choose an input option">
@@ -57,7 +57,7 @@
 			<div id="inputInstance" style="display: none;">
 			
 				<label for="instance" class="control-label">Instance:<br /></label>
-				<select class="form-control" name="instance">
+				<select class="form-control" name="instance" id="instance">
 						
 					<optgroup label="Small Inhibitors">
 						<option value="1a9m">1a9m</option>
@@ -175,18 +175,18 @@
 				</select> <br />
 
 
-				<div id="monoobjective" style="display: none;">
-					<label for="objective">Objective to Optimize:</label> <select
-						class="form-control" name="algorithm" id="algorithm">
+				<div id="monoobjective">
+					<label for="objective-single-opt">Objective to Optimize:</label> <select
+						class="form-control" name="objective-single-opt" id="objective-single-opt">
 						<option>Final Binding Energy</option>
 					</select>
 				</div>
 
 
-				<div id="multiobjective" style="display: none;">
-					<label for="objective">Objectives to Optimize:</label> <select
-						class="form-control" name="algorithm" id="algorithm">
-						<option>Intermolecular and Intramolecular Energy</option>
+				<div id="multiobjective">
+					<label for="objective-multi-opt">Objectives to Optimize:</label> <select
+						class="form-control" name="use_rmsd_as_obj" id="objective-multi-opt">
+						<option value="false">Intermolecular and Intramolecular Energy</option>
 						<option value=true>Binding Energy and RMSD score</option>
 					</select>
 				</div>
@@ -200,7 +200,7 @@
 						data-target="#spinner1" data-toggle="spinner" data-on="mousehold">
 						<span class="glyphicon glyphicon-minus"></span>
 					</button>
-				</span> <input type="text" data-ride="spinner" id="spinner1"
+				</span> <input type="text" data-ride="spinner" name="runs" id="runs"
 					class="form-control input-number" value="25" data-min="1"
 					data-max="50"> <span class="input-group-btn">
 					<button type="button" class="btn btn-default" data-value="5"
@@ -210,8 +210,8 @@
 				</span>
 			</div>
 
-			<br /> 
-			
+			<br />
+
 			<label for="population_size" class="control-label">Population
 				size:<br />
 			</label>
@@ -223,8 +223,8 @@
 						data-target="#spinner2" data-toggle="spinner" data-on="mousehold">
 						<span class="glyphicon glyphicon-minus"></span>
 					</button>
-				</span> <input type="text" data-ride="spinner" id="spinner2"
-					class="form-control input-number" value="250" data-min="200"
+				</span> <input type="text" data-ride="spinner" name="population_size" id="population_size"
+					class="form-control input-number" value="250" data-min="50"
 					data-max="500"> <span class="input-group-btn">
 					<button type="button" class="btn btn-default" data-value="5"
 						data-target="#spinner2" data-toggle="spinner" data-on="mousehold">
@@ -243,10 +243,10 @@
 						data-target="#spinner3" data-toggle="spinner" data-on="mousehold">
 						<span class="glyphicon glyphicon-minus"></span>
 					</button>
-				</span> <input type="text" data-ride="spinner" id="spinner3"
-					class="form-control input-number" value="1500000" data-min="1000"
-					data-max="5000000"> 
-				
+				</span> <input type="text" data-ride="spinner" name="evaluations" id="evaluations"
+					class="form-control input-number" value="1400000" data-min="1000"
+					data-max="5000000">
+
 				<span class="input-group-btn">
 					<button type="button" class="btn btn-default" data-value="1000"
 						data-target="#spinner3" data-toggle="spinner" data-on="mousehold">
