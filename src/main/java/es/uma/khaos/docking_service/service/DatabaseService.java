@@ -102,7 +102,7 @@ public final class DatabaseService {
 	 * TASK
 	 */
 
-	public Task insertTask(String hash) throws Exception {
+	public Task insertTask(String hash, String email) throws Exception {
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -112,13 +112,15 @@ public final class DatabaseService {
 		try {
 			conn = openConnection();
 			stmt = conn.prepareStatement(
-					"insert into task (hash) values (?)", Statement.RETURN_GENERATED_KEYS);
+					"insert into task (hash, email ) values (?, ?)", Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, hash);
+			stmt.setString(2, email);
 			stmt.execute();
-
 			rs = stmt.getGeneratedKeys();
 			if (rs.next()) {
-				task = new Task(rs.getInt(1), hash, "sent");
+				
+				task = new Task(rs.getInt(1), hash, "sent", email);
+
 			}
 
 		} catch (SQLException e) {
@@ -180,7 +182,7 @@ public final class DatabaseService {
 			rs = stmt.executeQuery();
 
 			if (rs.next()) {
-				task = new Task(rs.getInt("id"), rs.getString("hash"), rs.getString("state"));
+				task = new Task(rs.getInt("id"), rs.getString("hash"), rs.getString("state"), rs.getString("email"));
 			}
 
 		} catch (SQLException e) {
@@ -219,7 +221,8 @@ public final class DatabaseService {
 			if (rs.next()) {
 				
 				ParameterSet p = new ParameterSet(rs.getInt("id"), rs.getString("algorithm"), rs.getInt("evaluations"), rs.getInt("population_size"), rs.getInt("runs"), rs.getInt("objective"), rs.getInt("task_id"));
-				task = new Task(rs.getInt("id"), rs.getString("hash"), rs.getString("state"), p);
+				task = new Task(rs.getInt("id"), rs.getString("hash"), rs.getString("state"), p, rs.getString("email"));
+
 			}
 
 		} catch (SQLException e) {
@@ -321,7 +324,6 @@ public final class DatabaseService {
 			stmt.setInt(6, taskId);
 			stmt.execute();
 			rs = stmt.getGeneratedKeys();
-			
 			if (rs.next()) {
 				parameter = new ParameterSet(rs.getInt(1), algorithm, evaluations, populationSize, runs, objectiveOpt, taskId);
 			}
@@ -709,6 +711,15 @@ public final class DatabaseService {
 		}
 
 		return instance;
+	}
+	
+	public static void main(String[] args) throws Exception {
+		
+		System.out.println("Testing...");
+		
+		DatabaseService ds = new DatabaseService();
+		ds.insertTask("94ovljntrpg6n8s1ef8lrmqtmu", "mjgarciag//2");
+		
 	}
 	
 }

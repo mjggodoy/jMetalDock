@@ -9,24 +9,30 @@ public class Task {
 	private String token;
 	private String state;
 	//TODO: Hacer que los dos IDs no aparezcan en el JSON
+	private String email;
 	private ParameterSet parameters;
+
 	
 	public Task() { }
-
-	public Task(int id, String token, String state) {
+	
+	
+	public Task(int id, String token, String state, String email) {
 		super();
 		this.id = id;
 		this.token = token;
 		this.state = state;
+		this.email = email;
+		
 	}
 	
-	public Task(int id, String hash, String state,
-			ParameterSet parameters) {
+	
+	public Task(int id, String hash, String state, ParameterSet parameters, String email) {
 		super();
 		this.id = id;
 		this.token = hash;
 		this.state = state;
 		this.parameters = parameters;
+		this.email = email;
 	}
 
 	public int getId() {
@@ -41,6 +47,14 @@ public class Task {
 		return state;
 	}
 	
+	public String getEmail() {
+		return email;
+	}
+	
+	public ParameterSet getParameters() {
+		return parameters;
+	}
+	
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -53,12 +67,14 @@ public class Task {
 		this.state = state;
 	}
 
-	public ParameterSet getParameters() {
-		return parameters;
-	}
-	
 	public void setParameters(ParameterSet parameters) {
 		this.parameters = parameters;
 	}
+	
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	
 
 }

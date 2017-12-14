@@ -65,6 +65,7 @@ public class TaskResource extends Application {
 			@FormDataParam("evaluations") @DefaultValue("1500000") int evaluations,
 			@FormDataParam("use_rmsd_as_obj") @DefaultValue("False") boolean useRmsdAsObjective,
 			@FormDataParam("instance") String instance,
+			@FormDataParam("email") String email,
 			@FormDataParam("file") final FormDataContentDisposition fileDetails,
 			@FormDataParam("file") final InputStream inputStream,
 			@Context HttpHeaders headers) throws IOException {
@@ -95,7 +96,7 @@ public class TaskResource extends Application {
 				
 			}
 			
-			return createTaskResponse(token, params, builder);
+			return createTaskResponse(token, params, email, builder);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Response.serverError().build();
@@ -126,7 +127,7 @@ public class TaskResource extends Application {
 		}
 	}
 	
-	private Response createTaskResponse(String token, ParameterSet params, ResponseBuilder builder) {
+	private Response createTaskResponse(String token, ParameterSet params, String email, ResponseBuilder builder) {
 		
 		try{
 			if (StringUtils.isNullOrEmpty(params.getAlgorithm())) {
@@ -144,7 +145,7 @@ public class TaskResource extends Application {
 								String.format(Constants.RESPONSE_NOT_VALID_PARAMETER_ERROR, "algorithm")))
 						.build();
 			} else {
-				Task task = createTask(token, params);
+				Task task = createTask(token, params, email);
 				return builder.buildResponse(task);
 			}
 		} catch (Exception e) {
@@ -153,9 +154,9 @@ public class TaskResource extends Application {
 		}
 	}
 	
-	private Task createTask(String token, ParameterSet params) throws Exception {
+	private Task createTask(String token, ParameterSet params, String email) throws Exception {
 
-		Task task = DatabaseService.getInstance().insertTask(token);
+		Task task = DatabaseService.getInstance().insertTask(token, email);
 		params.setTaskId(task.getId());
 		
 		ParameterSet parameters = DatabaseService.getInstance().insertParameter(params);
