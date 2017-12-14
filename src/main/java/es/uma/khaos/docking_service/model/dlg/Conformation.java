@@ -100,10 +100,10 @@ public class Conformation {
 				}
 			}
 		} catch (NumberFormatException e) {
-			throw new DlgParseException("Error en línea leyendo atomo\n"
+			throw new DlgParseException("Error en linea leyendo atomo\n"
 					+ line);
 		} catch (NoSuchElementException e) {
-			throw new DlgParseException("Error en línea leyendo atomo\n"
+			throw new DlgParseException("Error en linea leyendo atomo\n"
 					+ line);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -132,7 +132,7 @@ public class Conformation {
 		double sqrSum = 0.0;
 		if (this.atoms.size() != reference.getAtoms().size()) {
 			throw new DlgParseException(
-					"Conformaciones con diferente número de átomos. Reference (" +
+					"Conformaciones con diferente numero de atomos. Reference (" +
 					reference.getAtoms().size() + ") =/= Conformation (" +
 					this.atoms.size() + ")");
 		}

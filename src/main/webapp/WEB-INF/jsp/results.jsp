@@ -4,31 +4,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-<%@ include file="/WEB-INF/jsp/header.jsp"%>
+<%@ include file="/WEB-INF/jsp/headerHtml.jsp"%>
 </head>
 <c:set var="results" value='${it}' />
 <body>
-<%-- 	<%= request.getRequestURI() %>--%>	
+
+	<jsp:include page="/WEB-INF/jsp/header.jsp">
+		<jsp:param name="page" value="none" />
+	</jsp:include>
+
 	<div class="container">
+
+		<div class="page-header">
+			<h3>RESULTS <small><c:out value="${task.id}" /></small></h3>
+		</div>
 	
-	<h2>
-		RESULT<br>
-	</h2>
-	
-	<div class="table table-bordered">
-		<table  class="table table-striped table table-bordered">
+	<div>
+		<table  class="table table-striped table-condensed">
 			<thead>
 				<tr>
 					<th>ID</th>
 					<th>Task ID</th>
 					<th>Runs</th>
-					<th><p>Final Binding</p> 
-					Energy</th>
+					<th>Final Binding Energy</th>
 					<th>Objectives</th>
-					<th><p>Intermolecular</p>
-					 Energy</th>
-					<th><p>Intramolecular</p> Energy</th>
-					<th>RMSD (Å)</th>
+					<th>Intermolecular Energy</th>
+					<th>Intramolecular Energy</th>
+					<th>RMSD</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -61,7 +63,7 @@
 							</td>
 							<td><c:if test="${solution.intermolecularEnergy != null}">${solution.intermolecularEnergy} kcal/mol</c:if></td>
 							<td><c:if test="${solution.intramolecularEnergy != null}">${solution.intramolecularEnergy} kcal/mol</c:if></td>
-							<td><c:if test="${solution.rmsd != null}">${solution.rmsd}</c:if></td>
+							<td><c:if test="${solution.rmsd != null}">${solution.rmsd} &Acirc;</c:if></td>
 						</tr>
 					</c:forEach>
 				</c:forEach>

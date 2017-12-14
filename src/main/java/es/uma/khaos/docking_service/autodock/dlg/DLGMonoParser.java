@@ -5,11 +5,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
+import es.uma.khaos.docking_service.exception.DatabaseException;
 import es.uma.khaos.docking_service.exception.DlgParseException;
+import es.uma.khaos.docking_service.model.Result;
 import es.uma.khaos.docking_service.model.dlg.AutoDockSolution;
 import es.uma.khaos.docking_service.model.dlg.AutoDockSolution.Optimization;
+import es.uma.khaos.docking_service.model.dlg.Reference;
 import es.uma.khaos.docking_service.model.dlg.result.DLGMonoResult;
 import es.uma.khaos.docking_service.model.dlg.result.DLGResult;
+import es.uma.khaos.docking_service.service.DatabaseService;
 
 /**
  * Parseador de DLGs creados con algoritmos mono-objetivo
@@ -21,8 +25,8 @@ public class DLGMonoParser extends DLGParser<AutoDockSolution> {
 	private final static Optimization monoOptimizationType
 		= Optimization.TOTAL_ENERGY;
 	
-	public DLGMonoParser() {
-		super(monoOptimizationType);
+	public DLGMonoParser(Reference reference) {
+		super(monoOptimizationType, reference);
 	}
 
 	/**
@@ -69,6 +73,55 @@ public class DLGMonoParser extends DLGParser<AutoDockSolution> {
 		}
 
 		return monoResult;
+	}
+
+	/**
+	 * Guarda los valores de energía de las soluciones del fichero DLG
+	 * en la base de datos
+	 * @throws DlgParseException
+	 */
+	public void storeResults(String dlgFilePath, int taskId)
+			throws DlgParseException, DatabaseException {
+
+		BufferedReader br = null;
+
+		try {
+
+			br = new BufferedReader(new FileReader(dlgFilePath));
+
+			int run = 1;
+			String line;
+			while ((line = br.readLine()) != null) {
+
+				String startRunLine = "DOCKED: USER    Run = " + run;
+				String lineRmsdTable = "RMSD TABLE";
+
+				if (line.equals(startRunLine)) {
+
+					AutoDockSolution sol = getSolution(br, optimizationType);
+					//sol.setConformation(getConformation(br));
+					if (reference != null) sol.calculateRMSD(reference);
+					Result result = DatabaseService.getInstance().insertResult(taskId, run);
+					DatabaseService.getInstance().insertSolution(sol.getTotalEnergy(), obj1, obj2, sol.getEnergy1(), sol.getEnergy2(), sol.getRmsd(), result.getId());
+					run++;
+
+				//} else if (line.contains(lineRmsdTable)) {
+				//	readRmsdTable(dlgFilePath, br, monoResult);
+				}
+			}
+
+		} catch (IOException e) {
+			throw new DlgParseException(e);
+		} catch (DatabaseException e) {
+			throw e;
+		} finally {
+			try {
+				if (br!=null) br.close();
+			} catch (IOException e) {
+				throw new DlgParseException(e);
+			}
+		}
+
 	}
 
 	private void readRmsdTable(String dlgFilePath, BufferedReader br,
