@@ -97,6 +97,8 @@ public class TaskResource extends Application {
 
 			ResponseBuilder builder = getResponseBuilder(headers, "/standardResponse.jsp");
 			return createTaskResponse(token, params, email, uriInfo, builder);
+
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Response.serverError().build();
@@ -129,6 +131,8 @@ public class TaskResource extends Application {
 	
 	private Response createTaskResponse(String token, ParameterSet params, String email, UriInfo uriInfo, ResponseBuilder builder) {
 
+
+		
 		try{
 			if (StringUtils.isNullOrEmpty(params.getAlgorithm())) {
 				return Response
@@ -146,6 +150,7 @@ public class TaskResource extends Application {
 						.build();
 			} else {
 
+				
 				Task task = createTask(token, params, email);
 				Object o = new StandardResponse(
 						Response.Status.CREATED,
