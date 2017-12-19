@@ -52,13 +52,22 @@
 						<th>Task ID</th>
 						-->
 						<th>Run</th>
-						<th>Final Binding Energy</th>
-						<!--
-						<th>Objectives</th>
-						-->
-						<th>Intermolecular Energy</th>
-						<th>Intramolecular Energy</th>
-						<th>RMSD</th>
+						<th>
+							<span class="hidden-xs">Final Binding Energy</span>
+							<span class="visible-xs">E<sub>final</sub> (kcal/mol)</span>
+						</th>
+						<th>
+							<span class="hidden-xs">Intermolecular Energy</span>
+							<span class="visible-xs">E<sub>intra</sub> (kcal/mol)</span>
+						</th>
+						<th>
+							<span class="hidden-xs">Intramolecular Energy</span>
+							<span class="visible-xs">E<sub>intra</sub> (kcal/mol)</span>
+						</th>
+						<th>
+							RMSD
+							<span class="visible-xs"> (&Acirc;)</span>
+						</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -69,34 +78,36 @@
 								<td>${result.id}</td>
 								<td>${result.taskId}</td>
 								-->
-								<td>${result.run}</td>
-								<td><c:if test="${solution.finalBindingEnergy != null}">${solution.finalBindingEnergy}</c:if>kcal/mol</td>
-								<!--
 								<td>
-									<c:forEach items="${solution.objectives}" var="objective" varStatus="loop">
-										<c:if
-											test="${not empty solution.objectives[fn:length(solution.objectives)-1]}">
+									<a href='<c:url value="../${first.taskId}/result/${result.run}?token=${param.token}" />'>
+											${result.run}
+									</a>
 
-											<c:if test="${loop.last}">
-												<c:out value="${objective}" />
-											</c:if>
-
-											<c:if test="${not loop.last}">
-												<c:out value="${objective}" />,
-											</c:if>
-										</c:if>
-
-										<c:if
-											test="${empty solution.objectives[fn:length(solution.objectives)-1]}">
-											<c:out value="${objective}" />
-										</c:if>
-
-									</c:forEach>
 								</td>
-								-->
-								<td><c:if test="${solution.intermolecularEnergy != null}">${solution.intermolecularEnergy} kcal/mol</c:if></td>
-								<td><c:if test="${solution.intramolecularEnergy != null}">${solution.intramolecularEnergy} kcal/mol</c:if></td>
-								<td><c:if test="${solution.rmsd != null}">${solution.rmsd} &Acirc;</c:if></td>
+								<td>
+									<c:if test="${solution.finalBindingEnergy != null}">
+										${solution.finalBindingEnergy}
+										<span class="hidden-xs"> kcal/mol</span>
+									</c:if>
+								</td>
+								<td>
+									<c:if test="${solution.intermolecularEnergy != null}">
+										${solution.intermolecularEnergy}
+										<span class="hidden-xs"> kcal/mol</span>
+									</c:if>
+								</td>
+								<td>
+									<c:if test="${solution.intramolecularEnergy != null}">
+										${solution.intramolecularEnergy}
+										<span class="hidden-xs"> kcal/mol</span>
+									</c:if>
+								</td>
+								<td>
+									<c:if test="${solution.rmsd != null}">
+										${solution.rmsd}
+										<span class="hidden-xs"> &Acirc;</span>
+									</c:if>
+								</td>
 							</tr>
 						</c:forEach>
 					</c:forEach>
