@@ -69,7 +69,9 @@ public class Conformation {
 		String line = "", line2 = "";
 		int atomsCount = 0;
 		try {
+			System.out.println("START CONFORMATION:");
 			while ((line = br.readLine()) != null) {
+				System.out.println(line);
 				if ((endPrefix != null) && (line.startsWith(endPrefix)))
 					break;
 				if (lineStartsWithOnePrefix(line, startPrefixes)) {
@@ -99,6 +101,8 @@ public class Conformation {
 	
 				}
 			}
+			System.out.println(line);
+			System.out.println("END CONFORMATION!");
 		} catch (NumberFormatException e) {
 			throw new DlgParseException("Error en linea leyendo atomo\n"
 					+ line);
