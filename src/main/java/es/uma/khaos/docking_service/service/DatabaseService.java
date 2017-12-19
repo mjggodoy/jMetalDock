@@ -144,14 +144,16 @@ public final class DatabaseService {
 		return task;
 	}
 
-	public void updateTaskState(int id, String state) throws Exception {
+	private void updateTaskState(int id, String state, String timeColumn) throws Exception {
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
 
+		String sqlStmt = String.format("update task set state=?, %s=CURRENT_TIMESTAMP where id=?", timeColumn);
+
 		try {
 			conn = openConnection();
-			stmt = conn.prepareStatement("update task set state=? where id=?");
+			stmt = conn.prepareStatement(sqlStmt);
 			stmt.setString(1, state);
 			stmt.setInt(2, id);
 			stmt.execute();
@@ -224,8 +226,22 @@ public final class DatabaseService {
 
 			if (rs.next()) {
 				
-				ParameterSet p = new ParameterSet(rs.getInt("id"), rs.getString("algorithm"), rs.getInt("evaluations"), rs.getInt("population_size"), rs.getInt("runs"), rs.getInt("objective"), rs.getInt("task_id"));
-				task = new Task(rs.getInt("id"), rs.getString("hash"), rs.getString("state"), p, rs.getString("email"));
+				ParameterSet p = new ParameterSet(
+						rs.getInt("id"),
+						rs.getString("algorithm"),
+						rs.getInt("evaluations"),
+						rs.getInt("population_size"),
+						rs.getInt("runs"),
+						rs.getInt("objective"),
+						rs.getInt("task_id"));
+				task = new Task(
+						rs.getInt("id"),
+						rs.getString("hash"),
+						rs.getString("state"),
+						rs.getString("email"),
+						rs.getTimestamp("start_time"),
+						rs.getTimestamp("end_time"),
+						p);
 
 			}
 
@@ -248,15 +264,15 @@ public final class DatabaseService {
 	}
 
 	public void startTask(int id) throws Exception {
-		this.updateTaskState(id, RUNNING_STATE);
+		this.updateTaskState(id, RUNNING_STATE, "start_time");
 	}
 
 	public void finishTask(int id) throws Exception {
-		this.updateTaskState(id, FINISHED_STATE);
+		this.updateTaskState(id, FINISHED_STATE, "end_time");
 	}
 	
 	public void finishTaskWithError(int id) throws Exception {
-		this.updateTaskState(id, ERROR_STATE);
+		this.updateTaskState(id, ERROR_STATE, "end_time");
 	}
 	
 	/*

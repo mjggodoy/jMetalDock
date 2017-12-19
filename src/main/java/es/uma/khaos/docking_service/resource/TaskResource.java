@@ -69,9 +69,9 @@ public class TaskResource extends AbstractResource {
 		ResponseBuilder errorBuilder = getResponseBuilder(headers, "/errorResponse.jsp");
 
 		try {
-			System.out.println("EVALUATIONS = "+evaluations);
-
+			
 			String token = Utils.generateHash();
+			if ("".equals(email)) email = null;
 			ParameterSet params;
 			
 			if (fileDetails != null) {
