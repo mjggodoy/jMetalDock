@@ -164,8 +164,8 @@
 						containing the algorithm's settings. As metaheuristics are iterative algorithms that work with sets of tentative solutions 
 						that are modified according to a number of operators (e.g. in the case of GAs the operators are selection, crossover and mutation), 
 						whenever a new solution has to be evaluated, it is sent back to AutoDock 4.2 to apply its scoring function. 
-						In the case of a multi-objective approach, two objectives can be minimized: the Intermolecular and Intramolecular energies 
-						or the RMSD score and the Intermolecular energy.</figcaption>
+						In the case of a multi-objective approach, two objectives can be minimized: the intermolecular and intramolecular energies 
+						or the RMSD score and the intermolecular energy.</figcaption>
 						</figure>
 					</div>
 					<div class="modal-footer">

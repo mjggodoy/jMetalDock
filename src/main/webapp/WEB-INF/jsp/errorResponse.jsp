@@ -19,7 +19,7 @@
 	</div>
 
 	<p>
-		Maybe you should go back to the <a href="/index.jsp">home page</a>...
+		Maybe you should go back to the <a href='<c:url value="/." />'>home page</a>...
 	</p>
 </div>
 <%@ include file="/WEB-INF/jsp/footer.jsp"%>

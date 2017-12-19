@@ -31,8 +31,8 @@
 			</div>
 
 			<div id="inputFile" class="form-group form-group-dependant">
-				<label for="exampleInputFile">File Input:</label>
-				<input type="file" id="exampleInputFile">
+				<label for="file">File Input:</label>
+				<input class="" type="file" id="file" name="file">
 				<p class="help-block">Please, select a .zip in which all your
 					macromolecule and ligand files are prepared (.pdbqt) and also the
 					output files from AutoGrid software (.map).</p>
@@ -229,6 +229,15 @@
 						</button>
 					</span>
 				</div>
+			</div>
+
+			<div class="form-group">
+				<label for="email" class="control-label">Email:</label>
+				<input type="text" class="form-control" id="email" name="email">
+				<p class="help-block">
+					Write your email only if you want to receive a notification when your task is finished.
+					You will not receive any kind of spam from us.
+				</p>
 			</div>
 
 			<button type="submit" class="btn btn-primary">Submit</button>

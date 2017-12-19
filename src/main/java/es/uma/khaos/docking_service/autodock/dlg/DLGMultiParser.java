@@ -104,11 +104,9 @@ public class DLGMultiParser extends DLGParser<Front> {
 	@Override
 	public void storeResults(String dlgFilePath, int taskId)
 			throws IOException, DlgParseException, DatabaseException {
-		//DLGResult<Front> multiResult = new DLGMultiResult();
 
 		String startRunLine = "BEGINNING JMETAL ALGORITHM DOCKING";
 
-		//Front front = null;
 		Result result = null;
 		BufferedReader br = null;
 
@@ -127,38 +125,26 @@ public class DLGMultiParser extends DLGParser<Front> {
 							br.close();
 							throw new DlgParseException();
 						} else {
-							//System.out.println("ACABA RUN " + run);
 							run++;
-							//multiResult.add(front);
 						}
 					}
-					//System.out.println("EMPIEZA RUN " + run);
 					frontSize = 0;
-					//front = new Front();
 					result = DatabaseService.getInstance().insertResult(taskId, run);
 				}
 
 				if (line.startsWith(prefixStartModel)) {
 					frontSize++;
-					//System.out.println("Leyendo solucion " + solutionCount + " de run " + run);
 					AutoDockSolution sol = getSolution(br, optimizationType);
 					if (sol.getKi()==null) {
 						System.out.println("WARNING: " + dlgFilePath
 								+ " (" + run + ":" + frontSize + ") does not have Ki value");
 					}
-					//solution.setConformation(getConformation(br));
-					DatabaseService.getInstance().insertSolution(sol.getTotalEnergy(), obj1, obj2, sol.getEnergy1(), sol.getEnergy2(), sol.getRmsd(), result.getId());
-					//front.add(solution);
-
+					if (reference != null) sol.calculateRMSD(reference);
+					DatabaseService.getInstance().insertSolution(sol.getTotalEnergy(), obj1, obj2, sol.getEnergy1(),
+							sol.getEnergy2(), sol.getRmsd(), result.getId());
 				}
 			}
 
-			/*
-			if ((front != null) && (front.size() > 0)) {
-				multiResult.add(front);
-				//System.out.println("ACABA RUN " + run);
-			}
-			*/
 		} catch (IOException e) {
 			throw new DlgParseException(e);
 		} catch (DatabaseException e) {

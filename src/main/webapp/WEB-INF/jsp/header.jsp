@@ -23,7 +23,7 @@
                         <li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
                     </c:when>
                     <c:otherwise>
-                        <li><a href="index.jsp">Home</a></li>
+                        <li><a href='<c:url value="/." />'>Home</a></li>
                     </c:otherwise>
                 </c:choose>
 
@@ -32,7 +32,7 @@
                         <li class="active"><a href="#">Tutorial <span class="sr-only">(current)</span></a></li>
                     </c:when>
                     <c:otherwise>
-                        <li><a href="tutorial.jsp">Tutorial</a></li>
+                        <li><a href='<c:url value="/tutorial.jsp" />'>Tutorial</a></li>
                     </c:otherwise>
                 </c:choose>
 
@@ -41,7 +41,7 @@
                         <li class="active"><a href="#">Benchmark <span class="sr-only">(current)</span></a></li>
                     </c:when>
                     <c:otherwise>
-                        <li><a href="benchmark.jsp">Benchmark</a></li>
+                        <li><a href='<c:url value="/benchmark.jsp" />'>Benchmark</a></li>
                     </c:otherwise>
                 </c:choose>
 
@@ -50,7 +50,7 @@
                         <li class="active"><a href="#">Task <span class="sr-only">(current)</span></a></li>
                     </c:when>
                     <c:otherwise>
-                        <li><a href="task.jsp">Task</a></li>
+                        <li><a href='<c:url value="/task.jsp" />'>Task</a></li>
                     </c:otherwise>
                 </c:choose>
 
@@ -59,7 +59,7 @@
                         <li class="active"><a href="#">References <span class="sr-only">(current)</span></a></li>
                     </c:when>
                     <c:otherwise>
-                        <li><a href="references.jsp">References</a></li>
+                        <li><a href='<c:url value="/references.jsp" />'>References</a></li>
                     </c:otherwise>
                 </c:choose>
 

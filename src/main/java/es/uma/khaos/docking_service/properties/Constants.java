@@ -44,12 +44,14 @@ public class Constants {
 	public static final String RESPONSE_TASK_MSG_ID_NOT_NUMBER = "Task id should be a valid number";
 	public static final String RESPONSE_TASK_MSG_NOT_TOKEN = "Token is a mandatory parameter";
 	public static final String RESPONSE_TASK_MSG_UNALLOWED = "You are not allowed to see this task";
+	public static final String RESPONSE_TASK_CREATED = "Task successfully created!";
 	
 	public static final String RESPONSE_ERROR_DATABASE = "There was an error with the database. Contact with the administrators.";
 	public static final String RESPONSE_NOT_A_NUMBER_ERROR = "%s should be a valid number";
 	public static final String RESPONSE_MANDATORY_PARAMETER_ERROR = "Mandatory parameter not provided: %s";
 	public static final String RESPONSE_NOT_VALID_PARAMETER_ERROR = "Parameter with a non allowed value: %s. Check possible values.";
 	public static final String RESPONSE_MIN_MAX_VALUES = "There was an error based on the parameters introduced. The minimum values for evaluations, runs and population sizes are 1500000, 10 and 100, respectively. The maximum values for evaluations, runs and population are 25000000, 50 and 500, respectively";
+	public static final String RESPONSE_INTERNAL_SERVER_ERROR = "Internal server error. Please contact us for assistance.";
 
 	// Algorithm values allowed
 	public static final List<String> SINGLE_OBJECTIVE_ALGORITHMS = Configurations.getListProperties(Properties.SINGLE_OBJ_ALGORITHMS);

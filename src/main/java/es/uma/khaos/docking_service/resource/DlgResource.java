@@ -14,7 +14,9 @@ import java.io.InputStream;
 import java.sql.*;
 
 @Path("/task")
-public class DlgResource extends Application {
+public class DlgResource extends AbstractResource {
+
+    //TODO: Chequear y cambiar para que funcione tanto en API como en html (incluyendo mensajes de error)
 
     @GET
     @Path("/{id}/dlg")
