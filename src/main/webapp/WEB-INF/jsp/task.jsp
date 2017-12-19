@@ -24,7 +24,7 @@
 					<td class="col-md-6">
 						<c:if test="${task.state=='finished'}">
 							<span class="label label-success">Finished</span>
-							<a href="<c:out value="${task.id}" />/result?token=<c:out value="${task.token}" />">Go to results</a>
+							<a href='<c:url value="${task.id}/result?token=${task.token}" />'>Go to results</a>
 						</c:if>
 						<c:if test="${task.state=='error'}">
 							<span class="label label-danger">Error</span>
