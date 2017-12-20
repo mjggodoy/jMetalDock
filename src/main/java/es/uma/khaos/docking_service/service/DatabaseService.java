@@ -708,7 +708,9 @@ public final class DatabaseService {
 		return solution;
 	}
 
-	public Solution insertSolution(double finalBindingEnergy, String objective1, String objective2, double intermolecularEnergy, double intramolecularEnergy, Double rmsd, int resultId) throws DatabaseException {
+	public Solution insertSolution(double finalBindingEnergy, String objective1, String objective2,
+								   double intermolecularEnergy, double intramolecularEnergy, Double rmsd,
+								   String pdbqt, int resultId) throws DatabaseException {
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -721,8 +723,9 @@ public final class DatabaseService {
 		try {
 			
 			conn = openConnection();
-			stmt = conn.prepareStatement("insert into solution (final_binding_energy, objective1, objective2, intermolecular_energy, intramolecular_energy, rmsd, result_id) "
-					+ "values (?, ?, ?, ?, ?, ?, ?)",
+			stmt = conn.prepareStatement("insert into solution (final_binding_energy, objective1, objective2, " +
+							"intermolecular_energy, intramolecular_energy, rmsd, result_id, pdbqt) " +
+							"values (?, ?, ?, ?, ?, ?, ?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
 			stmt.setDouble(1, finalBindingEnergy);
 			stmt.setString(2, objective1);
@@ -732,11 +735,13 @@ public final class DatabaseService {
 			if (rmsd == null) stmt.setNull(6, Types.FLOAT);
 			else stmt.setDouble(6, rmsd);
 			stmt.setInt(7, resultId);
+			stmt.setString(8, pdbqt);
 			stmt.execute();
 			rs = stmt.getGeneratedKeys();
 
 			if (rs.next()) {
-				solution = new Solution(rs.getInt(1), finalBindingEnergy, objectives, intermolecularEnergy, intramolecularEnergy, rmsd, resultId);
+				solution = new Solution(rs.getInt(1), finalBindingEnergy, objectives, intermolecularEnergy,
+						intramolecularEnergy, rmsd, resultId);
 			}
 
 		} catch (SQLException e) {
@@ -843,16 +848,6 @@ public final class DatabaseService {
 			}
 		}
 		return dlg;
-	}
-
-	
-	public static void main(String[] args) throws Exception {
-		
-		System.out.println("Testing...");
-		
-		DatabaseService ds = new DatabaseService();
-		ds.insertTask("94ovljntrpg6n8s1ef8lrmqtmu", "mjgarciag//2");
-		
 	}
 	
 }

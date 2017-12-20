@@ -15,6 +15,7 @@ import es.uma.khaos.docking_service.exception.DlgParseException;
 public class Conformation {
 
 	protected List<Atom> atoms;
+	private String pdbqt = "";
 
 	public Conformation(List<Atom> atoms) {
 		this.atoms = atoms;
@@ -31,6 +32,10 @@ public class Conformation {
 
 	public List<Atom> getAtoms() {
 		return atoms;
+	}
+
+	public String getPdbqt() {
+		return pdbqt;
 	}
 
 	public void setAtoms(List<Atom> atoms) {
@@ -69,9 +74,10 @@ public class Conformation {
 		String line = "", line2 = "";
 		int atomsCount = 0;
 		try {
-			System.out.println("START CONFORMATION:");
+			//System.out.println("START CONFORMATION:");
 			while ((line = br.readLine()) != null) {
-				System.out.println(line);
+				//System.out.println(line);
+				this.pdbqt += line + "\n";
 				if ((endPrefix != null) && (line.startsWith(endPrefix)))
 					break;
 				if (lineStartsWithOnePrefix(line, startPrefixes)) {
@@ -101,8 +107,8 @@ public class Conformation {
 	
 				}
 			}
-			System.out.println(line);
-			System.out.println("END CONFORMATION!");
+			//System.out.println(line);
+			//System.out.println("END CONFORMATION!");
 		} catch (NumberFormatException e) {
 			throw new DlgParseException("Error en linea leyendo atomo\n"
 					+ line);

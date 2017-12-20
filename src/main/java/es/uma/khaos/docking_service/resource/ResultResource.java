@@ -59,9 +59,23 @@ public class ResultResource extends AbstractResource {
 		ResponseBuilder errorBuilder = getResponseBuilder(headers, "/errorResponse.jsp");
 		return getSolutionResponse(taskId, solutionId, token, builder, errorBuilder);
 	}
-	
-	//TODO: Sacar los GETS de HTML
-	
+
+	/*
+	@GET
+	@Path("/{taskId}/result/{run}/{solutionId}/pdbqt")
+	@Produces({MediaType.TEXT_PLAIN})
+	public Response getPdbqt(
+			@NotNull @PathParam("taskId") int taskId,
+			@NotNull @PathParam("run") int run,
+			@NotNull @PathParam("solutionId") int solutionId,
+			@QueryParam("token") String token,
+			@Context HttpHeaders headers) {
+		ResponseBuilder builder = getResponseBuilder(headers, "/solution.jsp");
+		ResponseBuilder errorBuilder = getResponseBuilder(headers, "/errorResponse.jsp");
+		return getSolutionResponse(taskId, solutionId, token, builder, errorBuilder);
+		caca
+	}
+	*/
 	
 	//TODO: Código repetido. Mí no gusta.
 
