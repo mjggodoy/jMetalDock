@@ -89,14 +89,7 @@ public class TaskResource extends AbstractResource {
 			}
 			
 			if(inputStream == null && instance == null){
-
-				return errorBuilder.buildResponse(
-						new ErrorResponse(
-								Response.Status.INTERNAL_SERVER_ERROR,
-								Constants.RESPONSE_INTERNAL_SERVER_ERROR),
-						Response.Status.INTERNAL_SERVER_ERROR
-				);
-				
+				return internalServerError(errorBuilder);
 			}
 
 			ResponseBuilder builder = getResponseBuilder(headers, "/standardResponse.jsp");
@@ -105,12 +98,7 @@ public class TaskResource extends AbstractResource {
 		
 		} catch (Exception e) {
 			e.printStackTrace();
-			return errorBuilder.buildResponse(
-					new ErrorResponse(
-							Response.Status.INTERNAL_SERVER_ERROR,
-							Constants.RESPONSE_INTERNAL_SERVER_ERROR),
-					Response.Status.INTERNAL_SERVER_ERROR
-			);
+			return internalServerError(errorBuilder);
 		}
 	}
 	
@@ -142,12 +130,7 @@ public class TaskResource extends AbstractResource {
 
 		} catch (DatabaseException e) {
 			e.printStackTrace();
-			return errorBuilder.buildResponse(
-					new ErrorResponse(
-							Response.Status.INTERNAL_SERVER_ERROR,
-							Constants.RESPONSE_INTERNAL_SERVER_ERROR),
-					Response.Status.INTERNAL_SERVER_ERROR
-			);
+			return internalServerError(errorBuilder);
 		}
 	}
 	
@@ -181,12 +164,7 @@ public class TaskResource extends AbstractResource {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return errorBuilder.buildResponse(
-					new ErrorResponse(
-							Response.Status.INTERNAL_SERVER_ERROR,
-							Constants.RESPONSE_INTERNAL_SERVER_ERROR),
-					Response.Status.INTERNAL_SERVER_ERROR
-			);
+			return internalServerError(errorBuilder);
 		}
 	}
 	
@@ -203,5 +181,5 @@ public class TaskResource extends AbstractResource {
 		
 		return task;
 	}
-	
+
 }

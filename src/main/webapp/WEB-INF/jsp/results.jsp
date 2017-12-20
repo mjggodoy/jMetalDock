@@ -48,10 +48,10 @@
 				<thead>
 					<tr>
 						<!--
-						<th>ID</th>
 						<th>Task ID</th>
 						-->
 						<th>Run</th>
+						<th>ID</th>
 						<th>
 							<span class="hidden-xs">Final Binding Energy</span>
 							<span class="visible-xs">E<sub>final</sub> (kcal/mol)</span>
@@ -82,7 +82,11 @@
 									<a href='<c:url value="../${first.taskId}/result/${result.run}?token=${param.token}" />'>
 											${result.run}
 									</a>
-
+								</td>
+								<td>
+									<a href='<c:url value="../${first.taskId}/result/${result.run}/${solution.id}?token=${param.token}" />'>
+											${solution.id}
+									</a>
 								</td>
 								<td>
 									<c:if test="${solution.finalBindingEnergy != null}">

@@ -11,11 +11,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.*;
 
 import es.uma.khaos.docking_service.exception.DatabaseException;
-import es.uma.khaos.docking_service.model.ErrorResponse;
-import es.uma.khaos.docking_service.model.Result;
-import es.uma.khaos.docking_service.model.Results;
-import es.uma.khaos.docking_service.model.Solution;
-import es.uma.khaos.docking_service.model.Task;
+import es.uma.khaos.docking_service.model.*;
 import es.uma.khaos.docking_service.properties.Constants;
 import es.uma.khaos.docking_service.response.JspResponseBuilder;
 import es.uma.khaos.docking_service.response.PojoResponseBuilder;
@@ -49,6 +45,20 @@ public class ResultResource extends AbstractResource {
 		ResponseBuilder errorBuilder = getResponseBuilder(headers, "/errorResponse.jsp");
 		return getResultResponse(taskId, run, token, builder, errorBuilder);
 	}
+
+	@GET
+	@Path("/{taskId}/result/{run}/{solutionId}")
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML})
+	public Response getSolution(
+			@NotNull @PathParam("taskId") int taskId,
+			@NotNull @PathParam("run") int run,
+			@NotNull @PathParam("solutionId") int solutionId,
+			@QueryParam("token") String token,
+			@Context HttpHeaders headers) {
+		ResponseBuilder builder = getResponseBuilder(headers, "/solution.jsp");
+		ResponseBuilder errorBuilder = getResponseBuilder(headers, "/errorResponse.jsp");
+		return getSolutionResponse(taskId, solutionId, token, builder, errorBuilder);
+	}
 	
 	//TODO: Sacar los GETS de HTML
 	
@@ -75,12 +85,7 @@ public class ResultResource extends AbstractResource {
 
 		} catch (DatabaseException e) {
 			e.printStackTrace();
-			return errorBuilder.buildResponse(
-					new ErrorResponse(
-							Response.Status.INTERNAL_SERVER_ERROR,
-							Constants.RESPONSE_INTERNAL_SERVER_ERROR),
-					Response.Status.INTERNAL_SERVER_ERROR
-			);
+			return internalServerError(errorBuilder);
 		}
 	}
 
@@ -112,12 +117,33 @@ public class ResultResource extends AbstractResource {
 
 		} catch (DatabaseException e) {
 			e.printStackTrace();
-			return errorBuilder.buildResponse(
-					new ErrorResponse(
-							Response.Status.INTERNAL_SERVER_ERROR,
-							Constants.RESPONSE_INTERNAL_SERVER_ERROR),
-					Response.Status.INTERNAL_SERVER_ERROR
-			);
+			return internalServerError(errorBuilder);
+		}
+	}
+
+	private Response getSolutionResponse(int taskId, int solutionId, String token,
+								 ResponseBuilder builder, ResponseBuilder errorBuilder) {
+		try{
+
+			Task task = DatabaseService.getInstance().getTaskParameter(taskId);
+
+			if (task == null || !task.getToken().equals(token)) {
+				return errorBuilder.buildResponse(
+						new ErrorResponse(
+								Response.Status.FORBIDDEN,
+								Constants.RESPONSE_TASK_MSG_UNALLOWED),
+						Response.Status.FORBIDDEN
+				);
+			}else{
+
+				IndividualSolution solution =
+						DatabaseService.getInstance().getSolution(taskId, solutionId);
+				return builder.buildResponse(solution);
+			}
+
+		} catch (DatabaseException e) {
+			e.printStackTrace();
+			return internalServerError(errorBuilder);
 		}
 	}
 

@@ -539,7 +539,26 @@ public final class DatabaseService {
 		Double rmsd = rs.getDouble("rmsd");
 		if (rs.wasNull()) rmsd = null;
 		int resultId = rs.getInt("result_id");
-		return new Solution(id,finalBindingEnergy, objectives, intermolecularEnergy, intramolecularEnergy, rmsd, resultId);
+		return new Solution(id,finalBindingEnergy, objectives, intermolecularEnergy, intramolecularEnergy,
+				rmsd, resultId);
+	}
+
+	private IndividualSolution getIndividualSolution(ResultSet rs) throws SQLException {
+		int id = rs.getInt("id");
+		double finalBindingEnergy = rs.getDouble("final_binding_energy");
+		String objective1 = rs.getString("objective1");
+		String objective2 = rs.getString("objective2");
+		List <String> objectives = new ArrayList<String>();
+		objectives.add(objective1);
+		objectives.add(objective2);
+		double intermolecularEnergy = rs.getDouble("intermolecular_energy");
+		double intramolecularEnergy = rs.getDouble("intramolecular_energy");
+		Double rmsd = rs.getDouble("rmsd");
+		if (rs.wasNull()) rmsd = null;
+		int run = rs.getInt("run");
+		int taskId = rs.getInt("task_id");
+		return new IndividualSolution(id,finalBindingEnergy, objectives, intermolecularEnergy, intramolecularEnergy,
+				rmsd, run, taskId);
 	}
 	
 	public List<Solution> getSolutionsFromResult(int resultId) throws DatabaseException {
@@ -576,7 +595,7 @@ public final class DatabaseService {
 		return solutions;
 	}
 	
-	public Solution getSolution(int id) throws Exception{
+	public Solution getSolution(int id) throws DatabaseException {
 		
 		Solution solution = null;
 		Connection conn = null;
@@ -595,20 +614,63 @@ public final class DatabaseService {
 				solution = getSolution(rs);
 			}
 
+		} catch (SQLException e) {
+			throw new DatabaseException(e);
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
+			throw new DatabaseException(e);
 		} finally {
-			if (rs != null)
-				rs.close();
-			if (stmt != null)
-				stmt.close();
-			if (conn != null)
-				conn.close();
+			try {
+				if (rs != null) rs.close();
+				if (stmt != null) stmt.close();
+				if (conn != null) conn.close();
+			} catch (SQLException e) {
+				throw new DatabaseException(e);
+			}
 		}
 	
 		return solution;
 		
+	}
+
+	public IndividualSolution getSolution(int taskId, int id) throws DatabaseException {
+
+		IndividualSolution solution = null;
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+		String sqlStmt = "select a.*, b.task_id, b.run from solution a, result b " +
+				"where a.id=? and a.result_id=b.id and b.task_id=?";
+
+		try {
+
+			conn = openConnection();
+			stmt = conn
+					.prepareStatement(sqlStmt);
+			stmt.setInt(1, id);
+			stmt.setInt(2, taskId);
+			rs = stmt.executeQuery();
+
+			if (rs.next()) {
+				solution = getIndividualSolution(rs);
+			}
+
+		} catch (SQLException e) {
+			throw new DatabaseException(e);
+		} catch (Exception e) {
+			throw new DatabaseException(e);
+		} finally {
+			try {
+				if (rs != null) rs.close();
+				if (stmt != null) stmt.close();
+				if (conn != null) conn.close();
+			} catch (SQLException e) {
+				throw new DatabaseException(e);
+			}
+		}
+
+		return solution;
+
 	}
 	
 	public Solution getResultByTaskIdAndRun(int taskId, int run) throws Exception{
