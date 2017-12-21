@@ -60,7 +60,6 @@ public class ResultResource extends AbstractResource {
 		return getSolutionResponse(taskId, solutionId, token, builder, errorBuilder);
 	}
 
-	/*
 	@GET
 	@Path("/{taskId}/result/{run}/{solutionId}/pdbqt")
 	@Produces({MediaType.TEXT_PLAIN})
@@ -70,12 +69,11 @@ public class ResultResource extends AbstractResource {
 			@NotNull @PathParam("solutionId") int solutionId,
 			@QueryParam("token") String token,
 			@Context HttpHeaders headers) {
-		ResponseBuilder builder = getResponseBuilder(headers, "/solution.jsp");
+		ResponseBuilder builder = new PojoResponseBuilder();
 		ResponseBuilder errorBuilder = getResponseBuilder(headers, "/errorResponse.jsp");
-		return getSolutionResponse(taskId, solutionId, token, builder, errorBuilder);
-		caca
+		return getPdbqtResponse(taskId, solutionId, token, builder, errorBuilder);
+
 	}
-	*/
 	
 	//TODO: Código repetido. Mí no gusta.
 
@@ -153,6 +151,32 @@ public class ResultResource extends AbstractResource {
 				IndividualSolution solution =
 						DatabaseService.getInstance().getSolution(taskId, solutionId);
 				return builder.buildResponse(solution);
+			}
+
+		} catch (DatabaseException e) {
+			e.printStackTrace();
+			return internalServerError(errorBuilder);
+		}
+	}
+
+	private Response getPdbqtResponse(int taskId, int solutionId, String token,
+										 ResponseBuilder builder, ResponseBuilder errorBuilder) {
+		try{
+
+			Task task = DatabaseService.getInstance().getTaskParameter(taskId);
+
+			if (task == null || !task.getToken().equals(token)) {
+				return errorBuilder.buildResponse(
+						new ErrorResponse(
+								Response.Status.FORBIDDEN,
+								Constants.RESPONSE_TASK_MSG_UNALLOWED),
+						Response.Status.FORBIDDEN
+				);
+			}else{
+
+				IndividualSolution solution =
+						DatabaseService.getInstance().getSolution(taskId, solutionId);
+				return builder.buildResponse(solution.getPdbqt());
 			}
 
 		} catch (DatabaseException e) {
