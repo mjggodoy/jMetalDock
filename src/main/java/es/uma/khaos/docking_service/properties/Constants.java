@@ -5,6 +5,9 @@ import java.util.List;
 public class Constants {
 	
 	public static final String PATH_DOCKING_SERVICE_PROPS = "docking_service.properties";
+
+	// Website
+	public static final String WEB_URL = Configurations.getProperty((Properties.WEB_URL));
 	
 	// MYSQL database
 	public static final String MYSQL_IP = Configurations.getProperty(Properties.MYSQL_IP);

@@ -2,8 +2,8 @@ package es.uma.khaos.docking_service.service;
 
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.Properties;
 
+import es.uma.khaos.docking_service.properties.Constants;
 import sun.net.smtp.SmtpClient;
 
 public final class MailService {
@@ -11,82 +11,45 @@ public final class MailService {
 	private static MailService instance;
 	
 	public MailService() {}
-	
-	public void sendResetPasswordMail(String email, String name, String surname, String nonce) throws IOException {
-		
-		Properties props = new Properties();
-		props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("dione.properties"));
-		//String websiteName = props.getProperty("website.name");
-		String url = props.getProperty("website.url");
-		
+
+	public void sendFinishedTaskMail(String email, int taskId, String token) throws IOException {
+
 		SmtpClient client = new SmtpClient("sol10.lcc.uma.es");
 		client.from("khaos@lcc.uma.es");
 		client.to(email);
-		
+
 		PrintStream message = client.startMessage();
 		message.println("From: "+"khaos@lcc.uma.es");
 		message.println("To: "+email);
-		message.println("Subject: "+"[DIONE] Reset password request");
-		message.println("Dear "+name+" "+ surname+":\n");
-		message.println("You have requested a password change. Visit the following url to reset your password:");
-		message.println(url + "/change_password.jsp?id=" + nonce + "\n");
-		
-		message.println("Kind regards. Khaos Group");
-		message.println(url);
-		
+		message.println("Subject: "+"[JMETALDOCK] Task finished");
+		message.println("Your task has finished.\n");
+		message.println("Go to this URL to check the results:");
+		message.println(Constants.WEB_URL + "rest/task/" + taskId + "?token=" + token + "\n");
+
+		message.println("Kind regards.\nKhaos Research Group");
+		message.println(Constants.WEB_URL);
+
 		client.closeServer();
 	}
-	
-	public void sendAcceptanceMail(String email, String name, String surname) throws IOException {
-		
-		Properties props = new Properties();
-		props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("dione.properties"));
-		String websiteName = props.getProperty("website.name");
-		String url = props.getProperty("website.url");
-		
+
+	public void sendErrorTaskMail(String email, int taskId, String token) throws IOException {
+
 		SmtpClient client = new SmtpClient("sol10.lcc.uma.es");
 		client.from("khaos@lcc.uma.es");
 		client.to(email);
-		
+
 		PrintStream message = client.startMessage();
 		message.println("From: "+"khaos@lcc.uma.es");
 		message.println("To: "+email);
-		message.println("Subject: "+"[DIONE] Log in data for the " + websiteName + " website");
-		message.println("Dear "+name+" "+ surname+":\n");
-		message.println("Your request to access the " + websiteName + " Website has been accepted. Use your email and password to log in.\n");
-		message.println("Kind regards. Khaos Group");
-		message.println(url);
-		
-		client.closeServer();
-	}
-	
-	public void sendValidationMail(String email, String name, String surname, String emailFrom, String affiliation, String interest) throws IOException {
-		
-		Properties props = new Properties();
-		props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("dione.properties"));
-		String websiteName = props.getProperty("website.name");
-		String url = props.getProperty("website.url");
-		
-		SmtpClient client = new SmtpClient("sol10.lcc.uma.es");
-		client.from("khaos@lcc.uma.es");
-		client.to(email);
-		
-		PrintStream message = client.startMessage();
-		message.println("From: "+"khaos@lcc.uma.es");
-		message.println("To: "+email);
-		message.println("Subject: "+"[DIONE] Solicitud de acceso a la web de " + websiteName);
-		message.println("Se ha recibido una solicitud de registro a la web de " + websiteName + "\n");
-		message.println("La solicitud ha sido:");
-		message.println("----------------------------------------------");
-		message.println("Nombre: "+name);
-		message.println("Apellidos: "+surname);
-		message.println("Email: "+emailFrom);
-		message.println("Affiliation: "+affiliation);
-		message.println("Interest: "+interest);
-		message.println("----------------------------------------------\n");
-		message.println("Para aceptarle y enviarle un email de confirmaci�n, visite la siguiente URL y entre con sus datos de usuario:");
-		message.println(url + "/action/validateAction.jsp?email=" + emailFrom);
-		
+		message.println("Subject: "+"[JMETALDOCK] Task error");
+		message.println("We are sorry, your task encountered an error and could not finish.\n");
+		message.println("Go to this URL to check the results:");
+		message.println(Constants.WEB_URL + "rest/task/" + taskId + "?token=" + token + "\n");
+		message.println("Please contact us if you need asistance.");
+
+		message.println("Kind regards.\nKhaos Research Group");
+		message.println(Constants.WEB_URL);
+
 		client.closeServer();
 	}
 	
