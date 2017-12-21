@@ -141,7 +141,7 @@ public class DLGMultiParser extends DLGParser<Front> {
 					}
 					if (reference != null) sol.calculateRMSD(reference);
 					DatabaseService.getInstance().insertSolution(sol.getTotalEnergy(), obj1, obj2, sol.getEnergy1(),
-							sol.getEnergy2(), sol.getRmsd(), result.getId());
+							sol.getEnergy2(), sol.getRmsd(), sol.getConformation().getPdbqt(), result.getId());
 				}
 			}
 

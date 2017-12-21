@@ -52,18 +52,19 @@
 			<table  class="table table-striped table-condensed">
 				<thead>
 					<tr>
-						<!--
+
 						<th>ID</th>
+						<!--
 						<th>Task ID</th>
-						-->
 						<th>Run</th>
+						-->
 						<th>
 							<span class="hidden-xs">Final Binding Energy</span>
 							<span class="visible-xs">E<sub>final</sub> (kcal/mol)</span>
 						</th>
 						<th>
 							<span class="hidden-xs">Intermolecular Energy</span>
-							<span class="visible-xs">E<sub>intra</sub> (kcal/mol)</span>
+							<span class="visible-xs">E<sub>inter</sub> (kcal/mol)</span>
 						</th>
 						<th>
 							<span class="hidden-xs">Intramolecular Energy</span>
@@ -78,11 +79,15 @@
 				<tbody>
 					<c:forEach items="${result.solutions}" var="solution">
 						<tr>
+							<td>
+								<a href='<c:url value="../../${result.taskId}/result/${result.run}/${solution.id}?token=${param.token}" />'>
+										${solution.id}
+								</a>
+							</td>
 							<!--
-							<td>${result.id}</td>
 							<td>${result.taskId}</td>
-							-->
 							<td>${result.run}</td>
+							-->
 							<td>
 								<c:if test="${solution.finalBindingEnergy != null}">
 									${solution.finalBindingEnergy}

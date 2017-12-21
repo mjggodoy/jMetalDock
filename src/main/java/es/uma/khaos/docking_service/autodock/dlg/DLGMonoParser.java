@@ -102,7 +102,8 @@ public class DLGMonoParser extends DLGParser<AutoDockSolution> {
 					//sol.setConformation(getConformation(br));
 					if (reference != null) sol.calculateRMSD(reference);
 					Result result = DatabaseService.getInstance().insertResult(taskId, run);
-					DatabaseService.getInstance().insertSolution(sol.getTotalEnergy(), obj1, obj2, sol.getEnergy1(), sol.getEnergy2(), sol.getRmsd(), result.getId());
+					DatabaseService.getInstance().insertSolution(sol.getTotalEnergy(), obj1, obj2, sol.getEnergy1(),
+							sol.getEnergy2(), sol.getRmsd(), sol.getConformation().getPdbqt(), result.getId());
 					run++;
 
 				//} else if (line.contains(lineRmsdTable)) {
