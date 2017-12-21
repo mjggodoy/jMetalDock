@@ -40,6 +40,12 @@ public class ParameterSet {
 		this.objectiveOption = objectiveOption;
 		this.taskId = taskId;
 	}
+
+	public ParameterSet(int id, String algorithm, int evaluations, int populationSize, int runs,
+						int objectiveOption, int taskId, String instance) {
+		this(id, algorithm, evaluations, populationSize, runs, objectiveOption, taskId);
+		this.instance = instance;
+	}
 	
 	public ParameterSet(int id, String algorithm, int evaluations, int populationSize, int runs,
 			boolean useRmsdAsObjective, int taskId) {
@@ -119,6 +125,10 @@ public class ParameterSet {
 
 	public String getInstance() {
 		return instance;
+	}
+
+	public void setInstance(String instance) {
+		this.instance = instance;
 	}
 	
 	public String getUploadedFile() {

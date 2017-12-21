@@ -225,7 +225,11 @@ public final class DatabaseService {
 			rs = stmt.executeQuery();
 
 			if (rs.next()) {
-				
+
+				String instance = rs.getString("instance");
+				if (instance != null && instance.equals(""))
+					instance = null;
+
 				ParameterSet p = new ParameterSet(
 						rs.getInt("id"),
 						rs.getString("algorithm"),
@@ -233,7 +237,8 @@ public final class DatabaseService {
 						rs.getInt("population_size"),
 						rs.getInt("runs"),
 						rs.getInt("objective"),
-						rs.getInt("task_id"));
+						rs.getInt("task_id"),
+						instance);
 				task = new Task(
 						rs.getInt("id"),
 						rs.getString("hash"),
@@ -370,8 +375,9 @@ public final class DatabaseService {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		
-		String statement = "insert into parameters_set (algorithm, evaluations, population_size, runs, objective, task_id)"
-				+ " values (?, ?, ?, ?, ?, ?)"; 
+		String statement = "insert into parameters_set (algorithm, evaluations, population_size, " +
+				"runs, objective, instance, task_id) " +
+				"values (?, ?, ?, ?, ?, ?, ?)";
 
 		try {
 			conn = openConnection();
@@ -381,7 +387,8 @@ public final class DatabaseService {
 			stmt.setInt(3, parameters.getPopulationSize());
 			stmt.setInt(4, parameters.getRuns());
 			stmt.setInt(5, parameters.getObjectiveOption());
-			stmt.setInt(6, parameters.getTaskId());
+			stmt.setString(6, parameters.getInstance());
+			stmt.setInt(7, parameters.getTaskId());
 			stmt.execute();
 			rs = stmt.getGeneratedKeys();
 			
