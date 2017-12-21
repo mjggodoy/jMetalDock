@@ -28,7 +28,7 @@
     <init-param>
       <param-name>jersey.config.server.mvc.templateBasePath.jsp</param-name>
       <param-value>/WEB-INF/jsp</param-value>
-    </init-param>
+    </init-param> 
     <!--
     <init-param>
       <param-name>com.sun.jersey.config.property.WebPageContentRegex</param-name>

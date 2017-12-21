@@ -1,5 +1,7 @@
 package es.uma.khaos.docking_service.service;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -15,10 +17,7 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 
 import es.uma.khaos.docking_service.exception.DatabaseException;
-import es.uma.khaos.docking_service.model.ParameterSet;
-import es.uma.khaos.docking_service.model.Result;
-import es.uma.khaos.docking_service.model.Solution;
-import es.uma.khaos.docking_service.model.Task;
+import es.uma.khaos.docking_service.model.*;
 import es.uma.khaos.docking_service.properties.Constants;
 
 public final class DatabaseService {
@@ -76,6 +75,12 @@ public final class DatabaseService {
 			System.out.println("SSH disconected.");
 		}
 	}
+
+	//TODO: Cambiar a una única conexión persistente
+	public Connection getConnection() throws Exception {
+		Connection conn = openConnection();
+		return conn;
+	}
 	
 	private Connection openConnection() throws Exception {
 
@@ -101,7 +106,7 @@ public final class DatabaseService {
 	 * TASK
 	 */
 
-	public Task insertTask(String hash) throws Exception {
+	public Task insertTask(String hash, String email) throws Exception {
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -111,13 +116,15 @@ public final class DatabaseService {
 		try {
 			conn = openConnection();
 			stmt = conn.prepareStatement(
-					"insert into task (hash) values (?)", Statement.RETURN_GENERATED_KEYS);
+					"insert into task (hash, email ) values (?, ?)", Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, hash);
+			stmt.setString(2, email);
 			stmt.execute();
-
 			rs = stmt.getGeneratedKeys();
 			if (rs.next()) {
-				task = new Task(rs.getInt(1), hash, "sent");
+				
+				task = new Task(rs.getInt(1), hash, "sent", email);
+
 			}
 
 		} catch (SQLException e) {
@@ -137,14 +144,16 @@ public final class DatabaseService {
 		return task;
 	}
 
-	public void updateTaskState(int id, String state) throws Exception {
+	private void updateTaskState(int id, String state, String timeColumn) throws Exception {
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
 
+		String sqlStmt = String.format("update task set state=?, %s=CURRENT_TIMESTAMP where id=?", timeColumn);
+
 		try {
 			conn = openConnection();
-			stmt = conn.prepareStatement("update task set state=? where id=?");
+			stmt = conn.prepareStatement(sqlStmt);
 			stmt.setString(1, state);
 			stmt.setInt(2, id);
 			stmt.execute();
@@ -179,7 +188,7 @@ public final class DatabaseService {
 			rs = stmt.executeQuery();
 
 			if (rs.next()) {
-				task = new Task(rs.getInt("id"), rs.getString("hash"), rs.getString("state"));
+				task = new Task(rs.getInt("id"), rs.getString("hash"), rs.getString("state"), rs.getString("email"));
 			}
 
 		} catch (SQLException e) {
@@ -217,8 +226,23 @@ public final class DatabaseService {
 
 			if (rs.next()) {
 				
-				ParameterSet p = new ParameterSet(rs.getInt("id"), rs.getString("algorithm"), rs.getInt("evaluations"), rs.getInt("population_size"), rs.getInt("runs"), rs.getInt("objective"), rs.getInt("task_id"));
-				task = new Task(rs.getInt("id"), rs.getString("hash"), rs.getString("state"), p);
+				ParameterSet p = new ParameterSet(
+						rs.getInt("id"),
+						rs.getString("algorithm"),
+						rs.getInt("evaluations"),
+						rs.getInt("population_size"),
+						rs.getInt("runs"),
+						rs.getInt("objective"),
+						rs.getInt("task_id"));
+				task = new Task(
+						rs.getInt("id"),
+						rs.getString("hash"),
+						rs.getString("state"),
+						rs.getString("email"),
+						rs.getTimestamp("start_time"),
+						rs.getTimestamp("end_time"),
+						p);
+
 			}
 
 		} catch (SQLException e) {
@@ -240,15 +264,15 @@ public final class DatabaseService {
 	}
 
 	public void startTask(int id) throws Exception {
-		this.updateTaskState(id, RUNNING_STATE);
+		this.updateTaskState(id, RUNNING_STATE, "start_time");
 	}
 
 	public void finishTask(int id) throws Exception {
-		this.updateTaskState(id, FINISHED_STATE);
+		this.updateTaskState(id, FINISHED_STATE, "end_time");
 	}
 	
 	public void finishTaskWithError(int id) throws Exception {
-		this.updateTaskState(id, ERROR_STATE);
+		this.updateTaskState(id, ERROR_STATE, "end_time");
 	}
 	
 	/*
@@ -320,7 +344,6 @@ public final class DatabaseService {
 			stmt.setInt(6, taskId);
 			stmt.execute();
 			rs = stmt.getGeneratedKeys();
-			
 			if (rs.next()) {
 				parameter = new ParameterSet(rs.getInt(1), algorithm, evaluations, populationSize, runs, objectiveOpt, taskId);
 			}
@@ -339,6 +362,45 @@ public final class DatabaseService {
 				conn.close();
 		}
 		return parameter;
+	}
+	
+	public ParameterSet insertParameter(ParameterSet parameters) throws Exception { 
+
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		String statement = "insert into parameters_set (algorithm, evaluations, population_size, runs, objective, task_id)"
+				+ " values (?, ?, ?, ?, ?, ?)"; 
+
+		try {
+			conn = openConnection();
+			stmt = conn.prepareStatement(statement, Statement.RETURN_GENERATED_KEYS);
+			stmt.setString(1, parameters.getAlgorithm());
+			stmt.setInt(2, parameters.getEvaluations());
+			stmt.setInt(3, parameters.getPopulationSize());
+			stmt.setInt(4, parameters.getRuns());
+			stmt.setInt(5, parameters.getObjectiveOption());
+			stmt.setInt(6, parameters.getTaskId());
+			stmt.execute();
+			rs = stmt.getGeneratedKeys();
+			
+			if (rs.next()) {
+				parameters.setId(rs.getInt(1));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DatabaseException();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (rs != null) rs.close();
+			if (stmt != null) stmt.close();
+			if (conn != null) conn.close();
+		}
+		return parameters;
 	}
 	
 	/*
@@ -464,12 +526,47 @@ public final class DatabaseService {
 	 * SOLUTION
 	 */
 	
+	private Solution getSolution(ResultSet rs) throws SQLException {
+		int id = rs.getInt("id");
+		double finalBindingEnergy = rs.getDouble("final_binding_energy");
+		String objective1 = rs.getString("objective1");
+		String objective2 = rs.getString("objective2");
+		List <String> objectives = new ArrayList<String>();
+		objectives.add(objective1);
+		objectives.add(objective2);
+		double intermolecularEnergy = rs.getDouble("intermolecular_energy");
+		double intramolecularEnergy = rs.getDouble("intramolecular_energy");
+		Double rmsd = rs.getDouble("rmsd");
+		if (rs.wasNull()) rmsd = null;
+		int resultId = rs.getInt("result_id");
+		return new Solution(id,finalBindingEnergy, objectives, intermolecularEnergy, intramolecularEnergy,
+				rmsd, resultId);
+	}
+
+	private IndividualSolution getIndividualSolution(ResultSet rs) throws SQLException {
+		int id = rs.getInt("id");
+		double finalBindingEnergy = rs.getDouble("final_binding_energy");
+		String objective1 = rs.getString("objective1");
+		String objective2 = rs.getString("objective2");
+		List <String> objectives = new ArrayList<String>();
+		objectives.add(objective1);
+		objectives.add(objective2);
+		double intermolecularEnergy = rs.getDouble("intermolecular_energy");
+		double intramolecularEnergy = rs.getDouble("intramolecular_energy");
+		Double rmsd = rs.getDouble("rmsd");
+		if (rs.wasNull()) rmsd = null;
+		int run = rs.getInt("run");
+		int taskId = rs.getInt("task_id");
+		String pdbqt = rs.getString("pdbqt");
+		return new IndividualSolution(id,finalBindingEnergy, objectives, intermolecularEnergy, intramolecularEnergy,
+				rmsd, run, taskId, pdbqt);
+	}
+	
 	public List<Solution> getSolutionsFromResult(int resultId) throws DatabaseException {
 		
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		List<String> objectives;
 		List<Solution> solutions = new ArrayList<Solution>();
 		
 		try {
@@ -481,20 +578,7 @@ public final class DatabaseService {
 			rs = stmt.executeQuery();
 
 			while (rs.next()) {
-
-				int id = rs.getInt("id");
-				float finalBindingEnergy = rs.getFloat("final_binding_energy");
-				String objective1 = rs.getString("objective1");
-				String objective2 = rs.getString("objective2");
-				objectives = new ArrayList<String>();
-				objectives.add(objective1);
-				objectives.add(objective2);
-				float intermolecularEnergy = rs.getFloat("intermolecular_energy");
-				float intramolecularEnergy = rs.getFloat("intramolecular_energy");
-				Float rmsd = rs.getFloat("rmsd");
-				if (rs.wasNull()) rmsd = null;
-				solutions.add(new Solution(id,finalBindingEnergy, objectives, intermolecularEnergy, intramolecularEnergy, rmsd, resultId));
-			
+				solutions.add(getSolution(rs));
 			}
 
 		} catch (Exception e) {
@@ -512,13 +596,12 @@ public final class DatabaseService {
 		return solutions;
 	}
 	
-	public Solution getSolution(int id) throws Exception{
+	public Solution getSolution(int id) throws DatabaseException {
 		
 		Solution solution = null;
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		List<String> objectives = new ArrayList<String>();
 		
 		try {
 			
@@ -529,90 +612,71 @@ public final class DatabaseService {
 			rs = stmt.executeQuery();
 
 			if (rs.next()) {
-				id = rs.getInt("id");
-				float finalBindingEnergy = rs.getFloat("final_binding_energy");
-				String objective1 = rs.getString("objective1");
-				String objective2 = rs.getString("objective2");
-				objectives.add(objective1);
-				objectives.add(objective2);
-				float intermolecularEnergy = rs.getFloat("intermolecular_energy");
-				float intramolecularEnergy = rs.getFloat("intramolecular_energy");
-				Float rmsd = rs.getFloat("rmsd");
-				if (rs.wasNull()) rmsd = null;
-				int resultId = rs.getInt("result_id");
-				solution = new Solution(id,finalBindingEnergy, objectives,intermolecularEnergy, intramolecularEnergy, rmsd, resultId);
+				solution = getSolution(rs);
 			}
 
+		} catch (SQLException e) {
+			throw new DatabaseException(e);
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
+			throw new DatabaseException(e);
 		} finally {
-			if (rs != null)
-				rs.close();
-			if (stmt != null)
-				stmt.close();
-			if (conn != null)
-				conn.close();
+			try {
+				if (rs != null) rs.close();
+				if (stmt != null) stmt.close();
+				if (conn != null) conn.close();
+			} catch (SQLException e) {
+				throw new DatabaseException(e);
+			}
 		}
 	
 		return solution;
 		
 	}
-	
-	// TODO: Esto debería devolver una lista, me parece
-	public Solution getSolutionByExecutionId(int resultId) throws Exception{
-		
-		Solution solution = null;
+
+	public IndividualSolution getSolution(int taskId, int id) throws DatabaseException {
+
+		IndividualSolution solution = null;
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
-		ArrayList<String> objectives = new ArrayList<String>();
-		
+
+		String sqlStmt = "select a.*, b.task_id, b.run from solution a, result b " +
+				"where a.id=? and a.result_id=b.id and b.task_id=?";
+
 		try {
-			
+
 			conn = openConnection();
 			stmt = conn
-					.prepareStatement("select * from solution where result_id=?");
-			stmt.setInt(1,resultId);
+					.prepareStatement(sqlStmt);
+			stmt.setInt(1, id);
+			stmt.setInt(2, taskId);
 			rs = stmt.executeQuery();
 
 			if (rs.next()) {
-
-				int id = rs.getInt("id");
-				float finalBindingEnergy = rs.getFloat("final_binding_energy");
-				String objective1 = rs.getString("objective1");
-				String objective2 = rs.getString("objective2");
-				objectives.add(objective1);
-				objectives.add(objective2);
-				float intermolecularEnergy = rs.getFloat("intermolecular_energy");
-				float intramolecularEnergy = rs.getFloat("intramolecular_energy");
-				Float rmsd = rs.getFloat("rmsd");
-				if (rs.wasNull()) rmsd = null;
-				resultId = rs.getInt("result_id");
-				solution = new Solution(id,finalBindingEnergy, objectives,intermolecularEnergy, intramolecularEnergy, rmsd, resultId);
-			
+				solution = getIndividualSolution(rs);
 			}
 
+		} catch (SQLException e) {
+			throw new DatabaseException(e);
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
+			throw new DatabaseException(e);
 		} finally {
-			if (rs != null)
-				rs.close();
-			if (stmt != null)
-				stmt.close();
-			if (conn != null)
-				conn.close();
+			try {
+				if (rs != null) rs.close();
+				if (stmt != null) stmt.close();
+				if (conn != null) conn.close();
+			} catch (SQLException e) {
+				throw new DatabaseException(e);
+			}
 		}
-	
+
 		return solution;
-		
+
 	}
 	
 	public Solution getResultByTaskIdAndRun(int taskId, int run) throws Exception{
 
 		Solution solution = null;
-		ArrayList<String> objectives = new ArrayList<String>();
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -627,17 +691,7 @@ public final class DatabaseService {
 			rs = stmt.executeQuery();
 
 			while (rs.next()) {
-				int id = rs.getInt("id");
-				float finalBindingEnergy = rs.getFloat("final_binding_energy");
-				String objective1 = rs.getString("objective1");
-				String objective2 = rs.getString("objective2");
-				objectives.add(objective1);
-				objectives.add(objective2);
-				float intermolecularEnergy = rs.getFloat("intermolecular_energy");
-				float intramolecularEnergy = rs.getFloat("intramolecular_energy");
-				float rmsd = rs.getFloat("rmsd");
-				int resultId = rs.getInt("result_id");
-				solution = new Solution(id,finalBindingEnergy, objectives, intermolecularEnergy, intramolecularEnergy, rmsd, resultId);		
+				solution = getSolution(rs);
 			}
 
 		} catch (Exception e) {
@@ -655,7 +709,9 @@ public final class DatabaseService {
 		return solution;
 	}
 
-	public Solution insertSolution(float finalBindingEnergy, String objective1, String objective2, float intermolecularEnergy, float intramolecularEnergy, Float rmsd, int resultId) throws DatabaseException {
+	public Solution insertSolution(double finalBindingEnergy, String objective1, String objective2,
+								   double intermolecularEnergy, double intramolecularEnergy, Double rmsd,
+								   String pdbqt, int resultId) throws DatabaseException {
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -668,22 +724,25 @@ public final class DatabaseService {
 		try {
 			
 			conn = openConnection();
-			stmt = conn.prepareStatement("insert into solution (final_binding_energy, objective1, objective2, intermolecular_energy, intramolecular_energy, rmsd, result_id) "
-					+ "values (?, ?, ?, ?, ?, ?, ?)",
+			stmt = conn.prepareStatement("insert into solution (final_binding_energy, objective1, objective2, " +
+							"intermolecular_energy, intramolecular_energy, rmsd, result_id, pdbqt) " +
+							"values (?, ?, ?, ?, ?, ?, ?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
-			stmt.setFloat(1, finalBindingEnergy);
+			stmt.setDouble(1, finalBindingEnergy);
 			stmt.setString(2, objective1);
 			stmt.setString(3, objective2);
-			stmt.setFloat(4, intermolecularEnergy);
-			stmt.setFloat(5, intramolecularEnergy);
+			stmt.setDouble(4, intermolecularEnergy);
+			stmt.setDouble(5, intramolecularEnergy);
 			if (rmsd == null) stmt.setNull(6, Types.FLOAT);
-			else stmt.setFloat(6, rmsd);
+			else stmt.setDouble(6, rmsd);
 			stmt.setInt(7, resultId);
+			stmt.setString(8, pdbqt);
 			stmt.execute();
 			rs = stmt.getGeneratedKeys();
 
 			if (rs.next()) {
-				solution = new Solution(rs.getInt(1), finalBindingEnergy, objectives, intermolecularEnergy, intramolecularEnergy, rmsd, resultId);
+				solution = new Solution(rs.getInt(1), finalBindingEnergy, objectives, intermolecularEnergy,
+						intramolecularEnergy, rmsd, resultId);
 			}
 
 		} catch (SQLException e) {
@@ -700,6 +759,96 @@ public final class DatabaseService {
 			}
 		}
 		return solution;
+	}
+	
+	/*
+	 * INSTANCE
+	 */
+	
+	public Instance getInstance(String name) throws DatabaseException {
+
+		Instance instance = null;
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+		try {
+
+			conn = openConnection();
+			stmt = conn.prepareStatement("select * from instance where name=?");
+			stmt.setString(1, name);
+
+			rs = stmt.executeQuery();
+
+			if (rs.next()) {
+				instance = new Instance(rs.getInt("id"), rs.getString("name"), rs.getString("filename"));
+			}
+
+		} catch (SQLException e) {
+			throw new DatabaseException(e);
+		} catch (Exception e) {
+			throw new DatabaseException(e);
+		} finally {
+			try {
+				if (rs != null) rs.close();
+				if (stmt != null) stmt.close();
+				if (conn != null) conn.close();
+			} catch (SQLException e) {
+				throw new DatabaseException(e);
+			}
+		}
+
+		return instance;
+	}
+
+	/*
+	 * DLG
+	 */
+
+	public DLG insertDLG(String fileName, int taskId) throws DatabaseException {
+
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		DLG dlg = null;
+		ResultSet rs = null;
+
+		try {
+
+			conn = openConnection();
+			stmt = conn.prepareStatement("insert into dlg (file, task_id) "
+							+ "values (?, ?)",
+					Statement.RETURN_GENERATED_KEYS);
+
+			// read the file
+			File file = new File(fileName);
+			FileInputStream input = new FileInputStream(file);
+
+			stmt.setBinaryStream(1, input);
+			stmt.setInt(2, taskId);
+
+			//store the dlg file in database
+			System.out.println("Reading file " + file.getAbsolutePath());
+			stmt.execute();
+			rs = stmt.getGeneratedKeys();
+
+			if (rs.next()) {
+				dlg = new DLG(rs.getInt(1), fileName, taskId);
+			}
+
+		} catch (SQLException e) {
+			throw new DatabaseException(e);
+		} catch (Exception e) {
+			throw new DatabaseException(e);
+		} finally {
+			try {
+				if (rs != null) rs.close();
+				if (stmt != null) stmt.close();
+				if (conn != null) conn.close();
+			} catch (SQLException e) {
+				throw new DatabaseException(e);
+			}
+		}
+		return dlg;
 	}
 	
 }

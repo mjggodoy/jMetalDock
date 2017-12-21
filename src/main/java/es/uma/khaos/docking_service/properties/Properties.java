@@ -9,6 +9,13 @@ public class Properties {
 	public static final String MYSQL_USER = "mysql.user";
 	public static final String MYSQL_PASS = "mysql.password";
 	
+	// FTP
+	public static final String FTP_IP = "ftp.ip";
+	public static final String FTP_PORT = "ftp.port";
+	public static final String FTP_USER = "ftp.user";
+	public static final String FTP_PASS = "ftp.password";
+	public static final String FTP_FOLDER_INSTANCES = "ftp.folder.instances";
+	
 	// SSH connection
 	public static final String SSH_HOST = "ssh.host";
 	public static final String SSH_PORT = "ssh.port";
@@ -28,8 +35,11 @@ public class Properties {
 	public static final String TEST_FILE_DPF = "test.file.dpf";
 	public static final String TEST_FILE_ZIP = "test.file.zip";
 	
-	//Input default parameters
+	//Input possible algorithms
+	public static final String SINGLE_OBJ_ALGORITHMS = "input.algorithm.single";
+	public static final String MULTI_OBJ_ALGORITHMS = "input.algorithm.multi";
 	
+	//Input default parameters
 	public static final String DEFAULT_NUMBER_EVALUATIONS = "input.default.evaluations";
 	public static final String DEFAULT_NUMBER_RUNS = "input.default.runs";
 	public static final String DEFAULT_NUMBER_POPULATION_SIZE = "input.default.population_size";

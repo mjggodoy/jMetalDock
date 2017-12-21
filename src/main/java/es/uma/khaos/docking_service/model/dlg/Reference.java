@@ -43,6 +43,7 @@ public class Reference extends Conformation {
 	private static File getPdbqtFile(File dpfFile, String pdbqtFolder)
 			throws DlgParseException {
 		String pdbqtName = getPdbqtFileName(dpfFile);
+		if (!pdbqtFolder.endsWith("/")) pdbqtFolder += "/";
 		return new File(pdbqtFolder + pdbqtName);
 	}
 
