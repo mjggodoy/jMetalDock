@@ -74,7 +74,7 @@ public class TaskResource extends AbstractResource {
 			if ("".equals(email)) email = null;
 			ParameterSet params;
 			
-			if (fileDetails != null) {
+			if (fileDetails != null && fileDetails.getFileName() != null && !fileDetails.getFileName().equals("")) {
 				
 				String zipFile = BASE_FOLDER + token + ".zip";
 				Utils.saveFile(inputStream, zipFile);

@@ -72,7 +72,17 @@
 				</tr>
 			</table>
 		</div>
-	
+
+		<c:if test="${solution.pdbqt!=null}">
+
+			<h4>PDBQT</h4>
+
+			<div class="well">
+				<samp style="white-space: pre-line;">${solution.pdbqt}</samp>
+			</div>
+
+		</c:if>
+
 		<%@ include file="/WEB-INF/jsp/footer.jsp"%>
 	
 	</div>	

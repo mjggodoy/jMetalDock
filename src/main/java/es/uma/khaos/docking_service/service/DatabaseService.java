@@ -557,8 +557,9 @@ public final class DatabaseService {
 		if (rs.wasNull()) rmsd = null;
 		int run = rs.getInt("run");
 		int taskId = rs.getInt("task_id");
+		String pdbqt = rs.getString("pdbqt");
 		return new IndividualSolution(id,finalBindingEnergy, objectives, intermolecularEnergy, intramolecularEnergy,
-				rmsd, run, taskId);
+				rmsd, run, taskId, pdbqt);
 	}
 	
 	public List<Solution> getSolutionsFromResult(int resultId) throws DatabaseException {

@@ -75,9 +75,10 @@ public class Conformation {
 		int atomsCount = 0;
 		try {
 			//System.out.println("START CONFORMATION:");
+			this.pdbqt = "ROOT\n";
 			while ((line = br.readLine()) != null) {
 				//System.out.println(line);
-				this.pdbqt += line + "\n";
+				this.pdbqt += line.replace("DOCKED: ", "") + "\n";
 				if ((endPrefix != null) && (line.startsWith(endPrefix)))
 					break;
 				if (lineStartsWithOnePrefix(line, startPrefixes)) {

@@ -12,6 +12,7 @@ public class IndividualSolution {
 	public Double rmsd;
 	public int run;
 	public int taskId;
+	public String pdbqt;
 
 	public IndividualSolution() {
 
@@ -23,7 +24,7 @@ public class IndividualSolution {
 	}
 
 	public IndividualSolution(int id, double finalBindingEnergy, List<String> objectives, double intermolecularEnergy,
-							  double intramolecularEnergy, Double rmsd, int run, int taskId) {
+							  double intramolecularEnergy, Double rmsd, int run, int taskId, String pdbqt) {
 		super();
 		this.id = id;
 		this.finalBindingEnergy = finalBindingEnergy;
@@ -33,6 +34,7 @@ public class IndividualSolution {
 		this.rmsd = rmsd;
 		this.run = run;
 		this.taskId = taskId;
+		this.pdbqt = pdbqt;
 	}
 
 	public int getId() {
@@ -67,6 +69,10 @@ public class IndividualSolution {
 		return taskId;
 	}
 
+	public String getPdbqt() {
+		return pdbqt;
+	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -97,5 +103,9 @@ public class IndividualSolution {
 
 	public void setTaskId(int taskId) {
 		this.taskId = taskId;
+	}
+
+	public void setPdbqt(String pdbqt) {
+		this.pdbqt = pdbqt;
 	}
 }
