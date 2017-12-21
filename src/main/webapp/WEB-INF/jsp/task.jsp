@@ -90,9 +90,18 @@
 
 		<div>
 			<table class="table table-striped table-condensed">
+				<td class="col-md-6"><strong>Instance: </strong></td>
+				<td class="col-md-6">
+					<c:if test="${task.parameters.instance==null}">
+						<i>custom</i>
+					</c:if>
+					<c:if test="${task.parameters.instance!=null}">
+						${task.parameters.instance}
+					</c:if>
+				</td>
 				<tr>
-					<td class="col-md-6"><strong>Algorithm:</strong></td>
-					<td class="col-md-6"><c:out value="${task.parameters.algorithm}" /></td>
+					<td><strong>Algorithm:</strong></td>
+					<td><c:out value="${task.parameters.algorithm}" /></td>
 				</tr>
 				<tr>
 					<td><strong>Number of runs:</strong></td>
@@ -107,8 +116,18 @@
 					<td><c:out value="${task.parameters.populationSize}" /></td>
 				</tr>
 				<tr>
-					<td><strong>Objective option:</strong></td>
-					<td><c:out value="${task.parameters.objectiveOption}" /></td>
+					<td><strong>Objective(s):</strong></td>
+					<td>
+						<c:if test="${task.parameters.objectiveOption==1}">
+							Final Binding Energy
+						</c:if>
+						<c:if test="${task.parameters.objectiveOption==2}">
+							Intermolecular and Intramolecular Energy
+						</c:if>
+						<c:if test="${task.parameters.objectiveOption==3}">
+							Binding Energy and RMSD score
+						</c:if>
+					</td>
 				</tr>
 			</table>
 		</div>
