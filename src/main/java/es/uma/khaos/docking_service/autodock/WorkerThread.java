@@ -27,6 +27,7 @@ import es.uma.khaos.docking_service.model.dlg.result.DLGResult;
 import es.uma.khaos.docking_service.properties.Constants;
 import es.uma.khaos.docking_service.service.DatabaseService;
 import es.uma.khaos.docking_service.service.FtpService;
+import es.uma.khaos.docking_service.service.MailService;
 import es.uma.khaos.docking_service.utils.Utils;
 
 public class WorkerThread implements Runnable {
@@ -39,29 +40,13 @@ public class WorkerThread implements Runnable {
 	private String name;
 	
 	private Task task;
-//	private ParameterSet params;
-//	private int id;
-//	
-//	private String algorithm;
-//	private int runs;
-//	private int evals;
-//	private int populationSize;
-//	private int objectiveOpt;
+
 	private boolean useRmsdAsObjective = false;
-	
-//	private String zipFile;
-	
+
 	public WorkerThread(String name, Task task) {
 		this.name = name;
 		this.task = task;
-//		this.id = id;
-//		this.algorithm = algorithm;
-//		this.runs = runs;
-//		this.evals = evals;
-//		this.populationSize = populationSize;
-//		this.objectiveOpt = objectiveOpt;
 		if (task.getParameters().getObjectiveOption()==3) this.useRmsdAsObjective = true;
-//		this.zipFile = zipFile;
 	}
 	
 	public void run() {
@@ -71,10 +56,18 @@ public class WorkerThread implements Runnable {
 			DatabaseService.getInstance().startTask(task.getId());
 			processCommand();
 			DatabaseService.getInstance().finishTask(task.getId());
+			if (task.getEmail()!=null && !"".equals(task.getEmail())) {
+				MailService.getInstance()
+						.sendFinishedTaskMail(task.getEmail(), task.getId(), task.getToken());
+			}
 			System.out.println(Thread.currentThread().getName()+" End.");
 		} catch (Exception e) {
 			try {
 				DatabaseService.getInstance().finishTaskWithError(task.getId());
+				if (task.getEmail()!=null && !"".equals(task.getEmail())) {
+					MailService.getInstance()
+							.sendErrorTaskMail(task.getEmail(), task.getId(), task.getToken());
+				}
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
@@ -159,7 +152,7 @@ public class WorkerThread implements Runnable {
 		}
 		
 		// BORRAMOS CARPETA Y FICHERO ZIP
-		//Utils.deleteFolder(workDir);
+		Utils.deleteFolder(workDir);
 		Utils.deleteFolder(task.getParameters().getZipFile());
 		
 	}

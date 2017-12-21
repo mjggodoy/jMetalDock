@@ -1,6 +1,9 @@
 package es.uma.khaos.docking_service.properties;
 
 public class Properties {
+
+	// Website
+	public static final String WEB_URL = "web.url";
 	
 	// MySQL database
 	public static final String MYSQL_IP = "mysql.ip";
