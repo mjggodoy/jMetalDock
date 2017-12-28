@@ -32,6 +32,27 @@ img.resize3 {
  	
 }
 
+img.resize4 {
+
+
+	width: 20%;
+ 	height: 20%;
+ 	margin-left:auto;
+   	margin-right:auto;	
+   	display: block;
+ 	
+}
+
+div#mas {
+	background-position:right 2px;
+	padding-left:50px;
+	padding-right: 20px; 
+	position:relative;
+	float:right; 
+	cursor:pointer;
+}
+
+
 figcaption.textCaption{
 	
 	text-align: center;
