@@ -510,14 +510,14 @@
 		<br />
 		<p style="text-align: justify;">References:</p>
 	
-		<ul class="h5">
+		<ol class="h5">
 		
 		<li>Morris GM, Huey R, Lindstrom W, et al.: <br /><b> 
 					 AutoDock4 and AutoDockTools4: Automated Docking with Selective Receptor Flexibility</b><br /> <cite>Algorithms for Computational
 						Journal of computational chemistry. 2009;30(16):. 
 		</cite> 2785-2791<a href="http://dx.doi.org/10.1002/jcc.21256" target="_blank"> doi:10.1002/jcc.21256</a>
 		</li>
-		</ul>
+		</ol>
 		
 		
 		
