@@ -15,6 +15,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.*;
 
 import es.uma.khaos.docking_service.model.StandardResponse;
+import io.swagger.annotations.Api;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
@@ -31,6 +32,7 @@ import es.uma.khaos.docking_service.service.DatabaseService;
 import es.uma.khaos.docking_service.service.ThreadPoolService;
 import es.uma.khaos.docking_service.utils.Utils;
 
+@Api(value="/task", description="Team A: Pua, Xuxa & Missi")
 @Path("/task")
 public class TaskResource extends AbstractResource {
 	
