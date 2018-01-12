@@ -16,6 +16,8 @@ import javax.ws.rs.core.*;
 
 import es.uma.khaos.docking_service.model.StandardResponse;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
@@ -32,7 +34,7 @@ import es.uma.khaos.docking_service.service.DatabaseService;
 import es.uma.khaos.docking_service.service.ThreadPoolService;
 import es.uma.khaos.docking_service.utils.Utils;
 
-@Api(value="/task", description="Team A: Pua, Xuxa & Missi")
+@Api(value="Task")
 @Path("/task")
 public class TaskResource extends AbstractResource {
 	
@@ -40,6 +42,10 @@ public class TaskResource extends AbstractResource {
 	
 	@GET
 	@Path("/{id}")
+	@ApiOperation(value = "Get a task by id and token",
+	notes="Get a task with the corresponding id, task, state, "
+			+ "start and end times and the parameters that were set for the algorithm execution",
+	response = Task.class)
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML})
 	public Response doGet(
 			@NotNull @PathParam("id") int id,
