@@ -17,6 +17,9 @@ import javax.ws.rs.core.*;
 import es.uma.khaos.docking_service.model.StandardResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
@@ -35,6 +38,11 @@ import es.uma.khaos.docking_service.service.ThreadPoolService;
 import es.uma.khaos.docking_service.utils.Utils;
 
 @Api(value="Task")
+@ApiResponses(value = { 
+	      @ApiResponse(code = 403, message = "You are not allowed to see this task"),
+	      @ApiResponse(code = 500, message = "Internal server error. Please contact us for assistance." )
+	      
+})
 @Path("/task")
 public class TaskResource extends AbstractResource {
 	
@@ -49,7 +57,7 @@ public class TaskResource extends AbstractResource {
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML})
 	public Response doGet(
 			@NotNull @PathParam("id") int id,
-			@QueryParam("token") String token,
+			@ApiParam(value = "task's id", required = true) @QueryParam("token") String token,
 			@Context HttpHeaders headers) throws DatabaseException {
 		
 		ResponseBuilder builder = getResponseBuilder(headers, "/task.jsp");
@@ -59,18 +67,20 @@ public class TaskResource extends AbstractResource {
 	
 	// TODO: Tratar error de FTP y tratar instancia no existente
 	@POST
+	@ApiOperation(value = "Post a task ",
+	notes="Post a task in which the algorithm and its parameters are set up"  )
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML})
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public Response doPost(
-			@FormDataParam("algorithm") String algorithm,
-			@FormDataParam("runs") @DefaultValue("1") int runs,
-			@FormDataParam("population_size") @DefaultValue("150") int populationSize, 
-			@FormDataParam("evaluations") @DefaultValue("1500000") int evaluations,
-			@FormDataParam("use_rmsd_as_obj") @DefaultValue("false") boolean useRmsdAsObjective,
-			@FormDataParam("instance") String instance,
-			@FormDataParam("email") String email,
-			@FormDataParam("file") final FormDataContentDisposition fileDetails,
-			@FormDataParam("file") final InputStream inputStream,
+			@ApiParam(value = "algorithm", required = true) @FormDataParam("algorithm") String algorithm,
+			@ApiParam(value = "runs", required = true) @FormDataParam("runs") @DefaultValue("1") int runs,
+			@ApiParam(value = "population_size", required = true) @FormDataParam("population_size") @DefaultValue("150") int populationSize, 
+			@ApiParam(value = "evaluations", required = true) @FormDataParam("evaluations") @DefaultValue("1500000") int evaluations,
+			@ApiParam(value = "use_rmsd_as_obj", required = true) @FormDataParam("use_rmsd_as_obj") @DefaultValue("false") boolean useRmsdAsObjective,
+			@ApiParam(value = "instance", required = true) @FormDataParam("instance") String instance,
+			@ApiParam(value = "email", required = false) @FormDataParam("email") String email,
+			@ApiParam(value = "file") @FormDataParam("file") final FormDataContentDisposition fileDetails,
+			@ApiParam(value = "file") @FormDataParam("file") final InputStream inputStream,
 			@Context HttpHeaders headers,
 			@Context UriInfo uriInfo) throws IOException {
 
