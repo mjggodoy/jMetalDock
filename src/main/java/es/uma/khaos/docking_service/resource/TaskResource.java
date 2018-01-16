@@ -16,6 +16,7 @@ import javax.ws.rs.core.*;
 
 import es.uma.khaos.docking_service.model.StandardResponse;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -38,11 +39,6 @@ import es.uma.khaos.docking_service.service.ThreadPoolService;
 import es.uma.khaos.docking_service.utils.Utils;
 
 @Api(value="Task")
-@ApiResponses(value = { 
-	      @ApiResponse(code = 403, message = "You are not allowed to see this task"),
-	      @ApiResponse(code = 500, message = "Internal server error. Please contact us for assistance." )
-	      
-})
 @Path("/task")
 public class TaskResource extends AbstractResource {
 	
@@ -50,6 +46,7 @@ public class TaskResource extends AbstractResource {
 	
 	@GET
 	@Path("/{id}")
+    @ApiResponse(code = 403, message = "You are not allowed to see this task")
 	@ApiOperation(value = "Get a task by id and token",
 	notes="Get a task with the corresponding id, task, state, "
 			+ "start and end times and the parameters that were set for the algorithm execution",
@@ -71,14 +68,15 @@ public class TaskResource extends AbstractResource {
 	notes="Post a task in which the algorithm and its parameters are set up"  )
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML})
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@ApiResponse(code = 500, message = "Internal server error")
 	public Response doPost(
 			@ApiParam(value = "algorithm", required = true) @FormDataParam("algorithm") String algorithm,
-			@ApiParam(value = "runs", required = true) @FormDataParam("runs") @DefaultValue("1") int runs,
-			@ApiParam(value = "population_size", required = true) @FormDataParam("population_size") @DefaultValue("150") int populationSize, 
-			@ApiParam(value = "evaluations", required = true) @FormDataParam("evaluations") @DefaultValue("1500000") int evaluations,
-			@ApiParam(value = "use_rmsd_as_obj", required = true) @FormDataParam("use_rmsd_as_obj") @DefaultValue("false") boolean useRmsdAsObjective,
-			@ApiParam(value = "instance", required = true) @FormDataParam("instance") String instance,
-			@ApiParam(value = "email", required = false) @FormDataParam("email") String email,
+			@ApiParam(value = "number of run for each executions", required = false) @FormDataParam("runs") @DefaultValue("1") int runs,
+			@ApiParam(value = "population or swarm size", required = false) @FormDataParam("population_size") @DefaultValue("150") int populationSize, 
+			@ApiParam(value = "number of evaluations", required = false) @FormDataParam("evaluations") @DefaultValue("1500000") int evaluations,
+			@ApiParam(value = "RMSD as objective to optimize", required = false) @FormDataParam("use_rmsd_as_obj") @DefaultValue("false") boolean useRmsdAsObjective,
+			@ApiParam(value = "Instance selected from the set of instances provided", required = false) @FormDataParam("instance") String instance,
+			@ApiParam(value = "User's email", required = false) @FormDataParam("email") String email,
 			@ApiParam(value = "file") @FormDataParam("file") final FormDataContentDisposition fileDetails,
 			@ApiParam(value = "file") @FormDataParam("file") final InputStream inputStream,
 			@Context HttpHeaders headers,
