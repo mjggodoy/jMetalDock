@@ -18,6 +18,7 @@ import es.uma.khaos.docking_service.response.ResponseBuilder;
 import es.uma.khaos.docking_service.service.DatabaseService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
@@ -38,8 +39,8 @@ public class ResultResource extends AbstractResource {
 	})
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML})
 	public Response getResults(
-			@NotNull @PathParam("taskId") int taskId,
-			@QueryParam("token") String token,
+			@ApiParam(value = "Task id: the identification number of a task", required = true) @NotNull @PathParam("taskId") int taskId,
+			@ApiParam(value = "Token: a code related to a task", required = true) @QueryParam("token") String token,
 			@Context HttpHeaders headers) {
 		ResponseBuilder builder = getResponseBuilder(headers, "/results.jsp");
 		ResponseBuilder errorBuilder = getResponseBuilder(headers, "/errorResponse.jsp");
@@ -59,9 +60,9 @@ public class ResultResource extends AbstractResource {
 					message = "Internal server error")
 	})
 	public Response getResult(
-			@NotNull @PathParam("taskId") int taskId,
-			@NotNull @PathParam("run") int run,
-			@QueryParam("token") String token,
+			@ApiParam(value = "Task id: the identification number of a task", required = true) @NotNull @PathParam("taskId") int taskId,
+			@ApiParam(value = "Number of task runs", required = true) @NotNull @PathParam("run") int run,
+			@ApiParam(value = "Token: a code related to a task", required = true) @QueryParam("token") String token,
 			@Context HttpHeaders headers) {
 		ResponseBuilder builder = getResponseBuilder(headers, "/result.jsp");
 		ResponseBuilder errorBuilder = getResponseBuilder(headers, "/errorResponse.jsp");
@@ -76,10 +77,10 @@ public class ResultResource extends AbstractResource {
 	response = Solution.class)
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML})
 	public Response getSolution(
-			@NotNull @PathParam("taskId") int taskId,
-			@NotNull @PathParam("run") int run,
-			@NotNull @PathParam("solutionId") int solutionId,
-			@QueryParam("token") String token,
+			@ApiParam(value = "Task id: the identification number of a task", required = true) @NotNull @PathParam("taskId") int taskId,
+			@ApiParam(value = "Number of runs executed for a task", required = true) @NotNull @PathParam("run") int run,
+			@ApiParam(value = "Solution id from a set of results returned by the algorithm", required = true) @NotNull @PathParam("solutionId") int solutionId,
+			@ApiParam(value = "Token: a code related to a task", required = true)  @QueryParam("token") String token,
 			@Context HttpHeaders headers) {
 		ResponseBuilder builder = getResponseBuilder(headers, "/solution.jsp");
 		ResponseBuilder errorBuilder = getResponseBuilder(headers, "/errorResponse.jsp");
@@ -92,10 +93,10 @@ public class ResultResource extends AbstractResource {
 	notes= "With the PDBQT file the user can visualize using a software")
 	@Produces({MediaType.TEXT_PLAIN})
 	public Response getPdbqt(
-			@NotNull @PathParam("taskId") int taskId,
-			@NotNull @PathParam("run") int run,
-			@NotNull @PathParam("solutionId") int solutionId,
-			@QueryParam("token") String token,
+			@ApiParam(value = "Task id: the identification number of a task", required = true) @NotNull @PathParam("taskId") int taskId,
+			@ApiParam(value = "Number of runs executed for a task", required = true) @NotNull @PathParam("run") int run,
+			@ApiParam(value = "Solution id from a set of results returned by the algorithm", required = true) @NotNull @PathParam("solutionId") int solutionId,
+			@ApiParam(value = "Token: a code related to a task", required = true) @QueryParam("token") String token,
 			@Context HttpHeaders headers) {
 		ResponseBuilder builder = new PojoResponseBuilder();
 		ResponseBuilder errorBuilder = getResponseBuilder(headers, "/errorResponse.jsp");

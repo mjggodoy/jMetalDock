@@ -58,8 +58,8 @@ public class TaskResource extends AbstractResource {
 	response = Task.class)
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML})
 	public Response doGet(
-			@NotNull @PathParam("id") int id,
-			@ApiParam(value = "task's id", required = true) @QueryParam("token") String token,
+			@ApiParam(value = "Task id: identification of the task's number", required = true) @NotNull @PathParam("id") int id,
+			@ApiParam(value = "Token: a code related to a task", required = true) @QueryParam("token") String token,
 			@Context HttpHeaders headers) throws DatabaseException {
 		
 		ResponseBuilder builder = getResponseBuilder(headers, "/task.jsp");
@@ -75,10 +75,10 @@ public class TaskResource extends AbstractResource {
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@ApiResponse(code = 500, message = "Internal server error")
 	public Response doPost(
-			@ApiParam(value = "algorithm", required = true) @FormDataParam("algorithm") String algorithm,
-			@ApiParam(value = "number of run for each executions", required = false) @FormDataParam("runs") @DefaultValue("1") int runs,
-			@ApiParam(value = "population or swarm size", required = false) @FormDataParam("population_size") @DefaultValue("150") int populationSize, 
-			@ApiParam(value = "number of evaluations", required = false) @FormDataParam("evaluations") @DefaultValue("1500000") int evaluations,
+			@ApiParam(value = "The algorithm is the search method selected by the user", required = true) @FormDataParam("algorithm") String algorithm,
+			@ApiParam(value = "Number of runs for each execution that is selected by the user", required = false) @FormDataParam("runs") @DefaultValue("1") int runs,
+			@ApiParam(value = "Population or swarm size set up by the user", required = false) @FormDataParam("population_size") @DefaultValue("150") int populationSize, 
+			@ApiParam(value = "Number of evaluations by the user", required = false) @FormDataParam("evaluations") @DefaultValue("1500000") int evaluations,
 			@ApiParam(value = "RMSD as objective to optimize", required = false) @FormDataParam("use_rmsd_as_obj") @DefaultValue("false") boolean useRmsdAsObjective,
 			@ApiParam(value = "Instance selected from the set of instances provided", required = false) @FormDataParam("instance") String instance,
 			@ApiParam(value = "User's email", required = false) @FormDataParam("email") String email,
