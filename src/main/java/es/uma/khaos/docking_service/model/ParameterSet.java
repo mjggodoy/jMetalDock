@@ -1,8 +1,12 @@
 package es.uma.khaos.docking_service.model;
 
 import javax.xml.bind.annotation.XmlTransient;
-
 import es.uma.khaos.docking_service.properties.Constants;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(value="Parameter set", 
+description = "Parameters set includes all the parameters set up to the algortihm selected by the user")
 
 public class ParameterSet {
 
@@ -70,26 +74,32 @@ public class ParameterSet {
 		return id;
 	}
 
+	@ApiModelProperty(value = "algorithm")
 	public String getAlgorithm() {
 		return algorithm;
 	}
 
+	@ApiModelProperty(value = "evaluations")
 	public int getEvaluations() {
 		return evaluations;
 	}
 
+	@ApiModelProperty(value = "population size")
 	public int getPopulationSize() {
 		return populationSize;
 	}
-
+	
+	@ApiModelProperty(value = "runs")
 	public int getRuns() {
 		return runs;
 	}
 
+	@ApiModelProperty(value = "objective option")
 	public int getObjectiveOption() {
 		return objectiveOption;
 	}
 
+	@ApiModelProperty(value = "task id")
 	@XmlTransient
 	public int getTaskId() {
 		return taskId;
@@ -123,6 +133,7 @@ public class ParameterSet {
 		this.taskId = taskId;
 	}
 
+	@ApiModelProperty(value = "instance")
 	public String getInstance() {
 		return instance;
 	}
@@ -131,10 +142,13 @@ public class ParameterSet {
 		this.instance = instance;
 	}
 	
+	@ApiModelProperty(value = "uploaded file")
 	public String getUploadedFile() {
 		return uploadedFile;
 	}
-
+	
+	
+	@ApiModelProperty(value = "zip file")
 	@XmlTransient
 	public String getZipFile() {
 		return zipFile;

@@ -1,5 +1,12 @@
 package es.uma.khaos.docking_service.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(value="Instance", description="A molecular docking problem provided "
+		+ "by the user to solve ") 
+
+
 public class Instance {
 	
 	private int id;
@@ -18,6 +25,7 @@ public class Instance {
 		this.fileName = fileName;
 	}
 
+	@ApiModelProperty(value = "id")
 	public int getId() {
 		return id;
 	}
@@ -26,6 +34,7 @@ public class Instance {
 		this.id = id;
 	}
 
+	@ApiModelProperty(value = "name")
 	public String getName() {
 		return name;
 	}
@@ -34,6 +43,7 @@ public class Instance {
 		this.name = name;
 	}
 
+	@ApiModelProperty(value = "file name")
 	public String getFileName() {
 		return fileName;
 	}
@@ -42,6 +52,7 @@ public class Instance {
 		this.fileName = fileName;
 	}
 
+	@ApiModelProperty(value = "url")
 	public String getUrl() {
 		return url;
 	}

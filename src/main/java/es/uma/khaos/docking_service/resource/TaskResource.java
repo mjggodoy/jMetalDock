@@ -46,7 +46,12 @@ public class TaskResource extends AbstractResource {
 	
 	@GET
 	@Path("/{id}")
-    @ApiResponse(code = 403, message = "You are not allowed to see this task")
+	@ApiResponses(value ={
+			@ApiResponse(code = 403, 
+					message = "You are not allowed to see this task"),
+			@ApiResponse(code = 500, 
+					message = "Internal server error")
+	})
 	@ApiOperation(value = "Get a task by id and token",
 	notes="Get a task with the corresponding id, task, state, "
 			+ "start and end times and the parameters that were set for the algorithm execution",
@@ -77,8 +82,8 @@ public class TaskResource extends AbstractResource {
 			@ApiParam(value = "RMSD as objective to optimize", required = false) @FormDataParam("use_rmsd_as_obj") @DefaultValue("false") boolean useRmsdAsObjective,
 			@ApiParam(value = "Instance selected from the set of instances provided", required = false) @FormDataParam("instance") String instance,
 			@ApiParam(value = "User's email", required = false) @FormDataParam("email") String email,
-			@ApiParam(value = "file") @FormDataParam("file") final FormDataContentDisposition fileDetails,
-			@ApiParam(value = "file") @FormDataParam("file") final InputStream inputStream,
+			@ApiParam(value = "File's details") @FormDataParam("file") final FormDataContentDisposition fileDetails,
+			@ApiParam(value = "File to submit by the users") @FormDataParam("file") final InputStream inputStream,
 			@Context HttpHeaders headers,
 			@Context UriInfo uriInfo) throws IOException {
 

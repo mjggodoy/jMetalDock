@@ -13,16 +13,29 @@ import javax.ws.rs.core.*;
 import es.uma.khaos.docking_service.exception.DatabaseException;
 import es.uma.khaos.docking_service.model.*;
 import es.uma.khaos.docking_service.properties.Constants;
-import es.uma.khaos.docking_service.response.JspResponseBuilder;
 import es.uma.khaos.docking_service.response.PojoResponseBuilder;
 import es.uma.khaos.docking_service.response.ResponseBuilder;
 import es.uma.khaos.docking_service.service.DatabaseService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
+@Api(value="Result")
 @Path("/task")
 public class ResultResource extends AbstractResource {
 
 	@GET
 	@Path("/{taskId}/result")
+	@ApiOperation(value = "Get results from a task id",
+	notes= "This method returns the resuls from a task id",
+	response = Results.class)
+	@ApiResponses(value ={
+			@ApiResponse(code = 403, 
+					message = "You are not allowed to see this task"),
+			@ApiResponse(code = 500, 
+					message = "Internal server error")
+	})
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML})
 	public Response getResults(
 			@NotNull @PathParam("taskId") int taskId,
@@ -35,7 +48,16 @@ public class ResultResource extends AbstractResource {
 
 	@GET
 	@Path("/{taskId}/result/{run}")
+	@ApiOperation(value = "Get results from a given run",
+	notes= "This method returns the results obtained from a given run specified by the user.",
+	response = Result.class)
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML})
+	@ApiResponses(value ={
+			@ApiResponse(code = 403, 
+					message = "You are not allowed to see this task"),
+			@ApiResponse(code = 500, 
+					message = "Internal server error")
+	})
 	public Response getResult(
 			@NotNull @PathParam("taskId") int taskId,
 			@NotNull @PathParam("run") int run,
@@ -48,6 +70,10 @@ public class ResultResource extends AbstractResource {
 
 	@GET
 	@Path("/{taskId}/result/{run}/{solutionId}")
+	@ApiOperation(value = "Get a solution from a solution id, run and task id",
+	notes= "This method returns a specific solution in which the final binding energy, the objectives to minimize such as "
+			+ "the intermolecular, intramolecular energies and the RMSD score are shown",
+	response = Solution.class)
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML})
 	public Response getSolution(
 			@NotNull @PathParam("taskId") int taskId,
@@ -62,6 +88,8 @@ public class ResultResource extends AbstractResource {
 
 	@GET
 	@Path("/{taskId}/result/{run}/{solutionId}/pdbqt")
+	@ApiOperation(value = "Get the .pdbqt file from a solution by introducing the task id, run and the solution id",
+	notes= "With the PDBQT file the user can visualize using a software")
 	@Produces({MediaType.TEXT_PLAIN})
 	public Response getPdbqt(
 			@NotNull @PathParam("taskId") int taskId,
@@ -123,6 +151,7 @@ public class ResultResource extends AbstractResource {
 						Response.Status.FORBIDDEN
 				);
 			}else{
+				
 				Result result = getResultFromTask(taskId, run);
 				return builder.buildResponse(result);
 			}

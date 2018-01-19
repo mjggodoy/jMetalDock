@@ -2,6 +2,12 @@ package es.uma.khaos.docking_service.model;
 
 import java.util.List;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(value="Individual")
+
+
 public class IndividualSolution {
 
 	public int id;
@@ -37,38 +43,47 @@ public class IndividualSolution {
 		this.pdbqt = pdbqt;
 	}
 
+	@ApiModelProperty(value = "id")
 	public int getId() {
 		return id;
 	}
 
+	@ApiModelProperty(value = "final binding energy")
 	public double getFinalBindingEnergy() {
 		return finalBindingEnergy;
 	}
 
+	@ApiModelProperty(value = "objectives")
 	public List<String> getObjectives() {
 		return objectives;
 	}
 	
+	@ApiModelProperty(value = "rmsd")
 	public Double getRmsd() {
 		return rmsd;
 	}
 	
+	@ApiModelProperty(value = "intermolecular energy")
 	public double getIntermolecularEnergy() {
 		return intermolecularEnergy;
 	}
 
+	@ApiModelProperty(value = "intramolecular energy")
 	public double getIntramolecularEnergy() {
 		return intramolecularEnergy;
 	}
-
+	
+	@ApiModelProperty(value = "run")
 	public int getRun()  {
 		return run;
 	}
 
+	@ApiModelProperty(value = "task id")
 	public int getTaskId() {
 		return taskId;
 	}
 
+	@ApiModelProperty(value = "pdbqt")
 	public String getPdbqt() {
 		return pdbqt;
 	}
