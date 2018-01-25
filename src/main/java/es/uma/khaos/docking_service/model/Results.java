@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(value="Results",
-description = "Results that include all the results that were obtained")
+description = "Results that include all the results that were obtained for a given problem")
 
 
 @XmlRootElement

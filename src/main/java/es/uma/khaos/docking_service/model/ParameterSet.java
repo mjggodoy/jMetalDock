@@ -70,6 +70,7 @@ public class ParameterSet {
 	}
 
 	@XmlTransient
+	@ApiModelProperty(value = "id")
 	public int getId() {
 		return id;
 	}

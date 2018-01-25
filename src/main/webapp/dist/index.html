@@ -71,10 +71,20 @@
 <script src="./swagger-ui-standalone-preset.js"> </script>
 <script>
 window.onload = function() {
+	
+	function HideTopbarPlugin() {
+		  // this plugin overrides the Topbar component to return nothing
+		  return {
+		    components: {
+		      Topbar: function() { return null }
+		    }
+		  }
+		}
+
   
   // Build a system
   const ui = SwaggerUIBundle({
-    url: "../rest/swagger.json",
+    url: "http://localhost:8080/docking-service/rest/swagger.json",
     dom_id: '#swagger-ui',
     deepLinking: true,
     presets: [
@@ -82,7 +92,9 @@ window.onload = function() {
       SwaggerUIStandalonePreset
     ],
     plugins: [
-      SwaggerUIBundle.plugins.DownloadUrl
+      SwaggerUIBundle.plugins.DownloadUrl,
+      HideTopbarPlugin
+
     ],
     layout: "StandaloneLayout"
   })

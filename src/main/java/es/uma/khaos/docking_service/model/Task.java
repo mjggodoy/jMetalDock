@@ -38,10 +38,12 @@ public class Task {
 		this.parameters = parameters;
 	}
 
+	@ApiModelProperty(value = "id")
 	public int getId() {
 		return id;
 	}
 
+	@ApiModelProperty(value = "token")
 	public String getToken() {
 		return token;
 	}

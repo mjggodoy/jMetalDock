@@ -53,13 +53,23 @@
                         <li><a href='<c:url value="/task.jsp" />'>Task</a></li>
                     </c:otherwise>
                 </c:choose>
-
-                <c:choose>
+                
+                 <c:choose>
                     <c:when test="${page=='references'}">
                         <li class="active"><a href="#">References <span class="sr-only">(current)</span></a></li>
                     </c:when>
                     <c:otherwise>
                         <li><a href='<c:url value="/references.jsp" />'>References</a></li>
+                    </c:otherwise>
+                </c:choose>
+                
+
+                <c:choose>
+                    <c:when test="${page=='apiDocumentation'}">
+                        <li class="active"><a href="#">API documentation <span class="sr-only">(current)</span></a></li>
+                    </c:when>
+                    <c:otherwise>
+                        <li><a href='<c:url value="apiDocumentation.jsp" />'>API documentation</a></li>
                     </c:otherwise>
                 </c:choose>
 

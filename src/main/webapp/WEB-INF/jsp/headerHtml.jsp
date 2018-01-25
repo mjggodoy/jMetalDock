@@ -10,6 +10,7 @@
 <!-- Bootstrap core CSS -->
 <link href='<c:url value="/resources/css/bootstrap.min.css" />' rel="stylesheet">
 <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+ 
 
 <!-- Custom styles for this template -->
 <!-- <link href="resources/css/bootstrap.css" rel="stylesheet"> -->
@@ -19,8 +20,8 @@
 	src='<c:url value="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"/>'></script>
 
 <script src='<c:url value="/resources/js/bootstrap.min.js"/>'></script>
-	
 <script src='<c:url value="/resources/js/bootstrap.js" />'></script>
+
 	
 <!--  <link rel="stylesheet" type="text/css" href="css/style.css" media="screen"/>
 -->
