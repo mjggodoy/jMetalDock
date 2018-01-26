@@ -166,3 +166,9 @@ input.form-fixer {
     margin-left: 20px;
     border-left: dotted 1px grey;
 }
+
+#swagger-ui h2.title pre {
+	padding: 0px;
+	background-color: transparent; 
+    border: transparent;
+}

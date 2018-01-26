@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(value="Parameter set", 
-description = "Parameters set includes all the parameters set up to the algortihm selected by the user")
+description = "Parameters set includes all the parameters for the algortihm selected by the user")
 
 public class ParameterSet {
 

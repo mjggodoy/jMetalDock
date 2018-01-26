@@ -2,13 +2,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <%@ include file="/WEB-INF/jsp/headerHtml.jsp"%>
+
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-<script src='<c:url value="/resources/js/swagger-ui-bundle.js" />' charset="UTF-8"> </script>
-<script src='<c:url value="/resources/js/swagger-ui-standalone-preset.js"  />' charset="UTF-8"> </script>
-<script src='<c:url value="/resources/js/swagger-ui.js" />' charset="UTF-8"> </script>
+<%-- <script src='<c:url value="/resources/js/swagger-ui-bundle.js" />' charset="UTF-8"> </script> --%>
+<%-- <script src='<c:url value="/resources/js/swagger-ui-standalone-preset.js"  />' charset="UTF-8"> </script> --%>
+<%-- <script src='<c:url value="/resources/js/swagger-ui.js" />' charset="UTF-8"> </script>--%>
 <link href="<c:url value="/resources/css/swagger-ui.css" />" rel="stylesheet"></link>
 <link href="<c:url value="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Code+Pro:300,600|Titillium+Web:400,600,700" />"rel="stylesheet"></link>
+
 
 <style>
     html
@@ -28,11 +30,15 @@
       margin:0;
       background: #fafafa;
     }
-</style>
+  </style>
 </head>
 
 <body>
 
+
+<jsp:include page="/WEB-INF/jsp/header.jsp">
+			<jsp:param name="page" value="apiDocumentation" />
+		</jsp:include>
 
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="position:absolute;width:0;height:0">
   <defs>
@@ -68,16 +74,20 @@
   </defs>
 </svg>
 
-		<jsp:include page="/WEB-INF/jsp/header.jsp">
-			<jsp:param name="page" value="apiDocumentation" />
-		</jsp:include>
 		
-			<div class="container">
+		
+		
+<div class="container">
 
-			
+
 			<div id="swagger-ui"></div>
-			<script src='<c:url value="/resources/js/swagger-ui-bundle.js" />'></script>
-			<script src='<c:url value="/resources/js/swagger-ui-standalone-preset.js" />'> </script>	
+
+		
+			<script src='<c:url value="/resources/js/swagger-ui-bundle.js" />'charset="UTF-8"></script>
+			<script src='<c:url value="/resources/js/swagger-ui-standalone-preset.js" />'charset="UTF-8"></script>
+			<%-- <script src='<c:url value="/resources/js/swagger-ui.js" />'> </script>	--%>
+
+				
 			<script>	
 				window.onload = function() {
 					
