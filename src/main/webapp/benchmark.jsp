@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <%@ include file="/WEB-INF/jsp/headerHtml.jsp"%>
+
 </head>
 
 <body>
@@ -9,8 +10,17 @@
 	<jsp:include page="/WEB-INF/jsp/header.jsp">
 		<jsp:param name="page" value="benchmark" />
 	</jsp:include>
-
+	
 	<div class="container">
+	
+	
+	<div class="page-header">
+			<h3>Benchmark</h3>
+	</div>
+	
+		<div class="starter-template">
+	
+
 		<br />
 		<h4>Ligand-Receptor Docking: Instances used in Mono-Objective and
 			Multi-objective Approaches</h4>
@@ -524,5 +534,6 @@
 
 			<%@ include file="/WEB-INF/jsp/footer.jsp"%>
 	</div>
+		</div>
 </body>
 </html>

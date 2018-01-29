@@ -91,7 +91,6 @@
 			<script>	
 				window.onload = function() {
 					
-					
 					function HideTopbarPlugin() {
 						  // this plugin overrides the Topbar component to return nothing
 						  return {

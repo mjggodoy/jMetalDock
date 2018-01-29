@@ -3,7 +3,8 @@ package es.uma.khaos.docking_service.model;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-@ApiModel(value="resulting .dlg file", description = "A resulting file from the molecular docking simulation performed on the server")
+@ApiModel(value="resulting .dlg file",
+description = "A resulting file from the molecular docking simulation performed on the server")
 
 public class DLG {
 

@@ -2,7 +2,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="jMetalDock is a web-service oriented to provide users multi- and mono-objective approaches to solve the molecular docking problem">
 <meta name="author" content="Khaos Group. Language and Computing Science Department. University of Malaga">
-<link rel="icon" href="/images/liferay.ico">
+<link rel="shortcut icon" href="/images/liferay.ico?v=2" type="image/x-icon">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <title>jMetalDock: A web-service that provides single and multi-objetive approaches to solve the molecular docking problem</title>

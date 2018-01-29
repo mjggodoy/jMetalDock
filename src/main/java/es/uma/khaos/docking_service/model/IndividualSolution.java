@@ -5,7 +5,8 @@ import java.util.List;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-@ApiModel(value="Individual")
+@ApiModel(value="Individual",
+description = "An individual solution that shows the final energy score, the objectives that were optimized and the .pdbqt")
 
 
 public class IndividualSolution {

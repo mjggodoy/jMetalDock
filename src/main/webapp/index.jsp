@@ -5,6 +5,8 @@
 
 <head>
 	<%@ include file="/WEB-INF/jsp/headerHtml.jsp"%>
+	<link rel="shortcut icon" type="image/x-icon" href="/images/khaos.ico"/>
+	
 </head>
 
 

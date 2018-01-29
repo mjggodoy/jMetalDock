@@ -70,7 +70,7 @@ public class TaskResource extends AbstractResource {
 	// TODO: Tratar error de FTP y tratar instancia no existente
 	@POST
 	@ApiOperation(value = "Post a task ",
-	notes="Post a task in which the algorithm and its parameters are set up"  )
+	notes="Post a task in which the algorithm is specified with the parameters selected by the user"  )
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML})
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@ApiResponse(code = 500, message = "Internal server error")
