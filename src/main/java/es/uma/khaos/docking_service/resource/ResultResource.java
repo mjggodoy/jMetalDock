@@ -13,20 +13,34 @@ import javax.ws.rs.core.*;
 import es.uma.khaos.docking_service.exception.DatabaseException;
 import es.uma.khaos.docking_service.model.*;
 import es.uma.khaos.docking_service.properties.Constants;
-import es.uma.khaos.docking_service.response.JspResponseBuilder;
 import es.uma.khaos.docking_service.response.PojoResponseBuilder;
 import es.uma.khaos.docking_service.response.ResponseBuilder;
 import es.uma.khaos.docking_service.service.DatabaseService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
+@Api(value="Result")
 @Path("/task")
 public class ResultResource extends AbstractResource {
 
 	@GET
 	@Path("/{taskId}/result")
+	@ApiOperation(value = "Get results from a task id",
+	notes= "This method returns the resuls from a task id",
+	response = Results.class)
+	@ApiResponses(value ={
+			@ApiResponse(code = 403, 
+					message = "You are not allowed to see this task"),
+			@ApiResponse(code = 500, 
+					message = "Internal server error")
+	})
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML})
 	public Response getResults(
-			@NotNull @PathParam("taskId") int taskId,
-			@QueryParam("token") String token,
+			@ApiParam(value = "Task id: the identification number of a task", required = true) @NotNull @PathParam("taskId") int taskId,
+			@ApiParam(value = "Token: a code related to a task", required = true) @QueryParam("token") String token,
 			@Context HttpHeaders headers) {
 		ResponseBuilder builder = getResponseBuilder(headers, "/results.jsp");
 		ResponseBuilder errorBuilder = getResponseBuilder(headers, "/errorResponse.jsp");
@@ -35,11 +49,20 @@ public class ResultResource extends AbstractResource {
 
 	@GET
 	@Path("/{taskId}/result/{run}")
+	@ApiOperation(value = "Get results from a given run",
+	notes= "This method returns the results obtained from a given run specified by the user.",
+	response = Result.class)
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML})
+	@ApiResponses(value ={
+			@ApiResponse(code = 403, 
+					message = "You are not allowed to see this task"),
+			@ApiResponse(code = 500, 
+					message = "Internal server error")
+	})
 	public Response getResult(
-			@NotNull @PathParam("taskId") int taskId,
-			@NotNull @PathParam("run") int run,
-			@QueryParam("token") String token,
+			@ApiParam(value = "Task id: the identification number of a task", required = true) @NotNull @PathParam("taskId") int taskId,
+			@ApiParam(value = "Number of task runs", required = true) @NotNull @PathParam("run") int run,
+			@ApiParam(value = "Token: a code related to a task", required = true) @QueryParam("token") String token,
 			@Context HttpHeaders headers) {
 		ResponseBuilder builder = getResponseBuilder(headers, "/result.jsp");
 		ResponseBuilder errorBuilder = getResponseBuilder(headers, "/errorResponse.jsp");
@@ -48,34 +71,38 @@ public class ResultResource extends AbstractResource {
 
 	@GET
 	@Path("/{taskId}/result/{run}/{solutionId}")
+	@ApiOperation(value = "Get a solution from a solution id, run and task id",
+	notes= "This method returns a specific solution in which the final binding energy, the objectives to minimize such as "
+			+ "the intermolecular, intramolecular energies and the RMSD score are shown",
+	response = Solution.class)
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML})
 	public Response getSolution(
-			@NotNull @PathParam("taskId") int taskId,
-			@NotNull @PathParam("run") int run,
-			@NotNull @PathParam("solutionId") int solutionId,
-			@QueryParam("token") String token,
+			@ApiParam(value = "Task id: the identification number of a task", required = true) @NotNull @PathParam("taskId") int taskId,
+			@ApiParam(value = "Number of runs executed for a task", required = true) @NotNull @PathParam("run") int run,
+			@ApiParam(value = "Solution id from a set of results returned by the algorithm", required = true) @NotNull @PathParam("solutionId") int solutionId,
+			@ApiParam(value = "Token: a code related to a task", required = true)  @QueryParam("token") String token,
 			@Context HttpHeaders headers) {
 		ResponseBuilder builder = getResponseBuilder(headers, "/solution.jsp");
 		ResponseBuilder errorBuilder = getResponseBuilder(headers, "/errorResponse.jsp");
 		return getSolutionResponse(taskId, solutionId, token, builder, errorBuilder);
 	}
 
-	/*
 	@GET
 	@Path("/{taskId}/result/{run}/{solutionId}/pdbqt")
+	@ApiOperation(value = "Get the .pdbqt file from a solution by introducing the task id, run and the solution id",
+	notes= "With the PDBQT file the user can visualize using a software")
 	@Produces({MediaType.TEXT_PLAIN})
 	public Response getPdbqt(
-			@NotNull @PathParam("taskId") int taskId,
-			@NotNull @PathParam("run") int run,
-			@NotNull @PathParam("solutionId") int solutionId,
-			@QueryParam("token") String token,
+			@ApiParam(value = "Task id: the identification number of a task", required = true) @NotNull @PathParam("taskId") int taskId,
+			@ApiParam(value = "Number of runs executed for a task", required = true) @NotNull @PathParam("run") int run,
+			@ApiParam(value = "Solution id from a set of results returned by the algorithm", required = true) @NotNull @PathParam("solutionId") int solutionId,
+			@ApiParam(value = "Token: a code related to a task", required = true) @QueryParam("token") String token,
 			@Context HttpHeaders headers) {
-		ResponseBuilder builder = getResponseBuilder(headers, "/solution.jsp");
+		ResponseBuilder builder = new PojoResponseBuilder();
 		ResponseBuilder errorBuilder = getResponseBuilder(headers, "/errorResponse.jsp");
-		return getSolutionResponse(taskId, solutionId, token, builder, errorBuilder);
-		caca
+		return getPdbqtResponse(taskId, solutionId, token, builder, errorBuilder);
+
 	}
-	*/
 	
 	//TODO: Código repetido. Mí no gusta.
 
@@ -125,6 +152,7 @@ public class ResultResource extends AbstractResource {
 						Response.Status.FORBIDDEN
 				);
 			}else{
+				
 				Result result = getResultFromTask(taskId, run);
 				return builder.buildResponse(result);
 			}
@@ -153,6 +181,32 @@ public class ResultResource extends AbstractResource {
 				IndividualSolution solution =
 						DatabaseService.getInstance().getSolution(taskId, solutionId);
 				return builder.buildResponse(solution);
+			}
+
+		} catch (DatabaseException e) {
+			e.printStackTrace();
+			return internalServerError(errorBuilder);
+		}
+	}
+
+	private Response getPdbqtResponse(int taskId, int solutionId, String token,
+										 ResponseBuilder builder, ResponseBuilder errorBuilder) {
+		try{
+
+			Task task = DatabaseService.getInstance().getTaskParameter(taskId);
+
+			if (task == null || !task.getToken().equals(token)) {
+				return errorBuilder.buildResponse(
+						new ErrorResponse(
+								Response.Status.FORBIDDEN,
+								Constants.RESPONSE_TASK_MSG_UNALLOWED),
+						Response.Status.FORBIDDEN
+				);
+			}else{
+
+				IndividualSolution solution =
+						DatabaseService.getInstance().getSolution(taskId, solutionId);
+				return builder.buildResponse(solution.getPdbqt());
 			}
 
 		} catch (DatabaseException e) {

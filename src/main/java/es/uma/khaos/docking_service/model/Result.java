@@ -1,6 +1,10 @@
 package es.uma.khaos.docking_service.model;
 
 import java.util.List;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(value="Result", description = "Result that includes a solution or a set of solutions")
 
 public class Result {
 	
@@ -26,18 +30,22 @@ public class Result {
 //		this.solutions = solutions;
 //	}
 	
+	@ApiModelProperty(value = "run")
 	public int getRun() {
 		return run;
 	}
 
+	@ApiModelProperty(value = "id")
 	public int getId() {
 		return id;
 	}
 	
+	@ApiModelProperty(value = "task id")
 	public int getTaskId() {
 		return taskId;
 	}
 	
+	@ApiModelProperty(value = "solutions")
 	public List<Solution> getSolutions() {
 		return solutions;
 	}

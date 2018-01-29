@@ -3,6 +3,12 @@ package es.uma.khaos.docking_service.model;
 import javax.ws.rs.core.Response.Status;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(value="Standard Response")
+
+
 @XmlRootElement
 public class StandardResponse {
 
@@ -24,15 +30,18 @@ public class StandardResponse {
 		this(statusCode, message);
 		this.url = url;
 	}
-
+	
+	@ApiModelProperty(value = "status code")
 	public Status getStatusCode() {
 		return statusCode;
 	}
 
+	@ApiModelProperty(value = "message")
 	public String getMessage() {
 		return message;
 	}
-
+	
+	@ApiModelProperty(value = "url")
 	public String getUrl() {
 		return url;
 	}

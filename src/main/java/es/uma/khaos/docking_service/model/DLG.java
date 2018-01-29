@@ -1,5 +1,11 @@
 package es.uma.khaos.docking_service.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(value="resulting .dlg file",
+description = "A resulting file from the molecular docking simulation performed on the server")
+
 public class DLG {
 
     private int id;
@@ -12,6 +18,7 @@ public class DLG {
         this.taskId = taskId;
     }
 
+	@ApiModelProperty(value = "id")
     public int getId() {
         return id;
     }
@@ -19,7 +26,8 @@ public class DLG {
     public void setId(int id) {
         this.id = id;
     }
-
+    
+	@ApiModelProperty(value = "file")
     public String getFile() {
         return file;
     }
@@ -27,7 +35,8 @@ public class DLG {
     public void setFile(String file) {
         this.file = file;
     }
-
+    
+	@ApiModelProperty(value = "task id")
     public int getTaskId() {
         return taskId;
     }

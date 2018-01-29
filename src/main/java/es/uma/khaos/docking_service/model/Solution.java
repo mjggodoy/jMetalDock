@@ -2,6 +2,11 @@ package es.uma.khaos.docking_service.model;
 
 import java.util.List;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+@ApiModel(value="Result", description = "Results that contain the final binding energy, the objectives minimized, "
+		+ "the intermolecular and intramolecular energies and the rmsd score.")
+
 public class Solution {
 	
 	public int id;
@@ -32,31 +37,38 @@ public class Solution {
 		this.rmsd = rmsd;
 		this.resultId = resultId;
 	}
-
+	
+	@ApiModelProperty(value = "id")
 	public int getId() {
 		return id;
 	}
 
+	@ApiModelProperty(value = "Final Binding energy")
 	public double getFinalBindingEnergy() {
 		return finalBindingEnergy;
 	}
-
+	
+	@ApiModelProperty(value = "Objectives")
 	public List<String> getObjectives() {
 		return objectives;
 	}
 	
+	@ApiModelProperty(value = "RMSD")
 	public Double getRmsd() {
 		return rmsd;
 	}
 	
+	@ApiModelProperty(value = "Intermolecular energy")
 	public double getIntermolecularEnergy() {
 		return intermolecularEnergy;
 	}
-
+	
+	@ApiModelProperty(value = "Intramolecular energy")
 	public double getIntramolecularEnergy() {
 		return intramolecularEnergy;
 	}
-
+	
+	@ApiModelProperty(value = "Get result id")
 	public int getResultId() {
 		return resultId;
 	}

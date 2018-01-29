@@ -2,9 +2,15 @@ package es.uma.khaos.docking_service.resource;
 
 import es.uma.khaos.docking_service.exception.DatabaseException;
 import es.uma.khaos.docking_service.model.ErrorResponse;
+import es.uma.khaos.docking_service.model.Result;
 import es.uma.khaos.docking_service.model.Task;
 import es.uma.khaos.docking_service.properties.Constants;
 import es.uma.khaos.docking_service.service.DatabaseService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
@@ -12,7 +18,7 @@ import javax.ws.rs.core.*;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.sql.*;
-
+@Api(value=".dlg result")
 @Path("/task")
 public class DlgResource extends AbstractResource {
 
@@ -20,10 +26,20 @@ public class DlgResource extends AbstractResource {
 
     @GET
     @Path("/{id}/dlg")
+    @ApiOperation(value = ".dlg file from the molecular docking simulation",
+	notes= "This method gets the .dlg file resulting from a molecular docking simulation")
+    @ApiResponses(value ={
+			@ApiResponse(code = 403, 
+					message = "You are not allowed to see this task"),
+			@ApiResponse(code = 500, 
+					message = "Internal server error"),
+			@ApiResponse(code = 404 , 
+			message = "Not found")
+	})
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response downloadDlg(
-            @NotNull @PathParam("id") int id,
-            @QueryParam("token") String token,
+    		@ApiParam(value = "Task id: the identification number of a task", required = true) @NotNull @PathParam("id") int id,
+            @ApiParam(value = "Token: a code related to a task", required = true) @QueryParam("token") String token,
             @Context HttpHeaders headers) throws DatabaseException {
 
         Task task = DatabaseService.getInstance().getTaskParameter(id);

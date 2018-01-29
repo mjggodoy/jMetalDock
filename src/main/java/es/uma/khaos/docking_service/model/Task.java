@@ -1,8 +1,14 @@
 package es.uma.khaos.docking_service.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.sql.Timestamp;
 
+@ApiModel(value="Task", 
+description = "Task that provides the task's id, token, state, the end and start times, the algorithm and parameters selected")
 @XmlRootElement
 public class Task {
 
@@ -33,30 +39,37 @@ public class Task {
 		this.parameters = parameters;
 	}
 
+	@ApiModelProperty(value = "id")
 	public int getId() {
 		return id;
 	}
 
+	@ApiModelProperty(value = "token")
 	public String getToken() {
 		return token;
 	}
 	
+	@ApiModelProperty(value = "status", allowableValues = "finished, error, running, queued")
 	public String getState() {
 		return state;
 	}
 	
+	@ApiModelProperty(value = "email", required = false)
 	public String getEmail() {
 		return email;
 	}
 
+	@ApiModelProperty(value = "start time")
 	public Timestamp getStartTime() {
 		return startTime;
 	}
-
+	
+	@ApiModelProperty(value = "end time")
 	public Timestamp getEndTime() {
 		return endTime;
 	}
 
+	@ApiModelProperty(value = "parameter set")
 	public ParameterSet getParameters() {
 		return parameters;
 	}

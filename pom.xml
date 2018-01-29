@@ -103,6 +103,13 @@
      <version>2.25.1</version>
 	</dependency>
 
+    <!-- Swagger packages -->
+    <dependency>
+      <groupId>io.swagger</groupId>
+      <artifactId>swagger-jersey2-jaxrs</artifactId>
+      <version>1.5.17</version>
+    </dependency>
+
   </dependencies>
   <profiles>
    <profile>

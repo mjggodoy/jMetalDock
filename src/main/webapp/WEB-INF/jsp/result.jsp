@@ -109,7 +109,7 @@
 							<td>
 								<c:if test="${solution.rmsd != null}">
 									${solution.rmsd}
-									<span class="hidden-xs"> &Acirc;</span>
+									<span class="hidden-xs"> &Aring;</span>
 								</c:if>
 							</td>
 						</tr>
