@@ -569,6 +569,9 @@ public final class DatabaseService {
 				rmsd, run, taskId, pdbqt);
 	}
 	
+	
+	
+
 	public List<Solution> getSolutionsFromResult(int resultId) throws DatabaseException {
 		
 		Connection conn = null;
@@ -856,6 +859,72 @@ public final class DatabaseService {
 			}
 		}
 		return dlg;
+	}
+	
+	
+	/*
+	 * Get minimum Final Binding Energy
+	 */
+	
+	public IndividualSolution getMinimumEnergyfromResult(int taskId) throws DatabaseException {
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		IndividualSolution solution = null;
+		ResultSet rs = null;
+				
+		try {
+			
+			conn = openConnection();
+			stmt = conn.prepareStatement("select * from docking.solution b, docking.result a "
+					+ "WHERE final_binding_energy = (SELECT MIN(final_binding_energy) from docking.result a, docking.solution b "
+					+ "where a.task_id = ? and a.id = b.result_id) "
+					+ "and a.task_id = ? and a.id = b.result_id;");
+
+			stmt.setInt(1, taskId);
+			stmt.setInt(2, taskId);
+
+			rs = stmt.executeQuery();
+			
+			if (rs.next()) {
+				
+				solution = getIndividualSolution(rs);
+
+			}
+
+			
+		} catch (SQLException e) {
+			throw new DatabaseException(e);
+		} catch (Exception e) {
+			throw new DatabaseException(e);
+		} finally {
+			try {
+				if (rs != null) rs.close();
+				if (stmt != null) stmt.close();
+				if (conn != null) conn.close();
+			} catch (SQLException e) {
+				throw new DatabaseException(e);
+			}
+		}
+			
+		return solution;
+		
+	}
+	
+	
+	public static void main(String[] args) throws DatabaseException {
+		
+		IndividualSolution solution;
+		DatabaseService db = new DatabaseService();
+		solution = db.getMinimumEnergyfromResult(484);
+		System.out.println(
+						" Task: " +  " " + solution.getId() +
+						" Id: " + 
+						" Run: " + solution.getFinalBindingEnergy() +
+						" Minimum Final Binding Energy: " + solution.finalBindingEnergy);
+						
+		
+			
 	}
 	
 }
