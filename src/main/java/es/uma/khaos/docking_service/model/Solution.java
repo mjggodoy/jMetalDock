@@ -16,6 +16,7 @@ public class Solution {
 	public double intermolecularEnergy;
 	public double intramolecularEnergy;
 	public Double rmsd;
+	
 
 	
 	public Solution() {

@@ -117,8 +117,18 @@
 					</c:forEach>
 				</tbody>
 			</table>
+					
 		</div>
+		
 	
+		<a href='<c:url value="../${first.taskId}/result/minimumEnergy?token=${param.token}" />'>Solution with the minimum final binding energy </a><br/>
+				
+				<c:if test="${first.solutions[0].rmsd != null}">
+		
+					<a href='<c:url value="../${first.taskId}/result/minimumRMSDscore?token=${param.token}" />'>Solution with the minimum RMSD score </a>
+		
+				</c:if>
+		
 		<%@ include file="/WEB-INF/jsp/footer.jsp"%>
 	
 	</div>	
