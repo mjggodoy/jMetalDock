@@ -49,7 +49,15 @@ public class ResultResource extends AbstractResource {
 	
 	@GET
 	@Path("/{taskId}/result/minimumEnergy")
-	@ApiOperation(value = "Get the minimum final binding energy score from the results")
+	@ApiOperation(value = "Get the minimum final binding energy score", 
+	notes = "This method returns the minimun final binding energy score",
+	response = Solution.class)
+	@ApiResponses(value ={
+			@ApiResponse(code = 403, 
+					message = "You are not allowed to see this task"),
+			@ApiResponse(code = 500, 
+					message = "Internal server error")
+	})	
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML})
 	public Response getMinimumEnergy(
 			@ApiParam(value = "Task id: the identification number of a task", required = true)  @NotNull @PathParam("taskId") int taskId,
@@ -62,7 +70,15 @@ public class ResultResource extends AbstractResource {
 	
 	@GET
 	@Path("/{taskId}/result/minimumRMSDscore")
-	@ApiOperation(value = "Get the minimum RMSD score from the results")
+	@ApiOperation(value = "Get the minimum RMSD score from the results",
+	notes = "This method returns the lowest RMSD score from the results",
+	response = Solution.class)
+	@ApiResponses(value ={
+			@ApiResponse(code = 403, 
+					message = "You are not allowed to see this task"),
+			@ApiResponse(code = 500, 
+					message = "Internal server error")
+	})	
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML})
 	public Response getMinimumRMSD(
 			@ApiParam(value = "Task id: the identification number of a task", required = true)  @NotNull @PathParam("taskId") int taskId,
