@@ -12,6 +12,7 @@ public class Result {
 	private int taskId;
 	private int run;
 	private List<Solution> solutions;
+
 	
 	public Result() {
 		super();
@@ -23,6 +24,15 @@ public class Result {
 		this.taskId = taskId;
 		this.run = run;
 	}
+	
+	public Result(int taskId, int id, int run, double minimumFinalBindingEnergy ) {
+		super();
+		this.id = id;
+		this.taskId = taskId;
+		this.run = run;
+	}
+	
+	
 
 //	public Result(int run, List<Solution> solutions) {
 //		super();
@@ -65,5 +75,6 @@ public class Result {
 	public void setSolutions(List<Solution> solutions) {
 		this.solutions = solutions;
 	}
+	
 	
 }

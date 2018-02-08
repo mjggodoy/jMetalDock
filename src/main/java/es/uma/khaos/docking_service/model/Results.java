@@ -13,6 +13,7 @@ description = "Results that include all the results that were obtained for a giv
 public class Results {
 
     List<Result> resultList;
+
     
     public Results() {
     	super();
@@ -32,4 +33,5 @@ public class Results {
 		this.resultList = resultList;
 	}
 
+	
 }

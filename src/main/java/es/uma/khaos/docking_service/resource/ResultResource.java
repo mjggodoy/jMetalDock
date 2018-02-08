@@ -36,7 +36,7 @@ public class ResultResource extends AbstractResource {
 					message = "You are not allowed to see this task"),
 			@ApiResponse(code = 500, 
 					message = "Internal server error")
-	})
+	})	
 	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML})
 	public Response getResults(
 			@ApiParam(value = "Task id: the identification number of a task", required = true) @NotNull @PathParam("taskId") int taskId,
@@ -45,6 +45,50 @@ public class ResultResource extends AbstractResource {
 		ResponseBuilder builder = getResponseBuilder(headers, "/results.jsp");
 		ResponseBuilder errorBuilder = getResponseBuilder(headers, "/errorResponse.jsp");
 		return getResultsResponse(taskId, token, builder, errorBuilder);
+	}
+	
+	@GET
+	@Path("/{taskId}/result/minimumEnergy")
+	@ApiOperation(value = "Get the minimum final binding energy score", 
+	notes = "This method returns the minimun final binding energy score",
+	response = Solution.class)
+	@ApiResponses(value ={
+			@ApiResponse(code = 403, 
+					message = "You are not allowed to see this task"),
+			@ApiResponse(code = 500, 
+					message = "Internal server error")
+	})	
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML})
+	public Response getMinimumEnergy(
+			@ApiParam(value = "Task id: the identification number of a task", required = true)  @NotNull @PathParam("taskId") int taskId,
+			@ApiParam(value = "Token: a code related to a task", required = true) @QueryParam("token") String token,
+			@Context HttpHeaders headers){
+		ResponseBuilder builder = getResponseBuilder(headers, "/minimunEnergy.jsp");
+		ResponseBuilder errorBuilder = getResponseBuilder(headers, "/errorResponse.jsp");
+		return getMinimumEnergy(taskId, token, builder, errorBuilder);	
+	}
+	
+	@GET
+	@Path("/{taskId}/result/minimumRMSDscore")
+	@ApiOperation(value = "Get the minimum RMSD score from the results",
+	notes = "This method returns the lowest RMSD score from the results",
+	response = Solution.class)
+	@ApiResponses(value ={
+			@ApiResponse(code = 403, 
+					message = "You are not allowed to see this task"),
+			@ApiResponse(code = 500, 
+					message = "Internal server error")
+	})	
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML})
+	public Response getMinimumRMSD(
+			@ApiParam(value = "Task id: the identification number of a task", required = true)  @NotNull @PathParam("taskId") int taskId,
+			@ApiParam(value = "Token: a code related to a task", required = true) @QueryParam("token") String token,
+			@Context HttpHeaders headers){
+		ResponseBuilder builder = getResponseBuilder(headers, "/minimunRMSDscore.jsp");
+		ResponseBuilder errorBuilder = getResponseBuilder(headers, "/errorResponse.jsp");
+		return getMinimumRMSD(taskId, token, builder, errorBuilder);
+			
+
 	}
 
 	@GET
@@ -188,6 +232,62 @@ public class ResultResource extends AbstractResource {
 			return internalServerError(errorBuilder);
 		}
 	}
+	
+	
+	private Response getMinimumEnergy(int taskId, String token, ResponseBuilder builder, ResponseBuilder errorBuilder){
+		
+		try{
+			
+			Task task = DatabaseService.getInstance().getTaskParameter(taskId);			
+			if (task == null || !task.getToken().equals(token)) {
+			
+				return errorBuilder.buildResponse(
+						new ErrorResponse(
+								Response.Status.FORBIDDEN,
+								Constants.RESPONSE_TASK_MSG_UNALLOWED),
+						Response.Status.FORBIDDEN);
+
+			}else{
+				
+				IndividualSolution solution = DatabaseService.getInstance().getMinimumEnergyfromResult(taskId);
+				return builder.buildResponse(solution);
+				
+			}
+		
+		} catch (DatabaseException e) {
+			e.printStackTrace();
+			return internalServerError(errorBuilder);
+		}
+	}
+	
+	
+	private Response getMinimumRMSD(int taskId, String token, ResponseBuilder builder, ResponseBuilder errorBuilder){
+		
+		try{
+			
+			Task task = DatabaseService.getInstance().getTaskParameter(taskId);			
+			if (task == null || !task.getToken().equals(token)) {
+			
+				return errorBuilder.buildResponse(
+						new ErrorResponse(
+								Response.Status.FORBIDDEN,
+								Constants.RESPONSE_TASK_MSG_UNALLOWED),
+						Response.Status.FORBIDDEN);
+
+			}else{
+				
+				IndividualSolution solution = DatabaseService.getInstance().getMinimunRMSD(taskId);
+				return builder.buildResponse(solution);
+			}
+			
+			
+		}catch (DatabaseException e) {
+			e.printStackTrace();
+			return internalServerError(errorBuilder);
+		}
+
+	}
+	
 
 	private Response getPdbqtResponse(int taskId, int solutionId, String token,
 										 ResponseBuilder builder, ResponseBuilder errorBuilder) {

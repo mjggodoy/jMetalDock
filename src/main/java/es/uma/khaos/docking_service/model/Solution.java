@@ -17,6 +17,8 @@ public class Solution {
 	public double intramolecularEnergy;
 	public Double rmsd;
 	
+
+	
 	public Solution() {
 		
 	}
@@ -48,6 +50,7 @@ public class Solution {
 		return finalBindingEnergy;
 	}
 	
+	
 	@ApiModelProperty(value = "Objectives")
 	public List<String> getObjectives() {
 		return objectives;
@@ -73,11 +76,15 @@ public class Solution {
 		return resultId;
 	}
 
+	
+	
 	@Override
 	public String toString() {
 		return "Result [id=" + id + ", finalBindingEnergy=" + finalBindingEnergy + ", objectives=" + objectives
 				+ ", resultId=" + resultId + ", intermolecularEnergy=" + intermolecularEnergy
 				+ ", intramolecularEnergy=" + intramolecularEnergy + ", rmsd=" + rmsd + "]";
 	}
+	
+	
 	
 }
