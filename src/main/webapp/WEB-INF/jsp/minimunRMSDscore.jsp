@@ -65,7 +65,7 @@
 		</tr>
 		<tr>
 			<td class="col-md-6"><strong>RMSD:</strong></td>
-			<td class="col-md-6">${solution.rmsd}&Aring;</td>
+			<td class="col-md-6">${solution.rmsd} &Aring;</td>
 		</tr>
 	</table>
 
