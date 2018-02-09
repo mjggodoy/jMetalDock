@@ -20,6 +20,7 @@ public class IndividualSolution {
 	public int run;
 	public int taskId;
 	public String pdbqt;
+	public String macro;
 
 	public IndividualSolution() {
 
@@ -88,6 +89,11 @@ public class IndividualSolution {
 	public String getPdbqt() {
 		return pdbqt;
 	}
+	
+	@ApiModelProperty(value = "macro")
+	public String getMacro() {
+		return pdbqt;
+	}
 
 	public void setId(int id) {
 		this.id = id;
@@ -123,5 +129,9 @@ public class IndividualSolution {
 
 	public void setPdbqt(String pdbqt) {
 		this.pdbqt = pdbqt;
+	}
+	
+	public void setMacro(String macro){
+		this.macro = macro;
 	}
 }

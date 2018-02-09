@@ -76,7 +76,9 @@ public class WorkerThread implements Runnable {
 		
 	}
 	
-	private void processCommand() throws DpfWriteException, DpfNotFoundException, CommandExecutionException, DlgParseException, DlgNotFoundException, DatabaseException, IOException, NoSuchAlgorithmException, FtpException {
+	private void processCommand() throws DpfWriteException, DpfNotFoundException, 
+	CommandExecutionException, DlgParseException, DlgNotFoundException, DatabaseException,
+	IOException, NoSuchAlgorithmException, FtpException {
 		
 		String command;
 
