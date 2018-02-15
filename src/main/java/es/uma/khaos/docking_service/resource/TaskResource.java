@@ -81,15 +81,19 @@ public class TaskResource extends AbstractResource {
 	notes="Get a task with the corresponding id, task, state, "
 			+ "start and end times and the parameters that were set for the algorithm execution",
 	response = Macro.class)
-	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML})
+	//@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Produces({MediaType.TEXT_PLAIN})
 	public Response getMacro(
 			@ApiParam(value = "Task id: identification of the task's number", required = true) @NotNull @PathParam("id") int id,
 			@ApiParam(value = "Token: a code related to a task", required = true) @QueryParam("token") String token,
 			@Context HttpHeaders headers) throws DatabaseException {
 		
+		/*
 		ResponseBuilder builder = getResponseBuilder(headers, "/macro.jsp");
 		ResponseBuilder errorBuilder = getResponseBuilder(headers, "/errorResponse.jsp");
 		return getMacroResponse(id, token, builder, errorBuilder);
+		*/
+		return getMacroTxt(id, token);
 	}
 	
 
@@ -181,7 +185,36 @@ public class TaskResource extends AbstractResource {
 			return internalServerError(errorBuilder);
 		}
 	}
-	
+
+
+	private Response getMacroTxt(int id, String token) throws DatabaseException{
+
+		Task task = DatabaseService.getInstance().getTaskParameter(id);
+
+		try{
+
+			if (task == null || !task.getToken().equals(token)) {
+				return Response
+						.status(Response.Status.FORBIDDEN)
+						.entity(Constants.RESPONSE_TASK_MSG_UNALLOWED)
+						.build();
+
+			}else{
+
+				Macro macro = DatabaseService.getInstance().getMacroFile(id);
+				return Response
+						.ok(macro.getMacro())
+						.build();
+			}
+
+		}catch (DatabaseException e) {
+			e.printStackTrace();
+			return Response
+					.status(Response.Status.INTERNAL_SERVER_ERROR)
+					.entity(Constants.RESPONSE_INTERNAL_SERVER_ERROR)
+					.build();
+		}
+	}
 	
 	private Response getMacroResponse(int id, String token, ResponseBuilder builder, ResponseBuilder errorBuilder) throws DatabaseException{
 		
