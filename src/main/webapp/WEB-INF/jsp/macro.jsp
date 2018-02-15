@@ -83,24 +83,35 @@
     function load(pdb_id) {
       document.getElementById('status').innerHTML ='loading '+pdb_id;
       var xhr = new XMLHttpRequest();
-      //xhr.open('GET', '<c:url value="/viewer/pdbs/" />' +pdb_id+'.pdb');
-      xhr.open('GET', '<c:url value="/viewer/pdbs/" />' +pdb_id);
+      xhr.open('GET', '<c:url value="/viewer/pdbs/" />' +pdb_id+'.pdb');
       //console.log("PUA PDB?");
       xhr.setRequestHeader('Content-type', 'application/x-pdb');
       xhr.onreadystatechange = function() {
       //console.log("PUA RESPUESTA!");
-        if (xhr.readyState == 4) {
+      	if (xhr.readyState == 4) {
           structure = pv.io.pdb(xhr.responseText);
           preset();
           viewer.centerOn(structure);
-        }
+        } 
         document.getElementById('status').innerHTML = '';
       }
       xhr.send();
     }
+    
+    function load2() {
+        //document.getElementById('status').innerHTML ='loading '+pdb_id;
+        //console.log("PUA RESPUESTA!");
+       	structure = pv.io.pdb("${macro.macro}");
+        preset();
+        viewer.centerOn(structure);
+    }
+  
+    
+    
     function transferase() {	 	
     //console.log("PUA LOAD");
-      load('<c:out value="'${macro.macro}"/>);
+     //load('pua');
+     load2();
     }
     document.getElementById('cartoon').onclick = cartoon;
     document.getElementById('line-trace').onclick = lineTrace;
