@@ -44,6 +44,23 @@ public class IndividualSolution {
 		this.taskId = taskId;
 		this.pdbqt = pdbqt;
 	}
+	
+	public IndividualSolution(int id, double finalBindingEnergy, List<String> objectives, double intermolecularEnergy,
+			  double intramolecularEnergy, Double rmsd, int run, int taskId, String pdbqt, String macro) {
+		super();
+		this.id = id;
+		this.finalBindingEnergy = finalBindingEnergy;
+		this.objectives = objectives;
+		this.intermolecularEnergy = intermolecularEnergy;
+		this.intramolecularEnergy = intramolecularEnergy;
+		this.rmsd = rmsd;
+		this.run = run;
+		this.taskId = taskId;
+		this.pdbqt = pdbqt;
+		this.macro = macro;
+	}
+	
+	
 
 	@ApiModelProperty(value = "id")
 	public int getId() {

@@ -1,6 +1,8 @@
 package es.uma.khaos.docking_service.autodock;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -15,15 +17,14 @@ import es.uma.khaos.docking_service.exception.DlgParseException;
 import es.uma.khaos.docking_service.exception.DpfNotFoundException;
 import es.uma.khaos.docking_service.exception.DpfWriteException;
 import es.uma.khaos.docking_service.exception.FtpException;
+import es.uma.khaos.docking_service.exception.PdbNotFoundException;
 import es.uma.khaos.docking_service.model.Instance;
 import es.uma.khaos.docking_service.model.ParameterSet;
-import es.uma.khaos.docking_service.model.Result;
 import es.uma.khaos.docking_service.model.Task;
 import es.uma.khaos.docking_service.model.dlg.AutoDockSolution;
 import es.uma.khaos.docking_service.model.dlg.AutoDockSolution.Optimization;
 import es.uma.khaos.docking_service.model.dlg.Front;
 import es.uma.khaos.docking_service.model.dlg.Reference;
-import es.uma.khaos.docking_service.model.dlg.result.DLGResult;
 import es.uma.khaos.docking_service.properties.Constants;
 import es.uma.khaos.docking_service.service.DatabaseService;
 import es.uma.khaos.docking_service.service.FtpService;
@@ -76,17 +77,17 @@ public class WorkerThread implements Runnable {
 		
 	}
 	
-	private void processCommand() throws DpfWriteException, DpfNotFoundException, 
-	CommandExecutionException, DlgParseException, DlgNotFoundException, DatabaseException,
-	IOException, NoSuchAlgorithmException, FtpException {
+	private void processCommand() throws Exception {
 		
 		String command;
 
 		String workDir = String.format("%sexec-%d", BASE_FOLDER, task.getId());
+		//System.out.println("worDir: " + workDir );
 		String inputFile = String.format("exec-%d.dpf", task.getId());
 		String outputFile = String.format("exec-%d.dlg", task.getId());
 		boolean fromFTP = false;
 		String dpfExtension = "dpf";
+		String pdbExtension = "pdb";
 		
 		String dpfFileName;
 		
@@ -130,6 +131,18 @@ public class WorkerThread implements Runnable {
 			e.printStackTrace();
 		}
 		
+		//Procesar macro
+		System.out.println("pdbExtension: " + pdbExtension);
+		System.out.println("workDir: " + workDir);
+
+		String pdb = Utils.searchFileWithExtensionNoList(workDir, pdbExtension);
+		
+		System.out.println("pdb: " + pdb);
+		if (pdb == null || pdb.isEmpty()) throw new PdbNotFoundException();
+		File PDBfile = new File(workDir+ "/" + pdb);
+		
+		readPDB(PDBfile, task.getId());
+		
 		// SI TENEMOS EL EJECUTABLE DE AUTODOCK:
 		if (!"".equals(Constants.DIR_AUTODOCK))  {
 			
@@ -157,6 +170,30 @@ public class WorkerThread implements Runnable {
 		Utils.deleteFolder(workDir);
 		Utils.deleteFolder(task.getParameters().getZipFile());
 		
+	}
+	
+	
+	public void readPDB(File inputFile, int taskId) throws Exception{
+		
+		BufferedReader br = new BufferedReader(new FileReader(inputFile));
+		String line;
+		String pdbLine = "";
+
+		try {
+			
+			while ((line = br.readLine()) != null) {
+				
+				pdbLine += line + "\n";
+			}
+			
+			br.close();
+			System.out.println("pdbLine: " + pdbLine);
+			DatabaseService.getInstance().insertPDB(taskId, pdbLine);
+			
+		}catch (IOException e) {
+			
+			e.printStackTrace();
+		}
 	}
 	
 	private void formatDPF(File inputFile, File outputFile) throws DpfWriteException, DpfNotFoundException {

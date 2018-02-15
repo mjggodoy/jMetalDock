@@ -30,6 +30,7 @@ import com.mysql.jdbc.StringUtils;
 import es.uma.khaos.docking_service.autodock.WorkerThread;
 import es.uma.khaos.docking_service.exception.DatabaseException;
 import es.uma.khaos.docking_service.model.ErrorResponse;
+import es.uma.khaos.docking_service.model.Macro;
 import es.uma.khaos.docking_service.model.ParameterSet;
 import es.uma.khaos.docking_service.model.Task;
 import es.uma.khaos.docking_service.properties.Constants;
@@ -66,6 +67,32 @@ public class TaskResource extends AbstractResource {
 		ResponseBuilder errorBuilder = getResponseBuilder(headers, "/errorResponse.jsp");
 		return getTaskResponse(id, token, builder, errorBuilder);
 	}
+	
+	
+	@GET
+	@Path("/{id}/macro")
+	@ApiResponses(value ={
+			@ApiResponse(code = 403, 
+					message = "You are not allowed to see this task"),
+			@ApiResponse(code = 500, 
+					message = "Internal server error")
+	})
+	@ApiOperation(value = "Get a task by id and token",
+	notes="Get a task with the corresponding id, task, state, "
+			+ "start and end times and the parameters that were set for the algorithm execution",
+	response = Macro.class)
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML})
+	public Response getMacro(
+			@ApiParam(value = "Task id: identification of the task's number", required = true) @NotNull @PathParam("id") int id,
+			@ApiParam(value = "Token: a code related to a task", required = true) @QueryParam("token") String token,
+			@Context HttpHeaders headers) throws DatabaseException {
+		
+		ResponseBuilder builder = getResponseBuilder(headers, "/macro.jsp");
+		ResponseBuilder errorBuilder = getResponseBuilder(headers, "/errorResponse.jsp");
+		return getMacroResponse(id, token, builder, errorBuilder);
+	}
+	
+
 	
 	// TODO: Tratar error de FTP y tratar instancia no existente
 	@POST
@@ -154,6 +181,35 @@ public class TaskResource extends AbstractResource {
 			return internalServerError(errorBuilder);
 		}
 	}
+	
+	
+	private Response getMacroResponse(int id, String token, ResponseBuilder builder, ResponseBuilder errorBuilder) throws DatabaseException{
+		
+		Task task = DatabaseService.getInstance().getTaskParameter(id);
+		
+		try{
+
+		if (task == null || !task.getToken().equals(token)) {
+			return errorBuilder.buildResponse(
+					new ErrorResponse(
+							Response.Status.FORBIDDEN,
+							Constants.RESPONSE_TASK_MSG_UNALLOWED),
+					Response.Status.FORBIDDEN
+			);
+
+		}else{
+		
+			Macro macro = DatabaseService.getInstance().getMacroFile(id);
+			return builder.buildResponse(macro);
+		}
+		
+		}catch (DatabaseException e) {
+			e.printStackTrace();
+			return internalServerError(errorBuilder);
+		}
+	}
+	
+	
 	
 	private Response createTaskResponse(
 			String token, ParameterSet params, String email, UriInfo uriInfo,

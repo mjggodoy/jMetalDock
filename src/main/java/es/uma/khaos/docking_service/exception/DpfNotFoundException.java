@@ -9,7 +9,7 @@ public class DpfNotFoundException extends Exception {
 	public DpfNotFoundException(String message) {
 		super(message);
 	}
-	
+
 	public DpfNotFoundException(Throwable cause) {
 		super(cause);
 	}

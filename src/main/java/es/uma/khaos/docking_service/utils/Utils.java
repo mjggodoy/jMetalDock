@@ -64,6 +64,26 @@ public class Utils {
 		return list;
 	}
 	
+	public static String searchFileWithExtensionNoList(String dir, String extension) {
+		//List <String> list = new ArrayList<>();
+		String ficheroConExtension = "";
+		File f = new File(dir);
+		if (f.exists()) { // Directorio existe }
+			File[] ficheros = f.listFiles();
+			for (int x=0; x<ficheros.length; x++) {
+				String fichero = ficheros[x].getName();
+				if (fichero.indexOf(extension)!=-1 && !fichero.contains(".pdbqt")) {
+					ficheroConExtension = fichero;
+					//list.add(fichero)
+					//System.out.println("length: " + extension.length() + " " + ficheroConExtension);
+				}
+			}
+		}
+		return ficheroConExtension;
+	}
+	
+	
+	
 	//TODO: Lanzar excepción si no puede borrar folder
 	//delete folder
 	public static void deleteFolder(String workDir){

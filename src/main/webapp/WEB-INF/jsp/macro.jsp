@@ -1,65 +1,29 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="java.util.ArrayList"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>PDB Visualization</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <style>
-    body {
-      font-family: Helvetica;
-      background-color: #fff;/*#f0f0f0;*/
-      font-weight: lighter;
-      margin: 0px;
-      width:100%;
-      height:100%x;
-    }
-    a {
-      color:#393;
-    }
-    #gl {
-      position:fixed;
-      bottom:0px;
-      top:0px;
-      left:0px;
-      right:0px;
-    }
-    #inspector {
-      top:10px;
-      left:10px;
-      box-shadow: 2px 2px 5px #888888;
-      border-radius:8px;
-      position:absolute;
-      background-color:#fafafa;
-      padding:10px;
-      border-style:solid;
-      border-width:1px;
-      border-color:#ccc;
-    }
+<head>
+<%@ include file="/WEB-INF/jsp/headerHtml.jsp"%>
+<link href='<c:url value="/css/styleVisualization.css" />' rel="stylesheet">
 
-    #inspector ul {
-      padding:0px;
-    }
+</head>
 
-    #inspector ul li {
-      margin-left:5px;
-      margin-right:5px;
-      margin-bottom:5px;
-      list-style:none;
-      cursor: pointer;
-      color:#393
-    }
+<c:set var="task" value='${it}' />
+<c:set var="macro" value='${it}' />
 
-    #inspector ul li:hover {
-      color:#994444;
-    }
-    #inspector h1 {
-      font-weight:normal;
-      font-size:12pt;
-    }
-    </style>
-    </head>
+
 <body>
-  <div id=gl>
+
+	<jsp:include page="/WEB-INF/jsp/header.jsp">
+		<jsp:param name="page" value="none" />
+	</jsp:include>
+
+	<div class="container">
+<br/>
+<br/>
+
+<div id=gl>
   </div>
   <div id=inspector>
     <h1>Choose Style</h1>
@@ -72,13 +36,14 @@
       <li id=sline>Smooth Line Trace</li>
       <li id=trace>Trace</li>
     </ul>
-
-    <span><a href='index.html'>About</a> | Code on <a href="http://github.com/biasmv/pv">github.com</a></span>
   </div>
   <div id=status>initialising...</div>
+		
+</div>
 </body>
-  <script src='viewer/js/pv.min.js'></script>
-  <script>
+
+	<script src='<c:url value="/viewer/js/pv.min.js" />'></script>
+	<script>
     var viewer = pv.Viewer(document.getElementById('gl'), 
                            { quality : 'medium', width: 'auto', height : 'auto',
                              antialias : true, outline : true});
@@ -111,14 +76,15 @@
     }
     function preset() {
       viewer.clear();
-      var ligand = structure.select({rnames : ['MK1']});
+      var ligand = structure.select({rnames : ['U0E']});
       viewer.ballsAndSticks('ligand', ligand);
       viewer.cartoon('protein', structure);
     }
     function load(pdb_id) {
       document.getElementById('status').innerHTML ='loading '+pdb_id;
       var xhr = new XMLHttpRequest();
-      xhr.open('GET', 'viewer/pdbs/'+pdb_id+'.pdb');
+      //xhr.open('GET', '<c:url value="/viewer/pdbs/" />' +pdb_id+'.pdb');
+      xhr.open('GET', '<c:url value="/viewer/pdbs/" />' +pdb_id);
       //console.log("PUA PDB?");
       xhr.setRequestHeader('Content-type', 'application/x-pdb');
       xhr.onreadystatechange = function() {
@@ -132,10 +98,9 @@
       }
       xhr.send();
     }
-    function transferase() {
+    function transferase() {	 	
     //console.log("PUA LOAD");
-      //load('1r6a');
-      load('1hsg');
+      load('<c:out value="'${macro.macro}"/>);
     }
     document.getElementById('cartoon').onclick = cartoon;
     document.getElementById('line-trace').onclick = lineTrace;
@@ -149,4 +114,5 @@
     }
     document.addEventListener('DOMContentLoaded', transferase);
   </script>
+	
 </html>
