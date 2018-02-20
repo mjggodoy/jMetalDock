@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.ArrayList"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,6 +23,7 @@
 	<div class="container">
 <br/>
 <br/>
+
 
 <div id=gl>
   </div>
@@ -74,45 +76,83 @@
       viewer.clear();
       viewer.trace('structure', structure);
     }
+    
     function preset() {
-      viewer.clear();
-      var ligand = structure.select({rnames : ['U0E']});
-      viewer.ballsAndSticks('ligand', ligand);
-      viewer.cartoon('protein', structure);
+     viewer.clear();
+     var ligand = structure.select({rnames : ['']});
+   	viewer.ballsAndSticks('ligand', ligand);
+     viewer.cartoon('protein', structure);
     }
+    
     function load(pdb_id) {
-      document.getElementById('status').innerHTML ='loading '+pdb_id;
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', '<c:url value="/viewer/pdbs/" />' +pdb_id+'.pdb');
-      //console.log("PUA PDB?");
-      xhr.setRequestHeader('Content-type', 'application/x-pdb');
-      xhr.onreadystatechange = function() {
-      //console.log("PUA RESPUESTA!");
-      	if (xhr.readyState == 4) {
-          structure = pv.io.pdb(xhr.responseText);
-          preset();
-          viewer.centerOn(structure);
-        } 
-        document.getElementById('status').innerHTML = '';
-      }
-      xhr.send();
-    }
-    
-    function load2() {
-        //document.getElementById('status').innerHTML ='loading '+pdb_id;
+        document.getElementById('status').innerHTML ='loading '+pdb_id;
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '<c:url value="/viewer/pdbs/" />'+pdb_id+'.pdb');
+        //console.log("PUA PDB?");
+        xhr.setRequestHeader('Content-type', 'application/x-pdb');
+        xhr.onreadystatechange = function() {
         //console.log("PUA RESPUESTA!");
-       	structure = pv.io.pdb("${macro.macro}");
-        preset();
-        viewer.centerOn(structure);
+          if (xhr.readyState == 4) {
+            structure = pv.io.pdb(xhr.responseText);
+            preset();
+            viewer.centerOn(structure);
+          }
+          document.getElementById('status').innerHTML = '';
+        }
+        xhr.send();
+      }
+    
+   
+   
+   
+    function load2() {
+    	
+    	console.log("LOAD2");
+        
+    	document.getElementById('status').innerHTML ='loading ';
+        var xhr = new XMLHttpRequest();
+        var path  = '<c:url value="/rest/task/${task.id}/macro?token=${param.token}" />';
+		xhr.open('GET', path);
+	    //xhr.setRequestHeader('Content-type', 'application/x-pdb');
+	    
+	    xhr.onreadystatechange = function() {
+	    	console.log("XHR=");
+	    	console.log(xhr);
+	          if (xhr.readyState == 4) {
+	            structure = pv.io.pdb(xhr.responseText);
+	            console.log("STRUCTURE = ");
+	            console.log(structure);
+	            //viewer.cartoon('protein', structure);
+	            preset();
+	            viewer.centerOn(structure);
+	          }
+	          document.getElementById('status').innerHTML = '';
+	        }
+	    xhr.send();
+    } 
+    
+    function load3(){
+    	console.log("LOAD3");
+    	
+        var path  = '<c:url value="/rest/task/${task.id}/macro?token=${param.token}" />';
+        pv.io.fetchPdb(path, function(structureResponse) {
+        	structure = structureResponse;
+        	console.log("STRUCTURE = ");
+            console.log(structure);
+        	preset();
+            viewer.centerOn(structure);
+        });    	
     }
-  
     
     
-    function transferase() {	 	
-    //console.log("PUA LOAD");
-     //load('pua');
-     load2();
+    function transferase() {
+
+     //load('api');
+     //load2();
+     load3();
+     
     }
+    
     document.getElementById('cartoon').onclick = cartoon;
     document.getElementById('line-trace').onclick = lineTrace;
     document.getElementById('preset').onclick = preset;

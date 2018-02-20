@@ -16,7 +16,6 @@ import javax.ws.rs.core.*;
 
 import es.uma.khaos.docking_service.model.StandardResponse;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -68,7 +67,6 @@ public class TaskResource extends AbstractResource {
 		return getTaskResponse(id, token, builder, errorBuilder);
 	}
 	
-	
 	@GET
 	@Path("/{id}/macro")
 	@ApiResponses(value ={
@@ -88,12 +86,32 @@ public class TaskResource extends AbstractResource {
 			@ApiParam(value = "Token: a code related to a task", required = true) @QueryParam("token") String token,
 			@Context HttpHeaders headers) throws DatabaseException {
 		
-		/*
+		return getMacroTxt(id, token);
+	}
+	
+	
+	@GET
+	@Path("/{id}/macropage")
+	@ApiResponses(value ={
+			@ApiResponse(code = 403, 
+					message = "You are not allowed to see this task"),
+			@ApiResponse(code = 500, 
+					message = "Internal server error")
+	})
+	@ApiOperation(value = "Get a task by id and token",
+	notes="Get a task with the corresponding id, task, state, "
+			+ "start and end times and the parameters that were set for the algorithm execution",
+	response = Macro.class)
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML})
+	public Response getMacroPage(
+			@ApiParam(value = "Task id: identification of the task's number", required = true) @NotNull @PathParam("id") int id,
+			@ApiParam(value = "Token: a code related to a task", required = true) @QueryParam("token") String token,
+			@Context HttpHeaders headers) throws DatabaseException {
+		
 		ResponseBuilder builder = getResponseBuilder(headers, "/macro.jsp");
 		ResponseBuilder errorBuilder = getResponseBuilder(headers, "/errorResponse.jsp");
 		return getMacroResponse(id, token, builder, errorBuilder);
-		*/
-		return getMacroTxt(id, token);
+	
 	}
 	
 

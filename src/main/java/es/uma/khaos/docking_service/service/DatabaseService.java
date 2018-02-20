@@ -177,6 +177,43 @@ public final class DatabaseService {
 	}
 	
 	
+	
+	public void insertLigandId(int taskId, String ligandId) throws Exception { 
+		
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		String statement = "update task set id_ligand = ? where id = ?";
+
+		try {
+			
+			conn = openConnection();
+			stmt = conn.prepareStatement(statement, Statement.RETURN_GENERATED_KEYS);
+			stmt.setString(1, ligandId);
+			stmt.setInt(2, taskId);
+
+
+			stmt.execute();
+			rs = stmt.getGeneratedKeys();
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DatabaseException();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (rs != null) rs.close();
+			if (stmt != null) stmt.close();
+			if (conn != null) conn.close();
+		}
+		
+
+	}
+	
+	
 	public Macro getMacroFile(int taskId) throws DatabaseException{
 		
 		

@@ -2,10 +2,12 @@ package es.uma.khaos.docking_service.autodock;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import es.uma.khaos.docking_service.autodock.dlg.DLGMonoParser;
 import es.uma.khaos.docking_service.autodock.dlg.DLGMultiParser;
@@ -142,6 +144,7 @@ public class WorkerThread implements Runnable {
 		File PDBfile = new File(workDir+ "/" + pdb);
 		
 		readPDB(PDBfile, task.getId());
+		readIdLigand(PDBfile, task.getId());
 		
 		// SI TENEMOS EL EJECUTABLE DE AUTODOCK:
 		if (!"".equals(Constants.DIR_AUTODOCK))  {
@@ -194,6 +197,39 @@ public class WorkerThread implements Runnable {
 			
 			e.printStackTrace();
 		}
+	}
+	
+	
+	public void readIdLigand(File inputFile, int taskId) throws FileNotFoundException{
+		
+		
+		BufferedReader br = new BufferedReader(new FileReader(inputFile));
+
+		String line;
+		String ligandId = "";
+		
+			try {
+			
+				while ((line = br.readLine()) != null) {
+					
+					if(line.startsWith("HETATM")){
+						
+						String[] split = line.split("\\s+");
+						ligandId  = split[3]; 	
+						break;
+					}	
+				}
+			
+				br.close();
+				//System.out.println("ligandID (IMPORTANTE): " + ligandId);
+				
+				
+				
+				
+			}catch (IOException e) {
+			
+				e.printStackTrace();
+			}
 	}
 	
 	private void formatDPF(File inputFile, File outputFile) throws DpfWriteException, DpfNotFoundException {
