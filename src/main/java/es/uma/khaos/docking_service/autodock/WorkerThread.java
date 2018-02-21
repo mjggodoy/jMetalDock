@@ -200,7 +200,7 @@ public class WorkerThread implements Runnable {
 	}
 	
 	
-	public void readIdLigand(File inputFile, int taskId) throws FileNotFoundException{
+	public void readIdLigand(File inputFile, int taskId) throws Exception{
 		
 		
 		BufferedReader br = new BufferedReader(new FileReader(inputFile));
@@ -209,7 +209,7 @@ public class WorkerThread implements Runnable {
 		String ligandId = "";
 		
 			try {
-			
+		
 				while ((line = br.readLine()) != null) {
 					
 					if(line.startsWith("HETATM")){
@@ -221,10 +221,7 @@ public class WorkerThread implements Runnable {
 				}
 			
 				br.close();
-				//System.out.println("ligandID (IMPORTANTE): " + ligandId);
-				
-				
-				
+				DatabaseService.getInstance().insertLigandId(taskId, ligandId);
 				
 			}catch (IOException e) {
 			

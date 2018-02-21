@@ -29,6 +29,7 @@ import com.mysql.jdbc.StringUtils;
 import es.uma.khaos.docking_service.autodock.WorkerThread;
 import es.uma.khaos.docking_service.exception.DatabaseException;
 import es.uma.khaos.docking_service.model.ErrorResponse;
+import es.uma.khaos.docking_service.model.Ligand;
 import es.uma.khaos.docking_service.model.Macro;
 import es.uma.khaos.docking_service.model.ParameterSet;
 import es.uma.khaos.docking_service.model.Task;
@@ -89,7 +90,26 @@ public class TaskResource extends AbstractResource {
 		return getMacroTxt(id, token);
 	}
 	
+	@GET
+	@Path("/{id}/ligand")
+	@ApiResponses(value ={
+			@ApiResponse(code = 403, 
+					message = "You are not allowed to see this task"),
+			@ApiResponse(code = 500, 
+					message = "Internal server error")
+	})
+	@ApiOperation(value = "",
+	notes="",
+	response = Ligand.class)
+	@Produces({MediaType.TEXT_PLAIN})
+	public Response getLigand(
+			@ApiParam(value = "Task id: identification of the task's number", required = true) @NotNull @PathParam("id") int id,
+			@ApiParam(value = "Token: a code related to a task", required = true) @QueryParam("token") String token,
+			@Context HttpHeaders headers) throws DatabaseException{
 	
+		return getLigandTxt(id, token);
+	}
+
 	@GET
 	@Path("/{id}/macropage")
 	@ApiResponses(value ={
@@ -232,6 +252,39 @@ public class TaskResource extends AbstractResource {
 					.entity(Constants.RESPONSE_INTERNAL_SERVER_ERROR)
 					.build();
 		}
+	}
+	
+	
+	
+	private Response getLigandTxt(int id, String token) throws DatabaseException {
+		
+		Task task = DatabaseService.getInstance().getTaskParameter(id);
+
+		
+		try{
+
+			if (task == null || !task.getToken().equals(token)) {
+				return Response
+						.status(Response.Status.FORBIDDEN)
+						.entity(Constants.RESPONSE_TASK_MSG_UNALLOWED)
+						.build();
+			}else{
+				
+				Ligand ligand = DatabaseService.getInstance().getLigand(id);
+				
+				return Response.ok(ligand.getLigand()).build();
+			
+			}
+				
+			}catch (DatabaseException e){
+				
+				e.printStackTrace();
+				return Response
+						.status(Response.Status.INTERNAL_SERVER_ERROR)
+						.entity(Constants.RESPONSE_INTERNAL_SERVER_ERROR)
+						.build();
+			}
+		
 	}
 	
 	private Response getMacroResponse(int id, String token, ResponseBuilder builder, ResponseBuilder errorBuilder) throws DatabaseException{

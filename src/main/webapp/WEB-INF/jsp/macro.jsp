@@ -78,13 +78,45 @@
     }
     
     function preset() {
-     viewer.clear();
-     var ligand = structure.select({rnames : ['']});
-   	viewer.ballsAndSticks('ligand', ligand);
-     viewer.cartoon('protein', structure);
+        viewer.clear();
+        var ligand = structure.select({rnames : ['']});
+        viewer.ballsAndSticks('ligand', ligand);
+        viewer.cartoon('protein', structure);
     }
+
+      //console.log(ligand);
+      //viewer.ballsAndSticks('ligand', ligand);
+     
+   
     
-    function load(pdb_id) {
+   	function preset() {
+
+   		$.get( '<c:url value="/rest/task/${task.id}/ligand?token=${param.token}" />', function( data ) {
+   			
+   			console.log(data);
+			var ligandId = data;
+	    	var ligand = structure.select({rnames : [ligandId]});
+			viewer.ballsAndSticks('ligand', ligand);
+			viewer.cartoon('protein', structure);
+    		viewer.centerOn(structure);
+    	});
+   	}
+
+    /* function preset() {
+    	    var ligand = data;
+
+    	viewer.clear();
+    	$.get( '<c:url value="/rest/task/${task.id}/ligand?token=${param.token}" />', function( data ) {
+    		console.log(data);
+    		var ligand = data;
+    		console.log(ligand);
+    		viewer.ballsAndSticks('ligand', ligand);
+    		viewer.cartoon('protein', structure);
+    		viewer.centerOn(structure);
+    	});
+    } */
+    
+    /* function load(pdb_id) {
         document.getElementById('status').innerHTML ='loading '+pdb_id;
         var xhr = new XMLHttpRequest();
         xhr.open('GET', '<c:url value="/viewer/pdbs/" />'+pdb_id+'.pdb');
@@ -100,12 +132,9 @@
           document.getElementById('status').innerHTML = '';
         }
         xhr.send();
-      }
+      } */
     
-   
-   
-   
-    function load2() {
+   /*  function load2() {
     	
     	console.log("LOAD2");
         
@@ -130,19 +159,23 @@
 	        }
 	    xhr.send();
     } 
+     */
     
-    function load3(){
+     function load3(){
     	console.log("LOAD3");
-    	
         var path  = '<c:url value="/rest/task/${task.id}/macro?token=${param.token}" />';
         pv.io.fetchPdb(path, function(structureResponse) {
         	structure = structureResponse;
+        	viewer.cartoon('protein', structure);
         	console.log("STRUCTURE = ");
             console.log(structure);
         	preset();
-            viewer.centerOn(structure);
-        });    	
-    }
+
+      });
+          
+       console.log("END!")
+        
+     }
     
     
     function transferase() {
