@@ -188,11 +188,10 @@ public class WorkerThread implements Runnable {
 
 				if(!line.startsWith("HETATM") 
 						&& !line.startsWith("CONECT") && !line.startsWith("MASTER")
-						&& !line.startsWith("TER") && !line.startsWith("END")){
+						&& !line.startsWith("TER")){
 
 					pdbLine += line + "\n";
 					System.out.println("pdbLine" + line);
-
 				}
 			}
 
@@ -216,9 +215,7 @@ public class WorkerThread implements Runnable {
 		String ligandId = "";
 
 		try {
-
 			while ((line = br.readLine()) != null) {
-
 				if(line.startsWith("HETATM")){
 
 					String[] split = line.split("\\s+");
@@ -236,7 +233,7 @@ public class WorkerThread implements Runnable {
 		}
 	}
 
-	
+
 	private void formatDPF(File inputFile, File outputFile) throws DpfWriteException, DpfNotFoundException {
 		ParameterSet params = task.getParameters();
 		System.out.println(outputFile.getAbsolutePath());
