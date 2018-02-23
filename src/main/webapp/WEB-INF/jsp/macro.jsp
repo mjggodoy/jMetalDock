@@ -10,8 +10,9 @@
 
 </head>
 
-<c:set var="task" value='${it}' />
-<c:set var="macro" value='${it}' />
+
+<c:set var="solution" value='${it}' />
+
 
 
 <body>
@@ -76,29 +77,18 @@
       viewer.clear();
       viewer.trace('structure', structure);
     }
-    
-    function preset() {
-        viewer.clear();
-        var ligand = structure.select({rnames : ['']});
-        viewer.ballsAndSticks('ligand', ligand);
-        viewer.cartoon('protein', structure);
-    }
-
-      //console.log(ligand);
-      //viewer.ballsAndSticks('ligand', ligand);
-     
-   
-    
+        
    	function preset() {
 
-   		$.get( '<c:url value="/rest/task/${task.id}/ligand?token=${param.token}" />', function( data ) {
-   			
+   		$.get( '<c:url value="/rest/task/${solution.taskId}/result/${solution.run}/${solution.id}/ligand?token=${param.token}" />', function( data ) {
+   			viewer.clear();
    			console.log(data);
 			var ligandId = data;
 	    	var ligand = structure.select({rnames : [ligandId]});
 			viewer.ballsAndSticks('ligand', ligand);
 			viewer.cartoon('protein', structure);
     		viewer.centerOn(structure);
+    		
     	});
    	}
 
@@ -116,7 +106,7 @@
     	});
     } */
     
-    /* function load(pdb_id) {
+     function load(pdb_id) {
         document.getElementById('status').innerHTML ='loading '+pdb_id;
         var xhr = new XMLHttpRequest();
         xhr.open('GET', '<c:url value="/viewer/pdbs/" />'+pdb_id+'.pdb');
@@ -132,7 +122,7 @@
           document.getElementById('status').innerHTML = '';
         }
         xhr.send();
-      } */
+      } 
     
    /*  function load2() {
     	
@@ -161,28 +151,29 @@
     } 
      */
     
-     function load3(){
-    	console.log("LOAD3");
-        var path  = '<c:url value="/rest/task/${task.id}/macro?token=${param.token}" />';
+     function loadMacroandLigand(){
+        var path  = '<c:url value="/rest/task/${solution.taskId}/result/${solution.run}/${solution.id}/pdbqtMacro?token=${param.token}" />';
+        //macro?token=${param.token}" />';
         pv.io.fetchPdb(path, function(structureResponse) {
+            console.log("XUXA1");
         	structure = structureResponse;
         	viewer.cartoon('protein', structure);
         	console.log("STRUCTURE = ");
             console.log(structure);
         	preset();
-
       });
           
+        
+        //http://localhost:8080/docking-service/rest/task/633/result/1/2552/pdbqtMacro?token=q2cbohjj7gim7oh3sc6u71amu3
        console.log("END!")
         
      }
     
     
     function transferase() {
-
-     //load('api');
-     //load2();
-     load3();
+  	
+    	loadMacroandLigand();
+    	//load(pua2);
      
     }
     
