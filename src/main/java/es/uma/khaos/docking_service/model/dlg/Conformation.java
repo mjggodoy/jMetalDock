@@ -78,7 +78,7 @@ public class Conformation {
 			this.pdbqt = "ROOT\n";
 			while ((line = br.readLine()) != null) {
 				//System.out.println(line);
-				this.pdbqt += line.replace("DOCKED: ", "").replace("ATOM", "HETATM") + "\n";
+				this.pdbqt += line.replace("DOCKED: ", "").replace("ATOM  ", "HETATM") + "\n";
 				if ((endPrefix != null) && (line.startsWith(endPrefix)))
 					break;
 				if (lineStartsWithOnePrefix(line, startPrefixes)) {
@@ -95,11 +95,12 @@ public class Conformation {
 											+ line + "\n" + "Expected "
 											+ atomsCount + " but found " + index);
 						} else {
-							double x = Double.parseDouble(line2.substring(30, 38));
+							double x = Double.parseDouble(line2.substring(30, 38)
+									.trim());
 							double y = Double.parseDouble(line2.substring(38, 46)
-									.trim());
+									.trim().trim());
 							double z = Double.parseDouble(line2.substring(46, 54)
-									.trim());
+									.trim().trim());
 							String type = line2.substring(77).trim();
 							atoms.add(new Atom(x, y, z, type));
 						}
