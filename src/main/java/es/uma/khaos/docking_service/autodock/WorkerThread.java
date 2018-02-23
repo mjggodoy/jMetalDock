@@ -188,10 +188,10 @@ public class WorkerThread implements Runnable {
 
 				if(!line.startsWith("HETATM") 
 						&& !line.startsWith("CONECT") && !line.startsWith("MASTER")
-						&& !line.startsWith("TER")){
+						&& !line.startsWith("TER") && !line.startsWith("END")){
 
 					pdbLine += line + "\n";
-					System.out.println("pdbLine: " + line);
+					System.out.println("pdbLine " + line);
 				}
 			}
 
