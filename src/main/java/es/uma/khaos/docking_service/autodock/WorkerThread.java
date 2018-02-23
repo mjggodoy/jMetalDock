@@ -137,7 +137,7 @@ public class WorkerThread implements Runnable {
 		System.out.println("pdbExtension: " + pdbExtension);
 		System.out.println("workDir: " + workDir);
 
-		String pdb = Utils.searchFileWithExtensionNoList(workDir, pdbExtension);
+		String pdb = Utils.searchFileWithExtensionList(workDir, pdbExtension);
 
 		System.out.println("pdb: " + pdb);
 		if (pdb == null || pdb.isEmpty()) throw new PdbNotFoundException();

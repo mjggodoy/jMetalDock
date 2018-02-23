@@ -11,10 +11,13 @@ import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.io.FileUtils;
+
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
 
 import es.uma.khaos.docking_service.exception.CommandExecutionException;
 import net.lingala.zip4j.core.ZipFile;
@@ -64,8 +67,8 @@ public class Utils {
 		return list;
 	}
 	
-	public static String searchFileWithExtensionNoList(String dir, String extension) {
-		//List <String> list = new ArrayList<>();
+	public static String searchFileWithExtensionList(String dir, String extension) {
+		List <String> list = new ArrayList<>();
 		String ficheroConExtension = "";
 		File f = new File(dir);
 		if (f.exists()) { // Directorio existe }
@@ -74,16 +77,22 @@ public class Utils {
 				String fichero = ficheros[x].getName();
 				if (fichero.indexOf(extension)!=-1 && !fichero.contains(".pdbqt")) {
 					ficheroConExtension = fichero;
-					//list.add(fichero)
-					//System.out.println("length: " + extension.length() + " " + ficheroConExtension);
+					list.add(ficheroConExtension);
+					
+					System.out.println("length: " + extension.length() + " " + ficheroConExtension);
 				}
 			}
 		}
-		return ficheroConExtension;
+	    
+		java.util.Collections.sort(list);
+		System.out.println("First element: " + list.get(0));
+
+		return list.get(0);
+
+		
 	}
 	
-	
-	
+
 	//TODO: Lanzar excepción si no puede borrar folder
 	//delete folder
 	public static void deleteFolder(String workDir){
