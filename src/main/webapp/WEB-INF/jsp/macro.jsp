@@ -173,7 +173,7 @@
     function transferase() {
   	
     	loadMacroandLigand();
-    	//load(pua2);
+    	//load('pua');
      
     }
     

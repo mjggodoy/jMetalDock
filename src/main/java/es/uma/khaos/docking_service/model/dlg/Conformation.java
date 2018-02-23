@@ -78,7 +78,7 @@ public class Conformation {
 			this.pdbqt = "ROOT\n";
 			while ((line = br.readLine()) != null) {
 				//System.out.println(line);
-				this.pdbqt += line.replace("DOCKED: ", "").replace("ATOM", "HETATM") + "\n";
+				this.pdbqt += line.replace("DOCKED:", "").replace("ATOM", "HETATM") + "\n";
 				if ((endPrefix != null) && (line.startsWith(endPrefix)))
 					break;
 				if (lineStartsWithOnePrefix(line, startPrefixes)) {

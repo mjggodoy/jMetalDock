@@ -191,12 +191,12 @@ public class WorkerThread implements Runnable {
 						&& !line.startsWith("TER")){
 
 					pdbLine += line + "\n";
-					System.out.println("pdbLine" + line);
+					System.out.println("pdbLine: " + line);
 				}
 			}
 
 			br.close();
-			System.out.println("pdbLine: " + pdbLine);
+			System.out.println("pdbLine:  " + pdbLine);
 			DatabaseService.getInstance().insertPDB(taskId, pdbLine);
 
 		}catch (IOException e) {
