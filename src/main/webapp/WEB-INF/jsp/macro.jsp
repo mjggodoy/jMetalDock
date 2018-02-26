@@ -22,31 +22,57 @@
 	</jsp:include>
 
 	<div class="container">
-<br/>
-<br/>
 
+		<div class="page-header">
+			<ol class="breadcrumb">
+				<li><a href='<c:url value="/." />'>Home</a></li>
+				<li><a href='<c:url value="/task.jsp" />'>Task</a></li>
+				<li>
+					<a href='<c:url value="/rest/task/${solution.taskId}?token=${param.token}" />'>${solution.taskId}</a>
+				</li>
+				<li>
+					<a href='<c:url value="/rest/task/${solution.taskId}/result?token=${param.token}" />'>Results</a>
+				</li>
+				<li>
+					<a href='<c:url value="/rest/task/${solution.taskId}/result/${solution.run}?token=${param.token}" />'>
+						Run ${solution.run}
+					</a>
+				</li>
+				<li>
+					<a href='<c:url value="/rest/task/${solution.taskId}/result/${solution.run}/${solution.id}?token=${param.token}" />'>
+						Solution ${solution.id}
+					</a>
+				</li>
+				<li class="active">Protein viewer</li>
+			</ol>
+			<h3>Protein viewer</h3>
+		</div>
 
-<div id=gl>
-  </div>
-  <div id=inspector>
-    <h1>Choose Style</h1>
-    <ul>
-      <li id=preset>Preset</li>
-      <li id=cartoon>Cartoon</li>
-      <li id=tube>Tube</li>
-      <li id=lines>Lines</li>
-      <li id=line-trace>Line Trace</li>
-      <li id=sline>Smooth Line Trace</li>
-      <li id=trace>Trace</li>
-    </ul>
-  </div>
-  <div id=status>initialising...</div>
+		<!--
+		<br/>
+		<br/>
+		-->
+
+		<div id=gl></div>
+		<div id=inspector>
+			<h1>Choose Style</h1>
+			<ul>
+				<li id=preset>Preset</li>
+				<li id=cartoon>Cartoon</li>
+				<li id=tube>Tube</li>
+				<li id=lines>Lines</li>
+				<li id=line-trace>Line Trace</li>
+				<li id=sline>Smooth Line Trace</li>
+				<li id=trace>Trace</li>
+			</ul>
+		</div>
+		<div id=status>initialising...</div>
 		
-</div>
+	</div>
 </body>
 
-	<script src='<c:url value="/viewer/js/pv.min.js" />'></script>
-	<script>
+<script src='<c:url value="/viewer/js/pv.min.js" />'></script>
+<script>
     var viewer = pv.Viewer(document.getElementById('gl'), 
                            { quality : 'medium', width: 'auto', height : 'auto',
                              antialias : true, outline : true});
@@ -188,6 +214,6 @@
       viewer.fitParent();
     }
     document.addEventListener('DOMContentLoaded', transferase);
-  </script>
+</script>
 	
 </html>
