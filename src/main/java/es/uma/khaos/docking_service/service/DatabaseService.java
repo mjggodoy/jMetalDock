@@ -177,6 +177,39 @@ public final class DatabaseService {
 	}
 	
 	
+	
+	public void insertLigandId(int taskId, String ligandId) throws Exception { 
+	
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		String statement = "update task set id_ligand = ? where id = ?";
+
+		try {
+			
+			conn = openConnection();
+			stmt = conn.prepareStatement(statement, Statement.RETURN_GENERATED_KEYS);
+			stmt.setString(1, ligandId);
+			stmt.setInt(2, taskId);
+
+			stmt.execute();
+			rs = stmt.getGeneratedKeys();
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DatabaseException();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			if (rs != null) rs.close();
+			if (stmt != null) stmt.close();
+			if (conn != null) conn.close();
+		}
+	}
+	
+	
 	public Macro getMacroFile(int taskId) throws DatabaseException{
 		
 		
@@ -217,7 +250,47 @@ public final class DatabaseService {
 		return macro;
 		
 	}
+	
+	
+	public Ligand getLigand(int taskId) throws DatabaseException{
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		Ligand ligand = null;
+		
+		
+		try {
 
+			conn = openConnection();
+			stmt = conn.prepareStatement("select * from task where id=?");
+			stmt.setInt(1, taskId);
+
+			rs = stmt.executeQuery();
+
+			if (rs.next()) {
+			
+				ligand = new Ligand(rs.getInt("id"), rs.getString("id_ligand"));
+			}
+			
+		}catch (SQLException e) {
+			throw new DatabaseException(e);
+		} catch (Exception e) {
+			throw new DatabaseException(e);
+		} finally {
+			try {
+				if (rs != null) rs.close();
+				if (stmt != null) stmt.close();
+				if (conn != null) conn.close();
+			} catch (SQLException e) {
+				throw new DatabaseException(e);
+			}
+		}
+		
+		return ligand;
+	}
+	
+	
 	private void updateTaskState(int id, String state, String timeColumn) throws Exception {
 
 		Connection conn = null;
@@ -1036,22 +1109,25 @@ public final class DatabaseService {
 	}
 	
 	
-	public static void main(String[] args) throws Exception {
+	/*public static void main(String[] args) throws Exception {
 		
-		//int taskId = 484;
-		//DatabaseService db = new DatabaseService();
+		int taskId = 484;
+		String ligandId = "U0E";
+		DatabaseService db = new DatabaseService();
+		db.insertLigandId(taskId, ligandId);
+		
 		//db.insertPDB(taskId, "AAAAAbbbbb");
 		
 		//IndividualSolution solution;
 		//solution = db.getMinimumEnergyfromResult(484);
-		/*solution = db.getMinimunRMSD(622);
+		solution = db.getMinimunRMSD(622);
 		System.out.println(
 						" Task: " +  " " + solution.getId() +
 						" Id: " + 
 						" Run: " + solution.getFinalBindingEnergy() +
 						" RMSD: " + solution.getRmsd() +
-						" Minimum Final Binding Energy: " + solution.finalBindingEnergy);*/
+						" Minimum Final Binding Energy: " + solution.finalBindingEnergy);
 			
-	}
+	}*/
 	
 }

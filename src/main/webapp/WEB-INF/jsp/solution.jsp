@@ -70,6 +70,16 @@
 					<td class="col-md-6"><strong>RMSD:</strong></td>
 					<td class="col-md-6">${solution.rmsd} &Aring;</td>
 				</tr>
+				<tr>
+					<td style="line-height: 30px;"><strong>Actions:</strong></td>
+					<td>
+						<!-- TODO: Desactivar si no posible -->
+						<a href='<c:url value="../../../${solution.taskId}/result/${solution.run}/${solution.id}/pv?token=${param.token}" />'>
+							Protein viewer
+						</a>
+
+					</td>
+				</tr>
 			</table>
 		</div>
 

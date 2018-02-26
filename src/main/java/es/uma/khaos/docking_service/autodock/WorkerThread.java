@@ -2,10 +2,12 @@ package es.uma.khaos.docking_service.autodock;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import es.uma.khaos.docking_service.autodock.dlg.DLGMonoParser;
 import es.uma.khaos.docking_service.autodock.dlg.DLGMultiParser;
@@ -32,14 +34,14 @@ import es.uma.khaos.docking_service.service.MailService;
 import es.uma.khaos.docking_service.utils.Utils;
 
 public class WorkerThread implements Runnable {
-	
+
 	private final String COMMAND_TEMPLATE = "%s%s -p %s -l %s";
 	private final String AUTODOCK_LOCATION = Constants.DIR_AUTODOCK;
 	private final String AUTODOCK_EXECUTABLE = Constants.FILE_AUTODOCK;
 	private final String BASE_FOLDER = Constants.DIR_BASE;
-	
+
 	private String name;
-	
+
 	private Task task;
 
 	private boolean useRmsdAsObjective = false;
@@ -49,9 +51,9 @@ public class WorkerThread implements Runnable {
 		this.task = task;
 		if (task.getParameters().getObjectiveOption()==3) this.useRmsdAsObjective = true;
 	}
-	
+
 	public void run() {
-		
+
 		try {
 			System.out.println(Thread.currentThread().getName()+" Start. ID = "+task.getId());
 			DatabaseService.getInstance().startTask(task.getId());
@@ -59,7 +61,7 @@ public class WorkerThread implements Runnable {
 			DatabaseService.getInstance().finishTask(task.getId());
 			if (task.getEmail()!=null && !"".equals(task.getEmail())) {
 				MailService.getInstance()
-						.sendFinishedTaskMail(task.getEmail(), task.getId(), task.getToken());
+				.sendFinishedTaskMail(task.getEmail(), task.getId(), task.getToken());
 			}
 			System.out.println(Thread.currentThread().getName()+" End.");
 		} catch (Exception e) {
@@ -67,18 +69,18 @@ public class WorkerThread implements Runnable {
 				DatabaseService.getInstance().finishTaskWithError(task.getId());
 				if (task.getEmail()!=null && !"".equals(task.getEmail())) {
 					MailService.getInstance()
-							.sendErrorTaskMail(task.getEmail(), task.getId(), task.getToken());
+					.sendErrorTaskMail(task.getEmail(), task.getId(), task.getToken());
 				}
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	private void processCommand() throws Exception {
-		
+
 		String command;
 
 		String workDir = String.format("%sexec-%d", BASE_FOLDER, task.getId());
@@ -88,11 +90,11 @@ public class WorkerThread implements Runnable {
 		boolean fromFTP = false;
 		String dpfExtension = "dpf";
 		String pdbExtension = "pdb";
-		
+
 		String dpfFileName;
-		
+
 		System.out.println(workDir);
-		
+
 		// DESCARGAMOS DEL FTP SI NO TENEMOS UN ZIP
 		if (task.getParameters().getZipFile()==null) {
 			task.getParameters().setZipFile(BASE_FOLDER + task.getToken() + ".zip");
@@ -100,24 +102,24 @@ public class WorkerThread implements Runnable {
 			FtpService.getInstance().download(inst.getFileName(), task.getParameters().getZipFile());
 			fromFTP = true;
 		}
-		
+
 		// CREAMOS CARPETA
 		command = String.format(
 				"mkdir %s", workDir);
 		Utils.executeCommand(command);
-		
+
 		// DESCOMPRIMIMOS FICHERO ZIP EN CARPETA DE TRABAJO
 		Utils.unzip(task.getParameters().getZipFile(), workDir);
-		
+
 		// CHEQUEAMOS SI EL ZIP TIENE UNA CARPETA PADRE
 		// (Y MOVEMOS LOS FICHEROS EN ESE CASO)
 		Utils.containerFolderCheck(workDir);
-		
+
 		if (fromFTP) dpfExtension = "-AUTODOCK-LGA.dpf";
 		List<String> dpfs = Utils.searchFileWithExtension(workDir, dpfExtension);
 		if (dpfs.size()!=1) throw new DpfNotFoundException();
 		dpfFileName = dpfs.get(0);
-		
+
 		// PREPARAMOS DPF CON LOS PARÁMETROS
 		System.out.println("VOY A PROBAR CON ..." + task.getParameters().getEvaluations() + " EVALUATIONS");
 		formatDPF(new File(workDir+"/"+dpfFileName), new File(workDir+"/"+inputFile));
@@ -130,22 +132,23 @@ public class WorkerThread implements Runnable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		//Procesar macro
 		System.out.println("pdbExtension: " + pdbExtension);
 		System.out.println("workDir: " + workDir);
 
-		String pdb = Utils.searchFileWithExtensionNoList(workDir, pdbExtension);
-		
+		String pdb = Utils.searchFileWithExtensionList(workDir, pdbExtension);
+
 		System.out.println("pdb: " + pdb);
 		if (pdb == null || pdb.isEmpty()) throw new PdbNotFoundException();
 		File PDBfile = new File(workDir+ "/" + pdb);
-		
+
 		readPDB(PDBfile, task.getId());
-		
+		readIdLigand(PDBfile, task.getId());
+
 		// SI TENEMOS EL EJECUTABLE DE AUTODOCK:
 		if (!"".equals(Constants.DIR_AUTODOCK))  {
-			
+
 			// EJECUTAMOS AUTODOCK
 			command= String.format(COMMAND_TEMPLATE,
 					AUTODOCK_LOCATION,
@@ -153,7 +156,7 @@ public class WorkerThread implements Runnable {
 					inputFile,
 					outputFile);
 			Utils.executeCommand(command, new File(workDir));
-			
+
 			// PROCESAMOS RESULTADOS
 			readDLG(workDir+"/"+outputFile, reference);
 
@@ -163,39 +166,74 @@ public class WorkerThread implements Runnable {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
+
 		}
-		
+
 		// BORRAMOS CARPETA Y FICHERO ZIP
 		Utils.deleteFolder(workDir);
 		Utils.deleteFolder(task.getParameters().getZipFile());
-		
+
 	}
-	
-	
+
+
 	public void readPDB(File inputFile, int taskId) throws Exception{
-		
+
 		BufferedReader br = new BufferedReader(new FileReader(inputFile));
 		String line;
 		String pdbLine = "";
 
 		try {
-			
+
 			while ((line = br.readLine()) != null) {
-				
-				pdbLine += line + "\n";
+
+				if(!line.startsWith("HETATM") 
+						&& !line.startsWith("CONECT") && !line.startsWith("MASTER")
+						&& !line.startsWith("TER") && !line.startsWith("END")){
+
+					pdbLine += line + "\n";
+					System.out.println("pdbLine " + line);
+				}
 			}
-			
+
 			br.close();
-			System.out.println("pdbLine: " + pdbLine);
+			System.out.println("pdbLine:  " + pdbLine);
 			DatabaseService.getInstance().insertPDB(taskId, pdbLine);
-			
+
 		}catch (IOException e) {
-			
+
 			e.printStackTrace();
 		}
 	}
-	
+
+
+	public void readIdLigand(File inputFile, int taskId) throws Exception{
+
+
+		BufferedReader br = new BufferedReader(new FileReader(inputFile));
+
+		String line;
+		String ligandId = "";
+
+		try {
+			while ((line = br.readLine()) != null) {
+				if(line.startsWith("HETATM")){
+
+					String[] split = line.split("\\s+");
+					ligandId  = split[3]; 	
+					break;
+				}	
+			}
+
+			br.close();
+			DatabaseService.getInstance().insertLigandId(taskId, ligandId);
+
+		}catch (IOException e) {
+
+			e.printStackTrace();
+		}
+	}
+
+
 	private void formatDPF(File inputFile, File outputFile) throws DpfWriteException, DpfNotFoundException {
 		ParameterSet params = task.getParameters();
 		System.out.println(outputFile.getAbsolutePath());
@@ -206,11 +244,11 @@ public class WorkerThread implements Runnable {
 		dpfGen.setPopulationSize(params.getPopulationSize());
 		dpfGen.generate();
 	}
-	
+
 	// TODO: Cambiar método a otra manera.
 	private void readDLG(String dlgFile, Reference reference)
 			throws DlgParseException, DlgNotFoundException, DatabaseException {
-		
+
 		if (task.getParameters().getObjectiveOption()==1) {
 			DLGParser<AutoDockSolution> parser = new DLGMonoParser(reference);
 			try {
@@ -234,7 +272,7 @@ public class WorkerThread implements Runnable {
 			}
 		}
 	}
-	
+
 	@Override
 	public String toString(){
 		return this.name;

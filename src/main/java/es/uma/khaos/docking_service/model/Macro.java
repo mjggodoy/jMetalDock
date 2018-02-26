@@ -1,5 +1,10 @@
 package es.uma.khaos.docking_service.model;
 
+import io.swagger.annotations.ApiModel;
+
+@ApiModel(value="Macromolecule", 
+description = "This class corresponds to the macro class and all attributes related to it such as ID and the macro.pdb file")
+
 public class Macro {
 	
 	
@@ -32,10 +37,4 @@ public class Macro {
 		this.macro = macro;
 	}
 	
-	
-	
-	
-	
-
-
 }

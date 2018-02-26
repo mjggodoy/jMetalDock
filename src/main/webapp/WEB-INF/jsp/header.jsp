@@ -69,7 +69,7 @@
                         <li class="active"><a href="#">API documentation <span class="sr-only">(current)</span></a></li>
                     </c:when>
                     <c:otherwise>
-                        <li><a href='<c:url value="apiDocumentation.jsp" />'>API documentation</a></li>
+                        <li><a href='<c:url value="/apiDocumentation.jsp" />'>API documentation</a></li>
                     </c:otherwise>
                 </c:choose>
 

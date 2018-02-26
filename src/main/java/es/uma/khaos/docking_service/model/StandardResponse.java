@@ -6,7 +6,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-@ApiModel(value="Standard Response")
+@ApiModel(value="Standard Response",
+description= "Standard response returns a status code, a message and a URL. "
+		+ "It provides information to the user about any request on the web service")
 
 
 @XmlRootElement
