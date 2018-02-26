@@ -7,7 +7,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 
-@ApiModel(value="Error response")
+@ApiModel(value="Error response",
+description = "This class describes the status code and the message.")
 
 @XmlRootElement
 public class ErrorResponse {

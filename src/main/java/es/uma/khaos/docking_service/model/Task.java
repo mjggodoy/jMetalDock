@@ -8,7 +8,8 @@ import io.swagger.annotations.ApiModelProperty;
 import java.sql.Timestamp;
 
 @ApiModel(value="Task", 
-description = "Task that provides the task's id, token, state, the end and start times, the algorithm and parameters selected")
+description = "Task that provides the task id, token, state, the end and start times, "
+		+ "the algorithm and parameters which were selected by the user")
 @XmlRootElement
 public class Task {
 

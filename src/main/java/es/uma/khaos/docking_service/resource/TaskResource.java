@@ -16,7 +16,6 @@ import javax.ws.rs.core.*;
 
 import es.uma.khaos.docking_service.model.StandardResponse;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -30,6 +29,8 @@ import com.mysql.jdbc.StringUtils;
 import es.uma.khaos.docking_service.autodock.WorkerThread;
 import es.uma.khaos.docking_service.exception.DatabaseException;
 import es.uma.khaos.docking_service.model.ErrorResponse;
+import es.uma.khaos.docking_service.model.Ligand;
+import es.uma.khaos.docking_service.model.Macro;
 import es.uma.khaos.docking_service.model.ParameterSet;
 import es.uma.khaos.docking_service.model.Task;
 import es.uma.khaos.docking_service.properties.Constants;
@@ -67,6 +68,7 @@ public class TaskResource extends AbstractResource {
 		return getTaskResponse(id, token, builder, errorBuilder);
 	}
 	
+
 	// TODO: Tratar error de FTP y tratar instancia no existente
 	@POST
 	@ApiOperation(value = "Post a task ",
@@ -154,7 +156,8 @@ public class TaskResource extends AbstractResource {
 			return internalServerError(errorBuilder);
 		}
 	}
-	
+
+
 	private Response createTaskResponse(
 			String token, ParameterSet params, String email, UriInfo uriInfo,
 			ResponseBuilder builder, ResponseBuilder errorBuilder) {

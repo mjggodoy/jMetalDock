@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel(value="Instance",
-description="A molecular docking problem provided by the user to solve ") 
+description="A molecular docking problem provided by the user to solve.") 
 
 
 public class Instance {
