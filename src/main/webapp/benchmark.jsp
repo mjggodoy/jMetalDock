@@ -476,7 +476,7 @@
 				</tr>
 			</tbody>
 		</table>
-		<br /> Users also can download all the instances in just one
+		<br /> Users can also download all the instances in just one
 		compressed file: <br /> <br />
 
 		<table>
