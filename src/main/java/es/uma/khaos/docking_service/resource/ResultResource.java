@@ -141,7 +141,7 @@ public class ResultResource extends AbstractResource {
 	@Path("/{id}/result/{run}/{solutionId}/macro")
 	@ApiResponses(value = { @ApiResponse(code = 403, message = "You are not allowed to see this task"),
 			@ApiResponse(code = 500, message = "Internal server error") })
-	@ApiOperation(value = "Get a the macro in .pdb by id and token", notes = "This method gets the macromolecule in .pdb format", response = Macro.class)
+	@ApiOperation(value = "Get the macro file in .pdb format by id and token", notes = "This method gets the macromolecule in .pdb format", response = Macro.class)
 	// @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	@Produces({ MediaType.TEXT_PLAIN })
 	public Response getMacro(
@@ -170,7 +170,7 @@ public class ResultResource extends AbstractResource {
 	@Path("/{id}/result/{run}/{solutionId}/macropage")
 	@ApiResponses(value = { @ApiResponse(code = 403, message = "You are not allowed to see this task"),
 			@ApiResponse(code = 500, message = "Internal server error") })
-	@ApiOperation(value = "This method return the macro page in .jsp", notes = "This method return the macro page in .jsp", response = Macro.class)
+	@ApiOperation(value = "This method returns the macro page in .jsp", notes = "This method return the macro page in .jsp", response = Macro.class)
 	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML })
 	public Response getMacroPage(
 			@ApiParam(value = "Number of runs executed for a task", required = true) @NotNull @PathParam("run") int run,
