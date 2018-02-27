@@ -166,8 +166,10 @@ public class ResultResource extends AbstractResource {
 		return getLigandTxt(id, token);
 	}
 
+	//TODO: Produces JSON y XML?
+	//TODO: Comprobar que posible
 	@GET
-	@Path("/{id}/result/{run}/{solutionId}/macropage")
+	@Path("/{id}/result/{run}/{solutionId}/pv")
 	@ApiResponses(value = { @ApiResponse(code = 403, message = "You are not allowed to see this task"),
 			@ApiResponse(code = 500, message = "Internal server error") })
 	@ApiOperation(value = "This method returns the macro page in .jsp", notes = "This method return the macro page in .jsp", response = Macro.class)
