@@ -28,7 +28,9 @@
 			we have used a set of flexible protein-ligand complexes. These
 			structures have been taken from the Protein Data Bank database and
 			also used to test the AutoDock 4.2 energy function [1]:</p>
-
+		<br/>
+		<br/>
+		
 		<table>
 			<tbody>
 				<tr>
@@ -477,24 +479,19 @@
 			</tbody>
 		</table>
 		<br /> Users can also download all the instances in just one
-		compressed file: <br /> <br />
-
-		<table>
-			<tbody>
-				<tr>
-					<td><div id="mas">
-							<img alt="Zip" class="resize4" src="images/zip_gold.png">
-						</div></td>
-
-					<td style="padding: 20px;"><div>Compressed file (zip)</div></td>
-					<td><div id="mas">
-
-							<a
-								href="http://khaos.uma.es/autodockjmetal/DownloadFromFtp?file=all.zip">Download</a>
-						</div></td>
-				</tr>
-			</tbody>
-		</table>
+		compressed file:
+		 <br />
+		 <br />
+		 
+		 <div class="resize4">
+   			 <img src="images/zip_gold.png" alt="zip" style="width: 120px;"/>
+    		 <p><a href="http://khaos.uma.es/autodockjmetal/DownloadFromFtp?file=all.zip">Download</a></p>
+		</div>
+		 
+						
+		 <br />
+		 <br />
+		 
 
 		<p style="text-align: justify;">
 			Instances used in the Drug Discovery section of <a

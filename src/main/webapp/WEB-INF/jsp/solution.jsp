@@ -75,7 +75,7 @@
 					<td>
 						<!-- TODO: Desactivar si no posible -->
 						<a href='<c:url value="../../../${solution.taskId}/result/${solution.run}/${solution.id}/pv?token=${param.token}" />'>
-							Protein viewer
+							Protein-Ligand viewer
 						</a>
 
 					</td>
