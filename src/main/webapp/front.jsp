@@ -7,26 +7,31 @@
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<script type="text/javascript">
 
+		var frontData;
+
 		google.charts.load('current', {'packages':['corechart']});
 		google.charts.setOnLoadCallback(drawChart);
 
 		function drawChart() {
 
-			$.get( "http://localhost:8080/docking-service/rest/task/622/result/1?token=69kip8t7fkku66ek54mstu5j00", function( data ) {
+			$.get( "http://localhost:8080/docking-service/rest/task/750/result/1?token=okt8t6j8dkeob75uhhtj1e0ur", function( data ) {
 				console.log(data);
+				globalData = data;
 				var input = [data.solutions[0].objectives]
 				for (var i in data.solutions) {
 					var x = data.solutions[i].intermolecularEnergy;
 					var y = data.solutions[i].intramolecularEnergy;
-					if (x > -10 && x < 5 && y > -2 && y < 15)
+					//if (x > -10 && x < 5 && y > -2 && y < 15)
 						input.push([x,y]);
 				}
 				console.log(input);
 				var data = google.visualization.arrayToDataTable(input);
 				var options = {
 					title: 'Front',
-					hAxis: {title: input[0][0], minValue: -10, maxValue: 5},
-					vAxis: {title: input[0][1], minValue: -2, maxValue: 15},
+					//hAxis: {title: input[0][0], minValue: -10, maxValue: 5},
+					//vAxis: {title: input[0][1], minValue: -2, maxValue: 15},
+					hAxis : {title: input[0][0]},
+					vAxis : {title: input[0][1]},
 					legend: 'none'
 				};
 				var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
@@ -36,6 +41,7 @@
 					var selectedItem = chart.getSelection()[0];
 					console.log("SELECT: ");
 					console.log(selectedItem);
+					console.log(globalData.solutions[selectedItem.row]);
 					if (selectedItem) {
 						var value = data.getValue(selectedItem.row, selectedItem.column);
 						//alert('The user selected ' + value);
