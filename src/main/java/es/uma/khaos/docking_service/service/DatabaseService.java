@@ -538,7 +538,7 @@ public final class DatabaseService {
 			stmt.setInt(3, parameters.getPopulationSize());
 			stmt.setInt(4, parameters.getRuns());
 			stmt.setInt(5, parameters.getObjectiveOption());
-			stmt.setString(6, parameters.getInstance());
+			stmt.setString(6, parameters.getInstance().toUpperCase());
 			stmt.setInt(7, parameters.getTaskId());
 			stmt.execute();
 			rs = stmt.getGeneratedKeys();
