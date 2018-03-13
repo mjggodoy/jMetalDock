@@ -15,7 +15,7 @@
 	<jsp:include page="/WEB-INF/jsp/header.jsp">
 		<jsp:param name="page" value="index" />
 	</jsp:include>
-
+<br/>
 	<div class="bs-docs-header" id="content" tabindex="-1">
 		<div class="container">
 			<h1>jMetalDock</h1>
@@ -27,7 +27,8 @@
 			</div>
 		</div>
 	</div>
-
+	<br/>
+	
 	<div class="container">
 
 		<div class="container">		
@@ -88,9 +89,9 @@
 				<p>
 				The ligand-protein docking has an important role in pharmacological industry to
 				know the intricate aspect of intermolecular recognition between a ligand and receptor. 
-				These computational approaches correspond to studies <em>in silico </em>, 
+				These computational approaches correspond to studies <em>in silico</em>, 
 				which are a complement to the laboratory experiments in order to figure out 
-				how a given drug interacts to a therapeutic target. 
+				how a given drug interacts to a therapeutic target that can be a peptide or a chemical compound. 
 				</p>
 				<p>
 				In previous studies, we have introduced several approaches based on the application of metaheuristics
@@ -103,7 +104,7 @@
 				<ol>
 					<li id="Camacho">Esteban L&oacute;pez-Camacho, Mar&iacute;a Jes&uacute;s Garc&iacute;a Godoy, Jos&eacute; Garc&iacute;a-Nieto, Antonio J. Nebro and Jos&eacute; Francisco Aldana-Montes
 						Solving molecular flexible docking problems with metaheuristics: A comparative study <em>Appl. Soft Comput.</em> 28: 379--393 (2015)
-						<a href="doi:10.1016/j.asoc.2014.10.049" target="_blank">doi:10.1016/j.asoc.2014.10.049</a>
+						<a href="https://doi.org/10.1016/j.asoc.2014.10.049" target="_blank">doi:10.1016/j.asoc.2014.10.049</a>
 					</li>
 					<li id="Godoy">Mar&iacute;a Jes&uacute;s Garc&iacute;a Godoy, Esteban L&oacute;pez-Camacho, Jos&eacute; Garc&iacute;a-Nieto, Antonio J. Nebro and Jos&eacute; F. Aldana-Montes:
 						Solving molecular docking problems with multi-objective metaheuristics <em>Molecules</em> 20(6): 10154-10183
@@ -117,16 +118,16 @@
 				<p>
 				jMetalDock is a web-service that provides mono- and multi-objectives approaches 
 				applied to solve the problem of molecular
-				docking. In case of resolving the docking problem from a
-				mono-objective approach, there are several available algorithms
-				such as gGA, ssGA, DE and PSO. The total free binding energy
-				(measured in kcal/mol) is the objective to optimize. When the user
+				docking. In case of solving the molecular docking problem with a
+				mono-objective approach, there are several algorithms
+				such as gGA, ssGA, DE and PSO, which are can be selected by users. 
+				The total free binding energy (measured in kcal/mol) is the objective to optimize. When the user
 				tries to solve using a multi-objetive approach, there are more than
-				one objective to optimize, which are the Intermolecular, Intramolecular energy and the RMSD score. 
-				The first corresponds to the ligand-receptor energy, the second to the energy related 
-				to the ligand's structure through the molecular docking simulation and the third to the distance 
-				between the ligand and receptor.
-				Algorithms like NSGA-II, GDE3, SMPSO,
+				one objective to optimize, which are the intermolecular, intramolecular energies and the RMSD score. 
+				The first corresponds with the ligand-receptor energy, the second with the energy related 
+				to the ligand's deformity and the third to the distance 
+				between the computed ligand and the co-crystallized ligand.
+				Algorithms such as NSGA-II, GDE3, SMPSO,
 				SMSEMOA and MOEA/D. The energy function used to evaluate all the
 				solutions returned by the algorithms is the AutoDock 4.2 energy
 				function. </p>
@@ -136,10 +137,10 @@
 				energy. jMetalDock allows users to execute one or more tasks in
 				which the algorithm is selected, the algorithm parameters can be
 				set up as well as the objectives to optimize. The algorithm
-				parameters are the population (number of individuals which has a
-				default, maximum and minimum values), the number of
-				runs (default, maximum and minimum values) and the number of
-				evaluations (default, minimum and maximum values). Further details
+				parameters are the population (number of individuals that has 
+				maximum and minimum default values), the number of
+				runs (maximum and minimum default values) and the number of
+				evaluations (minimum and maximum default values). Further details
 				are given in the Tutorial section by clicking the menu bar.</p>
 	
 			</div>
@@ -162,7 +163,7 @@
 					<div class="modal-body">
 						<figure>
 						<img src="" id="imagepreview" class= "resize3">
-						<figcaption class="textCaption">The execution parameters of a given experiment are configured using a docking parameter file
+						<figcaption class="textCaption">The execution parameters of a given experiment is configured using a docking parameter file
 						containing the algorithm's settings. As metaheuristics are iterative algorithms that work with sets of tentative solutions 
 						that are modified according to a number of operators (e.g. in the case of GAs the operators are selection, crossover and mutation), 
 						whenever a new solution has to be evaluated, it is sent back to AutoDock 4.2 to apply its scoring function. 
