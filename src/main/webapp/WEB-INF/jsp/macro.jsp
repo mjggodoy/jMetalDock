@@ -85,10 +85,7 @@
       viewer.clear();
       viewer.cartoon('structure', structure, { color: color.ssSuccession() });
     }
-    function lineTrace() {
-      viewer.clear();
-      viewer.lineTrace('structure', structure);
-    }
+   
     function sline() {
       viewer.clear();
       viewer.sline('structure', structure);
@@ -117,6 +114,22 @@
     		
     	});
    	}
+   	
+   	function lineTrace() {
+   		$.get( '<c:url value="/rest/task/${solution.taskId}/result/${solution.run}/${solution.id}/ligand?token=${param.token}" />', function( data ) {
+   		console.log(data);
+   		var ligandId = data;
+    	var ligand = structure.select({rnames : [ligandId]});
+        viewer.clear();
+		viewer.lines('ligand', ligand);
+        viewer.lineTrace('structure', structure);
+		viewer.centerOn(structure);
+		
+   		});
+
+      }
+   	
+   
 
     /* function preset() {
     	    var ligand = data;
@@ -195,11 +208,32 @@
         
      }
     
+     
+     
+     function loadMacroandLigandLines(){
+         var path  = '<c:url value="/rest/task/${solution.taskId}/result/${solution.run}/${solution.id}/pdbqtMacro?token=${param.token}" />';
+         //macro?token=${param.token}" />';
+         pv.io.fetchPdb(path, function(structureResponse) {
+             console.log("XUXA1");
+         	structure = structureResponse;
+         	viewer.cartoon('protein', structure);
+         	console.log("STRUCTURE = ");
+             console.log(structure);
+             lineTrace();
+       });
+           
+         
+         //http://localhost:8080/docking-service/rest/task/633/result/1/2552/pdbqtMacro?token=q2cbohjj7gim7oh3sc6u71amu3
+        console.log("END!")
+         
+      }
     
     function transferase() {
   	
     	loadMacroandLigand();
-    	//load('xuxa3');
+    	//loadMacroandLigandLines();
+
+    	//load('example2');
      
     }
     
