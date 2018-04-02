@@ -3,8 +3,15 @@ body {
 	background: #58585a;
 }
 
-h1, h2, h3, h4, a {
+h1, h2, h3, h4{
 	color: #EB6909;
+}
+
+a {
+	color: #EB6909;
+}
+a:hover, a:focus {
+	color: #C4551C;
 }
 
 .footer {
@@ -85,10 +92,19 @@ figcaption.textCaption{
 	
 }
 
+.carousel {
+	max-width: 868px;
+	margin: 0 auto;
+}
+
 .carousel-inner > .item > img,
   .carousel-inner > .item > a > img {
       width: 70%;
       margin: auto;
+}
+
+.carousel-caption > p {
+	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 
 h3.thickerandblack{
@@ -168,10 +184,13 @@ input.form-fixer {
 }
 
 .form-group-dependant {
-    display: none;
     padding-left: 20px;
-    margin-left: 20px;
     border-left: dotted 1px grey;
+}
+
+.form-group-dependant > .label-dependant {
+	margin-bottom: 5px;
+	padding-top: 0px;
 }
 
 #swagger-ui h2.title pre {

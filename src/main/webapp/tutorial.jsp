@@ -12,8 +12,17 @@
 
 	<div class="container">
 
-	
-		<%@ include file="/WEB-INF/jsp/footer.jsp"%>
+		<div class="panel panel-default">
+			<div class="panel-body">
+
+				<div class="page-header">
+					<h2>Tutorial</h2>
+				</div>
+
+			</div>
+		</div>
 	</div>
+
+	<%@ include file="/WEB-INF/jsp/footer.jsp"%>
 </body>
 </html>
