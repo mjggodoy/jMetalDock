@@ -23,7 +23,6 @@
 			<div class="panel-body">
 
 				<div class="page-header">
-					<!--<h3>Task <small><c:out value="${task.id}" /></small></h3>-->
 					<h2>Task <small><c:out value="${task.id}" /></small></h2>
 				</div>
 
