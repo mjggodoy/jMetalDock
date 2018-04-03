@@ -51,7 +51,7 @@ public class ResultResource extends AbstractResource {
 			@ApiParam(value = "Task id: the identification number of a task", required = true) @NotNull @PathParam("taskId") int taskId,
 			@ApiParam(value = "Token: a code related to a task", required = true) @QueryParam("token") String token,
 			@Context HttpHeaders headers) {
-		ResponseBuilder builder = getResponseBuilder(headers, "/minimunEnergy.jsp");
+		ResponseBuilder builder = getResponseBuilder(headers, "/solution.jsp");
 		ResponseBuilder errorBuilder = getResponseBuilder(headers, "/errorResponse.jsp");
 		return getMinimumEnergy(taskId, token, builder, errorBuilder);
 	}
@@ -66,7 +66,7 @@ public class ResultResource extends AbstractResource {
 			@ApiParam(value = "Task id: the identification number of a task", required = true) @NotNull @PathParam("taskId") int taskId,
 			@ApiParam(value = "Token: a code related to a task", required = true) @QueryParam("token") String token,
 			@Context HttpHeaders headers) {
-		ResponseBuilder builder = getResponseBuilder(headers, "/minimunRMSDscore.jsp");
+		ResponseBuilder builder = getResponseBuilder(headers, "/solution.jsp");
 		ResponseBuilder errorBuilder = getResponseBuilder(headers, "/errorResponse.jsp");
 		return getMinimumRMSD(taskId, token, builder, errorBuilder);
 

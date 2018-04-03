@@ -29,8 +29,7 @@
 			<div class="panel-body">
 
 				<div class="page-header">
-					<!--<h3>RESULTS <small><c:out value="${first.taskId}" /></small></h3>-->
-					<h2>Results <small><c:out value="${first.taskId}" /></small></h2>
+					<h2>Results<!-- <small><c:out value="${first.taskId}" /></small>--></h2>
 				</div>
 
 				<div>
@@ -40,17 +39,18 @@
 							<td class="col-md-6">
 								<c:out value="${first.solutions[0].objectives[0]}" />
 								<c:if test="${first.solutions[0].objectives[1]!=null}">
-									, <c:out value="${first.solutions[0].objectives[1]}" />
+									<br/>
+									<c:out value="${first.solutions[0].objectives[1]}" />
 								</c:if>
 							</td>
 						</tr>
 					</table>
 				</div>
 
-				<div>
+				<div style="margin-bottom: 20px;">
 					<a href='<c:url value="../${first.taskId}/result/minimumEnergy?token=${param.token}" />'>Solution with the minimum final binding energy</a>
-					<br/>
 					<c:if test="${first.solutions[0].rmsd != null}">
+						<br/>
 						<a href='<c:url value="../${first.taskId}/result/minimumRMSDscore?token=${param.token}" />'>Solution with the minimum RMSD score</a>
 					</c:if>
 				</div>
