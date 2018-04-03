@@ -1,5 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="java.util.ArrayList"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
@@ -31,6 +30,22 @@
 			<h3>Run</h3>
 		</div>
 
+		<table class="table table-striped table-condensed">
+			<tr>
+				<td class="col-md-6"><strong>Run:</strong></td>
+				<td class="col-md-6">${result.run}</td>
+			</tr>
+			<tr>
+				<td class="col-md-6"><strong>Objectives:</strong></td>
+				<td class="col-md-6">
+					<c:out value="${result.solutions[0].objectives[0]}" />
+					<c:if test="${result.solutions[0].objectives[1]!=null}">
+						, <c:out value="${result.solutions[0].objectives[1]}" />
+					</c:if>
+				</td>
+			</tr>
+		</table>
+
 		<ul class="nav nav-tabs nav-justified" role="tablist">
 			<li role="presentation" class="active">
 				<a href="#table-tab-container" aria-controls="table-tab-container" role="tab" data-toggle="tab">Table</a>
@@ -46,31 +61,11 @@
 
 				<br />
 
-				<table class="table table-striped table-condensed">
-					<tr>
-						<td class="col-md-6"><strong>Run:</strong></td>
-						<td class="col-md-6">${result.run}</td>
-					</tr>
-					<tr>
-						<td class="col-md-6"><strong>Objectives:</strong></td>
-						<td class="col-md-6">
-							<c:out value="${result.solutions[0].objectives[0]}" />
-							<c:if test="${result.solutions[0].objectives[1]!=null}">
-								, <c:out value="${result.solutions[0].objectives[1]}" />
-							</c:if>
-						</td>
-					</tr>
-				</table>
-
 				<table  class="table table-striped table-condensed">
 					<thead>
 						<tr>
 
 							<th>ID</th>
-							<!--
-							<th>Task ID</th>
-							<th>Run</th>
-							-->
 							<th>
 								<span class="hidden-xs">Final Binding Energy</span>
 								<span class="visible-xs">E<sub>final</sub> (kcal/mol)</span>
@@ -97,10 +92,6 @@
 											${solution.id}
 									</a>
 								</td>
-								<!--
-								<td>${result.taskId}</td>
-								<td>${result.run}</td>
-								-->
 								<td>
 									<c:if test="${solution.finalBindingEnergy != null}">
 										${solution.finalBindingEnergy}
@@ -155,18 +146,24 @@
 	function drawChart() {
 
 		$.get('<c:url value="/rest/task/${result.taskId}/result/${result.run}?token=${param.token}" />', function( data ) {
-			globalData = data;
 
 			var dashboard = new google.visualization.Dashboard(document.getElementById('graph-tab-container'));
 
-			var input = [data.solutions[0].objectives]
+			var input = [data.solutions[0].objectives];
+			if (input[0][0]=="Total Binding Energy") {
+				obj1 = "finalBindingEnergy";
+				obj2 = "rmsd";
+			} else {
+				obj1 = "intermolecularEnergy";
+				obj2 = "intramolecularEnergy";
+			}
 			for (var i in data.solutions) {
-				var x = data.solutions[i].intermolecularEnergy;
-				var y = data.solutions[i].intramolecularEnergy;
+				var x = data.solutions[i][obj1];
+				var y = data.solutions[i][obj2];
 				input.push([x,y]);
 			}
 
-			var data = google.visualization.arrayToDataTable(input);
+			var arrayData = google.visualization.arrayToDataTable(input);
 			var options = {
 				title: 'Front',
 				hAxis : {title: input[0][0]},
@@ -200,8 +197,8 @@
 				var selectedItem = chart.getChart().getSelection()[0];
 
 				if (selectedItem) {
-					solution = globalData.solutions[selectedItem.row];
-					var value = data.getValue(selectedItem.row, selectedItem.column);
+					solution = data.solutions[selectedItem.row];
+					var value = arrayData.getValue(selectedItem.row, selectedItem.column);
 					window.location.href =
 						'<c:url value="/rest/task/${result.taskId}/result/${result.id}/" />'
 							+ solution.id + '?token=${param.token}';
@@ -214,7 +211,7 @@
 
 			google.visualization.events.addListener(chart, 'ready', onReady);
 			dashboard.bind([slider0, slider1], chart);
-			dashboard.draw(data);
+			dashboard.draw(arrayData);
 
 		});
 	}

@@ -1,16 +1,17 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="jMetalDock is a web-service oriented to provide users multi- and mono-objective approaches to solve the molecular docking problem">
 <meta name="author" content="Khaos Group. Language and Computing Science Department. University of Malaga">
-<link rel="shortcut icon" href="/images/liferay.ico?v=2" type="image/x-icon">
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <title>jMetalDock: A web-service that provides single and multi-objetive approaches to solve the molecular docking problem</title>
+
+<!-- Favicon -->
+<link rel="shortcut icon" href='<c:url value="/images/khaos.ico" />' type="image/x-icon">
 
 <!-- Bootstrap core CSS -->
 <link href='<c:url value="/resources/css/bootstrap.min.css" />' rel="stylesheet">
 <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
- 
 
 <!-- Custom styles for this template -->
 <!-- <link href="resources/css/bootstrap.css" rel="stylesheet"> -->
