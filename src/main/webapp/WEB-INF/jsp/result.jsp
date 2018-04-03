@@ -15,124 +15,141 @@
 
 	<div class="container">
 
-		<div class="page-header">
-			<ol class="breadcrumb">
-				<li><a href='<c:url value="/." />'>Home</a></li>
-				<li><a href='<c:url value="/task.jsp" />'>Task</a></li>
-				<li>
-					<a href='<c:url value="../../${result.taskId}?token=${param.token}" />'>${result.taskId}</a>
-				</li>
-				<li>
-					<a href='<c:url value="../../${result.taskId}/result?token=${param.token}" />'>Results</a>
-				</li>
-				<li class="active">Run ${result.run}</li>
-			</ol>
-			<h3>Run</h3>
-		</div>
-
-		<table class="table table-striped table-condensed">
-			<tr>
-				<td class="col-md-6"><strong>Run:</strong></td>
-				<td class="col-md-6">${result.run}</td>
-			</tr>
-			<tr>
-				<td class="col-md-6"><strong>Objectives:</strong></td>
-				<td class="col-md-6">
-					<c:out value="${result.solutions[0].objectives[0]}" />
-					<c:if test="${result.solutions[0].objectives[1]!=null}">
-						, <c:out value="${result.solutions[0].objectives[1]}" />
-					</c:if>
-				</td>
-			</tr>
-		</table>
-
-		<ul class="nav nav-tabs nav-justified" role="tablist">
-			<li role="presentation" class="active">
-				<a href="#table-tab-container" aria-controls="table-tab-container" role="tab" data-toggle="tab">Table</a>
+		<ol class="breadcrumb">
+			<li><a href='<c:url value="/." />'>Home</a></li>
+			<li><a href='<c:url value="/task.jsp" />'>Task</a></li>
+			<li>
+				<a href='<c:url value="../../${result.taskId}?token=${param.token}" />'>${result.taskId}</a>
 			</li>
-			<li role="presentation" class="">
-				<a href="#graph-tab-container" aria-controls="graph-tab-container" role="tab" data-toggle="tab">Graph</a>
+			<li>
+				<a href='<c:url value="../../${result.taskId}/result?token=${param.token}" />'>Results</a>
 			</li>
-		</ul>
+			<li class="active">Run ${result.run}</li>
+		</ol>
 
-		<div class="tab-content">
+		<div class="panel panel-default">
+			<div class="panel-body">
 
-			<div role="tabpanel" class="tab-pane active" id="table-tab-container">
+				<div class="page-header">
+					<h2>Run</h2>
+				</div>
 
-				<br />
-
-				<table  class="table table-striped table-condensed">
-					<thead>
-						<tr>
-
-							<th>ID</th>
-							<th>
-								<span class="hidden-xs">Final Binding Energy</span>
-								<span class="visible-xs">E<sub>final</sub> (kcal/mol)</span>
-							</th>
-							<th>
-								<span class="hidden-xs">Intermolecular Energy</span>
-								<span class="visible-xs">E<sub>inter</sub> (kcal/mol)</span>
-							</th>
-							<th>
-								<span class="hidden-xs">Intramolecular Energy</span>
-								<span class="visible-xs">E<sub>intra</sub> (kcal/mol)</span>
-							</th>
-							<th>
-								RMSD
-								<span class="visible-xs"> (&Acirc;)</span>
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach items="${result.solutions}" var="solution">
-							<tr>
-								<td>
-									<a href='<c:url value="../../${result.taskId}/result/${result.run}/${solution.id}?token=${param.token}" />'>
-											${solution.id}
-									</a>
-								</td>
-								<td>
-									<c:if test="${solution.finalBindingEnergy != null}">
-										${solution.finalBindingEnergy}
-										<span class="hidden-xs"> kcal/mol</span>
-									</c:if>
-								</td>
-								<td>
-									<c:if test="${solution.intermolecularEnergy != null}">
-										${solution.intermolecularEnergy}
-										<span class="hidden-xs"> kcal/mol</span>
-									</c:if>
-								</td>
-								<td>
-									<c:if test="${solution.intramolecularEnergy != null}">
-										${solution.intramolecularEnergy}
-										<span class="hidden-xs"> kcal/mol</span>
-									</c:if>
-								</td>
-								<td>
-									<c:if test="${solution.rmsd != null}">
-										${solution.rmsd}
-										<span class="hidden-xs"> &Aring;</span>
-									</c:if>
-								</td>
-							</tr>
-						</c:forEach>
-					</tbody>
+				<table class="table table-striped table-condensed">
+					<tr>
+						<td class="col-md-6"><strong>Run:</strong></td>
+						<td class="col-md-6">${result.run}</td>
+					</tr>
+					<tr>
+						<td class="col-md-6"><strong>Objectives:</strong></td>
+						<td class="col-md-6">
+							<c:out value="${result.solutions[0].objectives[0]}" />
+							<br/>
+							<c:if test="${result.solutions[0].objectives[1]!=null}">
+								<c:out value="${result.solutions[0].objectives[1]}" />
+							</c:if>
+						</td>
+					</tr>
 				</table>
-			</div>
 
-			<div role="tabpanel" class="tab-pane" id="graph-tab-container">
-				<div id="filter_div0"></div>
-				<div id="filter_div1"></div>
-				<div id="chart_div" style="width: 100%; height: 600px;"></div>
-			</div>
+				<ul class="nav nav-tabs nav-justified" role="tablist">
+					<li role="presentation" class="active">
+						<a href="#table-tab-container" aria-controls="table-tab-container" role="tab" data-toggle="tab">Table</a>
+					</li>
+					<li role="presentation" class="">
+						<a href="#graph-tab-container" aria-controls="graph-tab-container" role="tab" data-toggle="tab">Graph</a>
+					</li>
+				</ul>
 
+				<div class="tab-content">
+
+					<div role="tabpanel" class="tab-pane active" id="table-tab-container">
+
+						<br />
+
+						<table  class="table table-striped table-condensed">
+							<thead>
+								<tr>
+
+									<th>ID</th>
+									<th>
+										<span class="hidden-xs">Final Binding Energy</span>
+										<span class="visible-xs">
+										E<sub>final</sub>
+										<small>(kcal/mol)</small>
+									</span>
+									<th>
+										<span class="hidden-xs">Intermolecular Energy</span>
+										<span class="visible-xs">
+										E<sub>intra</sub>
+										<small>(kcal/mol)</small>
+									</span>
+									</th>
+									<th>
+										<span class="hidden-xs">Intramolecular Energy</span>
+										<span class="visible-xs">
+										E<sub>intra</sub>
+										<small>(kcal/mol)</small>
+									</span>
+									</th>
+									<th>
+										RMSD
+										<span class="visible-xs">
+										<small>(&Acirc;)</small>
+									</span>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach items="${result.solutions}" var="solution">
+									<tr>
+										<td>
+											<a href='<c:url value="../../${result.taskId}/result/${result.run}/${solution.id}?token=${param.token}" />'>
+													${solution.id}
+											</a>
+										</td>
+										<td>
+											<c:if test="${solution.finalBindingEnergy != null}">
+												${solution.finalBindingEnergy}
+												<span class="hidden-xs"> kcal/mol</span>
+											</c:if>
+										</td>
+										<td>
+											<c:if test="${solution.intermolecularEnergy != null}">
+												${solution.intermolecularEnergy}
+												<span class="hidden-xs"> kcal/mol</span>
+											</c:if>
+										</td>
+										<td>
+											<c:if test="${solution.intramolecularEnergy != null}">
+												${solution.intramolecularEnergy}
+												<span class="hidden-xs"> kcal/mol</span>
+											</c:if>
+										</td>
+										<td>
+											<c:if test="${solution.rmsd != null}">
+												${solution.rmsd}
+												<span class="hidden-xs"> &Aring;</span>
+											</c:if>
+										</td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</div>
+
+					<div role="tabpanel" class="tab-pane" id="graph-tab-container">
+						<div id="filter_div0"></div>
+						<div id="filter_div1"></div>
+						<div id="chart_div" style="width: 100%; height: 600px;"></div>
+					</div>
+
+				</div>
+
+			</div>
 		</div>
-
-		<%@ include file="/WEB-INF/jsp/footer.jsp"%>
-	
 	</div>
+
+	<%@ include file="/WEB-INF/jsp/footer.jsp"%>
 </body>
 
 
