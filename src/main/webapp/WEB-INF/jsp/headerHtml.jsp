@@ -13,20 +13,18 @@
 <link href='<c:url value="/resources/css/bootstrap.min.css" />' rel="stylesheet">
 <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 
-<!-- Custom styles for this template -->
-<!-- <link href="resources/css/bootstrap.css" rel="stylesheet"> -->
-<link href='<c:url value="/css/style.css" />' rel="stylesheet">
-
 <script
 	src='<c:url value="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"/>'></script>
 
 <script src='<c:url value="/resources/js/bootstrap.min.js"/>'></script>
 <script src='<c:url value="/resources/js/bootstrap.js" />'></script>
 
+<!-- Custom styles for this template -->
+<!-- <link href="resources/css/bootstrap.css" rel="stylesheet"> -->
+<link href='<c:url value="/css/style.css" />' rel="stylesheet">
 	
 <!--  <link rel="stylesheet" type="text/css" href="css/style.css" media="screen"/>
 -->
-
 
 <!-- <link rel="stylesheet"
 	href="resources/css/bootstrap.min.css"> -->

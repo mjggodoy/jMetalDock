@@ -19,13 +19,13 @@
 			<li><a href='<c:url value="/." />'>Home</a></li>
 			<li><a href='<c:url value="/task.jsp" />'>Task</a></li>
 			<li>
-				<a href='<c:url value="../../../${solution.taskId}?token=${param.token}" />'>${solution.taskId}</a>
+				<a href='<c:url value="/rest/task/${solution.taskId}?token=${param.token}" />'>${solution.taskId}</a>
 			</li>
 			<li>
-				<a href='<c:url value="../../../${solution.taskId}/result?token=${param.token}" />'>Results</a>
+				<a href='<c:url value="/rest/task/${solution.taskId}/result?token=${param.token}" />'>Results</a>
 			</li>
 			<li>
-				<a href='<c:url value="../../../${solution.taskId}/result/${solution.run}?token=${param.token}" />'>
+				<a href='<c:url value="/rest/task/${solution.taskId}/result/${solution.run}?token=${param.token}" />'>
 					Run ${solution.run}
 				</a>
 			</li>
@@ -54,7 +54,8 @@
 							<td class="col-md-6">
 								<c:out value="${solution.objectives[0]}" />
 								<c:if test="${solution.objectives[1]!=null}">
-									, <c:out value="${solution.objectives[1]}" />
+									<br/>
+									<c:out value="${solution.objectives[1]}" />
 								</c:if>
 							</td>
 						</tr>

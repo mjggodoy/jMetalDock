@@ -60,6 +60,17 @@
 					</li>
 				</ul>
 
+				<!--
+				<div id="tab" class="btn-group" data-toggle="buttons">
+					<a href="#table-tab-container" class="btn btn-default active" data-toggle="tab">
+						<input type="radio" />Table
+					</a>
+					<a href="#graph-tab-container" class="btn btn-default" data-toggle="tab">
+						<input type="radio" />Graph
+					</a>
+				</div>
+				-->
+
 				<div class="tab-content">
 
 					<div role="tabpanel" class="tab-pane active" id="table-tab-container">

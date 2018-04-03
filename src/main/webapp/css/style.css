@@ -272,3 +272,18 @@ fieldset[disabled] .btn-primary:hover {
 	font-weight: 700;
 	display: inline-block;
 }
+
+/* TABS */
+.nav-justified {
+	background-color: transparent;
+}
+.nav-tabs.nav-justified>li>a {
+	border-width: 0px;
+	border-bottom-color: transparent;
+	border-bottom-width: 3px;
+}
+.nav-tabs.nav-justified>.active>a, .nav-tabs.nav-justified>.active>a:focus, .nav-tabs.nav-justified>.active>a:hover {
+	border-width: 0px;
+	border-bottom-color: #EB6909;
+	border-bottom-width: 3px;
+}
