@@ -274,16 +274,34 @@ fieldset[disabled] .btn-primary:hover {
 }
 
 /* TABS */
-.nav-justified {
+.nav-tabs {
 	background-color: transparent;
 }
-.nav-tabs.nav-justified>li>a {
+.nav-tabs>li>a {
 	border-width: 0px;
 	border-bottom-color: transparent;
 	border-bottom-width: 3px;
 }
-.nav-tabs.nav-justified>.active>a, .nav-tabs.nav-justified>.active>a:focus, .nav-tabs.nav-justified>.active>a:hover {
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
 	border-width: 0px;
 	border-bottom-color: #EB6909;
 	border-bottom-width: 3px;
+}
+
+/* GOOGLE CHARTS */
+.khaos-chart {
+	padding-top: 10px;
+}
+.khaos-chart .google-visualization-controls-slider-thumb {
+	background-color: #EB6909;
+	border: 1px solid #AD430C;
+}
+.khaos-chart .google-visualization-controls-slider-horizontal {
+	border: 1px solid #AD430C;
+}
+.khaos-chart .google-visualization-controls-slider-handle {
+	background-color: gray;
+}
+.khaos-chart .google-visualization-controls-rangefilter-thumblabel {
+	color: #333;
 }
