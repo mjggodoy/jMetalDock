@@ -67,7 +67,7 @@
 	<script src='<c:url value="/vendors/swagger-ui/js/swagger-ui-bundle.js" />'
 		charset="UTF-8"></script>
 	<script
-		src='<c:url value="/resources/js/swagger-ui-standalone-preset.js" />'
+		src='<c:url value="/vendors/swagger-ui/js/swagger-ui-standalone-preset.js" />'
 		charset="UTF-8"></script>
 	<%-- <script src='<c:url value="/resources/js/swagger-ui.js" />'> </script>	--%>
 
