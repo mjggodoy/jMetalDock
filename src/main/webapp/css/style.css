@@ -305,3 +305,30 @@ fieldset[disabled] .btn-primary:hover {
 .khaos-chart .google-visualization-controls-rangefilter-thumblabel {
 	color: #333;
 }
+
+/* PROTEIN VIEWER */
+#inspector {
+	box-shadow: 2px 2px 5px #888888;
+	border-radius: 8px;
+	position: absolute;
+	background-color: #fafafa;
+	padding: 25px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #ccc;
+}
+#inspector ul {
+	padding: 0px;
+}
+
+#inspector ul li {
+	margin-left: 5px;
+	margin-right: 5px;
+	margin-bottom: 5px;
+	list-style: none;
+	cursor: pointer;
+	color: #EB6909;
+}
+#inspector ul li:hover {
+	color: #AD430C;
+}
