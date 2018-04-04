@@ -70,7 +70,7 @@
 
 </body>
 
-<script src='<c:url value="/viewer/js/pv.min.js" />'></script>
+<script src='<c:url value="/vendors/pv/pv.min.js" />'></script>
 <script>
 	var structure;
 	var viewer = pv.Viewer(
