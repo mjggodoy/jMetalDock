@@ -51,7 +51,7 @@
 					</tr>
 				</table>
 
-				<ul class="nav nav-tabs nav-justified" role="tablist">
+				<ul class="nav nav-tabs" role="tablist">
 					<li role="presentation" class="active">
 						<a href="#table-tab-container" aria-controls="table-tab-container" role="tab" data-toggle="tab">Table</a>
 					</li>
@@ -149,9 +149,15 @@
 					</div>
 
 					<div role="tabpanel" class="tab-pane" id="graph-tab-container">
-						<div id="filter_div0"></div>
+						<div class="row">
+							<div id="filter_div0" class="col-sm-6"></div>
+							<div id="filter_div1" class="col-sm-6"></div>
+							<div id="chart_div" class="col-sm-12" style="height: 600px;"></div>
+						</div>
+						<!--
 						<div id="filter_div1"></div>
 						<div id="chart_div" style="width: 100%; height: 600px;"></div>
+						-->
 					</div>
 
 				</div>
@@ -168,14 +174,32 @@
 
 	$("a[href='#graph-tab-container']").on('shown.bs.tab', function(e) {
 		google.charts.load('current', {'packages':['corechart', 'controls']});
-		google.charts.setOnLoadCallback(drawChart);
+		google.charts.setOnLoadCallback(initChart);
 	});
 
+	$(window).resize(function() {
+		if(this.resizeTO) clearTimeout(this.resizeTO);
+		this.resizeTO = setTimeout(function() {
+			$(this).trigger('resizeEnd');
+		}, 500);
+	});
+
+	$(window).on('resizeEnd', function() {
+		drawChart();
+	});
+
+	var dashboard = undefined;
+	var arrayData = undefined;
+
 	function drawChart() {
+		if (arrayData != undefined)	dashboard.draw(arrayData);
+	}
+
+	function initChart() {
 
 		$.get('<c:url value="/rest/task/${result.taskId}/result/${result.run}?token=${param.token}" />', function( data ) {
 
-			var dashboard = new google.visualization.Dashboard(document.getElementById('graph-tab-container'));
+			dashboard = new google.visualization.Dashboard(document.getElementById('graph-tab-container'));
 
 			var input = [data.solutions[0].objectives];
 			if (input[0][0]=="Total Binding Energy") {
@@ -191,12 +215,14 @@
 				input.push([x,y]);
 			}
 
-			var arrayData = google.visualization.arrayToDataTable(input);
+			arrayData = google.visualization.arrayToDataTable(input);
 			var options = {
-				title: 'Front',
+				title: 'Solutions',
 				hAxis : {title: input[0][0]},
 				vAxis : {title: input[0][1]},
-				legend: 'none'
+				legend: 'none',
+				pointSize: 5,
+				colors: ['#EB6909']
 			};
 			var chart = new google.visualization.ChartWrapper({
 				'chartType': 'ScatterChart',
@@ -208,7 +234,11 @@
 				'controlType': 'NumberRangeFilter',
 				'containerId': 'filter_div0',
 				'options' : {
-					'filterColumnIndex':0
+					'filterColumnIndex':0,
+					'ui' : {
+						'labelStacking': 'vertical',
+						'cssClass': 'khaos-chart'
+					}
 				}
 			});
 
@@ -216,7 +246,11 @@
 				'controlType': 'NumberRangeFilter',
 				'containerId': 'filter_div1',
 				'options' : {
-					'filterColumnIndex':1
+					'filterColumnIndex':1,
+					'ui' : {
+						'labelStacking': 'vertical',
+						'cssClass': 'khaos-chart'
+				}
 				}
 			});
 
@@ -239,8 +273,7 @@
 
 			google.visualization.events.addListener(chart, 'ready', onReady);
 			dashboard.bind([slider0, slider1], chart);
-			dashboard.draw(arrayData);
-
+			drawChart();
 		});
 	}
 
