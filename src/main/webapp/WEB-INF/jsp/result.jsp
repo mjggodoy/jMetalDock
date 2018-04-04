@@ -55,21 +55,12 @@
 					<li role="presentation" class="active">
 						<a href="#table-tab-container" aria-controls="table-tab-container" role="tab" data-toggle="tab">Table</a>
 					</li>
-					<li role="presentation" class="">
-						<a href="#graph-tab-container" aria-controls="graph-tab-container" role="tab" data-toggle="tab">Graph</a>
-					</li>
+					<c:if test="${result.solutions[0].objectives[1]!=null}">
+						<li role="presentation" class="">
+							<a href="#graph-tab-container" aria-controls="graph-tab-container" role="tab" data-toggle="tab">Graph</a>
+						</li>
+					</c:if>
 				</ul>
-
-				<!--
-				<div id="tab" class="btn-group" data-toggle="buttons">
-					<a href="#table-tab-container" class="btn btn-default active" data-toggle="tab">
-						<input type="radio" />Table
-					</a>
-					<a href="#graph-tab-container" class="btn btn-default" data-toggle="tab">
-						<input type="radio" />Graph
-					</a>
-				</div>
-				-->
 
 				<div class="tab-content">
 
