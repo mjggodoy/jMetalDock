@@ -107,7 +107,9 @@
 						</ol>
 
 						</p>
+					</div>
 
+					<div class="col-md-12">
 						<h3>The jMetalDock Web Server</h3>
 						<p>
 						jMetalDock is a web-service that provides mono- and multi-objectives approaches
@@ -125,6 +127,9 @@
 						SMSEMOA and MOEA/D. The energy function used to evaluate all the
 						solutions returned by the algorithms is the AutoDock 4.2 energy
 						function. </p>
+					</div>
+
+					<div class="col-md-6">
 						<h3>Why jMetalDock Web Server?</h3>
 						<p>Most of the proposed approaches that can be found in the
 						literature only optimize an objective that is the final binding
@@ -136,14 +141,15 @@
 						runs (maximum and minimum default values) and the number of
 						evaluations (minimum and maximum default values). Further details
 						are given in the Tutorial section by clicking the menu bar.</p>
+					</div>
 
+					<div class="col-md-6">
+						<a href="#" id="pop">
+							<img  id= "serverDocking" class= "medium-size" src="images/serverDocking.png" alt="jMetalDock_Server">
+						</a>
 					</div>
 				</div>
-		
-				<a href="#" id="pop">
-					<img  id= "serverDocking" class= "resize2" src="images/serverDocking.png" alt="jMetalDock_Server">
-				</a>
-		
+
 				<!-- Creates the bootstrap modal where the image will appear -->
 				<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 					<div class="modal-dialog">

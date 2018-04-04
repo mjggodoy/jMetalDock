@@ -20,4 +20,4 @@
 <script src='<c:url value="/vendors/bootstrap/js/bootstrap.js" />'></script>
 
 <!-- Custom styles for this template -->
-<link href='<c:url value="/css/style.css" />' rel="stylesheet">
+<link href='<c:url value="/resources/css/style.css" />' rel="stylesheet">
