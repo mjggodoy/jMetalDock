@@ -7,7 +7,7 @@
 <title>jMetalDock: A web-service that provides single and multi-objetive approaches to solve the molecular docking problem</title>
 
 <!-- Favicon -->
-<link rel="shortcut icon" href='<c:url value="/images/khaos.ico" />' type="image/x-icon">
+<link rel="shortcut icon" href='<c:url value="/resources/favicon/khaos.ico" />' type="image/x-icon">
 
 <!-- Bootstrap core CSS -->
 <link href='<c:url value="/vendors/bootstrap/css/bootstrap.min.css" />' rel="stylesheet">

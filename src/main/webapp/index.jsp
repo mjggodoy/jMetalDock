@@ -3,8 +3,6 @@
 
 <head>
 	<%@ include file="/WEB-INF/jsp/headerHtml.jsp"%>
-	<link rel="shortcut icon" type="image/x-icon" href="/images/khaos.ico"/>
-	
 </head>
 
 
@@ -41,21 +39,21 @@
 						<!-- Wrapper for slides -->
 						<div class="carousel-inner" role="listbox">
 							<div class="item active">
-								<img src="images/macro-ligand.png" alt="Chania" width="460" height="345">
+								<img src="resources/img/macro-ligand.png" alt="Chania" width="460" height="345">
 								<div class="carousel-caption">
 									<h3>jMetalDock</h3>
 									<p class=text>This is a web-service that provides mono- and multi-objective approaches to solve the molecular docking problem.</p>
 								</div>
 							</div>
 							<div class="item">
-								<img src="images/references.png" alt="Chania" width="460" height="345">
+								<img src="resources/img/references.png" alt="Chania" width="460" height="345">
 									<div class="carousel-caption">
 									<h3>Objectives</h3>
 									<p class=text>Intermolecular, Intramolecular energies and RMSD scores can be optimized.</p>
 									</div>
 							</div>
 							<div class="item">
-								<img src="images/macrointeractions.png" alt="Chania" width="460" height="345">
+								<img src="resources/img/macrointeractions.png" alt="Chania" width="460" height="345">
 									<div class="carousel-caption">
 									<h3>Algorithms</h3>
 									<p class=text>Users can select the mono- and multi- metaheuristics to perform their experiments. </p>
@@ -145,7 +143,7 @@
 
 					<div class="col-md-6">
 						<a href="#" id="pop">
-							<img  id= "serverDocking" class= "medium-size" src="images/serverDocking.png" alt="jMetalDock_Server">
+							<img id= "serverDocking" class= "medium-size" src="resources/img/serverDocking.png" alt="jMetalDock_Server">
 						</a>
 					</div>
 				</div>
