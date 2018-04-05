@@ -1,12 +1,8 @@
 <!DOCTYPE html>
-<!-- saved from url=(0057)https://v4-alpha.getbootstrap.com/examples/justified-nav/ -->
-
 <html lang="en">
 
 <head>
 	<%@ include file="/WEB-INF/jsp/headerHtml.jsp"%>
-	<link rel="shortcut icon" type="image/x-icon" href="/images/khaos.ico"/>
-	
 </head>
 
 
@@ -43,21 +39,21 @@
 						<!-- Wrapper for slides -->
 						<div class="carousel-inner" role="listbox">
 							<div class="item active">
-								<img src="images/macro-ligand.png" alt="Chania" width="460" height="345">
+								<img src="resources/img/macro-ligand.png" alt="Chania" width="460" height="345">
 								<div class="carousel-caption">
 									<h3>jMetalDock</h3>
 									<p class=text>This is a web-service that provides mono- and multi-objective approaches to solve the molecular docking problem.</p>
 								</div>
 							</div>
 							<div class="item">
-								<img src="images/references.png" alt="Chania" width="460" height="345">
+								<img src="resources/img/references.png" alt="Chania" width="460" height="345">
 									<div class="carousel-caption">
 									<h3>Objectives</h3>
 									<p class=text>Intermolecular, Intramolecular energies and RMSD scores can be optimized.</p>
 									</div>
 							</div>
 							<div class="item">
-								<img src="images/macrointeractions.png" alt="Chania" width="460" height="345">
+								<img src="resources/img/macrointeractions.png" alt="Chania" width="460" height="345">
 									<div class="carousel-caption">
 									<h3>Algorithms</h3>
 									<p class=text>Users can select the mono- and multi- metaheuristics to perform their experiments. </p>
@@ -109,7 +105,9 @@
 						</ol>
 
 						</p>
+					</div>
 
+					<div class="col-md-12">
 						<h3>The jMetalDock Web Server</h3>
 						<p>
 						jMetalDock is a web-service that provides mono- and multi-objectives approaches
@@ -127,6 +125,9 @@
 						SMSEMOA and MOEA/D. The energy function used to evaluate all the
 						solutions returned by the algorithms is the AutoDock 4.2 energy
 						function. </p>
+					</div>
+
+					<div class="col-md-6">
 						<h3>Why jMetalDock Web Server?</h3>
 						<p>Most of the proposed approaches that can be found in the
 						literature only optimize an objective that is the final binding
@@ -138,14 +139,15 @@
 						runs (maximum and minimum default values) and the number of
 						evaluations (minimum and maximum default values). Further details
 						are given in the Tutorial section by clicking the menu bar.</p>
+					</div>
 
+					<div class="col-md-6">
+						<a href="#" id="pop">
+							<img id= "serverDocking" class= "medium-size" src="resources/img/serverDocking.png" alt="jMetalDock_Server">
+						</a>
 					</div>
 				</div>
-		
-				<a href="#" id="pop">
-					<img  id= "serverDocking" class= "resize2" src="images/serverDocking.png" alt="jMetalDock_Server">
-				</a>
-		
+
 				<!-- Creates the bootstrap modal where the image will appear -->
 				<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 					<div class="modal-dialog">

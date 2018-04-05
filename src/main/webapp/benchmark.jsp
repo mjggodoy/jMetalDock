@@ -366,7 +366,7 @@
 					compressed file:</p>
 
 				 <div class="resize4">
-					 <img src="images/zip_gold.png" alt="zip" style="width: 120px;"/>
+					 <img src="resources/img/zip_gold.png" alt="zip" style="width: 120px;"/>
 					 <p><a href="http://khaos.uma.es/autodockjmetal/DownloadFromFtp?file=all.zip">Download</a></p>
 				</div>
 
