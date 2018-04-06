@@ -2,8 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 	<%@ include file="/WEB-INF/jsp/headerHtml.jsp"%>
-	<script src=resources/js/bootstrap-spinner.js></script>
-	<script src=resources/js/mousehold.js></script>
+	<script src=vendors/bootstrap-spinner/bootstrap-spinner.js></script>
+	<script src=vendors/mousehold/mousehold.js></script>
 </head>
 
 <body>
@@ -300,6 +300,6 @@
 	<%@ include file="/WEB-INF/jsp/footer.jsp"%>
 </body>
 
-<script src="resources/js/taskJavaScript.js"></script>
+<script src="resources/js/task.js"></script>
 
 </html>

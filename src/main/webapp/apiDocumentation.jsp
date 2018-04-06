@@ -8,7 +8,7 @@
 <%-- <script src='<c:url value="/resources/js/swagger-ui-bundle.js" />' charset="UTF-8"> </script> --%>
 <%-- <script src='<c:url value="/resources/js/swagger-ui-standalone-preset.js"  />' charset="UTF-8"> </script> --%>
 <%-- <script src='<c:url value="/resources/js/swagger-ui.js" />' charset="UTF-8"> </script>--%>
-<link href="<c:url value="/resources/css/swagger-ui.css" />"
+<link href="<c:url value="/vendors/swagger-ui/css/swagger-ui.css" />"
 	rel="stylesheet"></link>
 <link
 	href="<c:url value="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Code+Pro:300,600|Titillium+Web:400,600,700" />"
@@ -64,10 +64,10 @@
 	</div>
 
 
-	<script src='<c:url value="/resources/js/swagger-ui-bundle.js" />'
+	<script src='<c:url value="/vendors/swagger-ui/js/swagger-ui-bundle.js" />'
 		charset="UTF-8"></script>
 	<script
-		src='<c:url value="/resources/js/swagger-ui-standalone-preset.js" />'
+		src='<c:url value="/vendors/swagger-ui/js/swagger-ui-standalone-preset.js" />'
 		charset="UTF-8"></script>
 	<%-- <script src='<c:url value="/resources/js/swagger-ui.js" />'> </script>	--%>
 

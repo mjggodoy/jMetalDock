@@ -13,14 +13,16 @@
 
 <div class="container">
 
-	<div class="alert alert-info" role="alert" style="margin-top:20px;">Your task has been successfully created.</div>
+	<div class="alert alert-info" role="alert" style="margin-top:20px;">
+		Your task has been successfully created.
+		<p>
+			Save this URL to check your task status:<br/>
+			<a href="${response.url}">${response.url}</a><br/>
+			Additionally, if you filled your email address when setting the task parameters, an email will be sent to
+			you when the task is finished.
+		</p>
+	</div>
 
-	<p>
-		Save this URL to check your task status:<br/>
-		<a href="${response.url}">${response.url}</a><br/>
-		Additionally, if you filled your email address when setting the task parameters, an email will be sent to
-		you when the task is finished.
-	</p>
 </div>
 <%@ include file="/WEB-INF/jsp/footer.jsp"%>
 </body>
