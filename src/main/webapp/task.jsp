@@ -39,9 +39,14 @@
 							<div class="form-group-dependant">
 								<label for="file" class="control-label label-dependant">File Input:</label>
 								<input type="file" id="file" name="file">
-								<p class="help-block">Please, select a .zip in which all your
+								<p class="help-block">
+									Please, select a .zip in which all your
 									macromolecule and ligand files are prepared (.pdbqt) and also the
-									output files from AutoGrid software (.map).</p>
+									output files from AutoGrid software (.map).
+									<br/>
+									Read the <a href='<c:url value="/tutorial.jsp" />'>documentation</a> to better
+									understand which files should be provided inside your zip file.
+								</p>
 							</div>
 						</div>
 					</div>
