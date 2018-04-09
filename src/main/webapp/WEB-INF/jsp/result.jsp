@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<%@ include file="/WEB-INF/jsp/headerHtml.jsp"%>
+	<%@ include file="/WEB-INF/jsp/headerHtml.jsp"%>
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 <c:set var="result" value='${it}' />
@@ -57,7 +57,7 @@
 					</li>
 					<c:if test="${result.solutions[0].objectives[1]!=null}">
 						<li role="presentation" class="">
-							<a href="#graph-tab-container" aria-controls="graph-tab-container" role="tab" data-toggle="tab">Graph</a>
+							<a href="#graph-tab-container" aria-controls="graph-tab-container" role="tab" data-toggle="tab">Plot</a>
 						</li>
 					</c:if>
 				</ul>
@@ -145,10 +145,6 @@
 							<div id="filter_div1" class="col-sm-6"></div>
 							<div id="chart_div" class="col-sm-12" style="height: 600px;"></div>
 						</div>
-						<!--
-						<div id="filter_div1"></div>
-						<div id="chart_div" style="width: 100%; height: 600px;"></div>
-						-->
 					</div>
 
 				</div>
