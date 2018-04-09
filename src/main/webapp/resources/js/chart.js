@@ -18,7 +18,10 @@ var dashboard = undefined;
 var arrayData = undefined;
 
 function drawChart() {
-	if (arrayData != undefined)	dashboard.draw(arrayData);
+	if (arrayData != undefined) {
+		dashboard.draw(arrayData);
+		$("#plot-loading").hide();
+	}
 }
 
 function initChart() {

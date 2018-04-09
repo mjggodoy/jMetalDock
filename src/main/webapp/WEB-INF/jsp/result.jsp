@@ -140,6 +140,9 @@
 					</div>
 
 					<div role="tabpanel" class="tab-pane" id="graph-tab-container">
+						<div class="row" id="plot-loading">
+							<div class="col-sm-12">Loading...</div>
+						</div>
 						<div class="row">
 							<div id="filter_div0" class="col-sm-6"></div>
 							<div id="filter_div1" class="col-sm-6"></div>
