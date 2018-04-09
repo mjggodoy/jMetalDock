@@ -18,6 +18,13 @@
 				<div class="page-header">
 					<h2>Tutorial</h2>
 				</div>
+				
+				<h3>Input</h3>
+				
+				<h3>Submit a job</h3>
+				
+				<h3>Output</h3>
+				
 
 			</div>
 		</div>
