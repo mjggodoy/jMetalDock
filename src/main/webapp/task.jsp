@@ -161,7 +161,7 @@
 								<optgroup label="MonoObjective algorithm">
 									<option value="gGA">gGA</option>
 									<option value="ssGA">ssGA</option>
-									<option value="DE">DE (!)</option>
+									<option value="DE" selected>DE (!)</option>
 									<option value="PSO">PSO</option>
 								</optgroup>
 								<optgroup label="MultiObjective algorithm">
@@ -212,15 +212,15 @@
 						<div class="col-md-5 col-sm-6">
 							<div class="input-group">
 							<span class="input-group-btn">
-								<button type="button" class="btn btn-default" data-value="-5" data-target="#runs"
+								<button type="button" class="btn btn-default" data-value="-1" data-target="#runs"
 										data-toggle="spinner" data-on="mousehold">
 									<span class="glyphicon glyphicon-minus"></span>
 								</button>
 							</span>
 								<input type="text" data-ride="spinner" name="runs" id="runs" class="form-control input-number"
-									   value="25" data-min="1" data-max="50" />
+									   value="5" data-min="1" data-max="10" />
 								<span class="input-group-btn">
-								<button type="button" class="btn btn-default" data-value="5" data-target="#runs"
+								<button type="button" class="btn btn-default" data-value="1" data-target="#runs"
 										data-toggle="spinner" data-on="mousehold">
 									<span class="glyphicon glyphicon-plus"></span>
 								</button>
