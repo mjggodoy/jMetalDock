@@ -70,7 +70,7 @@ function initChart() {
 		// The select handler. Call the chart's getSelection() method
 		function selectHandler() {
 			var selectedItem = chart.getChart().getSelection()[0];
-			getSolution(data, selectedItem.row);
+			if (selectedItem) getSolution(data, selectedItem.row);
 		}
 
 		function onReady() {

@@ -159,111 +159,40 @@
 
 <script type="text/javascript">
 
-	$("a[href='#graph-tab-container']").on('shown.bs.tab', function(e) {
-		google.charts.load('current', {'packages':['corechart', 'controls']});
-		google.charts.setOnLoadCallback(initChart);
-	});
+var url = '<c:url value="/rest/task/${result.taskId}/result/${result.run}?token=${param.token}" />';
 
-	$(window).resize(function() {
-		if(this.resizeTO) clearTimeout(this.resizeTO);
-		this.resizeTO = setTimeout(function() {
-			$(this).trigger('resizeEnd');
-		}, 500);
-	});
+function formatResponse(data) {
+	var objectives = data.solutions[0].objectives;
+	var dataTable = new google.visualization.DataTable();
+	dataTable.addColumn('number', objectives[0]);
+	dataTable.addColumn('number', objectives[1]);
+	dataTable.addColumn({type: 'string', role: 'tooltip'});
 
-	$(window).on('resizeEnd', function() {
-		drawChart();
-	});
-
-	var dashboard = undefined;
-	var arrayData = undefined;
-
-	function drawChart() {
-		if (arrayData != undefined)	dashboard.draw(arrayData);
+	if (objectives[0]=="Total Binding Energy") {
+		obj1 = "finalBindingEnergy";
+		obj2 = "rmsd";
+	} else {
+		obj1 = "intermolecularEnergy";
+		obj2 = "intramolecularEnergy";
 	}
 
-	function initChart() {
-
-		$.get('<c:url value="/rest/task/${result.taskId}/result/${result.run}?token=${param.token}" />', function( data ) {
-
-			dashboard = new google.visualization.Dashboard(document.getElementById('graph-tab-container'));
-
-			var input = [data.solutions[0].objectives];
-			if (input[0][0]=="Total Binding Energy") {
-				obj1 = "finalBindingEnergy";
-				obj2 = "rmsd";
-			} else {
-				obj1 = "intermolecularEnergy";
-				obj2 = "intramolecularEnergy";
-			}
-			for (var i in data.solutions) {
-				var x = data.solutions[i][obj1];
-				var y = data.solutions[i][obj2];
-				input.push([x,y]);
-			}
-
-			arrayData = google.visualization.arrayToDataTable(input);
-			var options = {
-				title: 'Solutions',
-				hAxis : {title: input[0][0]},
-				vAxis : {title: input[0][1]},
-				legend: 'none',
-				pointSize: 5,
-				colors: ['#EB6909']
-			};
-			var chart = new google.visualization.ChartWrapper({
-				'chartType': 'ScatterChart',
-				'containerId': 'chart_div',
-				'options': options
-			});
-
-			var slider0 = new google.visualization.ControlWrapper({
-				'controlType': 'NumberRangeFilter',
-				'containerId': 'filter_div0',
-				'options' : {
-					'filterColumnIndex':0,
-					'ui' : {
-						'labelStacking': 'vertical',
-						'cssClass': 'khaos-chart'
-					}
-				}
-			});
-
-			var slider1 = new google.visualization.ControlWrapper({
-				'controlType': 'NumberRangeFilter',
-				'containerId': 'filter_div1',
-				'options' : {
-					'filterColumnIndex':1,
-					'ui' : {
-						'labelStacking': 'vertical',
-						'cssClass': 'khaos-chart'
-				}
-				}
-			});
-
-			// The select handler. Call the chart's getSelection() method
-			function selectHandler() {
-				var selectedItem = chart.getChart().getSelection()[0];
-
-				if (selectedItem) {
-					solution = data.solutions[selectedItem.row];
-					var value = arrayData.getValue(selectedItem.row, selectedItem.column);
-					window.location.href =
-						'<c:url value="/rest/task/${result.taskId}/result/${result.id}/" />'
-							+ solution.id + '?token=${param.token}';
-				}
-			}
-
-			function onReady() {
-				google.visualization.events.addListener(chart.getChart(), 'select', selectHandler);
-			}
-
-			google.visualization.events.addListener(chart, 'ready', onReady);
-			dashboard.bind([slider0, slider1], chart);
-			drawChart();
-		});
+	for (var i in data.solutions) {
+		var x = data.solutions[i][obj1];
+		var y = data.solutions[i][obj2];
+		var tooltip = x + ", " + y;
+		dataTable.addRow([x,y, tooltip]);
 	}
+
+	return dataTable;
+}
+
+function getSolution(data, row) {
+	var solution = data.solutions[row];
+	window.location.href =
+		'<c:url value="/rest/task/${result.taskId}/result/${result.id}/" />'
+		+ solution.id + '?token=${param.token}';
+}
 
 </script>
-
+<script src='<c:url value="/resources/js/chart.js" />'></script>
 </html>
