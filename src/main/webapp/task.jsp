@@ -39,9 +39,14 @@
 							<div class="form-group-dependant">
 								<label for="file" class="control-label label-dependant">File Input:</label>
 								<input type="file" id="file" name="file">
-								<p class="help-block">Please, select a .zip in which all your
+								<p class="help-block">
+									Please, select a .zip in which all your
 									macromolecule and ligand files are prepared (.pdbqt) and also the
-									output files from AutoGrid software (.map).</p>
+									output files from AutoGrid software (.map).
+									<br/>
+									Read the <a href='<c:url value="/tutorial.jsp" />'>documentation</a> to better
+									understand which files should be provided inside your zip file.
+								</p>
 							</div>
 						</div>
 					</div>
@@ -154,37 +159,30 @@
 						<div class="col-md-5 col-sm-6">
 							<select class="form-control" name="algorithm" id="algorithm">
 								<optgroup label="MonoObjective algorithm">
-									<option value="PSO">PSO</option>
-									<option value="DE">DE</option>
-									<option value="ssGA">ssGA</option>
 									<option value="gGA">gGA</option>
+									<option value="ssGA">ssGA</option>
+									<option value="DE" selected>DE (!)</option>
+									<option value="PSO">PSO</option>
 								</optgroup>
 								<optgroup label="MultiObjective algorithm">
 									<option value="NSGAII">NSGA-II</option>
+									<option value="ssNSGAII">ssNSGA-II</option>
 									<option value="GDE3">GDE3</option>
+									<option value="SMPSO">SMPSO (!)</option>
+									<option value="OMOPSO">&nbsp;&nbsp;OMOPSO</option>
+									<option value="SMPSOD">&nbsp;&nbsp;SMPSOD</option>
+									<option value="SMPSOhv">&nbsp;&nbsp;SMPSO (HV) (!)</option>
+									<option value="SMPSO_COS">&nbsp;&nbsp;SMPSO (Cosine)</option>
 									<option value="MOEAD">MOEA/D</option>
 									<option value="SMSEMOA">SMS-EMOA</option>
 								</optgroup>
 							</select>
+							<p class="help-block">
+								Optimization algorithm to be used in your execution. Those which obtained better
+								results in our studies are marked with (!).
+							</p>
 						</div>
 					</div>
-
-					<!--
-					<div id="monoobjective" class="form-group form-group-dependant">
-						<label for="objective-single-opt">Objective to Optimize:</label>
-						<select	class="form-control" name="objective-single-opt" id="objective-single-opt">
-							<option>Final Binding Energy</option>
-						</select>
-					</div>
-
-					<div id="multiobjective" class="form-group form-group-dependant">
-						<label for="objective-multi-opt">Objectives to Optimize:</label>
-						<select	class="form-control" name="use_rmsd_as_obj" id="objective-multi-opt">
-							<option value="false">Intermolecular and Intramolecular Energy</option>
-							<option value=true>Binding Energy and RMSD score</option>
-						</select>
-					</div>
-					-->
 
 					<div id="monoobjective" class="form-group">
 						<div class="col-sm-offset-4 col-sm-6 col-md-5">
@@ -214,15 +212,15 @@
 						<div class="col-md-5 col-sm-6">
 							<div class="input-group">
 							<span class="input-group-btn">
-								<button type="button" class="btn btn-default" data-value="-5" data-target="#runs"
+								<button type="button" class="btn btn-default" data-value="-1" data-target="#runs"
 										data-toggle="spinner" data-on="mousehold">
 									<span class="glyphicon glyphicon-minus"></span>
 								</button>
 							</span>
 								<input type="text" data-ride="spinner" name="runs" id="runs" class="form-control input-number"
-									   value="25" data-min="1" data-max="50" />
+									   value="5" data-min="1" data-max="10" />
 								<span class="input-group-btn">
-								<button type="button" class="btn btn-default" data-value="5" data-target="#runs"
+								<button type="button" class="btn btn-default" data-value="1" data-target="#runs"
 										data-toggle="spinner" data-on="mousehold">
 									<span class="glyphicon glyphicon-plus"></span>
 								</button>
