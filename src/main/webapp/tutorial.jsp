@@ -46,8 +46,16 @@
 				
 				<li> All the files specified above must be compressed in a zip. Modifications depending on the algorithm and parameters chosen by the user will be lately included on the server. 
 				</li>
-				
 				</ol>
+				<p>If the user does not provide the .zip with all the files, in the instance file field of the Task form, a list of instances from the benchmark can be chosen.
+				 These instances correspond to the benchmark used by Morris <em>et al.</em>to validate the AutoDock 4.2 energy function <a href="#Morris">[1]</a>. The instances are a set of HIV-proteases and inhibitors with different sizes (small, medium, large size and urea cycle inhibitors). 
+				 </p>
+				 <ol>
+				 <li id="#Morris">Morris, Garrett M. and Huey, Ruth and Lindstrom, William and Sanner, Michel F. and Belew, Richard K. 
+				 and Goodsell, David S. and Olson, Arthur J. AutoDock4 and AutoDockTools4: Automated docking with selective receptor flexibility<em>J. Comput. Chem.</em> 30(16): 2785--2791
+								<a href="https://www.ncbi.nlm.nih.gov/pubmed/19399780" target="_blank">doi:10.1002/jcc.21256</a>
+				</li>
+				 </ol>
 				<h3>How to Submit a Job</h3>
 				
 				<h3>Output</h3>
