@@ -97,18 +97,31 @@
 				If the task was completed, jMetalDock will notify the results obtained from the simulation, providing a URL with the results:
 				<br/>
 				<br/>
-				<img src="resources/img/results.png" alt="Chania" width="650" height="430">
+				<img src="resources/img/results.png" alt="Chania" width="750" height="450">
 				<br/>
-				The image above shows the task's status, the start and end times, the task's id and its hash associated with the corresponding task and the user's email. 
-				There are to options that the user can select (called options). The first is the "Go to results" option and the second is the option to download the results in .dlg format 
-				that can be visualized by the ADT suite (<a href="http://autodock.scripps.edu/resources/adt" target="_blank">AutoDockTools</a>). In parameters section, the fields correspond to
-				the instance's name, the selected algorithm and its settings (e.g. population or swarm size, number of runs and evaluations) and the objectives to optimize (in the example, 
-				the objective to optimize are the inter/intramolecular energies). 
 				
-				The "Go to results" option is shown in the following image when the user has selected the multi-objective option:
+				<p>The image above shows the task's status, the start and end times, the task's id and its hash associated with the corresponding task and the user's email. 
+				The interface shows the user some options: "Go to results"  and "Download Docking Log File". The second option allows user 
+				to visualize the .dlg by using the ADT suite (<a href="http://autodock.scripps.edu/resources/adt" target="_blank">AutoDockTools</a>). 
+				In parameters section, the fields correspond to
+				the instance's name, the selected algorithm and its settings (e.g. population or swarm size, number of runs and evaluations) and the objectives to optimize (in the example, 
+				the objectives to optimize are the inter/intramolecular energies). The following image shows how the results are displayed when the user clicks on "Go to results": 
+				</p>
 				<br/>
 				<br/>
-				<img src="resources/img/resultstable.png" alt="Chania" width="650" height="430">
+				<img src="resources/img/resultstable.png" alt="Chania" width="850" height="500">
+				
+				<br/>
+				<p>This image shows a table with the results obtained from the molecular docking simulations. The table contains the column run, id (result per id), the final binding energy, 
+				the objectives that were optimized (in this case the intermolecular and intramolecular energy) and the RMSD value associated to the solution. 
+				The results page  also show two options: "the minimum final binding energy" and "the minimum RMSD score". If the user clicks on the "run" option, all the solutions of this run are shown in the page.
+				If the user clicks on the ID of each solution, information about this specific solution is shown:
+				</p>
+				<br/>
+				
+				<img src="resources/img/resultstable.png" alt="Chania" width="850" height="500">
+				
+				
 				
 				<h3>References</h3>
 				
@@ -122,7 +135,10 @@
 					comparative study <em>Applied Soft Computing</em> 28:379-393
 					<a href="http://dx.doi.org/10.1016/j.asoc.2014.10.049" target="_blank">doi:10.1016/j.asoc.2014.10.049</a>
 					</li>
-				</ol>
+				 </ol>
+				 
+				 
+				
 
 			</div>
 		</div>
