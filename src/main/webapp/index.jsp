@@ -19,7 +19,7 @@
 
 				<div class="bs-docs-header" id="content" tabindex="-1">
 					<h1>jMetalDock</h1>
-					<p>A Web-server that provides single and multi-objetive approaches to solve the molecular docking problem.</p>
+					<p>A Web-server that provides single and multi-objective approaches to solve the molecular docking problem.</p>
 					<div id="carbonads-container" style="display: none !important;">
 						<div class="carbonad" style="display: none !important;">
 							<div id="azcarbon"></div>
