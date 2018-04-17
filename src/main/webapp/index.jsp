@@ -19,7 +19,7 @@
 
 				<div class="bs-docs-header" id="content" tabindex="-1">
 					<h1>jMetalDock</h1>
-					<p>A Web-server that provides single and multi-objetive approaches to solve the molecular docking problem.</p>
+					<p>A Web-server that provides single and multi-objective approaches to solve the molecular docking problem.</p>
 					<div id="carbonads-container" style="display: none !important;">
 						<div class="carbonad" style="display: none !important;">
 							<div id="azcarbon"></div>
@@ -50,7 +50,7 @@
 									<div class="carousel-caption">
 									<h3>Objectives</h3>
 									<p class=text>Intermolecular/Intramolecular energies and Intermolecular energy/RMSD score can be optimized.</p>
-									</div>
+							</div>
 							</div>
 							<div class="item">
 								<img src="resources/img/macrointeractions.png" alt="Chania" width="460" height="345">
@@ -92,7 +92,7 @@
 						</p>
 
 						<p>
-						When you use this  web service to carry out your own experiments, please cite the following references:
+						When you use this web service to carry out your own experiments, please cite the following references:
 						<ol>
 							<li id="Camacho">Esteban L&oacute;pez-Camacho, Mar&iacute;a Jes&uacute;s Garc&iacute;a Godoy, Jos&eacute; Garc&iacute;a-Nieto, Antonio J. Nebro and Jos&eacute; Francisco Aldana-Montes
 								Solving molecular flexible docking problems with metaheuristics: A comparative study <em>Appl. Soft Comput.</em> 28: 379--393 (2015)

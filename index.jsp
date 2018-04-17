@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 
 <head>
-  <title>jMetalDock: A web-service that provides single and multi-objetive approaches to molecular docking</title>
+  <title>jMetalDock: ----A web-service that provides single and multi-objective approaches to molecular docking</title>
   <meta name="description" content="This web service provides mono- and multi-objective approaches to solve the problem of molecular docking. 
   The molecular docking has as objetive to optimize the ligand's pose to the macromolecule (receptor) with the minimum binding energy. 
   The molecular docking problem can be regarded either as a mono-objective or multi-objective problem." />
