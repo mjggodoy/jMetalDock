@@ -80,7 +80,7 @@
 							<td>
 								<!-- TODO: Desactivar si no posible -->
 								<a class="btn btn-default btn-sm" role="button"
-								   href='<c:url value="../../../${solution.taskId}/result/${solution.run}/${solution.id}/pv?token=${param.token}" />'>
+								   href='<c:url value="../../${solution.taskId}/result/${solution.run}/${solution.id}/pv?token=${param.token}" />'>
 									Go to Protein-Ligand viewer
 								</a>
 

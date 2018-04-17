@@ -115,11 +115,11 @@
 				<p>This image shows a table with the results obtained from the molecular docking simulations. The table contains the column run, id (result per id), the final binding energy, 
 				the objectives that were optimized (in this case the intermolecular and intramolecular energy) and the RMSD value associated to the solution. 
 				The results page  also show two options: "the minimum final binding energy" and "the minimum RMSD score". If the user clicks on the "run" option, all the solutions of this run are shown in the page.
-				If the user clicks on the ID of each solution, information about this specific solution is shown:
+				If the user clicks on the ID of each solution, information about this specific solution is shown. The image below shows the information about a specific solution.
 				</p>
 				<br/>
 				
-				<img src="resources/img/resultstable.png" alt="Chania" width="850" height="500">
+				<img src="resources/img/solution.png" alt="Chania" width="550" height="700">
 				
 				
 				
