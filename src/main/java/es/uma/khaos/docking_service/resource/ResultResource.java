@@ -51,9 +51,28 @@ public class ResultResource extends AbstractResource {
 			@ApiParam(value = "Task id: the identification number of a task", required = true) @NotNull @PathParam("taskId") int taskId,
 			@ApiParam(value = "Token: a code related to a task", required = true) @QueryParam("token") String token,
 			@Context HttpHeaders headers) {
-		ResponseBuilder builder = getResponseBuilder(headers, "/solution.jsp");
+		ResponseBuilder builder = getResponseBuilder(headers, "/solutionMinimum.jsp");
 		ResponseBuilder errorBuilder = getResponseBuilder(headers, "/errorResponse.jsp");
 		return getMinimumEnergy(taskId, token, builder, errorBuilder);
+	}
+	
+		//TODO: Produces JSON y XML?
+		//TODO: Comprobar que posible
+	@GET
+	@Path("/{id}/result/{run}/{solutionId}/pv")
+	@ApiResponses(value = { @ApiResponse(code = 403, message = "You are not allowed to see this task"),
+	@ApiResponse(code = 500, message = "Internal server error") })
+	@ApiOperation(value = "This method returns the macro page in .jsp", notes = "This method return the macro page in .jsp", response = Macro.class)
+	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML })
+	public Response getMacroPage(
+			@ApiParam(value = "Number of runs executed for a task", required = true) @NotNull @PathParam("run") int run,
+			@ApiParam(value = "Solution id from a set of results returned by the algorithm", required = true) @NotNull @PathParam("solutionId") int solutionId,
+			@ApiParam(value = "Task id: identification of the task's number", required = true) @NotNull @PathParam("id") int id,
+			@ApiParam(value = "Token: a code related to a task", required = true) @QueryParam("token") String token,
+			@Context HttpHeaders headers) throws DatabaseException {
+			ResponseBuilder builder = getResponseBuilder(headers, "/macro.jsp");
+			ResponseBuilder errorBuilder = getResponseBuilder(headers, "/errorResponse.jsp");
+			return getSolutionResponse(id, solutionId, token, builder, errorBuilder);
 	}
 
 	@GET
@@ -166,26 +185,7 @@ public class ResultResource extends AbstractResource {
 		return getLigandTxt(id, token);
 	}
 
-	//TODO: Produces JSON y XML?
-	//TODO: Comprobar que posible
-	@GET
-	@Path("/{id}/result/{run}/{solutionId}/pv")
-	@ApiResponses(value = { @ApiResponse(code = 403, message = "You are not allowed to see this task"),
-			@ApiResponse(code = 500, message = "Internal server error") })
-	@ApiOperation(value = "This method returns the macro page in .jsp", notes = "This method return the macro page in .jsp", response = Macro.class)
-	@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML, MediaType.TEXT_HTML })
-	public Response getMacroPage(
-			@ApiParam(value = "Number of runs executed for a task", required = true) @NotNull @PathParam("run") int run,
-			@ApiParam(value = "Solution id from a set of results returned by the algorithm", required = true) @NotNull @PathParam("solutionId") int solutionId,
-			@ApiParam(value = "Task id: identification of the task's number", required = true) @NotNull @PathParam("id") int id,
-			@ApiParam(value = "Token: a code related to a task", required = true) @QueryParam("token") String token,
-			@Context HttpHeaders headers) throws DatabaseException {
-
-		ResponseBuilder builder = getResponseBuilder(headers, "/macro.jsp");
-		ResponseBuilder errorBuilder = getResponseBuilder(headers, "/errorResponse.jsp");
-		return getSolutionResponse(id, solutionId, token, builder, errorBuilder);
-
-	}
+	
 
 	private Response getMacroTxt(int id, String token) throws DatabaseException {
 
