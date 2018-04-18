@@ -56,7 +56,7 @@
 				To submit a job to the jMetalDock server, the user has to fill a form. This form provides several options to choose by the users. The options in the form are the following:
 				<br/>
 				<img src="resources/img/form.png" alt="formOption1" width="450" height="440">
-				<img src="resources/img/form2.png" alt="formOption2" width="400" height="440">
+				<img src="resources/img/form2.png" alt="formOption2" width="400" height="440" >
 				<br/>
 				<br/>
 				
@@ -95,7 +95,7 @@
 				If the task was completed, jMetalDock will notify the results obtained from the simulation, providing a URL with the results:
 				<br/>
 				<br/>
-				<img src="resources/img/results.png" alt="Results" width="700" height="450">
+				<img src="resources/img/results.png" alt="Results" width="700" height="450" class="center">
 				<br/>	
 				<br/>		
 				<p>The image above shows the task's status, the start and end times, the task's ID and its hash associated with the corresponding task and the email provided by the user. 
@@ -107,7 +107,7 @@
 				the objectives to optimize are the inter/intramolecular energies). 
 				</p>
 				<br/>
-				<img src="resources/img/table.png" alt="ResultsTable" width="700" height="500">
+				<img src="resources/img/table.png" alt="ResultsTable" width="700" height="500" class="center">
 				<br/>
 				<br/>
 				<p>This image shows a table with the results obtained from the molecular docking simulations. The table contains a column with all runs, the task's ID (result per ID), the final binding energy, 
@@ -116,20 +116,20 @@
 				If the user clicks on the ID of each solution, information about this specific solution is shown. The image below shows the information about a specific solution.
 				</p>
 				<br/>
-				<img src="resources/img/solution.png" alt="Solution" width="700" height="500">
+				<img src="resources/img/solution.png" alt="Solution" width="700" height="500" class="center">
 				<br/>
 				<br/>
 				
 				<p>In the results' page, the pareto font is displayed when the user chooses the multi-objective option. In the image below, the pareto font is shown with the set of solutions. In this example, 
 				there are solutions that have higher or lower intermolcular and intramolecular energy values. 
 				The user can pick up a solution. <p/>
-				<img src="resources/img/graphics.png" alt="ParetoFont" width="700" height="500">
+				<img src="resources/img/graphics.png" alt="ParetoFont" width="700" height="500" class="center">
 				<br/>
 				<br/>
 				
 				<p>The user can also visualize a solution. For doing that, the users had to submit the macromolecule's PDBQT file:</p>
 				
-				<img src="resources/img/complexVisualization.png" alt="PDBViewer" width="700" height="500">
+				<img src="resources/img/complexVisualization.png" alt="PDBViewer" width="700" height="500" class="center">
 				
 				
 				<h3>References</h3>
