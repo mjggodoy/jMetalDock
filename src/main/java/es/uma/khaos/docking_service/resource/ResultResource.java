@@ -51,13 +51,13 @@ public class ResultResource extends AbstractResource {
 			@ApiParam(value = "Task id: the identification number of a task", required = true) @NotNull @PathParam("taskId") int taskId,
 			@ApiParam(value = "Token: a code related to a task", required = true) @QueryParam("token") String token,
 			@Context HttpHeaders headers) {
-		ResponseBuilder builder = getResponseBuilder(headers, "/solutionMinimum.jsp");
+		ResponseBuilder builder = getResponseBuilder(headers, "/solution.jsp");
 		ResponseBuilder errorBuilder = getResponseBuilder(headers, "/errorResponse.jsp");
 		return getMinimumEnergy(taskId, token, builder, errorBuilder);
 	}
 	
-		//TODO: Produces JSON y XML?
-		//TODO: Comprobar que posible
+	//TODO: Produces JSON y XML?
+	//TODO: Comprobar que posible
 	@GET
 	@Path("/{id}/result/{run}/{solutionId}/pv")
 	@ApiResponses(value = { @ApiResponse(code = 403, message = "You are not allowed to see this task"),
@@ -70,9 +70,9 @@ public class ResultResource extends AbstractResource {
 			@ApiParam(value = "Task id: identification of the task's number", required = true) @NotNull @PathParam("id") int id,
 			@ApiParam(value = "Token: a code related to a task", required = true) @QueryParam("token") String token,
 			@Context HttpHeaders headers) throws DatabaseException {
-			ResponseBuilder builder = getResponseBuilder(headers, "/macro.jsp");
-			ResponseBuilder errorBuilder = getResponseBuilder(headers, "/errorResponse.jsp");
-			return getSolutionResponse(id, solutionId, token, builder, errorBuilder);
+		ResponseBuilder builder = getResponseBuilder(headers, "/macro.jsp");
+		ResponseBuilder errorBuilder = getResponseBuilder(headers, "/errorResponse.jsp");
+		return getSolutionResponse(id, solutionId, token, builder, errorBuilder);
 	}
 
 	@GET
