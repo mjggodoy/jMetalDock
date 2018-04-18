@@ -56,7 +56,7 @@
 				To submit a job to the jMetalDock server, the user has to fill a form. This form provides several options to choose by the users. The options in the form are the following:
 				<br/>
 				<img src="resources/img/form.png" alt="Chania" width="450" height="440">
-				<img src="resources/img/form2.png" alt="Chania" width="470" height="440">
+				<img src="resources/img/form2.png" alt="Chania" width="400" height="440">
 				<br/>
 				<br/>
 				
@@ -90,37 +90,44 @@
 					<dd>The user's email where the jMetalDock notifies the status of the process that was launched. </dd>
 				</dl>
 				
-				
-				
 				<h3>Output</h3>
 				
 				If the task was completed, jMetalDock will notify the results obtained from the simulation, providing a URL with the results:
 				<br/>
 				<br/>
-				<img src="resources/img/results.png" alt="Chania" width="750" height="450">
-				<br/>
-				
+				<img src="resources/img/results.png" alt="Chania" width="700" height="450">
+				<br/>	
+				<br/>		
 				<p>The image above shows the task's status, the start and end times, the task's id and its hash associated with the corresponding task and the user's email. 
 				The interface shows the user some options: "Go to results"  and "Download Docking Log File". The second option allows user 
 				to visualize the .dlg by using the ADT suite (<a href="http://autodock.scripps.edu/resources/adt" target="_blank">AutoDockTools</a>). 
-				In parameters section, the fields correspond to
-				the instance's name, the selected algorithm and its settings (e.g. population or swarm size, number of runs and evaluations) and the objectives to optimize (in the example, 
+				In the parameters section, the fields correspond to
+				the instance's name, the selected algorithm and settings (e.g. population or swarm size, number of runs and evaluations) and the objectives to optimize (in the example, 
 				the objectives to optimize are the inter/intramolecular energies). The following image shows how the results are displayed when the user clicks on "Go to results": 
 				</p>
 				<br/>
+				<img src="resources/img/resultsTable.png" alt="Chania" width="700" height="500">
 				<br/>
-				<img src="resources/img/resultstable.png" alt="Chania" width="850" height="500">
-				
 				<br/>
-				<p>This image shows a table with the results obtained from the molecular docking simulations. The table contains the column run, id (result per id), the final binding energy, 
+				<p>This image shows a table with the results obtained from the molecular docking simulations. The table contains the column run, ID (result per ID), the final binding energy, 
 				the objectives that were optimized (in this case the intermolecular and intramolecular energy) and the RMSD value associated to the solution. 
-				The results page  also show two options: "the minimum final binding energy" and "the minimum RMSD score". If the user clicks on the "run" option, all the solutions of this run are shown in the page.
+				The results' page  also show two options: "the minimum final binding energy" and "the minimum RMSD score". If the user clicks on the "run" option, all the solutions of this run are shown in the page.
 				If the user clicks on the ID of each solution, information about this specific solution is shown. The image below shows the information about a specific solution.
 				</p>
 				<br/>
+				<img src="resources/img/solution.png" alt="Chania" width="700" height="500">
+				<br/>
+				<br/>
 				
-				<img src="resources/img/solution.png" alt="Chania" width="550" height="700">
+				<p>In the results' page, the pareto font is displayed when the user chooses the multi-objective option. In the image below, the pareto font is shown with the set of solutions. In this example, there are solutions that have higher or lower intermolcular energy values. 
+				The user can pick up a solution. <p/>
+				<img src="resources/img/graphics.png" alt="Chania" width="700" height="500">
+				<br/>
+				<br/>
 				
+				The user can also visualize a solution. For doing that, the users had to submit the macromolecule's PDBQT file:
+				
+				<img src="resources/img/complexVisualization.png" alt="Chania" width="700" height="500">
 				
 				
 				<h3>References</h3>
