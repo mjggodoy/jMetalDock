@@ -168,13 +168,10 @@
 		
 				
 				<div class="row row-no-margin">
-					<div class="col-xs-12 col-sm-6 col-no-padding">
+					<div class="col-xs-12 col-sm-8 col-no-padding">
           				<img  class="thumbnail img-responsive" src="resources/img/results.png"></img>
           			</div>
-				</div>
-				
-    
-				
+				</div>				
 					<p>The image above shows the task's status, the start and end times,
 					the task's ID and its hash associated with the corresponding task
 					and the email provided by the user. The interface shows some
@@ -193,7 +190,7 @@
 				<br /> 
 				
 				<div class="row row-no-margin">
-					<div class="col-xs-12 col-sm-6 col-no-padding">
+					<div class="col-xs-12 col-sm-8 col-no-padding">
           				<img  class="thumbnail img-responsive"  src="resources/img/table.png"></img>
           			</div>
 				</div>
@@ -212,7 +209,7 @@
 					shows the information about a specific solution.</p>
 				<br /> 
 				<div class="row row-no-margin">
-					<div class="col-xs-12 col-sm-6 col-no-padding">
+					<div class="col-xs-12 col-sm-8 col-no-padding">
           				<img  class="thumbnail img-responsive"  src="resources/img/solution.png"></img>
           			</div>
 				</div>
@@ -225,7 +222,7 @@
 				<p />
 				
 				<div class="row row-no-margin">
-					<div class="col-xs-12 col-sm-6 col-no-padding">
+					<div class="col-xs-12 col-sm-8 col-no-padding">
           				<img  class="thumbnail img-responsive"  src="resources/img/graphics.png"></img>
           			</div>
 				</div>
@@ -236,7 +233,7 @@
 					users had to submit the macromolecule's PDBQT file:</p>
 					
 				<div class="row row-no-margin">
-					<div class="col-xs-12 col-sm-6 col-no-padding">
+					<div class="col-xs-12 col-sm-8 col-no-padding">
           				<img  class="thumbnail img-responsive"  src="resources/img/complexVisualization.png"></img>
           			</div>
 				</div>
