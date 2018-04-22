@@ -84,7 +84,7 @@
           				<img  class="thumbnail img-responsive"  src="resources/img/form.png"></img>
           			</div>
           			<div class="col-xs-12 col-sm-6 col-no-padding">
-          				<img class="thumbnail img-responsive"   src="resources/img/form2.png"></img>		
+          				<img class="thumbnail img-responsive"   src="resources/img/form2.png" style="width: 458px;"></img>		
         			</div>       			
 				</div>
 								
@@ -262,7 +262,7 @@
 		</div>
 	</div>
 	</div>
-					</div>
+</div>
 	
 
 	<%@ include file="/WEB-INF/jsp/footer.jsp"%>

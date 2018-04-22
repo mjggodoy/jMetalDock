@@ -16,7 +16,9 @@
 		<div class="panel panel-default">
 			<div class="panel-body">
 				<div class="page-header">
-					<h2>Benchmark</h2>
+								
+				<h2>Benchmark</h2>
+				
 				</div>
 
 				<h4>Ligand-Receptor Docking: Instances used in Mono-Objective and
@@ -361,13 +363,15 @@
 					</div>
 				</div>
 
-				<br>
-				<p>Users can also download all the instances in just one
-					compressed file:</p>
-
-				 <div class="resize4">
+				<br/>
+				<p>Users can also download all the instances in just one compressed file:</p>
+				<br/>
+				 <div>
+				 <figure>
 					 <img src="resources/img/zip_gold.png" alt="zip" style="width: 120px;"/>
-					 <p><a href="http://khaos.uma.es/autodockjmetal/DownloadFromFtp?file=all.zip">Download</a></p>
+					 <figcaption><a href="http://khaos.uma.es/autodockjmetal/DownloadFromFtp?file=all.zip" style="margin-left: 25px;">Download</a></figcaption>	 
+				</figure>
+				<br/>
 				</div>
 
 				<p style="text-align: justify;">
@@ -387,21 +391,21 @@
 					</div>
 				</div>
 
-				<br>
+				<br/>
 
 				<strong>References:</strong>
 
 				<ol class="h5">
 
-					<li>Morris GM, Huey R, Lindstrom W, et al.: <br /><b>
-								 AutoDock4 and AutoDockTools4: Automated Docking with Selective Receptor Flexibility</b><br /> <cite>Algorithms for Computational
+					<li><cite>Morris GM, Huey R, Lindstrom W, et al.: AutoDock4 and AutoDockTools4: Automated Docking with Selective Receptor Flexibility<br /> Algorithms for Computational
 									Journal of computational chemistry. 2009;30(16):.
-					</cite> 2785-2791<a href="http://dx.doi.org/10.1002/jcc.21256" target="_blank"> doi:10.1002/jcc.21256</a>
+					 2785-2791<a href="http://dx.doi.org/10.1002/jcc.21256"> doi:10.1002/jcc.21256</a></cite>
 					</li>
 				</ol>
 			</div>
 		</div>
 	</div>
+	
 	<%@ include file="/WEB-INF/jsp/footer.jsp"%>
 </body>
 </html>
