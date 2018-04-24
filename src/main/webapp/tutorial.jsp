@@ -24,13 +24,13 @@
 				<div class="row">
 					<div class="col-md-12">
 				
-					<h3>Input</h3>
+					<h3 id="Input">Input</h3>
 					<p>The user uploads the following set of files that includes:</p>
 				<ol>
 
 					<li>The ligand in PDBQT format. This format is widely known by
 						users that work on molecular docking simulations (see <a 
-						href="http://autodock.scripps.edu/faqs-help/faq/what-is-the-format-of-a-pdbqt-file" target="_blank">PDBQT</a>
+						href="http://autodock.scripps.edu/faqs-help/faq/what-is-the-format-of-a-pdbqt-file" target="_blank">How to prepare a PDBQT file</a>
 						for further details about this format)
 					</li>
 
@@ -40,18 +40,26 @@
 						than the ligand's PDBQT file (the ligand's PDBQT file represents a
 						chemical compound or peptide). Further specifications about PDBQT
 						format are available at <a
-						href="http://autodock.scripps.edu/faqs-help/faq/what-is-the-format-of-a-pdbqt-file">PDBQT</a>.
+						href="http://autodock.scripps.edu/faqs-help/faq/what-is-the-format-of-a-pdbqt-file" target="blank">How to prepare a PDBQT file</a>.
 					</li>
 
 					<li>If flexibility is applied to the side chains of the
 						macromolecule's residues, the PDBQT file with the specified
-						flexible residues should be submitted.</li>
+						flexible residues should be submitted. A more detailed explanation about how to create the PDBQT file is available at: <a
+						href="http://autodock.scripps.edu/faqs-help/how-to/how-to-prepare-a-flexible-residue-file-for-autodock4">
+						How to prepare a PDBQT flexible file</a>
+						</li>
+						
 
 					<li>The .map files calculated by AutoGrid4 must be included
-						with the rest of files.</li>
+						with the rest of files. For further details, see the link: 
+						<a href="http://autodock.scripps.edu/faqs-help/how-to/how-to-prepare-a-grid-parameter-files-for-autogrid4">
+						How to prepare a grid parameter file and generate the .map files executing AutoGrid4</a>
+					</li>
 
-					<li>A DPF file where the name of the macromolecule, ligand and
-						flexible macromolecule must be included.</li>
+					<li>A DPF (docking parameter file) file where the name of the macromolecule, ligand and
+						flexible macromolecule must be included.
+					<a href="http://autodock.scripps.edu/faqs-help/how-to/how-to-prepare-a-docking-parameter-file-for-autodock4-1">How to prepare a DPF file</a>.</li>
 
 					<li>All the files specified above must be compressed into a
 						.zip file. Modifications depending on the algorithm and parameters
@@ -65,18 +73,16 @@
 					AutoDock 4.2 energy function <a href="#Morris">[1]</a>. The
 					instances are a set of HIV-proteases and inhibitors with different
 					sizes (small, medium, large size and urea cycle inhibitors). A more
-					detailed description is specified in Morris' et <em>al.</em>
+					detailed description about this benchmark is specified in Morris' et <em>al.</em>
 					publication.
 				</p>
 				
 
 				<h3>How to Submit a Job</h3>
 				
-				
-
 				<p>To submit a job to the jMetalDock server, the user has to
-					fill a form. This form provides several options to choose by the
-					users. The options in the form are the following:</p>
+					fill a form. This form provides several options that are chosen by the
+					users. These options are specified as folows:</p>
 				<br />
 				
 				<div class="row row-no-margin">
@@ -84,7 +90,7 @@
           				<img  class="thumbnail img-responsive"  src="resources/img/form.png"></img>
           			</div>
           			<div class="col-xs-12 col-sm-6 col-no-padding">
-          				<img class="thumbnail img-responsive"   src="resources/img/form2.png" style="width: 458px;"></img>		
+          				<img class="thumbnail img-responsive"   src="resources/img/form2.png" style="width: 475px;"></img>		
         			</div>       			
 				</div>
 								
@@ -92,19 +98,20 @@
 				<dl class="dl-horizontal">
 
 					<dt>A.</dt>
-					<dd>The input file option refers to the .zip file or the
+					<dd>The input file option is the .zip file or the
 						instance chosen by the user. The left image shows the case where
-						user chooses one instance from the benchmark that jMetalDock
-						server provides. The image on the right shows the case where user
+						user chooses one instance from the list provided by the jMetalDock
+						server. The image in the right shows the case where user
 						has to upload a .zip file with all files described above (see
-						Input section).</dd>
+						<a href="#Input">Input</a> section).</dd>
 					<dt>B.</dt>
 					<dd>
 						The user can choose an instance from the list provided by
 						jMetalDock. These instances are a set of ligand-protein complexes
-						used in the literature to validate molecular docking simulations <a
+						used in some molecular docking simulations to validate new algorithms 
+						or new energy scoring functions such as is shown in <a
 							href="#Morris">[1]</a>. The instance already contains all the
-						input files to run the mono/multi-objective algorithm.
+						input files to run a mono- or multi-objective algorithm.
 					</dd>
 					<dt>C.</dt>
 					<dd>
@@ -129,8 +136,8 @@
 					</dd>
 					<dt>D.</dt>
 					<dd>If the user chooses the mono-objective approach, the
-						objective to minimize is the final binding energy. If the option
-						corresponds with the multi-objective approach, the objectives to
+						objective is to minimize the final binding energy (represented as &Delta;G). 
+						If the option corresponds with the multi-objective approach, the objectives to
 						optimize will be the intermolecular/intramolecular energies or the
 						ligand-macromolecule binding energy/RMSD score.</dd>
 					<dt>E.</dt>
@@ -139,17 +146,15 @@
 						than 100 is not very recommendable.</dd>
 					<dt>F.</dt>
 					<dd>The population size refers to the initial number of
-						individuals (or particles in case the selected algorithm is the
-						PSO) of a population (or particles in case the PSO algorithm).
-						Each individual represents the codified solution (translation
-						coordinates, rotation and torsions associated to the macromolecule
-						and ligand)</dd>
+						population's individuals (or particles in case the selected algorithm is the
+						PSO). Each individual represents the codified solution, which includes translation coordenates,
+						rotation and torsions associated to the macromolecule and ligand.</dd>
 					<dt>G.</dt>
 					<dd>
 						The number of evaluations. It equals to the multiplication between
 						the number of individuals of the population and the number of
 						iterations. In the mono-objective approach, in <a href="#Camacho">[2]</a>,
-						a study based on the convergence behavior revealed that 1.500.000
+						the study shows the algorithm's convergence behavior revealing that 1.500.000
 						is the number of evaluations where the algorithm finds the best
 						solutions.
 					</dd>
@@ -166,26 +171,24 @@
 				<p>If the task was completed, jMetalDock will notify the results
 					obtained from the simulation, providing a URL with the results:</p>
 		
-				
 				<div class="row row-no-margin">
 					<div class="col-xs-12 col-sm-8 col-no-padding">
           				<img  class="thumbnail img-responsive" src="resources/img/results.png"></img>
           			</div>
 				</div>				
 					<p>The image above shows the task's status, the start and end times,
-					the task's ID and its hash associated with the corresponding task
-					and the email provided by the user. The interface shows some
+					the task's ID, task's hash and the user's email. The interface shows some
 					buttons in the Action field: "Go to results" and "Download Docking
 					Log File". The first option refers to the set of results obtained
 					for each run. The image below shows how the results are displayed
 					when the user clicks on "Go to results". The second option allows
 					users to visualize the .dlg file through the ADT suite (<a
-						href="http://autodock.scripps.edu/resources/adt">AutoDockTools</a>).
+						href="http://autodock.scripps.edu/resources/adt" target="_blank">AutoDockTools</a>).
 					In the parameters section, the fields correspond to the instance's
 					name, the selected algorithm and settings (e.g. population or swarm
 					size, number of runs and evaluations) and the objectives to
-					optimize (in the example, the objectives to optimize are the
-					inter/intramolecular energies).
+					optimize (in the example, the objectives that were optimized correspond with the
+					intermolecular and intramolecular energies).
 				</p>
 				<br /> 
 				
@@ -203,21 +206,20 @@
 					intramolecular energy) and the RMSD value associated with the
 					solution. The results' page also shows two options: "the minimum
 					final binding energy" and "the minimum RMSD score". If the user
-					clicks on the "run" option, all the solutions of this run are shown
+					clicks on the "run" option, all the solutions from this run are shown
 					in the page. If the user clicks on the ID of each solution,
-					information about this specific solution is shown. The image below
-					shows the information about a specific solution.</p>
+					information about this specific solution is shown (see the image below):</p>
 				<br /> 
 				<div class="row row-no-margin">
 					<div class="col-xs-12 col-sm-8 col-no-padding">
           				<img  class="thumbnail img-responsive"  src="resources/img/solution.png"></img>
           			</div>
 				</div>
-				<p>In the results' page, the pareto font is displayed when the
-					user chooses the multi-objective option. In the image below, the
-					pareto font is shown with the set of solutions. In this example,
+				<p>In the results' page, the pareto font is plotted when the
+					user chooses the multi-objective option to run the molecular docking simulations. In the image below, the
+					pareto font represents the set of solutions. In this example,
 					there are solutions that have higher or lower intermolecular and
-					intramolecular energy values. The user can pick up a solution.</p>
+					intramolecular energy values. The user can pick up a solution to be analyzed.</p>
 			
 				
 				<div class="row row-no-margin">
@@ -226,10 +228,9 @@
           			</div>
 				</div>
 				
-				
 
 				<p>The user can also visualize a solution. For doing that, the
-					users had to submit the macromolecule's PDBQT file:</p>
+					users have to submit the macromolecule's PDBQT file:</p>
 					
 				<div class="row row-no-margin">
 					<div class="col-xs-12 col-sm-8 col-no-padding">
