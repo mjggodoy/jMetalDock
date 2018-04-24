@@ -29,8 +29,8 @@
 				<ol>
 
 					<li>The ligand in PDBQT format. This format is widely known by
-						users that work on molecular docking simulations (see <a
-						href="http://autodock.scripps.edu/faqs-help/faq/what-is-the-format-of-a-pdbqt-file">PDBQT</a>
+						users that work on molecular docking simulations (see <a 
+						href="http://autodock.scripps.edu/faqs-help/faq/what-is-the-format-of-a-pdbqt-file" target="_blank">PDBQT</a>
 						for further details about this format)
 					</li>
 
@@ -216,10 +216,9 @@
 				<p>In the results' page, the pareto font is displayed when the
 					user chooses the multi-objective option. In the image below, the
 					pareto font is shown with the set of solutions. In this example,
-					there are solutions that have higher or lower intermolcular and
-					intramolecular energy values.</p>
-				The user can pick up a solution.
-				<p />
+					there are solutions that have higher or lower intermolecular and
+					intramolecular energy values. The user can pick up a solution.</p>
+			
 				
 				<div class="row row-no-margin">
 					<div class="col-xs-12 col-sm-8 col-no-padding">
