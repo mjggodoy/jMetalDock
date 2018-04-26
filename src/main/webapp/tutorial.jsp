@@ -85,14 +85,73 @@
 					users. These options are specified as folows:</p>
 				<br />
 				
-				<div class="row row-no-margin">
+				
+				<div class="col-md-6">
+						<a href="#" id="pop">
+							<img id= "form" class= "medium-size" src="resources/img/form.png" alt="form1">
+						</a>
+				</div>
+				
+				<div class="col-md-6">
+						<a href="#" id="pop">
+							<img id= "form2" class= "medium-size" src="resources/img/form2.png" alt="form2">
+						</a>
+				</div>
+				
+				<!-- Creates the bootstrap modal where the image will appear -->
+				<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">
+									<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+								</button>
+								<h4 class="modal-title" id="myModalLabel"></h4>
+							</div>
+							<div class="modal-body">
+								<figure>
+								<img src="resources/img/form.png" id="imagepreview"></img>
+								</figure>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				
+				<!-- Creates the bootstrap modal where the image will appear -->
+				<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">
+									<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+								</button>
+								<h4 class="modal-title" id="myModalLabel"></h4>
+							</div>
+							<div class="modal-body">
+								<figure>
+								<img src="resources/img/form2.png" id="imagepreview"></img>
+								</figure>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+					
+				<!-- <div class="row row-no-margin">
         			<div class="col-xs-12 col-sm-6 col-no-padding">
           				<img  class="thumbnail img-responsive"  src="resources/img/form.png"></img>
           			</div>
           			<div class="col-xs-12 col-sm-6 col-no-padding">
           				<img class="thumbnail img-responsive"   src="resources/img/form2.png" style="width: 475px;"></img>		
         			</div>       			
-				</div>
+				</div> -->
 								
 
 				<dl class="dl-horizontal">
