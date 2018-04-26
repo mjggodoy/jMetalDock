@@ -46,20 +46,20 @@
 					<li>If flexibility is applied to the side chains of the
 						macromolecule's residues, the PDBQT file with the specified
 						flexible residues should be submitted. A more detailed explanation about how to create the PDBQT file is available at: <a
-						href="http://autodock.scripps.edu/faqs-help/how-to/how-to-prepare-a-flexible-residue-file-for-autodock4">
+						href="http://autodock.scripps.edu/faqs-help/how-to/how-to-prepare-a-flexible-residue-file-for-autodock4" target="_blank">
 						How to prepare a PDBQT flexible file</a>
 						</li>
 						
 
 					<li>The .map files calculated by AutoGrid4 must be included
 						with the rest of files. For further details, see the link: 
-						<a href="http://autodock.scripps.edu/faqs-help/how-to/how-to-prepare-a-grid-parameter-files-for-autogrid4">
+						<a href="http://autodock.scripps.edu/faqs-help/how-to/how-to-prepare-a-grid-parameter-files-for-autogrid4" target="_blank">
 						How to prepare a grid parameter file and generate the .map files executing AutoGrid4</a>
 					</li>
 
 					<li>A DPF (docking parameter file) file where the name of the macromolecule, ligand and
 						flexible macromolecule must be included.
-					<a href="http://autodock.scripps.edu/faqs-help/how-to/how-to-prepare-a-docking-parameter-file-for-autodock4-1">How to prepare a DPF file</a>.</li>
+					<a href="http://autodock.scripps.edu/faqs-help/how-to/how-to-prepare-a-docking-parameter-file-for-autodock4-1" target="_blank">How to prepare a DPF file</a>.</li>
 
 					<li>All the files specified above must be compressed into a
 						.zip file. Modifications depending on the algorithm and parameters
@@ -103,7 +103,7 @@
 										<h4 class="modal-title" id="myModalLabel">Form when user selects an instance from a list:</h4>
 									</div>
 									<div class="modal-body">
-										<img src="resources/img/form.png" id="imagepreview" style="width: 500px; height: 465px;"></img>
+										<img src="resources/img/form.png" id="imagepreview" class="img-responsive"></img>
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -111,6 +111,7 @@
 						</div>
 					</div>
 				</div>
+			
 
 				<div class="col-md-6">
 					<a href="#" id="pop3">
@@ -129,7 +130,7 @@
 										<h4 class="modal-title" id="myModalLabel2">Form when user uploads a .zip file</h4>
 									</div>
 									<div class="modal-body">
-										<img src="resources/img/form2.png" id="imagepreview" style="width: 500px; height: 465px;"></img>
+										<img src="resources/img/form2.png" id="imagepreview" class="img-responsive"></img>
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
