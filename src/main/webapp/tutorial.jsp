@@ -87,61 +87,57 @@
 				
 				
 				<div class="col-md-6">
-						<a href="#" id="pop">
-							<img id= "form" class= "medium-size" src="resources/img/form.png" alt="form1">
+						<a href="#" id="pop2">
+							<img id= "form" class= "medium-size" src="resources/img/form.png" alt="form1"></img>
 						</a>
 				</div>
-				
+
+				<!-- Creates the bootstrap modal where the image will appear -->
+				<div class="modal fade" id="imagemodal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">
+											<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+										</button>
+										<h4 class="modal-title" id="myModalLabel">Form when user selects an instance from a list:</h4>
+									</div>
+									<div class="modal-body">
+										<img src="resources/img/form.png" id="imagepreview" style="width: 500px; height: 465px;"></img>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
 				<div class="col-md-6">
-						<a href="#" id="pop">
-							<img id= "form2" class= "medium-size" src="resources/img/form2.png" alt="form2">
-						</a>
+					<a href="#" id="pop3">
+						<img id= "form2" class= "medium-size" src="resources/img/form2.png" alt="form2"></img>
+					</a>
 				</div>
 				
 				<!-- Creates the bootstrap modal where the image will appear -->
-				<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal fade" id="imagemodal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal">
-									<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-								</button>
-								<h4 class="modal-title" id="myModalLabel"></h4>
-							</div>
-							<div class="modal-body">
-								<figure>
-								<img src="resources/img/form.png" id="imagepreview"></img>
-								</figure>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										<button type="button" class="close" data-dismiss="modal">
+											<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+										</button>
+										<h4 class="modal-title" id="myModalLabel2">Form when user uploads a .zip file</h4>
+									</div>
+									<div class="modal-body">
+										<img src="resources/img/form2.png" id="imagepreview" style="width: 500px; height: 465px;"></img>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 							</div>
 						</div>
 					</div>
 				</div>
 				
-				
-				<!-- Creates the bootstrap modal where the image will appear -->
-				<div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-					<div class="modal-dialog">
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal">
-									<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-								</button>
-								<h4 class="modal-title" id="myModalLabel"></h4>
-							</div>
-							<div class="modal-body">
-								<figure>
-								<img src="resources/img/form2.png" id="imagepreview"></img>
-								</figure>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-							</div>
-						</div>
-					</div>
-				</div>
 				
 					
 				<!-- <div class="row row-no-margin">
@@ -307,14 +303,14 @@
 						Goodsell, David S. and Olson, Arthur J. AutoDock4 and
 						AutoDockTools4: Automated docking with selective receptor
 						flexibility<em>J. Comput. Chem.</em> 30(16): 2785--2791 <a
-						href="https://www.ncbi.nlm.nih.gov/pubmed/19399780">doi:10.1002/jcc.21256</a>
+						href="https://www.ncbi.nlm.nih.gov/pubmed/19399780" target="_blank">doi:10.1002/jcc.21256</a>
 					</li>
 					<li id="Camacho">Esteban L&oacute;pez-Camacho, Mar&iacute;a
 						Jes&uacute;s Garc&iacute;a Godoy, Jos&eacute; Garc&iacute;a-Nieto,
 						Antonio J. Nebro and Jos&eacute; F. Aldana-Montes: Solving
 						molecular flexible docking problems with metaheuristics: A
 						comparative study <em>Applied Soft Computing</em> 28:379-393 <a
-						href="http://dx.doi.org/10.1016/j.asoc.2014.10.049">doi:10.1016/j.asoc.2014.10.049</a>
+						href="http://dx.doi.org/10.1016/j.asoc.2014.10.049" target="_blank">doi:10.1016/j.asoc.2014.10.049</a>
 					</li>
 				</ol>
 			</div>
