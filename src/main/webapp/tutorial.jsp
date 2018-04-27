@@ -99,7 +99,7 @@
 										<button type="button" class="close" data-dismiss="modal">
 											<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 										</button>
-										<h4 class="modal-title" id="myModalLabel">Form when user selects an instance from the list of instances jMetalDock provides:</h4>
+										<h4 class="modal-title" id="myModalLabel">Form when user selects an instance from a list:</h4>
 									</div>
 									<div class="modal-body">
 										<img src="resources/img/form.png" id="imagepreview" class="img-responsive"></img>
@@ -127,8 +127,7 @@
 										<button type="button" class="close" data-dismiss="modal">
 											<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 										</button>
-										<h4 class="modal-title" id="myModalLabel2">Form when user uploads a .zip file with all input files including the .pdbqts 
-										from ligand and macromolecule (flexible residues), .maps and dpf files.</h4>
+										<h4 class="modal-title" id="myModalLabel2">Form when user uploads a .zip file</h4>
 									</div>
 									<div class="modal-body">
 										<img src="resources/img/form2.png" id="imagepreview" class="img-responsive"></img>
@@ -279,7 +278,7 @@
 										<button type="button" class="close" data-dismiss="modal">
 											<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 										</button>
-										<h4 class="modal-title" id="myModalLabel2">Table with the results obtained from the molecular docking simulations.</h4>
+										<h4 class="modal-title" id="myModalLabel2">Table with the results obtained from the molecular docking simulations</h4>
 									</div>
 									<div class="modal-body">
 										<img src="resources/img/table.png" id="imagepreview" class="img-responsive"></img>
@@ -354,7 +353,7 @@
 										<button type="button" class="close" data-dismiss="modal">
 											<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 										</button>
-										<h4 class="modal-title" id="myModalLabel2">Set of solutions plotted as a font. The inter-/intramolecular energies are represented in X and Y axis, respectively.</h4>
+										<h4 class="modal-title" id="myModalLabel2">Set of solutions plotted as a font. The inter-/intramolecular enegies are represented in X and Y axis.</h4>
 									</div>
 									<div class="modal-body">
 										<img src="resources/img/graphics.png" id="imagepreview" class="img-responsive"></img>
@@ -381,7 +380,7 @@
 										<button type="button" class="close" data-dismiss="modal">
 											<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 										</button>
-										<h4 class="modal-title" id="myModalLabel2">Visualization of the macromolecule-computed ligand complex.</h4>
+										<h4 class="modal-title" id="myModalLabel2">Visualization of the macomolecule-computed ligand complex.</h4>
 									</div>
 									<div class="modal-body">
 										<img src="resources/img/complexVisualization.png" id="imagepreview" class="img-responsive"></img>
