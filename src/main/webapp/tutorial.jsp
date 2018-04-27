@@ -90,7 +90,6 @@
 						<a href="#" id="pop2">
 							<img id= "form" class= "medium-size" src="resources/img/form.png" alt="form1"></img>
 						</a>
-				</div>
 
 				<!-- Creates the bootstrap modal where the image will appear -->
 				<div class="modal fade" id="imagemodal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -111,13 +110,14 @@
 						</div>
 					</div>
 				</div>
+			</div>
+				
 			
 
 				<div class="col-md-6">
 					<a href="#" id="pop3">
 						<img id= "form2" class= "medium-size" src="resources/img/form2.png" alt="form2"></img>
 					</a>
-				</div>
 				
 				<!-- Creates the bootstrap modal where the image will appear -->
 				<div class="modal fade" id="imagemodal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
@@ -138,18 +138,8 @@
 						</div>
 					</div>
 				</div>
-				
-				
-					
-				<!-- <div class="row row-no-margin">
-        			<div class="col-xs-12 col-sm-6 col-no-padding">
-          				<img  class="thumbnail img-responsive"  src="resources/img/form.png"></img>
-          			</div>
-          			<div class="col-xs-12 col-sm-6 col-no-padding">
-          				<img class="thumbnail img-responsive"   src="resources/img/form2.png" style="width: 475px;"></img>		
-        			</div>       			
-				</div> -->
-								
+							</div>
+			
 
 				<dl class="dl-horizontal">
 
@@ -226,12 +216,35 @@
 
 				<p>If the task was completed, jMetalDock will notify the results
 					obtained from the simulation, providing a URL with the results:</p>
-		
-				<div class="row row-no-margin">
-					<div class="col-xs-12 col-sm-8 col-no-padding">
-          				<img  class="thumbnail img-responsive" src="resources/img/results.png"></img>
-          			</div>
-				</div>				
+					
+					
+				<div class="col-md-9">
+					<a href="#" id="pop4">
+						<img id= "results" class= "medium-size" src="resources/img/results.png" alt="results"></img>
+					</a>
+				
+				
+				
+				<!-- Creates the bootstrap modal where the image will appear -->
+				<div class="modal fade" id="imageresults" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">
+											<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+										</button>
+										<h4 class="modal-title" id="myModalLabel2">Task table from results:</h4>
+									</div>
+									<div class="modal-body">
+										<img src="resources/img/results.png" id="imagepreview" class="img-responsive"></img>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<br/>
 					<p>The image above shows the task's status, the start and end times,
 					the task's ID, task's hash and the user's email. The interface shows some
 					buttons in the Action field: "Go to results" and "Download Docking
@@ -246,15 +259,39 @@
 					optimize (in the example, the objectives that were optimized correspond with the
 					intermolecular and intramolecular energies).
 				</p>
-				<br /> 
-				
-				<div class="row row-no-margin">
-					<div class="col-xs-12 col-sm-8 col-no-padding">
-          				<img  class="thumbnail img-responsive"  src="resources/img/table.png"></img>
-          			</div>
 				</div>
 				
+				<br/>
 				
+				<div class="col-md-9">
+				
+					<a href="#" id="pop6">
+						<img id= "results" class= "medium-size" src="resources/img/table.png" alt="results"></img>
+					</a>
+				
+				
+				<!-- Creates the bootstrap modal where the image will appear -->
+				<div class="modal fade" id="imagetable" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">
+											<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+										</button>
+										<h4 class="modal-title" id="myModalLabel2">Table with the results obtained from the molecular docking simulations</h4>
+									</div>
+									<div class="modal-body">
+										<img src="resources/img/table.png" id="imagepreview" class="img-responsive"></img>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<br/>
+				<br/>
 				<p>This image shows a table with the results obtained from the
 					molecular docking simulations. The table contains a column with all
 					runs, the task's ID (result per ID), the final binding energy, the
@@ -266,34 +303,95 @@
 					in the page. If the user clicks on the ID of each solution,
 					information about this specific solution is shown (see the image below):</p>
 				<br /> 
-				<div class="row row-no-margin">
-					<div class="col-xs-12 col-sm-8 col-no-padding">
-          				<img  class="thumbnail img-responsive"  src="resources/img/solution.png"></img>
-          			</div>
 				</div>
+				
+				<div class="col-md-9">
+				
+					<a href="#" id="pop7">
+						<img id= "results" class= "medium-size" src="resources/img/solution.png" alt="results"></img>
+					</a>
+				<!-- Creates the bootstrap modal where the image will appear -->
+				<div class="modal fade" id="imageuniquesolution" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">
+											<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+										</button>
+										<h4 class="modal-title" id="myModalLabel2">Results from a solutions selected by the user.</h4>
+									</div>
+									<div class="modal-body">
+										<img src="resources/img/solution.png" id="imagepreview" class="img-responsive"></img>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<br/>
+				
 				<p>In the results' page, the pareto font is plotted when the
 					user chooses the multi-objective option to run the molecular docking simulations. In the image below, the
 					pareto font represents the set of solutions. In this example,
 					there are solutions that have higher or lower intermolecular and
 					intramolecular energy values. The user can pick up a solution to be analyzed.</p>
+				</div>
+				
+				
+			<div class="col-md-9">
+				
+					<a href="#" id="pop8">
+						<img id= "results" class= "medium-size" src="resources/img/graphics.png" alt="results"></img>
+					</a>
+				
+				
+				<div class="modal fade" id="graphics" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">
+											<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+										</button>
+										<h4 class="modal-title" id="myModalLabel2">Set of solutions plotted as a font. The inter-/intramolecular enegies are represented in X and Y axis.</h4>
+									</div>
+									<div class="modal-body">
+										<img src="resources/img/graphics.png" id="imagepreview" class="img-responsive"></img>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<p>The user can also visualize a solution. 
+				For doing that, the users have to submit the macromolecule's PDBQT file:</p>
+			
 			
 				
-				<div class="row row-no-margin">
-					<div class="col-xs-12 col-sm-8 col-no-padding">
-          				<img  class="thumbnail img-responsive"  src="resources/img/graphics.png"></img>
-          			</div>
+					<a href="#" id="pop9">
+						<img id= "results" class= "medium-size" src="resources/img/complexVisualization.png" alt="results"></img>
+					</a>
+				
+				<div class="modal fade" id="complexVisualization" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">
+											<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+										</button>
+										<h4 class="modal-title" id="myModalLabel2">Set of solutions plotted as a font. The inter-/intramolecular enegies are represented in X and Y axis.</h4>
+									</div>
+									<div class="modal-body">
+										<img src="resources/img/complexVisualization.png" id="imagepreview" class="img-responsive"></img>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
 				</div>
 				
-
-				<p>The user can also visualize a solution. For doing that, the
-					users have to submit the macromolecule's PDBQT file:</p>
-					
-				<div class="row row-no-margin">
-					<div class="col-xs-12 col-sm-8 col-no-padding">
-          				<img  class="thumbnail img-responsive"  src="resources/img/complexVisualization.png"></img>
-          			</div>
-				</div>
-
 
 
 				<h3>References</h3>
@@ -319,6 +417,8 @@
 	</div>
 	</div>
 </div>
+</div>
+
 	
 
 	<%@ include file="/WEB-INF/jsp/footer.jsp"%>
