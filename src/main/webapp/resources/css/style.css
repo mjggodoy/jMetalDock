@@ -17,6 +17,19 @@ img.center {
 
 }
 
+.thumbnail{
+	
+  background-position: center;
+  border:none;
+}
+
+
+img.resize4{
+
+    width: 640px;
+    height: 500px;
+}
+
 h1, h2, h3, h4{
 	color: #EB6909;
 }
@@ -68,6 +81,14 @@ img.medium-size {
 	margin-right:auto;
 	display: block;
 }
+
+img.medium-size2 {
+	width: 90%;
+	margin-left: auto;
+	margin-right:auto;
+	display: block;
+}
+
 
 img.resize3 {
 	width: 100%;

@@ -146,7 +146,7 @@
 
 					<div class="col-md-6">
 						<a href="#" id="pop">
-							<img id= "serverDocking" class= "medium-size" src="resources/img/serverDocking.png" alt="jMetalDock_Server">
+							<img id= "serverDocking" class= "medium-size2" src="resources/img/serverDocking.png" alt="jMetalDock_Server">
 						</a>
 					</div>
 				</div>

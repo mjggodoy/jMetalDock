@@ -218,7 +218,7 @@
 								</button>
 							</span>
 								<input type="text" data-ride="spinner" name="runs" id="runs" class="form-control input-number"
-									   value="5" data-min="1" data-max="10" />
+									   value="5" data-min="1" data-max="50" />
 								<span class="input-group-btn">
 								<button type="button" class="btn btn-default" data-value="1" data-target="#runs"
 										data-toggle="spinner" data-on="mousehold">
