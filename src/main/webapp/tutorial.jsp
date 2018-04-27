@@ -138,7 +138,7 @@
 						</div>
 					</div>
 				</div>
-							</div>
+				</div>
 			
 
 				<dl class="dl-horizontal">
@@ -245,6 +245,9 @@
 					</div>
 				</div>
 				<br/>
+				</div>
+				<div class="col-md-12">
+				
 					<p>The image above shows the task's status, the start and end times,
 					the task's ID, task's hash and the user's email. The interface shows some
 					buttons in the Action field: "Go to results" and "Download Docking
@@ -258,7 +261,7 @@
 					size, number of runs and evaluations) and the objectives to
 					optimize (in the example, the objectives that were optimized correspond with the
 					intermolecular and intramolecular energies).
-				</p>
+					</p>
 				</div>
 				
 				<br/>
@@ -292,6 +295,10 @@
 				
 				<br/>
 				<br/>
+				</div>
+				
+				<div class="col-md-12">
+				
 				<p>This image shows a table with the results obtained from the
 					molecular docking simulations. The table contains a column with all
 					runs, the task's ID (result per ID), the final binding energy, the
@@ -330,12 +337,16 @@
 					</div>
 				</div>
 				<br/>
+				</div>
+				
+				<div class="col-md-12">
 				
 				<p>In the results' page, the pareto font is plotted when the
 					user chooses the multi-objective option to run the molecular docking simulations. In the image below, the
 					pareto font represents the set of solutions. In this example,
 					there are solutions that have higher or lower intermolecular and
 					intramolecular energy values. The user can pick up a solution to be analyzed.</p>
+				
 				</div>
 				
 				
@@ -395,6 +406,7 @@
 
 
 				<h3>References</h3>
+				<div class="col-md-12">
 
 				<ol>
 					<li id="Morris">Morris, Garrett M. and Huey, Ruth and
@@ -413,6 +425,7 @@
 					</li>
 				</ol>
 			</div>
+		</div>	
 		</div>
 	</div>
 	</div>
