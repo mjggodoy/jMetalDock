@@ -380,7 +380,7 @@
 										<button type="button" class="close" data-dismiss="modal">
 											<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 										</button>
-										<h4 class="modal-title" id="myModalLabel2">Set of solutions plotted as a font. The inter-/intramolecular enegies are represented in X and Y axis.</h4>
+										<h4 class="modal-title" id="myModalLabel2">Visualization of the macomolecule-computed ligand complex.</h4>
 									</div>
 									<div class="modal-body">
 										<img src="resources/img/complexVisualization.png" id="imagepreview" class="img-responsive"></img>
