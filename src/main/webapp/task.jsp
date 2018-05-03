@@ -161,25 +161,24 @@
 								<optgroup label="MonoObjective algorithm">
 									<option value="gGA">gGA</option>
 									<option value="ssGA">ssGA</option>
-									<option value="DE" selected>DE (!)</option>
+									<option value="DE" selected>DE (*)</option>
 									<option value="PSO">PSO</option>
 								</optgroup>
 								<optgroup label="MultiObjective algorithm">
 									<option value="NSGAII">NSGA-II</option>
 									<option value="ssNSGAII">ssNSGA-II</option>
 									<option value="GDE3">GDE3</option>
-									<option value="SMPSO">SMPSO (!)</option>
+									<option value="SMPSO">SMPSO (*)</option>
 									<option value="OMOPSO">&nbsp;&nbsp;OMOPSO</option>
 									<option value="SMPSOD">&nbsp;&nbsp;SMPSOD</option>
-									<option value="SMPSOhv">&nbsp;&nbsp;SMPSO (HV) (!)</option>
+									<option value="SMPSOhv">&nbsp;&nbsp;SMPSO (HV) (*)</option>
 									<option value="SMPSO_COS">&nbsp;&nbsp;SMPSO (Cosine)</option>
 									<option value="MOEAD">MOEA/D</option>
 									<option value="SMSEMOA">SMS-EMOA</option>
 								</optgroup>
 							</select>
 							<p class="help-block">
-								Optimization algorithm to be used in your execution. Those which obtained better
-								results in our studies are marked with (!).
+								(*) Algorithms that obtain better results in terms of energy and the RMSD score in our studies.  
 							</p>
 						</div>
 					</div>
@@ -274,11 +273,11 @@
 					</div>
 
 					<div class="form-group">
-						<label for="email" class="control-label col-sm-4">Email:</label>
+						<label for="email" class="control-label col-sm-4">Email*:</label>
 						<div class="col-md-5 col-sm-6">
 							<input type="text" class="form-control" id="email" name="email">
 							<p class="help-block">
-								Write your email only if you want to receive a notification when your task is finished.
+								(*) Write your email only if you want to receive a notification when your task is finished.
 								You will not receive any kind of spam from us.
 							</p>
 						</div>
