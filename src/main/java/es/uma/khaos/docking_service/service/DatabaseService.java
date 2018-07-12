@@ -1108,26 +1108,4 @@ public final class DatabaseService {
 		
 	}
 	
-	
-	/*public static void main(String[] args) throws Exception {
-		
-		int taskId = 484;
-		String ligandId = "U0E";
-		DatabaseService db = new DatabaseService();
-		db.insertLigandId(taskId, ligandId);
-		
-		//db.insertPDB(taskId, "AAAAAbbbbb");
-		
-		//IndividualSolution solution;
-		//solution = db.getMinimumEnergyfromResult(484);
-		solution = db.getMinimunRMSD(622);
-		System.out.println(
-						" Task: " +  " " + solution.getId() +
-						" Id: " + 
-						" Run: " + solution.getFinalBindingEnergy() +
-						" RMSD: " + solution.getRmsd() +
-						" Minimum Final Binding Energy: " + solution.finalBindingEnergy);
-			
-	}*/
-	
 }

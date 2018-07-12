@@ -22,10 +22,7 @@ public class AbstractResource extends Application {
 
     protected Response internalServerError(ResponseBuilder builder) {
         return builder.buildResponse(
-                new ErrorResponse(
-                        Response.Status.INTERNAL_SERVER_ERROR,
-                        Constants.RESPONSE_INTERNAL_SERVER_ERROR),
-                Response.Status.INTERNAL_SERVER_ERROR
-        );
+                new ErrorResponse(Response.Status.INTERNAL_SERVER_ERROR, 
+                		Constants.RESPONSE_INTERNAL_SERVER_ERROR));
     }
 }

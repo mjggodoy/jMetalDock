@@ -80,7 +80,7 @@
 						<h3>Overview</h3>
 						<p>
 						The ligand-protein docking has an important role in pharmaceutical industry to
-						know the intricate aspect of intermolecular recognition between a ligand and receptor (protein).
+						know the intricate aspect of intermolecular recognition between a ligand (small molecule) and receptor (protein).
 						These computational approaches correspond to studies <em>in silico</em>,
 						which are a complement to the laboratory experiments to understand
 						how a given drug, which can be a pepetide or a chemical compound, interacts to a therapeutic target.
