@@ -82,8 +82,8 @@
 						The ligand-protein docking has an important role in pharmaceutical industry to
 						know the intricate aspect of intermolecular recognition between a ligand (small molecule) and receptor (protein).
 						These computational approaches correspond to studies <em>in silico</em>,
-						which are a complement to the laboratory experiments to understand
-						how a given drug, which can be a pepetide or a chemical compound, interacts to a therapeutic target.
+						that are complementary to the laboratory experiments to understand
+						how a drug interacts to a therapeutic target.
 						</p>
 						<p>
 						In previous studies, we have introduced several approaches based on the application of metaheuristics
