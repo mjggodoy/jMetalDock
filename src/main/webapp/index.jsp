@@ -80,7 +80,7 @@
 						<h3>Overview</h3>
 						<p>
 						The ligand-protein docking has an important role in pharmaceutical industry to
-						know the intricate aspect of intermolecular recognition between a ligand (small molecule) and receptor (protein).
+						know the intricate aspect of intermolecular recognition between a ligand (small molecule) and a receptor (protein).
 						These computational approaches correspond to studies <em>in silico</em>,
 						that are complementary to the laboratory experiments to understand
 						how a drug interacts to a therapeutic target.
@@ -99,7 +99,7 @@
 								<a href="https://doi.org/doi:10.1016/j.asoc.2014.10.049" target="_blank">doi:10.1016/j.asoc.2014.10.049</a>
 							</li>
 							<li id="Godoy">Mar&iacute;a Jes&uacute;s Garc&iacute;a Godoy, Esteban L&oacute;pez-Camacho, Jos&eacute; Garc&iacute;a-Nieto, Antonio J. Nebro and Jos&eacute; F. Aldana-Montes:
-								Solving molecular docking problems with multi-objective metaheuristics <em>Molecules</em> 20(6): 10154-10183
+								Solving molecular docking problems with multi-objective metaheuristics <em>Molecules</em> 20(6): 10154-10183 (2015)
 								<a href="http://www.mdpi.com/1420-3049/20/6/10154" target="_blank">doi:10.3390/molecules200610154</a>
 							</li>
 						</ol>
@@ -123,7 +123,7 @@
 						between the computed ligand and the co-crystallized ligand from the PDB crystallographic structure. 
 						In this case of using a multi-objective approach, 
 						the algorithms that jMetalDock provides are NSGA-II (non-dominated sorting genetic algorithm), 
-						GDE3 (the third evolution step of generalized differential evolution), SMPSO (speed modulation multi-objective particle swarm optimization), 
+						GDE3 (the third evolution step of generalized differential evolution), SMPSO (speed modulation multi-objective particle swarm optimization) and its variants,
 						SMSEMOA (S-metric evolutionary multi-objective optimization algorithm) and MOEA/D (multi-objective evolutionary algorithm based on descomposition). 
 						The energy function used to evaluate all the
 						solutions returned by the algorithms is the AutoDock 4.2 energy
@@ -133,15 +133,14 @@
 					<div class="col-md-6">
 						<h3>Why jMetalDock Web Server?</h3>
 						<p>Most of the proposed approaches that can be found in the
-						literature only optimize an objective that is the final binding
-						energy. jMetalDock allows users to execute one or more tasks 
-						where the algorithm is selected, the algorithm parameters can be
-						set up as well as the objectives to optimize. The algorithm
-						parameters are the population (number of individuals that has
+						literature only optimize an objective that corresponds to the final binding
+						energy. jMetalDock allows users to execute one or more tasks selecting 
+						an algorithm provided by jMetalDock server and a set up the parameters.
+						These parameters correspond to the population (number of individuals that has
 						maximum and minimum default values), the number of
 						runs (maximum and minimum default values) and the number of
 						evaluations (minimum and maximum default values). Further details
-						are given in the Tutorial section by clicking the menu bar.</p>
+						are given in the Tutorial section.</p>
 					</div>
 
 					<div class="col-md-6">
@@ -159,13 +158,13 @@
 								<button type="button" class="close" data-dismiss="modal">
 									<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 								</button>
-								<h4 class="modal-title" id="myModalLabel">Image of how jMetalDock works on server</h4>
+								<h4 class="modal-title" id="myModalLabel">jMetalCpp and AutoDock</h4>
 							</div>
 							<div class="modal-body">
 								<figure>
 								<img src="" id="imagepreview" class= "resize3">
 								<figcaption class="textCaption">The execution parameters of a given experiment are configured using a docking parameter file
-								containing the algorithm settings. As metaheuristics are iterative algorithms that work with sets of tentative solutions
+								containing the algorithm's settings. As metaheuristics are iterative algorithms that work with sets of tentative solutions
 								that are modified according to a number of operators (e.g. in the case of GAs the operators are selection, crossover and mutation),
 								whenever a new solution has to be evaluated, it is sent back to AutoDock 4.2 to apply its scoring function.
 								In the case of a multi-objective approach, two objectives can be minimized: the intermolecular and intramolecular energies (both measured in kcal/mol)

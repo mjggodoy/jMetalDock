@@ -25,11 +25,11 @@
 					<div class="col-md-12">
 				
 					<h3 id="Input">Input</h3>
-					<p>The user uploads the following set of files that includes:</p>
+					<p>The user should upload the following files:</p>
 				<ol>
 
 					<li>The ligand in PDBQT format. This format is widely known by
-						users that work on molecular docking simulations (see <a 
+						users that work with molecular docking simulations (see <a 
 						href="http://autodock.scripps.edu/faqs-help/faq/what-is-the-format-of-a-pdbqt-file" target="_blank">How to prepare a PDBQT file</a>
 						for further details about this format)
 					</li>
@@ -82,7 +82,7 @@
 				
 				<p>To submit a job to the jMetalDock server, the user has to
 					fill a form. This form provides several options that are chosen by the
-					users. These options are specified as folows:</p>
+					users. These options are specified as follows:</p>
 				<br />
 				
 				
@@ -144,35 +144,35 @@
 				<dl class="dl-horizontal">
 
 					<dt>A.</dt>
-					<dd>The input file option is the .zip file or the
-						instance chosen by the user. The left image shows the case where
-						user chooses one instance from the list provided by the jMetalDock
-						server. The image in the right shows the case where user
+					<dd>The <strong>input option</strong> is the .zip file or the
+						instance chosen by the user. The image on the left shows the case in which
+						one instance from the list has been chosen. 
+						The image on the right shows an example in which the user
 						has to upload a .zip file with all files described above (see
 						<a href="#Input">Input</a> section).</dd>
 					<dt>B.</dt>
 					<dd>
 						The user can choose an instance from the list provided by
 						jMetalDock. These instances are a set of ligand-protein complexes
-						used in some molecular docking simulations to validate new algorithms 
-						or new energy scoring functions such as is shown in <a
+						used in molecular docking simulations to validate new algorithms 
+						or new energy scoring functions as are shown in <a
 							href="#Morris">[1]</a>. The instance already contains all the
 						input files to run a mono- or multi-objective algorithm.
 					</dd>
 					<dt>C.</dt>
 					<dd>
-						The list of algorithms that jMetalDock provides. This list has
+						The list of algorithms provided by jMetalDock. This list has
 						divided into two groups: the mono- and multi-objective algorithms.
 						The first group contains standard genetic algorithms such as gGA
 						(the Generational Genetic Algorithm), ssGA (State-Steady Genetic
 						Algorithm), DE (Differential Evolution Algorithm) and PSO
 						(Particle Swarm Optimization). According to the results obtained
 						in <a href="#Camacho">[2]</a>, DE obtains the best overall results
-						compared to other mono-objective metaheuristics applied to the
-						AutoDock 4.2 benchmark. However, depending on the problem the user
+						compared to other mono-objective metaheuristics. 
+						However, depending on the problem the user
 						wants to solve, we recommend to test with more than one algorithm.
 						The second group includes all the multi-objective algorithms.
-						These are NSGA-II (Non-Dominated Sorting Genetic Algorithm),
+						These correspond with NSGA-II (Non-Dominated Sorting Genetic Algorithm),
 						ssNSGA-II (steady-state Non Dominated Sorting Genetic Algorithm),
 						GDE3 (Generalized Differential Evolution), SMPSO
 						(Speed-constrained Multi-objective PSO) and its four new variants
