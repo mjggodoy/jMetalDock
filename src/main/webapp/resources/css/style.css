@@ -61,6 +61,11 @@ a:hover, a:focus {
 	color: #EEE;
 }
 
+.panel-body{
+	
+	padding:35px;
+}
+
 img.resize {
   
    width: 100%;

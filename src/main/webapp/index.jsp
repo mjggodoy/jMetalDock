@@ -18,7 +18,7 @@
 			<div class="panel-body">
 
 				<div class="bs-docs-header" id="content" tabindex="-1">
-					<h1>jMetalDock</h1>
+					<h1><strong>MetaDock</strong></h1>
 					<p>A Web-server that provides single and multi-objective approaches to solve the molecular docking problem.</p>
 					<div id="carbonads-container" style="display: none !important;">
 						<div class="carbonad" style="display: none !important;">
@@ -41,7 +41,7 @@
 							<div class="item active">
 								<img src="resources/img/macro-ligand.png" alt="Chania" width="460" height="345">
 								<div class="carousel-caption">
-									<h3>jMetalDock</h3>
+									<h3>MetaDock</h3>
 									<p class=text>This is a Web-service that provides mono- and multi-objective approaches to solve the molecular docking problem.</p>
 								</div>
 							</div>
@@ -107,9 +107,9 @@
 					</div>
 
 					<div class="col-md-12">
-						<h3>The jMetalDock Web Server</h3>
+						<h3>The MetaDock Web Service</h3>
 						<p>
-						jMetalDock is a Web-service that provides mono- and multi-objectives approaches
+						MetaDock is a Web-service that provides mono- and multi-objectives approaches
 						applied to solve the problem of molecular
 						docking. In case of solving the molecular docking problem with a
 						mono-objective approach, there are several algorithms
@@ -122,7 +122,7 @@
 						to the ligand's deformity and the third with the distance
 						between the computed ligand and the co-crystallized ligand from the PDB crystallographic structure. 
 						In this case of using a multi-objective approach, 
-						the algorithms that jMetalDock provides are NSGA-II (non-dominated sorting genetic algorithm), 
+						the algorithms that MetaDock provides are NSGA-II (non-dominated sorting genetic algorithm), 
 						GDE3 (the third evolution step of generalized differential evolution), SMPSO (speed modulation multi-objective particle swarm optimization) and its variants,
 						SMSEMOA (S-metric evolutionary multi-objective optimization algorithm) and MOEA/D (multi-objective evolutionary algorithm based on descomposition). 
 						The energy function used to evaluate all the
@@ -131,11 +131,11 @@
 					</div>
 
 					<div class="col-md-6">
-						<h3>Why jMetalDock Web Server?</h3>
+						<h3>Why MetaDock Web Service?</h3>
 						<p>Most of the proposed approaches that can be found in the
 						literature only optimize an objective that corresponds to the final binding
-						energy. jMetalDock allows users to execute one or more tasks selecting 
-						an algorithm provided by jMetalDock server and a set up the parameters.
+						energy. MetaDock allows users to execute one or more tasks selecting 
+						an algorithm provided by MetaDock server and a set up the parameters.
 						These parameters correspond to the population (number of individuals that has
 						maximum and minimum default values), the number of
 						runs (maximum and minimum default values) and the number of
@@ -145,7 +145,7 @@
 
 					<div class="col-md-6">
 						<a href="#" id="pop">
-							<img id= "serverDocking" class= "medium-size2" src="resources/img/serverDocking.png" alt="jMetalDock_Server">
+							<img id= "serverDocking" class= "medium-size2" src="resources/img/serverDocking.png" alt="MetaDock_Server">
 						</a>
 					</div>
 				</div>

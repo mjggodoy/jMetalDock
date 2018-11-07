@@ -18,7 +18,7 @@
 			<div class="panel-body">
 
 				<div class="page-header">
-					<h2>New task</h2>
+					<h2><strong>New task</strong></h2>
 				</div>
 
 				<form id="newTaskForm" class="form-horizontal" name="newTaskForm" action="rest/task" method="post" enctype="multipart/form-data">
@@ -38,14 +38,14 @@
 						<div class="col-sm-offset-4 col-sm-6 col-md-5">
 							<div class="form-group-dependant">
 								<label for="file" class="control-label label-dependant">File Input:</label>
-								<input type="file" id="file" name="file">
+								<input type="file" class="form-control-file" id="file" name="file">
 								<p class="help-block">
 									Please, select a .zip in which all your
 									macromolecule and ligand files are prepared (.pdbqt) and also the
 									output files from AutoGrid software (.map).
 									<br/>
 									Read the <a href='<c:url value="/tutorial.jsp" />'>documentation</a> to better
-									understand which files should be provided inside your zip file.
+									understand which files should be provided inside your .zip file.
 								</p>
 							</div>
 						</div>
