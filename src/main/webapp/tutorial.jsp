@@ -21,7 +21,6 @@
 
 				<div class="row">
 					<div class="col-md-12">
-
 						<h3 id="Input">Input</h3>
 						<p>The user should upload the following files:</p>
 						<ol>
@@ -81,7 +80,7 @@
 							instances are a set of HIV-proteases and inhibitors with
 							different sizes (small, medium, large size and cyclic urea
 							inhibitors). A more detailed description about this benchmark is
-							specified in Morris et <em>al.</em> work <a href="#Morris">[1]</a>.
+							specified in Morris et <em>al.</em> work</a>.
 						</p>
 
 

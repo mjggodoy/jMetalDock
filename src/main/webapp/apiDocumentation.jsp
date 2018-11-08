@@ -5,9 +5,6 @@
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<%-- <script src='<c:url value="/resources/js/swagger-ui-bundle.js" />' charset="UTF-8"> </script> --%>
-<%-- <script src='<c:url value="/resources/js/swagger-ui-standalone-preset.js"  />' charset="UTF-8"> </script> --%>
-<%-- <script src='<c:url value="/resources/js/swagger-ui.js" />' charset="UTF-8"> </script>--%>
 <link href="<c:url value="/vendors/swagger-ui/css/swagger-ui.css" />"
 	rel="stylesheet"></link>
 <link

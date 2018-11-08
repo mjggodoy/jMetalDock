@@ -17,17 +17,21 @@
 			<div class="panel-body">
 				<div class="page-header">
 
-					<h2><strong>Benchmark</strong></h2>
+					<h2>
+						<strong>Benchmark</strong>
+					</h2>
 
 				</div>
 
 				<h4>Ligand-Receptor Docking: Instances Used in Mono-Objective
 					and Multi-objective Approaches</h4>
-				<p>To test the mono-objective and the multi-objective
-					approaches, we have used a set of flexible protein-ligand
-					complexes. These structures have been taken from the Protein Data
-					Bank (PDB) database <a href="#PDB">[1]</a> and also used to test the AutoDock 4.2 energy
-					function <a href="#Morris">[2]</a>:</p>
+				<p>
+					To test the mono-objective and the multi-objective approaches, we
+					have used a set of flexible protein-ligand complexes. These
+					structures have been taken from the Protein Data Bank (PDB)
+					database <a href="#PDB">[1]</a> and also used to test the AutoDock
+					4.2 energy function <a href="#Morris">[2]</a>:
+				</p>
 
 				<div class="row">
 					<div class="col-xs-2">
@@ -450,9 +454,8 @@
 				<br />
 				<p>
 					Users can also download all the instances in just one compressed
-					file:
-					 <img src="resources/img/zip_gold.png" alt="zip"
-						style="width: 120px;" />  <a
+					file: <img src="resources/img/zip_gold.png" alt="zip"
+						style="width: 120px;" /> <a
 						href="http://khaos.uma.es/autodockjmetal/DownloadFromFtp?file=all.zip"
 						style="margin-left: 25px;"></a>
 				</p>
@@ -483,16 +486,19 @@
 				<br /> <strong>References:</strong>
 
 				<ol class="h5">
-					<li id="Morris"><cite>Morris GM, Huey R, Lindstrom W, et al.:
-							AutoDock4 and AutoDockTools4: Automated Docking with Selective
-							Receptor Flexibility<br /> Algorithms for Computational Journal
-							of computational chemistry. 2009;30(16):. 2785-2791<a
-							href="http://dx.doi.org/10.1002/jcc.21256">
-								doi:10.1002/jcc.21256</a>
-					</cite></li>
-					<li id="PDB">Helen M. Berman, John Westbrook, Zukang Feng, Gary Gilliland et al.: 
-					The Protein Data Bank <br /> Nucleic Acids Res Journal 2000; 28: 235--242<cite>
-					<a href="http://dx.doi.org/10.1.1.32.1584">doi:10.1.1.32.1584</a></cite></li>
+					<li id="Morris"><cite>Morris GM, Huey R, Lindstrom W,
+							et al.: AutoDock4 and AutoDockTools4: Automated Docking with
+							Selective Receptor Flexibility<br /> Algorithms for Computational
+							Journal of computational chemistry. 2009;30(16):. 2785-2791<a
+							href="http://dx.doi.org/10.1002/jcc.21256" 
+							target="_blank">doi:10.1002/jcc.21256</a></cite>
+					</li>
+					<li id="PDB">Helen M. Berman, John Westbrook, Zukang Feng,
+						Gary Gilliland et al.: The Protein Data Bank <br /> Nucleic Acids
+						Res Journal 2000; 28: 235--242<cite> <a
+							href="http://dx.doi.org/10.1007/978-1-4939-7000-1_26"
+							target="_blank">doi:10.1007/978-1-4939-7000-1_26</a></cite>
+					</li>
 				</ol>
 			</div>
 		</div>
