@@ -17,7 +17,7 @@
 			<div class="panel-body">
 
 				<div class="page-header">
-					<h2>References</h2>
+					<h2><strong>References</strong></h2>
 				</div>
 
 				<div class="starter-template">

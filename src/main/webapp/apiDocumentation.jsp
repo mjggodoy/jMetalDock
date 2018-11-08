@@ -54,7 +54,7 @@
 				</svg>
 
 				<div class="page-header">
-					<h2>API Documentation</h2>
+					<h2><strong>API Documentation</strong></h2>
 				</div>
 
 				<div id="swagger-ui"></div>
